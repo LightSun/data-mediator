@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
 import javax.annotation.processing.*;
@@ -9,7 +8,6 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
@@ -88,11 +86,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         }
         //为每个宿主类生成所对应的代理类
        for (ProxyClass proxyClass_ : mProxyClassMap.values()) {
-            try {
-                proxyClass_.generateProxy(mPrinter).writeTo(mFiler);
-            } catch (IOException e) {
-                error(Util.toString(e));
-            }
+            proxyClass_.generateProxy(mPrinter, mFiler);
         }
         mProxyClassMap.clear();
         return false;
@@ -246,6 +240,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                     break;
             }
         }else{
+            //normal not reach here
             data.setType(Class.forName(type.toString().trim()));
         }
     }
