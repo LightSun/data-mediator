@@ -1,65 +1,41 @@
-apply plugin: "java"
-apply plugin: "maven"
 
-group = "myorg"
-version = 1.0
+apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
-repositories {
-    mavenCentral()
-}
-
-sourceSets.all { set ->
-    def jarTask = task("${set.name}Jar", type: Jar) {
-        baseName = baseName + "-$set.name"
-        from set.output
-    }
-
-    artifacts {
-        archives jarTask
-    }
-}
-
-sourceSets {
-    api
-    impl
-}
-
-dependencies {
-    apiCompile 'commons-codec:commons-codec:1.5'
-
-   // implCompile sourceSets.api.output
-   // implCompile 'commons-lang:commons-lang:2.6'
-
-    testCompile 'junit:junit:4.9'
-    testCompile sourceSets.api.output
-    testCompile sourceSets.impl.output
-    runtime configurations.apiRuntime
-    runtime configurations.implRuntime
-}
-
-jar {
-    from sourceSets.api.output
-    from sourceSets.impl.output
-}
-
-uploadArchives {
+buildscript {
     repositories {
-        mavenDeployer {
-            repository(url: uri("${buildDir}/repo"))
-
-            addFilter("main") { artifact, file -> artifact.name == project.name }
-            ["api", "impl"].each { type ->
-                addFilter(type) { artifact, file -> artifact.name.endsWith("-$type") }
-                
-                // We now have to map our configurations to the correct maven scope for each pom
-                ["compile", "runtime"].each { scope ->
-                    configuration = configurations[type + scope.capitalize()]
-                    ["main", type].each { pomName ->
-                        pom(pomName).scopeMappings.addMapping 1, configuration, scope
-                    }
-                }
-            }
-
-        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.4.0'
     }
 }
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+allprojects {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+
+    testCompile 'junit:junit:4.12'
+    compile 'com.squareup:javapoet:1.7.0'
+}
+
+publish {
+    userOrg = 'lightsun' //bintray user name
+    groupId = 'com.heaven7.java.data.mediator'
+    artifactId = 'data-mediator'
+    publishVersion = '1.0'
+    desc = 'this is a java lib of data mediator. '
+    website = 'https://github.com/LightSun/data-mediator'
+}
+//cmd: gradle bintrayUpload -PbintrayUser=lightsun -PbintrayKey=xxx -PdryRun=false
+// need jdk1.8  gradle 3.0+
