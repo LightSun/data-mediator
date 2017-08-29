@@ -173,16 +173,24 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 ExecutableElement key = en.getKey();
                 AnnotationValue av = en.getValue();
                 note("test >>>: " + av.getValue());
+
                 switch (key.getSimpleName().toString()) {
                     case FieldData.STR_PROP_NAME:
                         data.setPropertyName(av.getValue().toString());
                         break;
+
                     case FieldData.STR_SERIA_NAME:
                         data.setSerializeName(av.getValue().toString());
                         break;
+
                     case FieldData.STR_FLAGS:
                         data.setFlags(Integer.valueOf(av.getValue().toString()));
                         break;
+
+                    case FieldData.STR_COMPLEXT_TYPE:
+                        data.setComplexType(Integer.valueOf(av.getValue().toString()));
+                        break;
+
                     case FieldData.STR_TYPE:
                         try {
                             note("STR_TYPE >>> " + av.getValue().toString());

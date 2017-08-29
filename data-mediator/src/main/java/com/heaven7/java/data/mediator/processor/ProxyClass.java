@@ -4,12 +4,10 @@ import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.processor.Util.*;
@@ -50,10 +48,21 @@ public class ProxyClass {
          * for interface.
          */
         //public interface xxxModule extends xx1,xx2{  }
-        TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(mElement.getSimpleName() + "Module")
+        final String interfaceName = mElement.getSimpleName() + "Module";
+        TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
                 .addModifiers(Modifier.PUBLIC);
+
+        interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
+
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
+                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(mElement.getQualifiedName().toString(),
+                        tm, mPrinter, true);
+                if(builders != null){
+                    for (MethodSpec.Builder builder : builders){
+                        interfaceBuilder.addMethod(builder.build());
+                    }
+                }
                 interfaceBuilder.addSuperinterface(TypeName.get(tm));
             }
         }
@@ -63,11 +72,32 @@ public class ProxyClass {
            // mPrinter.note("for >>> type = " + type.getName());
             String nameForMethod = getPropNameForMethod(field.getPropertyName());
             //Target get();
+
+            final TypeName typeName;
+            final String paramName;
+            switch (field.getComplexType()){
+                case FieldData.COMPLEXT_ARRAY:
+                    typeName = ArrayTypeName.of(type);
+                    paramName = "array1";
+                    break;
+
+                case FieldData.COMPLEXT_LIST:
+                    typeName = ParameterizedTypeName.get(ClassName.get(List.class),
+                            WildcardTypeName.get(type).box());
+                    paramName = "list1";
+                    break;
+
+                default:
+                    typeName = TypeName.get(type);
+                    paramName = getParamName(type.getSimpleName());
+                    break;
+            }
+
             MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
-                    .returns(TypeName.get(type))
+                    .returns(typeName)
                     .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
             MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
-                    .addParameter(type, getParamName(type.getSimpleName()))
+                    .addParameter(typeName, paramName)
                     .returns(TypeName.VOID)
                     .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
             interfaceBuilder.addMethod(get.build())
@@ -101,31 +131,6 @@ public class ProxyClass {
         } catch (IOException e) {
             mPrinter.error(Util.toString(e));
         }
-    }
-
-    //here: mirror - interface
-    private static void applyInterface(TypeSpec.Builder builder, TypeMirror mirror, ProcessorPrinter pp){
-        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-        Name paramType = te.getQualifiedName();
-        pp.note("test() >>> paramType = " + paramType.toString());
-        //get all method element
-        final List<? extends Element> list = te.getEnclosedElements();
-        for(Element e: list){
-            ExecutableElement ee = (ExecutableElement) e;
-            MethodSpec.overriding(ee);
-              //TODO  .addStatement();
-            pp.note("ee_getSimpleName: " + ee.getSimpleName());
-            pp.note("ee_return: " + ee.getReturnType());
-            pp.note("ee_getTypeParameters: " + ee.getTypeParameters());
-            pp.note("ee_getThrownTypes: " + ee.getThrownTypes());
-            pp.note("ee_getReceiverType: " + ee.getReceiverType());
-        }
-        pp.note("test() >>> getTypeParameters = " + te.getTypeParameters());
-        pp.note("test() >>> getEnclosedElements = " + list);
-        pp.note("test() >>> getEnclosedElements__2 = " + Arrays.toString(
-                list.get(0).getClass().getInterfaces()));
-        pp.note("test() >>> getEnclosingElement = " + te.getEnclosingElement());
-        // pp.note("test() >>> getInterfaces = " + te.getInterfaces());
     }
 
     private static class WriterImpl implements IJavaWriter{
