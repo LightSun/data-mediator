@@ -9,7 +9,7 @@ package com.heaven7.java.data.mediator.test;
 //super interface: reset, clear snap & share snap, save cache (cache)
 public class DataKnife {
 
-	private transient int key;
+	private transient volatile int key;
 	
 	static <T> T create(Class<?> clazz){
 		return null;
