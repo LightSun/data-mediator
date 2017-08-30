@@ -36,6 +36,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
         for(Element e: list){
             ExecutableElement ee = (ExecutableElement) e;
             MethodSpec.Builder builder = overriding(ee, pp, interfaceName)
+           // MethodSpec.Builder builder = MethodSpec.overriding(ee)
                     //.addTypeVariable(TypeVariableName.get(paramTypeName))
                     .addModifiers(Modifier.PUBLIC);
             if(abstractMethod){
