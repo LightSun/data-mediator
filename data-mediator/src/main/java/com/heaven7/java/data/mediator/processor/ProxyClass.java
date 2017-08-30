@@ -71,23 +71,6 @@ public class ProxyClass {
         }
         sInterfaceBuilder.build(interfaceBuilder, mFields);
 
-      /*  for(FieldData field : mFields) {
-            Class<?> type = field.getType();
-            String nameForMethod = getPropNameForMethod(field.getPropertyName());
-
-            TypeInfo info = new TypeInfo();
-            getTypeName(field, type, info);
-
-            MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
-                    .returns(info.typeName)
-                    .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
-            MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
-                    .addParameter(info.typeName, info.paramName)
-                    .returns(TypeName.VOID)
-                    .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
-            interfaceBuilder.addMethod(get.build())
-                    .addMethod(set.build());
-        }*/
         TypeSpec interfaceModule = interfaceBuilder.build();
         //package name
         String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();

@@ -33,13 +33,6 @@ public class BaseMemberBuilder {
             //get and set
             MethodSpec.Builder get = onBuildGet(field, nameForMethod, info);
             MethodSpec.Builder set = onBuildSet(field, nameForMethod, info);
-           /* MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
-                    .returns(info.typeName)
-                    .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
-            MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
-                    .addParameter(info.typeName, info.paramName)
-                    .returns(TypeName.VOID)
-                    .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);*/
             builder.addMethod(get.build())
                     .addMethod(set.build());
 
