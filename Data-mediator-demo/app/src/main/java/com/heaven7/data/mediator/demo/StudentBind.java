@@ -21,6 +21,5 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
      @Field(propName = "test_list", seriaName = "test_list",flags = 1,type = long.class, complexType = COMPLEXT_LIST),
      @Field(propName = "test_array", seriaName = "test_array",flags = 1,type = String.class, complexType = COMPLEXT_ARRAY),
 })
-@TargetApi(14)
 public interface StudentBind extends ICopyable, ICacheable{
 }
