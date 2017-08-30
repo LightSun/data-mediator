@@ -3,7 +3,8 @@ package com.heaven7.java.data.mediator.processor;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
-import javax.lang.model.element.*;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import java.io.IOException;
@@ -19,7 +20,8 @@ public class ProxyClass {
 
     private static final String SET_PREFIX = "set";
     private static final String GET_PREFIX = "get";
-    private static final String CACHE_ABLE = "get";
+    private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
+    private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 
     public final TypeElement mElement;
     public final Elements mElements;
@@ -44,6 +46,7 @@ public class ProxyClass {
     public void generateProxy(ProcessorPrinter mPrinter, Filer filer) {
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note("super interfaces: " + interfaces);
+
         /**
          * for interface.
          */
@@ -51,13 +54,13 @@ public class ProxyClass {
         final String interfaceName = mElement.getSimpleName() + "Module";
         TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
                 .addModifiers(Modifier.PUBLIC);
+        final TypeName selfParamType = TypeVariableName.get(interfaceName);
 
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
-
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
-                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(mElement.getQualifiedName().toString(),
-                        tm, mPrinter, true);
+                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(
+                        selfParamType, tm, mPrinter, true);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
                         interfaceBuilder.addMethod(builder.build());
@@ -66,43 +69,25 @@ public class ProxyClass {
                 interfaceBuilder.addSuperinterface(TypeName.get(tm));
             }
         }
-       // mPrinter.note("mFields.size() = " + mFields.size());
-        for(FieldData field : mFields) {
+        sInterfaceBuilder.build(interfaceBuilder, mFields);
+
+      /*  for(FieldData field : mFields) {
             Class<?> type = field.getType();
-           // mPrinter.note("for >>> type = " + type.getName());
             String nameForMethod = getPropNameForMethod(field.getPropertyName());
-            //Target get();
 
-            final TypeName typeName;
-            final String paramName;
-            switch (field.getComplexType()){
-                case FieldData.COMPLEXT_ARRAY:
-                    typeName = ArrayTypeName.of(type);
-                    paramName = "array1";
-                    break;
-
-                case FieldData.COMPLEXT_LIST:
-                    typeName = ParameterizedTypeName.get(ClassName.get(List.class),
-                            WildcardTypeName.get(type).box());
-                    paramName = "list1";
-                    break;
-
-                default:
-                    typeName = TypeName.get(type);
-                    paramName = getParamName(type.getSimpleName());
-                    break;
-            }
+            TypeInfo info = new TypeInfo();
+            getTypeName(field, type, info);
 
             MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
-                    .returns(typeName)
+                    .returns(info.typeName)
                     .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
             MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
-                    .addParameter(typeName, paramName)
+                    .addParameter(info.typeName, info.paramName)
                     .returns(TypeName.VOID)
                     .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
             interfaceBuilder.addMethod(get.build())
                     .addMethod(set.build());
-        }
+        }*/
         TypeSpec interfaceModule = interfaceBuilder.build();
         //package name
         String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
@@ -113,47 +98,30 @@ public class ProxyClass {
          step2: class/interface
          step3: package name
          */
-        TypeSpec.Builder implBuilder = TypeSpec.interfaceBuilder(mElement.getSimpleName() + "Module__Impl")
+        TypeSpec.Builder implBuilder = TypeSpec.classBuilder(mElement.getSimpleName() + "Module__Impl")
                 .addModifiers(Modifier.PUBLIC);
+        implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
-                test(tm, mPrinter);
+                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(
+                        selfParamType, tm, mPrinter, false);
+                if(builders != null){
+                    //TODO impl of super method
+                    for (MethodSpec.Builder builder : builders){
+                        implBuilder.addMethod(builder.build());
+                    }
+                }
                 implBuilder.addSuperinterface(TypeName.get(tm));
             }
         }
-        for(FieldData field : mFields){
-            //TODO
-            FieldSpec.builder(field.getType(), field.getPropertyName(),
-                    Util.getFieldModifier(field ));
-        }
+        sClassBuilder.build(implBuilder, mFields);
+        //here classFile is a class .java file
+        final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
         try {
             interfaceFile.writeTo(filer);
+            classFile.writeTo(filer);
         } catch (IOException e) {
             mPrinter.error(Util.toString(e));
         }
     }
-
-    private static class WriterImpl implements IJavaWriter{
-
-        final JavaFile mInterface;
-        final JavaFile mImpl;
-        final ProcessorPrinter mPrinter;
-
-        public WriterImpl(JavaFile mInterface, JavaFile mImpl, ProcessorPrinter mPrinter) {
-            this.mInterface = mInterface;
-            this.mImpl = mImpl;
-            this.mPrinter = mPrinter;
-        }
-
-        @Override
-        public void writeTo(Filer filer) {
-            try {
-                mInterface.writeTo(filer);
-                mImpl.writeTo(filer);
-            }catch (Exception e){
-                mPrinter.error(Util.toString(e));
-            }
-        }
-    }
-
 }

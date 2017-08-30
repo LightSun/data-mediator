@@ -4,12 +4,10 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Type;
 import java.util.*;
 
 import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_TRANSIENT;
@@ -20,9 +18,8 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
  */
 /*public*/ class Util {
 
-    //here: mirror - interface
-    public static MethodSpec.Builder[] getInterfaceMethodBuilders(String interfaceName, TypeMirror mirror, ProcessorPrinter pp,
-                                                                  boolean abstractMethod){
+    public static MethodSpec.Builder[] getInterfaceMethodBuilders(TypeName returnReplace,
+                                   TypeMirror mirror, ProcessorPrinter pp, boolean abstractMethod){
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         Name paramType = te.getQualifiedName();
         pp.note("applyInterface() >>> paramType = " + paramType.toString());
@@ -35,9 +32,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
         int i = 0;
         for(Element e: list){
             ExecutableElement ee = (ExecutableElement) e;
-            MethodSpec.Builder builder = overriding(ee, pp, interfaceName)
-           // MethodSpec.Builder builder = MethodSpec.overriding(ee)
-                    //.addTypeVariable(TypeVariableName.get(paramTypeName))
+            MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
                     .addModifiers(Modifier.PUBLIC);
             if(abstractMethod){
                 builder.addModifiers(Modifier.ABSTRACT);
@@ -50,11 +45,12 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
     //copy from javapoet and change some
     /**
      * Returns a new method spec builder that overrides {@code method}.
-     *
+     * @param returnTypeReplace  the replaced return type .if super interface use param type(eg: T).
      * <p>This will copy its visibility modifiers, type parameters, return type, name, parameters, and
      * throws declarations. An {@link Override} annotation will be added.
      */
-    public static MethodSpec.Builder overriding(ExecutableElement method, ProcessorPrinter pp, String nameToReplaceTypeVar){
+    public static MethodSpec.Builder overriding(ExecutableElement method, ProcessorPrinter pp,
+                                                TypeName returnTypeReplace){
         if(method == null){
             throw new NullPointerException("method == null");
         }
@@ -89,19 +85,17 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
         TypeMirror returnType = method.getReturnType();
         switch (returnType.getKind()){
             case TYPEVAR:
-                try {
-                    Class<?> aClass = Class.forName(nameToReplaceTypeVar);
-                    pp.note("find class for TYPEVAR: " + aClass );
-                    methodBuilder.returns(aClass);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                    methodBuilder.returns(TypeName.get(returnType));
-                }
+                methodBuilder.returns(returnTypeReplace);
                 break;
 
              default:
                  methodBuilder.returns(TypeName.get(returnType));
         }
+        /*
+         * class Taco extends Comparable<Taco>
+         */
+       /* final ParameterizedTypeName typeName = ParameterizedTypeName.get(
+                ClassName.get(Comparable.class), ClassName.get("com.squareup.tacos", "Taco"));*/
         //pp.note("return type is " + returnType.getKind()); //TYPEVAR
 
         List<? extends VariableElement> parameters = method.getParameters();
@@ -155,11 +149,13 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
         if( (flags & FLAG_TRANSIENT) == FLAG_TRANSIENT){
             modifiers.add(Modifier.TRANSIENT);
         }
-        //TODO
         if( (flags & FLAG_VOLATILE) == FLAG_VOLATILE){
             modifiers.add(Modifier.VOLATILE);
         }
         return modifiers.toArray(new Modifier[modifiers.size()]);
+    }
+    public static boolean hasFlag(int flags, int require){
+        return (flags & require) == require;
     }
     /**
      * get property name. eg: name to Name(get, set)

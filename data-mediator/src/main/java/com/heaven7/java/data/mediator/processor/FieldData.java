@@ -11,11 +11,11 @@ public class FieldData {
     public static final String STR_COMPLEXT_TYPE       = "complexType";
 
     public static final int FLAG_TRANSIENT      = 0x0001;
-    public static final int FLAG_EXPOSE         = 0x0002;
+   // public static final int FLAG_EXPOSE         = 0x0002;
 
     public static final int FLAG_SNAP           = 0x0004;
-    public static final int FLAG_SHARE_SHAP     = 0x0008;
-    public static final int FLAG_CACHE          = 0x0010;
+    public static final int FLAG_SHARE          = 0x0008;
+    public static final int FLAG_COPY           = 0x0010;
     public static final int FLAG_RESET          = 0x0020;
 
     public static final int FLAG_SERIALIZABLE   = 0x0040;
