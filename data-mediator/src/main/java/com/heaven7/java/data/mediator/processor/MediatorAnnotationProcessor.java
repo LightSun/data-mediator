@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.processor;
 
+import com.heaven7.java.data.mediator.FieldData;
 import com.heaven7.java.data.mediator.Fields;
 
 import javax.annotation.processing.*;
@@ -11,6 +12,7 @@ import javax.lang.model.util.Elements;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+import static com.heaven7.java.data.mediator.processor.Util.*;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
 
@@ -175,23 +177,23 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 note("test >>>: " + av.getValue());
 
                 switch (key.getSimpleName().toString()) {
-                    case FieldData.STR_PROP_NAME:
+                    case STR_PROP_NAME:
                         data.setPropertyName(av.getValue().toString());
                         break;
 
-                    case FieldData.STR_SERIA_NAME:
+                    case STR_SERIA_NAME:
                         data.setSerializeName(av.getValue().toString());
                         break;
 
-                    case FieldData.STR_FLAGS:
+                    case STR_FLAGS:
                         data.setFlags(Integer.valueOf(av.getValue().toString()));
                         break;
 
-                    case FieldData.STR_COMPLEXT_TYPE:
+                    case STR_COMPLEXT_TYPE:
                         data.setComplexType(Integer.valueOf(av.getValue().toString()));
                         break;
 
-                    case FieldData.STR_TYPE:
+                    case STR_TYPE:
                         try {
                             note("STR_TYPE >>> " + av.getValue().toString());
                             applyType(data, av.getValue());

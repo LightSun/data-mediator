@@ -1,5 +1,7 @@
 package com.heaven7.java.data.mediator.processor;
 
+import com.heaven7.java.data.mediator.FieldData;
+import com.heaven7.java.data.mediator.TypeInterfaceFiller;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.*;
@@ -10,19 +12,53 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_TRANSIENT;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
+import static com.heaven7.java.data.mediator.FieldData.FLAG_COPY;
+import static com.heaven7.java.data.mediator.FieldData.FLAG_TRANSIENT;
+import static com.heaven7.java.data.mediator.FieldData.FLAG_VOLATILE;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
 /*public*/ class Util {
 
+    public static final String STR_PROP_NAME           = "propName";
+    public static final String STR_SERIA_NAME          = "seriaName";
+    public static final String STR_FLAGS               = "flags";
+    public static final String STR_TYPE                = "type";
+    public static final String STR_COMPLEXT_TYPE       = "complexType";
+
+    public static final String NAME_COPYA   = "com.heaven7.java.data.mediator.ICopyable";
+    public static final String NAME_RESET   = "com.heaven7.java.data.mediator.IResetable";
+    public static final String NAME_SHARE   = "com.heaven7.java.data.mediator.IShareable";
+    public static final String NAME_SNAP    = "com.heaven7.java.data.mediator.ISnapable";
+
+    private static final TypeInterfaceFiller sCopyFiller = new TypeCopyableFiller();
+    private static final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
+    private static final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
+    private static final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
+
+    //according to the interface that field apply to.
+    public static Map<String, List<FieldData>> groupFieldByInterface(List<FieldData> mFields){
+        HashMap<String, List<FieldData>> map = new HashMap<>();
+        for(FieldData fd : mFields){
+            sCopyFiller.fill(fd, map);
+            sResetFiller.fill(fd, map);
+            sShareFiller.fill(fd, map);
+            sSnapFiller.fill(fd, map);
+        }
+        return map;
+    }
+
+    private static String getInterfaceName(TypeMirror mirror){
+        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
+        return te.getQualifiedName().toString();
+    }
+    //here mirror is interface
     public static MethodSpec.Builder[] getInterfaceMethodBuilders(TypeName returnReplace,
                                    TypeMirror mirror, ProcessorPrinter pp, boolean abstractMethod){
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-        Name paramType = te.getQualifiedName();
-        pp.note("applyInterface() >>> paramType = " + paramType.toString());
+        String interfaceName = te.getQualifiedName().toString();
+        pp.note("applyInterface() >>> interface name = " + interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
         if(list == null || list.size() == 0){
@@ -37,6 +73,28 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_VOLATILE;
             if(abstractMethod){
                 builder.addModifiers(Modifier.ABSTRACT);
             }
+            builders[i++] = builder;
+        }
+        return builders;
+    }
+    public static MethodSpec.Builder[] getImplClassMethodBuilders(TypeName returnReplace,
+                                   TypeMirror mirror, ProcessorPrinter pp,  Map<String, List<FieldData>> map){
+        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
+        String interfaceName = te.getQualifiedName().toString();
+        pp.note("applyInterface() >>> interface name = " + interfaceName);
+        //get all method element
+        final List<? extends Element> list = te.getEnclosedElements();
+        if(list == null || list.size() == 0){
+            return null;
+        }
+        MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
+        int i = 0;
+        for(Element e: list){
+            ExecutableElement ee = (ExecutableElement) e;
+            MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
+                    .addModifiers(Modifier.PUBLIC);
+
+            //TODO
             builders[i++] = builder;
         }
         return builders;

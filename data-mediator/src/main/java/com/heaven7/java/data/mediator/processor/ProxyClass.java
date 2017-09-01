@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.processor;
 
+import com.heaven7.java.data.mediator.FieldData;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
@@ -18,8 +19,6 @@ import static com.heaven7.java.data.mediator.processor.Util.*;
  */
 public class ProxyClass {
 
-    private static final String SET_PREFIX = "set";
-    private static final String GET_PREFIX = "get";
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 

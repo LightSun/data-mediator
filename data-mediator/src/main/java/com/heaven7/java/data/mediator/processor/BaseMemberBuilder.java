@@ -1,8 +1,10 @@
 package com.heaven7.java.data.mediator.processor;
 
+import com.heaven7.java.data.mediator.FieldData;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.processor.Util.getParamName;
@@ -16,6 +18,7 @@ public class BaseMemberBuilder{
 
     public static final String SET_PREFIX = "set";
     public static final String GET_PREFIX = "get";
+
 
     public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
 
