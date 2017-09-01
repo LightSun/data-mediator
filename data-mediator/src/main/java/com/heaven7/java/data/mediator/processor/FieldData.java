@@ -11,7 +11,7 @@ public class FieldData {
     public static final String STR_COMPLEXT_TYPE       = "complexType";
 
     public static final int FLAG_TRANSIENT      = 0x0001;
-   // public static final int FLAG_EXPOSE         = 0x0002;
+    public static final int FLAG_VOLATILE       = 0x0002;
 
     public static final int FLAG_SNAP           = 0x0004;
     public static final int FLAG_SHARE          = 0x0008;
@@ -20,7 +20,19 @@ public class FieldData {
 
     public static final int FLAG_SERIALIZABLE   = 0x0040;
     public static final int FLAG_PARCEABLE      = 0x0080;
-    public static final int FLAG_VOLATILE       = 0x0100;
+
+    /**
+     * @ Expose : serialize, deserialize, default is true
+     */
+    public static final int FLAG_EXPOSE_DEFAULT           = 0x0100;
+    /**
+     * @ Expose : serialize = false
+     */
+    public static final int FLAG_EXPOSE_SERIALIZE_FALSE   = 0x0200;
+    /**
+     * @ Expose : deserialize = false
+     */
+    public static final int FLAG_EXPOSE_DESERIALIZE_FALSE = 0x0400;
 
     private String propertyName;
     private String serializeName;

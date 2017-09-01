@@ -3,7 +3,6 @@ package com.heaven7.java.data.mediator.processor;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
-
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.processor.Util.getParamName;
@@ -13,12 +12,22 @@ import static com.heaven7.java.data.mediator.processor.Util.getPropNameForMethod
  * the base member builder. just build method for interface.
  * Created by heaven7 on 2017/8/30.
  */
-public class BaseMemberBuilder {
+public class BaseMemberBuilder{
 
     public static final String SET_PREFIX = "set";
     public static final String GET_PREFIX = "get";
 
-    public void build(TypeSpec.Builder builder, List<FieldData> mFields) {
+    public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
+
+        //add private static final long serialVersionUID
+        builder.addSuperinterface(ClassName.get("java.io","Serializable"));
+        if(!isInterface()){
+            builder.addField(FieldSpec.builder(long.class, "serialVersionUID",
+                    Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
+                    .initializer(" 1L")
+                    .build());
+        }
+
         for (FieldData field : mFields) {
             Class<?> type = field.getType();
             String nameForMethod = getPropNameForMethod(field.getPropertyName());
@@ -37,6 +46,9 @@ public class BaseMemberBuilder {
                     .addMethod(set.build());
 
         }
+    }
+    protected boolean isInterface(){
+        return true;
     }
 
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
@@ -60,7 +72,7 @@ public class BaseMemberBuilder {
         return set;
     }
 
-    public static void getTypeName(FieldData field, Class<?> type, TypeInfo info) {
+    static void getTypeName(FieldData field, Class<?> type, TypeInfo info) {
         switch (field.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY:
                 info.setTypeName(ArrayTypeName.of(type));

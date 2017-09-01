@@ -12,7 +12,7 @@ public @interface Field {
 
 	String propName();
 	String seriaName();
-	int flags() default 0;
 	Class<?> type() default String.class;
 	int complexType() default 0;
+	int flags() default 0;
 }
