@@ -11,6 +11,7 @@ import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.heaven7.java.data.mediator.processor.Util.*;
 
@@ -43,9 +44,13 @@ public class ProxyClass {
      * @param mPrinter
      */
     public void generateProxy(ProcessorPrinter mPrinter, Filer filer) {
+        mPrinter.note(" <<< generateProxy >>> field datas = " + mFields);
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note("super interfaces: " + interfaces);
 
+        setLogPrinter(mPrinter);
+        final Map<String, List<FieldData>> groupMap = groupFieldByInterface(mFields);
+        mPrinter.note("generateProxy >> groupMap = " + groupMap);
         /**
          * for interface.
          */
@@ -59,7 +64,7 @@ public class ProxyClass {
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
                 MethodSpec.Builder[] builders = getInterfaceMethodBuilders(
-                        selfParamType, tm, mPrinter, true);
+                        selfParamType, tm, mPrinter);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
                         interfaceBuilder.addMethod(builder.build());
@@ -80,20 +85,24 @@ public class ProxyClass {
          step2: class/interface
          step3: package name
          */
-        TypeSpec.Builder implBuilder = TypeSpec.classBuilder(mElement.getSimpleName() + "Module__Impl")
+        final String className = mElement.getSimpleName() + "Module__Impl";
+        TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
+            mPrinter.note("implBuilder >>> start interfaces ");
             for(TypeMirror tm : interfaces){
-                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(
-                        selfParamType, tm, mPrinter, false);
+                implBuilder.addSuperinterface(TypeName.get(tm));
+                MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
+                        className, selfParamType, tm, mPrinter, groupMap);
+                mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
-                    //TODO impl of super method
+                    mPrinter.note("implBuilder >>> start builders");
                     for (MethodSpec.Builder builder : builders){
                         implBuilder.addMethod(builder.build());
                     }
+                    mPrinter.note("implBuilder >>> start  end ...builderss");
                 }
-                implBuilder.addSuperinterface(TypeName.get(tm));
             }
         }
         sClassBuilder.build(implBuilder, mFields);

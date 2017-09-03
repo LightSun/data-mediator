@@ -1,11 +1,13 @@
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.data.mediator.processor.ProcessorPrinter;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.ExecutableElement;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.heaven7.java.data.mediator.MediatorUtils.hasFlag;
 
@@ -15,33 +17,53 @@ import static com.heaven7.java.data.mediator.MediatorUtils.hasFlag;
  */
 public abstract class TypeInterfaceFiller {
 
+    private WeakReference<ProcessorPrinter> mWeakPrinter;
+
+    public void setLogPrinter(ProcessorPrinter pp){
+        mWeakPrinter = new WeakReference<ProcessorPrinter>(pp);
+    }
+    public ProcessorPrinter getLogPrinter(){
+        return mWeakPrinter != null ? mWeakPrinter.get() : null;
+    }
+
+    protected void note(Object...objs){
+        final ProcessorPrinter printer = getLogPrinter();
+        if(printer != null){
+            printer.note(getClass().getSimpleName() + " >>> ", objs);
+        }
+    }
     /**
      * get the interface full name.
      * @return the interface name
      */
-    protected abstract String getInterfaceName();
+    public abstract String getInterfaceName();
 
     /**
      * get interface flag.
      * @return the inter face flag.
      */
-    protected abstract int getInterfaceFlag();
+    public abstract int getInterfaceFlag();
 
     /**
      * fill the {@link FieldData} to the map. which is used to generate code for interface.
      * @param fd the fieldData
      * @param map the map.
+     * @return true if fill success.
      */
-    public void fill(FieldData fd, HashMap<String, List<FieldData>> map){
+    public boolean fill(FieldData fd, Map<String, List<FieldData>> map){
         final String interfaceName = getInterfaceName();
+        note("fd.flags = " + fd.getFlags() + " ,interface flag = " + getInterfaceFlag());
         if(hasFlag(fd.getFlags(), getInterfaceFlag())){
+            note("has flag: " + interfaceName);
             List<FieldData> data = map.get(interfaceName);
             if(data == null){
                 data = new ArrayList<>();
                 map.put(interfaceName, data);
             }
             data.add(fd);
+            return true;
         }
+        return false;
     }
 
     /**

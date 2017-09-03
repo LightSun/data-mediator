@@ -12,9 +12,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.FieldData.FLAG_COPY;
-import static com.heaven7.java.data.mediator.FieldData.FLAG_TRANSIENT;
-import static com.heaven7.java.data.mediator.FieldData.FLAG_VOLATILE;
+import static com.heaven7.java.data.mediator.FieldData.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -32,30 +30,42 @@ import static com.heaven7.java.data.mediator.FieldData.FLAG_VOLATILE;
     public static final String NAME_SHARE   = "com.heaven7.java.data.mediator.IShareable";
     public static final String NAME_SNAP    = "com.heaven7.java.data.mediator.ISnapable";
 
-    private static final TypeInterfaceFiller sCopyFiller = new TypeCopyableFiller();
-    private static final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
-    private static final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
-    private static final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
+    private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
 
+    static{
+         sFillerMap = new HashMap<>();
+        final TypeInterfaceFiller sCopyFiller = new TypeCopyableFiller();
+        final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
+        final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
+        final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
+        sFillerMap.put(sCopyFiller.getInterfaceName(), sCopyFiller);
+        sFillerMap.put(sResetFiller.getInterfaceName(), sResetFiller);
+        sFillerMap.put(sShareFiller.getInterfaceName(), sShareFiller);
+        sFillerMap.put(sSnapFiller.getInterfaceName(), sSnapFiller);
+    }
+
+    public static void setLogPrinter(ProcessorPrinter pp){
+        for (TypeInterfaceFiller filler : sFillerMap.values()){
+            filler.setLogPrinter(pp);
+        }
+    }
     //according to the interface that field apply to.
     public static Map<String, List<FieldData>> groupFieldByInterface(List<FieldData> mFields){
         HashMap<String, List<FieldData>> map = new HashMap<>();
+        final Collection<TypeInterfaceFiller> values = sFillerMap.values();
         for(FieldData fd : mFields){
-            sCopyFiller.fill(fd, map);
-            sResetFiller.fill(fd, map);
-            sShareFiller.fill(fd, map);
-            sSnapFiller.fill(fd, map);
+            for(TypeInterfaceFiller filler : values){
+                if(filler.fill(fd, map)){
+                    //TODO have bugs .why some flags not inflate
+                   break;
+                }
+            }
         }
         return map;
     }
-
-    private static String getInterfaceName(TypeMirror mirror){
-        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-        return te.getQualifiedName().toString();
-    }
     //here mirror is interface
     public static MethodSpec.Builder[] getInterfaceMethodBuilders(TypeName returnReplace,
-                                   TypeMirror mirror, ProcessorPrinter pp, boolean abstractMethod){
+                                   TypeMirror mirror, ProcessorPrinter pp){
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         String interfaceName = te.getQualifiedName().toString();
         pp.note("applyInterface() >>> interface name = " + interfaceName);
@@ -69,32 +79,40 @@ import static com.heaven7.java.data.mediator.FieldData.FLAG_VOLATILE;
         for(Element e: list){
             ExecutableElement ee = (ExecutableElement) e;
             MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
-                    .addModifiers(Modifier.PUBLIC);
-            if(abstractMethod){
-                builder.addModifiers(Modifier.ABSTRACT);
-            }
+                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
             builders[i++] = builder;
         }
         return builders;
     }
-    public static MethodSpec.Builder[] getImplClassMethodBuilders(TypeName returnReplace,
-                                   TypeMirror mirror, ProcessorPrinter pp,  Map<String, List<FieldData>> map){
+    //classname  : current class
+    public static MethodSpec.Builder[] getImplClassMethodBuilders(String pkgName, String classname,
+            TypeName returnReplace, TypeMirror mirror, ProcessorPrinter pp,
+                             Map<String, List<FieldData>> map){
+        pp.note("map = " + map);
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         String interfaceName = te.getQualifiedName().toString();
         pp.note("applyInterface() >>> interface name = " + interfaceName);
+        final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
         if(list == null || list.size() == 0){
             return null;
         }
+
         MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
         int i = 0;
         for(Element e: list){
             ExecutableElement ee = (ExecutableElement) e;
             MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
                     .addModifiers(Modifier.PUBLIC);
-
-            //TODO
+            if(filler != null){
+                final List<FieldData> datas = map.get(filler.getInterfaceName());
+                final String interName = te.getSimpleName().toString();
+                pp.note("interface name = " + interName);
+                pp.note("field datas = " + datas);
+                filler.buildMethodStatement(pkgName, interName, classname,
+                        ee, builder, datas);
+            }
             builders[i++] = builder;
         }
         return builders;
@@ -252,5 +270,28 @@ import static com.heaven7.java.data.mediator.FieldData.FLAG_VOLATILE;
         String data = sw.toString();
         pw.close();
         return data;
+    }
+
+    public static Object getInitValue(FieldData fd){
+        switch (fd.getComplexType()){
+            case COMPLEXT_ARRAY:
+            case COMPLEXT_LIST:
+                return null;
+        }
+        final Class<?> clazz = fd.getType();
+        if(clazz == boolean.class){
+            return false;
+        }else if(clazz == byte.class || clazz ==short.class || clazz ==int.class
+                || clazz ==long.class){
+            return 0;
+        }else if(clazz ==char.class){
+            return Character.MIN_VALUE;
+        }else if(clazz ==float.class){
+            return 0f;
+        }else if(clazz ==double.class){
+            return 0d;
+        }else {
+            return null;
+        }
     }
 }

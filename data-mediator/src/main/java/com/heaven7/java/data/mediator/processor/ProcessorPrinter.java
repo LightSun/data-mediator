@@ -24,11 +24,12 @@ public class ProcessorPrinter {
 
     public void print(Diagnostic.Kind kind, Object obj1, Object... objs) {
         StringBuilder sb = new StringBuilder();
-        sb.append(obj1.toString()).append(" ");
+        sb.append( obj1 != null ? obj1.toString(): null).append(" ");
         for (Object obj : objs) {
-            sb.append(obj.toString()).append(" ");
+            sb.append(obj!=null ? obj.toString() : null).append(" ");
         }
         mMessager.printMessage(kind, sb.toString());
     }
+
 
 }
