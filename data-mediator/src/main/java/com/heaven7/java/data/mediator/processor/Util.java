@@ -55,10 +55,7 @@ import static com.heaven7.java.data.mediator.FieldData.*;
         final Collection<TypeInterfaceFiller> values = sFillerMap.values();
         for(FieldData fd : mFields){
             for(TypeInterfaceFiller filler : values){
-                if(filler.fill(fd, map)){
-                    //TODO have bugs .why some flags not inflate
-                   break;
-                }
+                filler.fill(fd, map);
             }
         }
         return map;
