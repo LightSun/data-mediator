@@ -77,7 +77,18 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         note("annotations: " + annotations);
-        for (Element element : roundEnv.getElementsAnnotatedWith(Fields.class)) {
+
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
+        //if one(have @Fields) depend another (have @Fields), we need sort.
+       /* List<ElementHelper> list = new ArrayList<>();
+        for (Element element : elements) {
+            ElementHelper info = new ElementHelper((TypeElement) element);
+            info.processWeight();
+            list.add(info);
+        }*/
+        //TODO
+
+        for (Element element : elements) {
             note("@Fields >>> element = " + element);
             if (!isValid(Fields.class, "interface", element)) {
                 return true;
@@ -86,7 +97,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 return true;
             }
         }
-        //为每个宿主类生成所对应的代理类
+       //generate code
        for (ProxyClass proxyClass_ : mProxyClassMap.values()) {
             proxyClass_.generateProxy(mPrinter, mFiler);
         }
@@ -102,9 +113,11 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         List<? extends AnnotationMirror> mirrors = element.getAnnotationMirrors();
         for (AnnotationMirror am : mirrors) {
             Element e1 = am.getAnnotationType().asElement();
+            //note("am.getAnnotationType().getTypeArguments(): " + am.getAnnotationType().getTypeArguments());
+           // note("am.getAnnotationType().getEnclosingType(): " + am.getAnnotationType().getEnclosingType()); //none
             Element e1_enclosing = e1.getEnclosingElement();
             TypeKind kind = e1.asType().getKind();
-            note("e1.kind = " + kind.name());
+            note("e1.kind = " + kind.name()); //DECLARED
             if(!(e1_enclosing instanceof QualifiedNameable)){
                 continue;
             }
@@ -130,7 +143,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             note("am.getElementValues() = map . is " + map);
             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
                 ExecutableElement key = en.getKey();
-                note("key: " + key);
+                note("key: " + key);//the method of annotation
                 AnnotationValue value = en.getValue();
                 Object target = value.getValue();
                 if (target == null || !(target instanceof List)) {
@@ -283,30 +296,32 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         // 所在的类不能是private或static修饰
         Set<Modifier> modifiers = element.getModifiers();
         if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
-            error(element, "@%s %s must not be private or static. (%s.%s)",
-                    annotationClass.getSimpleName(), targetThing, enclosingElement.getQualifiedName(),
-                    element.getSimpleName());
+            String msg = String.format("@%s %s must not be private or static. (%s.%s)", annotationClass.getSimpleName(),
+                    targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
+            error(enclosingElement, msg);
             isValid = false;
         }
 
         // 父元素必须接口
         if (enclosingElement.getKind() != ElementKind.INTERFACE) {
-            error(enclosingElement, "@%s %s may only be contained in interfaces. (%s.%s)",
-                    annotationClass.getSimpleName(), targetThing, enclosingElement.getQualifiedName(),
-                    element.getSimpleName());
+            String msg = String.format("@%s %s may only be contained in interfaces. (%s.%s)", annotationClass.getSimpleName(),
+                    targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
+            error(enclosingElement, msg);
             isValid = false;
         }
 
         //不能在Android框架层注解
         if (qualifiedName.startsWith("android.")) {
-            error(element, "@%s-annotated class incorrectly in Android framework package. (%s)",
+            String msg = String.format("@%s-annotated class incorrectly in Android framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);
+            error(enclosingElement, msg);
             isValid = false;
         }
         //不能在java框架层注解
         if (qualifiedName.startsWith("java.")) {
-            error(element, "@%s-annotated class incorrectly in Java framework package. (%s)",
+            String msg = String.format("@%s-annotated class incorrectly in Java framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);
+            error(enclosingElement, msg);
             isValid = false;
         }
 

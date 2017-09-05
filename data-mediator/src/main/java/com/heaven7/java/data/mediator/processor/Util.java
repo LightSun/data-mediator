@@ -157,7 +157,7 @@ import static com.heaven7.java.data.mediator.FieldData.*;
 
         TypeMirror returnType = method.getReturnType();
         switch (returnType.getKind()){
-            case TYPEVAR:
+            case TYPEVAR: //泛型
                 methodBuilder.returns(returnTypeReplace);
                 break;
 
