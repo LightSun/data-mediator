@@ -80,13 +80,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         //if one(have @Fields) depend another (have @Fields), we need sort.
-       /* List<ElementHelper> list = new ArrayList<>();
+        List<ElementHelper> list = new ArrayList<>();
+        //preprocess
         for (Element element : elements) {
-            ElementHelper info = new ElementHelper((TypeElement) element);
-            info.processWeight();
+            ElementHelper info = new ElementHelper(mElementUtils, (TypeElement) element);
+            info.preprocess(mPrinter);
             list.add(info);
-        }*/
-        //TODO
+        }
+        //weight and sort.
 
         for (Element element : elements) {
             note("@Fields >>> element = " + element);
