@@ -84,7 +84,9 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         //preprocess
         for (Element element : elements) {
             ElementHelper info = new ElementHelper(mElementUtils, (TypeElement) element);
-            info.preprocess(mPrinter);
+            if(!info.preprocess(mPrinter)){
+                mPrinter.note("preprocess failed.");
+            }
             list.add(info);
         }
         //weight and sort.

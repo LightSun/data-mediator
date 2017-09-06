@@ -146,7 +146,7 @@ public class ElementHelper {
                             applyType(data, tm, pp);
                             addToFieldDependIfNeed(tm, sDependFieldMap);
                         } catch (ClassNotFoundException e) {
-                            pp.error(Util.toString(e));
+                            pp.note(Util.toString(e));
                             return false;
                         }
                         break;
