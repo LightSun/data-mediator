@@ -1,12 +1,13 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
-
 import javax.lang.model.element.*;
 import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
-import java.util.*;
+import javax.lang.model.util.Types;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.heaven7.java.data.mediator.processor.Util.*;
@@ -24,18 +25,23 @@ public class ElementHelper {
     /**
      * the depend map: key-value is annotated class name - field class name
      */
-    static final Map<String, List<String>> sDependFieldMap = new ConcurrentHashMap<>();
+    static final Map<TypeElement, List<TypeElement>> sDependFieldMap = new ConcurrentHashMap<>();
     /**
      * the depend map: key-value is annotated class name - super class/interface name
      */
-    static final Map<String, List<String>> sDependSuperMap = new ConcurrentHashMap<>();
+    static final Map<TypeElement, List<TypeElement>> sDependSuperMap = new ConcurrentHashMap<>();
 
     private final TypeElement mElement;
     private final Elements mElements;
+    private final Types mTypes;
+    private final ProcessorPrinter mPrintter;
+
     private final List<FieldData> mFieldDatas;
     private int mWeight;
 
-    public ElementHelper(Elements mElements, TypeElement mElement) {
+    public ElementHelper(Types mTypes, ProcessorPrinter mPrintter, Elements mElements, TypeElement mElement) {
+        this.mPrintter = mPrintter;
+        this.mTypes = mTypes;
         this.mElements = mElements;
         this.mElement = mElement;
         this.mFieldDatas = new ArrayList<>();
@@ -54,9 +60,9 @@ public class ElementHelper {
     public int getWeight() {
         return mWeight;
     }
-    public boolean preprocess(ProcessorPrinter pp) {
+    public boolean preprocess() {
         List<? extends AnnotationMirror> annoMirrors = mElement.getAnnotationMirrors();
-        if (!processAnnotation(pp, annoMirrors))
+        if (!processAnnotation(mPrintter, annoMirrors))
             return false;
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         for(TypeMirror tm : interfaces){
@@ -140,15 +146,10 @@ public class ElementHelper {
                         break;
 
                     case STR_TYPE:
-                        try {
-                            pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
-                            final TypeMirror tm = (TypeMirror) av.getValue();
-                            applyType(data, tm, pp);
-                            addToFieldDependIfNeed(tm, sDependFieldMap);
-                        } catch (ClassNotFoundException e) {
-                            pp.note(Util.toString(e));
-                            return false;
-                        }
+                        pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
+                        final TypeMirror tm = (TypeMirror) av.getValue();
+                        data.setTypeCompat(new FieldData.TypeCompat(tm));
+                        addToFieldDependIfNeed(tm, sDependFieldMap);
                         break;
 
                     default:
@@ -160,13 +161,23 @@ public class ElementHelper {
         return true;
     }
 
-    private void addToFieldDependIfNeed(TypeMirror value, Map<String, List<String>> container) {
-        final String key_className = mElement.getQualifiedName().toString();
+    private void addToFieldDependIfNeed(TypeMirror value, Map<TypeElement, List<TypeElement>> container) {
         final String classname = value.toString().trim();
         //ignore primitive
         if (value instanceof PrimitiveType) {
             return;
         }
+        final Element element = mTypes.asElement(value);
+        final TypeElement te = (TypeElement) element;
+        List<? extends AnnotationMirror> mirrors = mElements.getAllAnnotationMirrors(element);
+        /**
+         * here we want have @Fields.
+         */
+        if(mirrors.isEmpty()){
+            return;
+        }
+
+        mPrintter.note(TAG , "addToFieldDependIfNeed", "mirrors = " + mirrors);
         //ignore official package.
         if (classname.startsWith("java.")
                 || classname.startsWith("javax.")
@@ -175,19 +186,21 @@ public class ElementHelper {
                 ) {
             return;
         }
-        //ignore, if the class is exist.
+        //often if the classname is the java or android stand class. here will not throw exception
         try {
             Class.forName(classname);
             return;
         } catch (ClassNotFoundException e) {
             //not exist , we need.
         }
-        List<String> list = container.get(key_className);
+
+        //TODO very possible is my want. self
+       /* List<TypeElement> list = container.get(mElement);
         if (list == null) {
             list = new ArrayList<>();
-            container.put(key_className, list);
+            container.put(mElement, list);
         }
-        list.add(classname);
+        list.add(te);*/
     }
 
     private static boolean isValidAnnotation(AnnotationMirror am, ProcessorPrinter pp) {
@@ -209,5 +222,20 @@ public class ElementHelper {
                 "mElement=" + mElement +
                 ", mWeight=" + mWeight +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ElementHelper that = (ElementHelper) o;
+
+        return mElement.equals(that.mElement);
+    }
+
+    @Override
+    public int hashCode() {
+        return mElement.hashCode();
     }
 }

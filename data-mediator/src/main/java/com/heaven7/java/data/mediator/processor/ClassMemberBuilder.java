@@ -1,11 +1,11 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 
-import static com.heaven7.java.data.mediator.processor.Util.*;
+import static com.heaven7.java.data.mediator.processor.Util.getFieldModifier;
+import static com.heaven7.java.data.mediator.processor.Util.hasFlag;
 /**
  * Created by heaven7 on 2017/8/30.
  */

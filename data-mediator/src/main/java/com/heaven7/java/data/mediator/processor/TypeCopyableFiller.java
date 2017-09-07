@@ -1,13 +1,13 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
-import com.heaven7.java.data.mediator.TypeInterfaceFiller;
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeVariableName;
 
 import javax.lang.model.element.ExecutableElement;
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.FieldData.*;
+import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_COPY;
 import static com.heaven7.java.data.mediator.processor.Util.NAME_COPYA;
 
 /**

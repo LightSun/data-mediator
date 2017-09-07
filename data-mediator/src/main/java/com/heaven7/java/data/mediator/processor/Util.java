@@ -1,7 +1,5 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
-import com.heaven7.java.data.mediator.TypeInterfaceFiller;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.*;
@@ -13,7 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.FieldData.*;
+import static com.heaven7.java.data.mediator.processor.FieldData.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -30,6 +28,8 @@ import static com.heaven7.java.data.mediator.FieldData.*;
     public static final String NAME_RESET = "com.heaven7.java.data.mediator.IResetable";
     public static final String NAME_SHARE = "com.heaven7.java.data.mediator.IShareable";
     public static final String NAME_SNAP = "com.heaven7.java.data.mediator.ISnapable";
+    public static final String INTERFACE_SUFFIX = "Module";
+    public static final String IMPL_SUFFIX = "Module_Impl";
 
     private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
 
@@ -48,40 +48,17 @@ import static com.heaven7.java.data.mediator.FieldData.*;
     public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
             throws ClassNotFoundException {
         pp.note("============== start applyType() ============ ");
-        TypeKind kind = type.getKind();
-        switch (kind) {
-            case INT:
-                data.setType(int.class);
-                break;
-
-            case LONG:
-                data.setType(long.class);
-                break;
-            case SHORT:
-                data.setType(short.class);
-                break;
-            case BYTE:
-                data.setType(byte.class);
-                break;
-            case BOOLEAN:
-                data.setType(boolean.class);
-                break;
-
-            case FLOAT:
-                data.setType(float.class);
-                break;
-            case DOUBLE:
-                data.setType(double.class);
-                break;
-
-            case CHAR:
-                data.setType(char.class);
-                break;
-
-            default:
+        /*
+         * 如果这个type不是java和android系统自带的。很可能异常。
+         * com.heaven7.data.mediator.demo.TestBind（依赖的注解）  正在处理...这里肯定异常
+         */
+       /* default:
+            try {
                 data.setType(Class.forName(type.toString().trim()));
-                break;
-        }
+            } catch (ClassNotFoundException e) {
+                pp.note("can't find class . " + type.toString());
+            }
+            break;*/
     }
 
 
@@ -303,6 +280,14 @@ import static com.heaven7.java.data.mediator.FieldData.*;
                 .concat("1");
     }
 
+    public static String getParamName(TypeMirror tm) {
+        final String s = tm.toString();
+        String name = s.contains(".") ? s.substring(s.lastIndexOf(".") + 1) : s;
+        return name.substring(0, 1).toLowerCase()
+                .concat(name.substring(1))
+                .concat("1");
+    }
+
     public static String toString(Throwable t) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -325,20 +310,29 @@ import static com.heaven7.java.data.mediator.FieldData.*;
             case COMPLEXT_LIST:
                 return null;
         }
-        final Class<?> clazz = fd.getType();
-        if (clazz == boolean.class) {
-            return false;
-        } else if (clazz == byte.class || clazz == short.class || clazz == int.class
-                || clazz == long.class) {
-            return 0;
-        } else if (clazz == char.class) {
-            return Character.MIN_VALUE;
-        } else if (clazz == float.class) {
-            return 0f;
-        } else if (clazz == double.class) {
-            return 0d;
-        } else {
-            return null;
+        final TypeMirror tm = fd.getTypeCompat().getTypeMirror();
+        TypeKind kind = tm.getKind();
+        switch (kind) {
+            case INT:
+            case LONG:
+            case SHORT:
+            case BYTE:
+                return 0;
+
+            case BOOLEAN:
+                return false;
+
+            case FLOAT:
+                return 0f;
+
+            case DOUBLE:
+                return 0d;
+
+            case CHAR:
+                return Character.MIN_VALUE;
+            default:
+                return null;
         }
+
     }
 }

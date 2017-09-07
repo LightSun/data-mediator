@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
 import com.heaven7.java.data.mediator.Fields;
 
 import javax.annotation.processing.*;
@@ -9,6 +8,7 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
@@ -25,12 +25,14 @@ import static javax.lang.model.element.Modifier.STATIC;
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor {
 
+    private static final String TAG = "MediatorAnnotationProcessor";
     private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private Filer mFiler;           //文件相关工具类
 
     private Elements mElementUtils; //元素相关的工具类
     //private Messager mMessager;     //日志相关的工具类
     private ProcessorPrinter mPrinter; ////日志相关的处理
+    private Types mTypeUtils;
 
     private Map<String, ProxyClass> mProxyClassMap = new HashMap<>();
 
@@ -50,6 +52,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         mFiler = processingEnv.getFiler();
         mElementUtils = processingEnv.getElementUtils();
         mPrinter = new ProcessorPrinter(processingEnv.getMessager());
+        mTypeUtils = processingEnv.getTypeUtils();
+        mPrinter.note(TAG, "init", processingEnv.getOptions());
     }
 
     /**
@@ -83,13 +87,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         List<ElementHelper> list = new ArrayList<>();
         //preprocess
         for (Element element : elements) {
-            ElementHelper info = new ElementHelper(mElementUtils, (TypeElement) element);
-            if(!info.preprocess(mPrinter)){
+            ElementHelper info = new ElementHelper(mTypeUtils, mPrinter, mElementUtils, (TypeElement) element);
+            if(!info.preprocess()){
                 mPrinter.note("preprocess failed.");
             }
             list.add(info);
         }
         //weight and sort.
+
 
         for (Element element : elements) {
             note("@Fields >>> element = " + element);
@@ -210,13 +215,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                         break;
 
                     case STR_TYPE:
-                        try {
-                            note("STR_TYPE >>> " + av.getValue().toString());
-                            applyType(data, av.getValue());
-                        } catch (ClassNotFoundException e) {
-                            error(Util.toString(e));
-                           return false;
-                        }
+                        note("STR_TYPE >>> " + av.getValue().toString());
+                        data.setTypeCompat(new FieldData.TypeCompat((TypeMirror) av.getValue()));
                         break;
 
                     default:
@@ -226,49 +226,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             proxyClass.addFieldData(data);
         }
         return true;
-    }
-
-    private void applyType(FieldData data, Object type) throws ClassNotFoundException {
-        note("============== start applyType() ============ " ,type instanceof TypeMirror);
-        if(type instanceof TypeMirror){
-            TypeKind kind = (( TypeMirror)type).getKind();
-            switch (kind){
-                case INT:
-                    data.setType(int.class);
-                    break;
-
-                case LONG:
-                    data.setType(long.class);
-                    break;
-                case SHORT:
-                    data.setType(short.class);
-                    break;
-                case BYTE:
-                    data.setType(byte.class);
-                    break;
-                case BOOLEAN:
-                    data.setType(boolean.class);
-                    break;
-
-                case FLOAT:
-                    data.setType(float.class);
-                    break;
-                case DOUBLE:
-                    data.setType(double.class);
-                    break;
-
-                case CHAR:
-                    data.setType(char.class);
-                    break;
-
-                default:
-                    data.setType(Class.forName(type.toString().trim()));
-                    break;
-            }
-        }else{
-            //normal not reach here
-            data.setType(Class.forName(type.toString().trim()));
-        }
     }
 
     /**

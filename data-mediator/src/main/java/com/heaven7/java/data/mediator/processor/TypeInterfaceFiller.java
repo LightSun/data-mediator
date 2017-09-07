@@ -1,6 +1,5 @@
-package com.heaven7.java.data.mediator;
+package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.processor.ProcessorPrinter;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.ExecutableElement;
@@ -52,9 +51,9 @@ public abstract class TypeInterfaceFiller {
      */
     public boolean fill(FieldData fd, Map<String, List<FieldData>> map){
         final String interfaceName = getInterfaceName();
-        note("fd.flags = " + fd.getFlags() + " ,interface flag = " + getInterfaceFlag());
+       // note("fd.flags = " + fd.getFlags() + " ,interface flag = " + getInterfaceFlag());
         if(hasFlag(fd.getFlags(), getInterfaceFlag())){
-            note("has flag: " + interfaceName);
+        //    note("has flag: " + interfaceName);
             List<FieldData> data = map.get(interfaceName);
             if(data == null){
                 data = new ArrayList<>();

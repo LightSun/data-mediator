@@ -1,7 +1,5 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
-import com.heaven7.java.data.mediator.TypeInterfaceFiller;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.ExecutableElement;

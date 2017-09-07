@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
@@ -55,7 +54,7 @@ public class ProxyClass {
          * for interface.
          */
         //public interface xxxModule extends xx1,xx2{  }
-        final String interfaceName = mElement.getSimpleName() + "Module";
+        final String interfaceName = mElement.getSimpleName() + Util.INTERFACE_SUFFIX;
         TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
                 .addModifiers(Modifier.PUBLIC);
         final TypeName selfParamType = TypeVariableName.get(interfaceName);
@@ -85,7 +84,7 @@ public class ProxyClass {
          step2: class/interface
          step3: package name
          */
-        final String className = mElement.getSimpleName() + "Module__Impl";
+        final String className = mElement.getSimpleName() + Util.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));

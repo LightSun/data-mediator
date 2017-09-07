@@ -1,10 +1,9 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.FieldData;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
-import java.util.HashMap;
+import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.processor.Util.getParamName;
@@ -32,11 +31,10 @@ public class BaseMemberBuilder{
         }
 
         for (FieldData field : mFields) {
-            Class<?> type = field.getType();
             String nameForMethod = getPropNameForMethod(field.getPropertyName());
 
             TypeInfo info = new TypeInfo();
-            getTypeName(field, type, info);
+            getTypeName(field, info);
 
             FieldSpec.Builder fieldBuilder = onBuildField(field, info);
             if (fieldBuilder != null) {
@@ -75,23 +73,24 @@ public class BaseMemberBuilder{
         return set;
     }
 
-    static void getTypeName(FieldData field, Class<?> type, TypeInfo info) {
+    static void getTypeName(FieldData field, TypeInfo info) {
+        TypeMirror mirror = field.getTypeCompat().getTypeMirror();
         switch (field.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY:
-                info.setTypeName(ArrayTypeName.of(type));
+                info.setTypeName(ArrayTypeName.of(TypeName.get(mirror)));
                 info.setParamName("array1");
                 break;
 
             case FieldData.COMPLEXT_LIST:
                 info.setParamName("list1");
                 TypeName typeName = ParameterizedTypeName.get(ClassName.get(List.class),
-                        WildcardTypeName.get(type).box());
+                        WildcardTypeName.get(mirror).box());
                 info.setTypeName(typeName);
                 break;
 
             default:
-                info.setTypeName(TypeName.get(type));
-                info.setParamName(getParamName(type.getSimpleName()));
+                info.setTypeName(TypeName.get(mirror));
+                info.setParamName(getParamName(mirror));
                 break;
         }
     }
