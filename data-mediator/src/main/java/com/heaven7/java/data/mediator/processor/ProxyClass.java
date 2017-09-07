@@ -107,7 +107,7 @@ public class ProxyClass {
                 TypeName superclassType = tc.getSuperClassTypeName();
                 if(superclassType != null){
                     if(usedSuperClass){
-                        mPrinter.note("implBuilder >> can only have one super class.");
+                        mPrinter.error("implBuilder >> can only have one super class.");
                         return false;
                     }else{
                         implBuilder.superclass(superclassType);

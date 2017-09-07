@@ -28,7 +28,7 @@ public class BaseMemberBuilder{
                     .initializer(" 1L")
                     .build());
         }
-
+        MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
             String nameForMethod = getPropNameForMethod(field.getPropertyName());
 
@@ -42,6 +42,9 @@ public class BaseMemberBuilder{
             //get and set
             MethodSpec.Builder get = onBuildGet(field, nameForMethod, info);
             MethodSpec.Builder set = onBuildSet(field, nameForMethod, info);
+            if(constructorBuilder != null){
+                onBuildConstructor(constructorBuilder, field, info);
+            }
             builder.addMethod(get.build())
                     .addMethod(set.build());
 
@@ -53,6 +56,13 @@ public class BaseMemberBuilder{
 
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         return null;
+    }
+
+    protected MethodSpec.Builder onCreateConstructor() {
+        return null;
+    }
+
+    protected void onBuildConstructor(MethodSpec.Builder construct, FieldData field, TypeInfo info) {
     }
 
     protected MethodSpec.Builder onBuildGet(FieldData field,
