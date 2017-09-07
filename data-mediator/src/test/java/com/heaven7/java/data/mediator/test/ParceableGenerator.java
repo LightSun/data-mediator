@@ -6,6 +6,22 @@ import junit.framework.TestCase;
 import javax.lang.model.element.Modifier;
 
 /**
+ *   public void writeToParcel(Parcel dest, int flags) {
+ dest.writeInt(this.id);
+ dest.writeString(this.title);
+ dest.writeTypedList(fileList);
+ dest.writeList(this.fileIdList);
+ dest.writeString(this.extra);
+ }
+
+ protected CaseRecordEntity(Parcel in) {
+ this.id = in.readInt();
+ this.title = in.readString();
+ this.fileList = in.createTypedArrayList(FileEntity.CREATOR);
+ this.fileIdList = new ArrayList<Integer>();
+ in.readList(this.fileIdList, Integer.class.getClassLoader());
+ this.extra = in.readString();
+ }
  * Created by heaven7 on 2017/9/7.
  */
 public class ParceableGenerator extends TestCase{
