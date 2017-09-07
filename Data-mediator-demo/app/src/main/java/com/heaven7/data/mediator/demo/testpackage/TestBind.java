@@ -1,5 +1,6 @@
-package com.heaven7.data.mediator.demo;
+package com.heaven7.data.mediator.demo.testpackage;
 
+import com.heaven7.data.mediator.demo.ResultData;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 

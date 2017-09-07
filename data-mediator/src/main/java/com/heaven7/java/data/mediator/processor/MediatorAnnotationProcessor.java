@@ -216,7 +216,9 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
                     case STR_TYPE:
                         note("STR_TYPE >>> " + av.getValue().toString());
-                        data.setTypeCompat(new FieldData.TypeCompat((TypeMirror) av.getValue()));
+                        FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypeUtils, (TypeMirror) av.getValue());
+                        data.setTypeCompat(tc);
+                        tc.replaceIfNeed(mPrinter);
                         break;
 
                     default:
@@ -238,7 +240,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         ProxyClass proxyClass = mProxyClassMap.get(qualifiedName);
         if (proxyClass == null) {
             //生成每个宿主类所对应的代理类，后面用于生产java文件
-            proxyClass = new ProxyClass(classElement, mElementUtils);
+            proxyClass = new ProxyClass(mTypeUtils, mElementUtils, classElement);
             mProxyClassMap.put(qualifiedName, proxyClass);
         }
         return proxyClass;

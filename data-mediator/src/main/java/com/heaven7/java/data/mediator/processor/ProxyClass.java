@@ -7,6 +7,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,11 @@ public class ProxyClass {
 
     public final TypeElement mElement;
     public final Elements mElements;
+    public final Types mTypes;
     public final List<FieldData> mFields = new ArrayList<>();
 
-    public ProxyClass(TypeElement classElement, Elements mElementUtils) {
+    public ProxyClass(Types mTypes, Elements mElementUtils, TypeElement classElement) {
+        this.mTypes = mTypes;
         this.mElement = classElement;
         this.mElements = mElementUtils;
     }
@@ -69,7 +72,10 @@ public class ProxyClass {
                         interfaceBuilder.addMethod(builder.build());
                     }
                 }
-                interfaceBuilder.addSuperinterface(TypeName.get(tm));
+                //replace interface if need
+                FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
+                tc.replaceIfNeed(mPrinter);
+                interfaceBuilder.addSuperinterface(tc.getTypeName());
             }
         }
         sInterfaceBuilder.build(interfaceBuilder, mFields);
@@ -91,9 +97,13 @@ public class ProxyClass {
         if(interfaces != null){
             mPrinter.note("implBuilder >>> start interfaces ");
             for(TypeMirror tm : interfaces){
-                implBuilder.addSuperinterface(TypeName.get(tm));
+                //replace interface if need
+                FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
+                tc.replaceIfNeed(mPrinter);
+                implBuilder.addSuperinterface(tc.getTypeName());
+
                 MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
-                        className, selfParamType, tm, mPrinter, groupMap);
+                        className, selfParamType, tc, mPrinter, groupMap);
                 mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
                     mPrinter.note("implBuilder >>> start builders");

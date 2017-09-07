@@ -65,9 +65,6 @@ public class ElementHelper {
         if (!processAnnotation(mPrintter, annoMirrors))
             return false;
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
-        for(TypeMirror tm : interfaces){
-            addToFieldDependIfNeed(tm, sDependSuperMap);
-        }
         return true;
     }
 
@@ -148,8 +145,7 @@ public class ElementHelper {
                     case STR_TYPE:
                         pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
                         final TypeMirror tm = (TypeMirror) av.getValue();
-                        data.setTypeCompat(new FieldData.TypeCompat(tm));
-                        addToFieldDependIfNeed(tm, sDependFieldMap);
+                        data.setTypeCompat(new FieldData.TypeCompat(mTypes,tm));
                         break;
 
                     default:
@@ -159,48 +155,6 @@ public class ElementHelper {
             mFieldDatas.add(data);
         }
         return true;
-    }
-
-    private void addToFieldDependIfNeed(TypeMirror value, Map<TypeElement, List<TypeElement>> container) {
-        final String classname = value.toString().trim();
-        //ignore primitive
-        if (value instanceof PrimitiveType) {
-            return;
-        }
-        final Element element = mTypes.asElement(value);
-        final TypeElement te = (TypeElement) element;
-        List<? extends AnnotationMirror> mirrors = mElements.getAllAnnotationMirrors(element);
-        /**
-         * here we want have @Fields.
-         */
-        if(mirrors.isEmpty()){
-            return;
-        }
-
-        mPrintter.note(TAG , "addToFieldDependIfNeed", "mirrors = " + mirrors);
-        //ignore official package.
-        if (classname.startsWith("java.")
-                || classname.startsWith("javax.")
-                || classname.startsWith("android.")
-                || classname.startsWith("dalvik.")
-                ) {
-            return;
-        }
-        //often if the classname is the java or android stand class. here will not throw exception
-        try {
-            Class.forName(classname);
-            return;
-        } catch (ClassNotFoundException e) {
-            //not exist , we need.
-        }
-
-        //TODO very possible is my want. self
-       /* List<TypeElement> list = container.get(mElement);
-        if (list == null) {
-            list = new ArrayList<>();
-            container.put(mElement, list);
-        }
-        list.add(te);*/
     }
 
     private static boolean isValidAnnotation(AnnotationMirror am, ProcessorPrinter pp) {

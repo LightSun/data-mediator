@@ -74,23 +74,24 @@ public class BaseMemberBuilder{
     }
 
     static void getTypeName(FieldData field, TypeInfo info) {
-        TypeMirror mirror = field.getTypeCompat().getTypeMirror();
+        final FieldData.TypeCompat typeCompat = field.getTypeCompat();
+        TypeName rawTypeName = typeCompat.getTypeName();
         switch (field.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY:
-                info.setTypeName(ArrayTypeName.of(TypeName.get(mirror)));
+                info.setTypeName(ArrayTypeName.of(rawTypeName));
                 info.setParamName("array1");
                 break;
 
             case FieldData.COMPLEXT_LIST:
                 info.setParamName("list1");
                 TypeName typeName = ParameterizedTypeName.get(ClassName.get(List.class),
-                        WildcardTypeName.get(mirror).box());
+                        rawTypeName.box());
                 info.setTypeName(typeName);
                 break;
 
             default:
-                info.setTypeName(TypeName.get(mirror));
-                info.setParamName(getParamName(mirror));
+                info.setTypeName(rawTypeName);
+                info.setParamName(getParamName(typeCompat.getTypeMirror()));
                 break;
         }
     }

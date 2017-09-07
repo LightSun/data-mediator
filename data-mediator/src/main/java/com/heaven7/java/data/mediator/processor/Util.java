@@ -102,12 +102,13 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         return builders;
     }
 
-    //classname  : current class
+    //classname  : current class , here mirror is interface .can't be primitive.
     public static MethodSpec.Builder[] getImplClassMethodBuilders(String pkgName, String classname,
-                                                                  TypeName returnReplace, TypeMirror mirror, ProcessorPrinter pp,
-                                                                  Map<String, List<FieldData>> map) {
+                                                                  TypeName returnReplace,
+                                                                  TypeCompat tc,
+                                                                  ProcessorPrinter pp, Map<String, List<FieldData>> map) {
         pp.note("map = " + map);
-        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
+        final TypeElement te = tc.getElementAsType();
         String interfaceName = te.getQualifiedName().toString();
         pp.note("applyInterface() >>> interface name = " + interfaceName);
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);

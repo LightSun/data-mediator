@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.heaven7.java.data.mediator.MediatorUtils.hasFlag;
+import static com.heaven7.java.data.mediator.processor.Util.hasFlag;
 
 /**
  * type interface filler for impl

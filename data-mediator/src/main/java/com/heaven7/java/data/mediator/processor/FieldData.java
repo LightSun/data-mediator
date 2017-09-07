@@ -1,9 +1,19 @@
 package com.heaven7.java.data.mediator.processor;
 
+import com.heaven7.java.data.mediator.Field;
+import com.heaven7.java.data.mediator.Fields;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.ParameterizedTypeName;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeVariableName;
+
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
+import java.util.List;
 
 public class FieldData {
 
@@ -98,18 +108,58 @@ public class FieldData {
     public static class TypeCompat {
 
         private final TypeMirror tm;
+        private final Types types;
+        private TypeName mTypeName;
 
-        public TypeCompat(TypeMirror tm) {
+        public TypeCompat(Types types, TypeMirror tm) {
             this.tm = tm;
+            this.types = types;
         }
+
+        public TypeName getTypeName(){
+            if(mTypeName != null){
+                return mTypeName;
+            }
+            return TypeName.get(tm);
+        }
+
         public TypeMirror getTypeMirror() {
             return tm;
         }
-        public TypeElement getElementAsType(Types types) {
+
+        public TypeElement getElementAsType() {
             return (TypeElement) types.asElement(tm);
         }
-        public Element getElement(Types types) {
+        public Element getElement() {
             return types.asElement(tm);
+        }
+        public void replaceIfNeed(ProcessorPrinter pp) {
+            Element te = getElement();
+            //when TypeMirror is primitive , here te is null.
+            if(te == null) {
+                pp.note("TypeCompat", "replaceIfNeed", "Element = null");
+            }else{
+                boolean needReplace = false;
+                List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
+                for(AnnotationMirror am : mirrors){
+                    DeclaredType type = am.getAnnotationType();
+
+                    pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
+                    pp.note("TypeCompat", "replaceIfNeed", "am = " + am);
+                    if(type.toString().equals(Fields.class.getName())){
+                        //need replace.
+                        needReplace = true;
+                        break;
+                    }
+                }
+                if(needReplace){
+                    String str = tm.toString();
+                    int lastIndexOfDot = str.lastIndexOf(".");
+                    mTypeName = ClassName.get(str.substring(0, lastIndexOfDot),
+                            str.substring(lastIndexOfDot + 1)+  Util.INTERFACE_SUFFIX );
+                   // mTypeName = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
+                }
+            }
         }
     }
 
