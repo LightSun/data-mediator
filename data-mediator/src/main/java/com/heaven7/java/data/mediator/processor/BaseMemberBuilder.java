@@ -18,8 +18,7 @@ public class BaseMemberBuilder {
     public static final String GET_PREFIX = "get";
 
 
-    public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
-
+    public void build(TypeSpec.Builder builder, List<FieldData> mFields) {
         //add private static final long serialVersionUID
         builder.addSuperinterface(ClassName.get("java.io","Serializable"));
         if(!isInterface()){

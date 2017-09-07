@@ -4,6 +4,8 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 
+import java.util.List;
+
 import static com.heaven7.java.data.mediator.processor.Util.getFieldModifier;
 import static com.heaven7.java.data.mediator.processor.Util.hasFlag;
 /**
@@ -12,6 +14,15 @@ import static com.heaven7.java.data.mediator.processor.Util.hasFlag;
 public class ClassMemberBuilder extends BaseMemberBuilder {
 
     private static final String GOOGLE_GSON_ANNO_PACKAGE ="com.google.gson.annotations";
+
+    @Override
+    public void build(TypeSpec.Builder builder, List<FieldData> mFields) {
+        super.build(builder, mFields);
+        //empty constructor
+        builder.addMethod(MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
+                .build());
+    }
 
     @Override
     protected boolean isInterface() {
