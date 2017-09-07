@@ -29,7 +29,7 @@ public class ParceableGenerator extends TestCase{
                 .build();
         //return 匿名对象
         TypeSpec aSimpleThung = TypeSpec.anonymousClassBuilder(
-                       ""
+                       "" //匿名无参构造
                    )
                 .superclass(creatorOfobj)
                 /**
