@@ -23,3 +23,4 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
 public interface ClassBind extends TestBind2{
 }
 
+//todO 双重乃至多重的 extends 依赖

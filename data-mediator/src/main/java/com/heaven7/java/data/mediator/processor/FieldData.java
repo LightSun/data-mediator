@@ -1,18 +1,14 @@
 package com.heaven7.java.data.mediator.processor;
 
-import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
-import com.squareup.javapoet.TypeVariableName;
 
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FieldData {
@@ -109,24 +105,28 @@ public class FieldData {
 
         private final TypeMirror tm;
         private final Types types;
-        private TypeName mTypeName;
+        private TypeName mTypeName_interface;
+        private TypeName mTypeName_impl;
 
         public TypeCompat(Types types, TypeMirror tm) {
             this.tm = tm;
             this.types = types;
         }
-
-        public TypeName getTypeName(){
-            if(mTypeName != null){
-                return mTypeName;
+        public TypeName getSuperClassTypeName(){
+            if(mTypeName_impl != null){
+                return mTypeName_impl;
+            }
+            return null;
+        }
+        public TypeName getInterfaceTypeName(){
+            if(mTypeName_interface != null){
+                return mTypeName_interface;
             }
             return TypeName.get(tm);
         }
-
         public TypeMirror getTypeMirror() {
             return tm;
         }
-
         public TypeElement getElementAsType() {
             return (TypeElement) types.asElement(tm);
         }
@@ -143,7 +143,6 @@ public class FieldData {
                 List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
-
                     pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
                     pp.note("TypeCompat", "replaceIfNeed", "am = " + am);
                     if(type.toString().equals(Fields.class.getName())){
@@ -155,9 +154,12 @@ public class FieldData {
                 if(needReplace){
                     String str = tm.toString();
                     int lastIndexOfDot = str.lastIndexOf(".");
-                    mTypeName = ClassName.get(str.substring(0, lastIndexOfDot),
+                    mTypeName_interface = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  Util.INTERFACE_SUFFIX );
-                   // mTypeName = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
+                    mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
+                            str.substring(lastIndexOfDot + 1)+  Util.IMPL_SUFFIX );
+
+                   // mTypeName_interface = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
                 }
             }
         }

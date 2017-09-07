@@ -239,7 +239,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         String qualifiedName = classElement.getQualifiedName().toString();
         ProxyClass proxyClass = mProxyClassMap.get(qualifiedName);
         if (proxyClass == null) {
-            //生成每个宿主类所对应的代理类，后面用于生产java文件
             proxyClass = new ProxyClass(mTypeUtils, mElementUtils, classElement);
             mProxyClassMap.put(qualifiedName, proxyClass);
         }

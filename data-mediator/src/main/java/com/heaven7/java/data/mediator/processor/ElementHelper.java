@@ -22,22 +22,12 @@ public class ElementHelper {
     private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private static final String KEY_FIELDS_ANNO = "value";
 
-    /**
-     * the depend map: key-value is annotated class name - field class name
-     */
-    static final Map<TypeElement, List<TypeElement>> sDependFieldMap = new ConcurrentHashMap<>();
-    /**
-     * the depend map: key-value is annotated class name - super class/interface name
-     */
-    static final Map<TypeElement, List<TypeElement>> sDependSuperMap = new ConcurrentHashMap<>();
-
     private final TypeElement mElement;
     private final Elements mElements;
     private final Types mTypes;
     private final ProcessorPrinter mPrintter;
 
     private final List<FieldData> mFieldDatas;
-    private int mWeight;
 
     public ElementHelper(Types mTypes, ProcessorPrinter mPrintter, Elements mElements, TypeElement mElement) {
         this.mPrintter = mPrintter;
@@ -47,33 +37,26 @@ public class ElementHelper {
         this.mFieldDatas = new ArrayList<>();
     }
 
-    public static void calculateWeight(){
-
-    }
-    public static void sort(){
-
-    }
-
     public TypeElement getElement() {
         return mElement;
     }
-    public int getWeight() {
-        return mWeight;
-    }
     public boolean preprocess() {
         List<? extends AnnotationMirror> annoMirrors = mElement.getAnnotationMirrors();
-        if (!processAnnotation(mPrintter, annoMirrors))
+        if (!processAnnotation(mTypes, mPrintter, annoMirrors , mFieldDatas))
             return false;
-        List<? extends TypeMirror> interfaces = mElement.getInterfaces();
+        //List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         return true;
     }
 
-    private boolean processAnnotation(ProcessorPrinter pp, List<? extends AnnotationMirror> annoMirrors) {
+    //process @Fields
+    public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,
+                                             List<? extends AnnotationMirror> annoMirrors, List<FieldData> mFieldDatas) {
         final String methodName = "processAnnotation";
         //@Fields
         for (AnnotationMirror am : annoMirrors) {
+            //if not my want. ignore
             if (!isValidAnnotation(am, pp)) {
-                return false;
+               continue;
             }
             Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
             pp.note(TAG, methodName, "am.getElementValues() = map . is " + map);
@@ -98,7 +81,7 @@ public class ElementHelper {
                         pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
                         return false;
                     }
-                    if (!iterateField((List<? extends AnnotationMirror>) list, pp)) {
+                    if (!iterateField(mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
                         return false;
                     }
                 } else {
@@ -109,9 +92,9 @@ public class ElementHelper {
         return true;
     }
 
-    private boolean iterateField(List<? extends AnnotationMirror> list, ProcessorPrinter pp) {
+    public static boolean iterateField(Types types ,List<? extends AnnotationMirror> list, ProcessorPrinter pp, List<FieldData> datas) {
         final String methodName = "iterateField";
-        pp.note("=================== start iterateField() ====================");
+        pp.note("=================== start iterate @Field() ====================");
         for (AnnotationMirror am1 : list) {
             if (!isValidAnnotation(am1, pp)) {
                 return false;
@@ -145,14 +128,16 @@ public class ElementHelper {
                     case STR_TYPE:
                         pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
                         final TypeMirror tm = (TypeMirror) av.getValue();
-                        data.setTypeCompat(new FieldData.TypeCompat(mTypes,tm));
+                        FieldData.TypeCompat typeCompat = new FieldData.TypeCompat(types, tm);
+                        data.setTypeCompat(typeCompat);
+                        typeCompat.replaceIfNeed(pp);
                         break;
 
                     default:
                         pp.note(TAG, methodName, "unsupport name = " + key.getSimpleName().toString());
                 }
             }
-            mFieldDatas.add(data);
+            datas.add(data);
         }
         return true;
     }
@@ -173,8 +158,7 @@ public class ElementHelper {
     @Override
     public String toString() {
         return "ElementHelper{" +
-                "mElement=" + mElement +
-                ", mWeight=" + mWeight +
+                "mElement=" + mElement+
                 '}';
     }
 

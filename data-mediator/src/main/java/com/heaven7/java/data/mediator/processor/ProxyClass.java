@@ -23,10 +23,10 @@ public class ProxyClass {
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 
-    public final TypeElement mElement;
-    public final Elements mElements;
-    public final Types mTypes;
-    public final List<FieldData> mFields = new ArrayList<>();
+    private final TypeElement mElement;
+    private final Elements mElements;
+    private final Types mTypes;
+    private final List<FieldData> mFields = new ArrayList<>();
 
     public ProxyClass(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
@@ -45,7 +45,7 @@ public class ProxyClass {
      *  3：parceable. 等处理
      * @param mPrinter
      */
-    public void generateProxy(ProcessorPrinter mPrinter, Filer filer) {
+    public boolean generateProxy(ProcessorPrinter mPrinter, Filer filer) {
         mPrinter.note(" <<< generateProxy >>> field datas = " + mFields);
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note("super interfaces: " + interfaces);
@@ -75,7 +75,7 @@ public class ProxyClass {
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 tc.replaceIfNeed(mPrinter);
-                interfaceBuilder.addSuperinterface(tc.getTypeName());
+                interfaceBuilder.addSuperinterface(tc.getInterfaceTypeName());
             }
         }
         sInterfaceBuilder.build(interfaceBuilder, mFields);
@@ -93,6 +93,8 @@ public class ProxyClass {
         final String className = mElement.getSimpleName() + Util.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
+       // implBuilder.superclass()
+        boolean usedSuperClass = false ;
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
             mPrinter.note("implBuilder >>> start interfaces ");
@@ -100,7 +102,18 @@ public class ProxyClass {
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 tc.replaceIfNeed(mPrinter);
-                implBuilder.addSuperinterface(tc.getTypeName());
+                implBuilder.addSuperinterface(tc.getInterfaceTypeName());
+                //handle super class.
+                TypeName superclassType = tc.getSuperClassTypeName();
+                if(superclassType != null){
+                    if(usedSuperClass){
+                        mPrinter.note("implBuilder >> can only have one super class.");
+                        return false;
+                    }else{
+                        implBuilder.superclass(superclassType);
+                        usedSuperClass = true;
+                    }
+                }
 
                 MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
                         className, selfParamType, tc, mPrinter, groupMap);
@@ -122,6 +135,8 @@ public class ProxyClass {
             classFile.writeTo(filer);
         } catch (IOException e) {
             mPrinter.error(Util.toString(e));
+            return false;
         }
+        return true;
     }
 }

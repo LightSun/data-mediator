@@ -3,7 +3,6 @@ package com.heaven7.java.data.mediator.processor;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.processor.Util.getParamName;
@@ -75,7 +74,7 @@ public class BaseMemberBuilder{
 
     static void getTypeName(FieldData field, TypeInfo info) {
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
-        TypeName rawTypeName = typeCompat.getTypeName();
+        TypeName rawTypeName = typeCompat.getInterfaceTypeName();
         switch (field.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY:
                 info.setTypeName(ArrayTypeName.of(rawTypeName));
