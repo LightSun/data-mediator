@@ -34,7 +34,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
     private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
 
     static {
-        sFillerMap = new HashMap<>();
+        sFillerMap = new HashMap<String, TypeInterfaceFiller>();
         final TypeInterfaceFiller sCopyFiller = new TypeCopyableFiller();
         final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
         final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();

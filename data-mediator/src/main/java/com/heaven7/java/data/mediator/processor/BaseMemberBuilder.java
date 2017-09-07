@@ -12,7 +12,7 @@ import static com.heaven7.java.data.mediator.processor.Util.getPropNameForMethod
  * the base member builder. just build method for interface.
  * Created by heaven7 on 2017/8/30.
  */
-public class BaseMemberBuilder{
+public class BaseMemberBuilder {
 
     public static final String SET_PREFIX = "set";
     public static final String GET_PREFIX = "get";

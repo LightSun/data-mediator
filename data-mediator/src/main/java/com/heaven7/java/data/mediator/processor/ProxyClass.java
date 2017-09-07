@@ -26,7 +26,7 @@ public class ProxyClass {
     private final TypeElement mElement;
     private final Elements mElements;
     private final Types mTypes;
-    private final List<FieldData> mFields = new ArrayList<>();
+    private final List<FieldData> mFields = new ArrayList<FieldData>();
 
     public ProxyClass(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;

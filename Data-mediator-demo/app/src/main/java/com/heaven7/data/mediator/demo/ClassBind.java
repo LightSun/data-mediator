@@ -20,7 +20,6 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
               complexType = COMPLEXT_ARRAY, flags = FLAG_RESET | FLAG_SNAP),
       @Field(propName = "student4", seriaName = "class_4", type = TestBind.class)
 })
-public interface ClassBind extends TestBind2{
+public interface ClassBind extends TestBind2{ //here不能多继承，
 }
 
-//todO 双重乃至多重的 extends 依赖
