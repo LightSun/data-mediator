@@ -10,7 +10,7 @@
 *.tar.gz
 *.rar
 hs_err_pid*
-
+.idea/*/*
 .idea/*
 .idea/.name
 .idea/copyright/

@@ -15,4 +15,5 @@ import java.lang.annotation.Target;
 public @interface Fields {
 
 	Field[] value();
+	//int interfaceFlags();
 }

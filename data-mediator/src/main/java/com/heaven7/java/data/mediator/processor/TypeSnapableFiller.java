@@ -26,7 +26,7 @@ public class TypeSnapableFiller extends TypeResetableFiller {
     public void buildMethodStatement(String curPkg, String parentInterfaceName,
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder, List<FieldData> list) {
-        note("start buildMethodStatement --------------", (list == null ? null : list));
+        note("start buildMethodStatement --------------", list);
         if(list != null && !list.isEmpty()) {
             for (FieldData fd : list) {
                 builder.addStatement("this.$L = $L", fd.getPropertyName(),

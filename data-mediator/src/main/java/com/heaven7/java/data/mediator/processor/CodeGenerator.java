@@ -18,7 +18,7 @@ import static com.heaven7.java.data.mediator.processor.Util.*;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-public class ProxyClass {
+public class CodeGenerator {
 
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
@@ -28,7 +28,7 @@ public class ProxyClass {
     private final Types mTypes;
     private final List<FieldData> mFields = new ArrayList<FieldData>();
 
-    public ProxyClass(Types mTypes, Elements mElementUtils, TypeElement classElement) {
+    public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
         this.mElement = classElement;
         this.mElements = mElementUtils;
@@ -36,6 +36,10 @@ public class ProxyClass {
 
     public void addFieldData(FieldData data) {
         mFields.add(data);
+    }
+
+    public  List<FieldData> getFieldDatas(){
+        return mFields;
     }
 
     /**
@@ -69,7 +73,9 @@ public class ProxyClass {
                         selfParamType, tm, mPrinter);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
-                        interfaceBuilder.addMethod(builder.build());
+                        if(builder != null) {
+                            interfaceBuilder.addMethod(builder.build());
+                        }
                     }
                 }
                 //replace interface if need
@@ -114,14 +120,34 @@ public class ProxyClass {
                         usedSuperClass = true;
                     }
                 }
+                //fields
+                FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(packageName, className, tc, groupMap);
+                if(fieldBuilders != null){
+                    for( FieldSpec.Builder fieldBuilder : fieldBuilders){
+                        implBuilder.addField(fieldBuilder.build());
+                    }
+                }
 
+                //constructor
+                MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName, className, tc, groupMap, usedSuperClass);
+                if(constructors != null ){
+                    for (MethodSpec.Builder builder : constructors){
+                        if(builder != null){
+                            implBuilder.addMethod(builder.build());
+                        }
+                    }
+                }
+
+                //methods
                 MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
                         className, selfParamType, tc, mPrinter, groupMap);
                 mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
                     mPrinter.note("implBuilder >>> start builders");
                     for (MethodSpec.Builder builder : builders){
-                        implBuilder.addMethod(builder.build());
+                        if(builder != null) {
+                            implBuilder.addMethod(builder.build());
+                        }
                     }
                     mPrinter.note("implBuilder >>> start  end ...builderss");
                 }

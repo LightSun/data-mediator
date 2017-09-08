@@ -5,14 +5,11 @@ import com.heaven7.java.data.mediator.Fields;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.processor.Util.*;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
 
@@ -26,7 +23,6 @@ import static javax.lang.model.element.Modifier.STATIC;
 public class MediatorAnnotationProcessor extends AbstractProcessor {
 
     private static final String TAG = "MediatorAnnotationProcessor";
-    private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private Filer mFiler;           //文件相关工具类
 
     private Elements mElementUtils; //元素相关的工具类
@@ -34,7 +30,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     private ProcessorPrinter mPrinter; ////日志相关的处理
     private Types mTypeUtils;
 
-    private Map<String, ProxyClass> mProxyClassMap = new HashMap<>();
+    private Map<String, CodeGenerator> mProxyClassMap = new HashMap<>();
 
     private void note(Object msg, Object... objs) {
         mPrinter.note(msg, objs);
@@ -83,163 +79,36 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         note("annotations: " + annotations);
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
-        //if one(have @Fields) depend another (have @Fields), we need sort.
-        List<ElementHelper> list = new ArrayList<>();
-        //preprocess
-        for (Element element : elements) {
-            ElementHelper info = new ElementHelper(mTypeUtils, mPrinter, mElementUtils, (TypeElement) element);
-            if(!info.preprocess()){
-                mPrinter.note("preprocess failed.");
-            }
-            list.add(info);
-        }
-        //weight and sort.
-
-
         for (Element element : elements) {
             note("@Fields >>> element = " + element);
             if (!isValid(Fields.class, "interface", element)) {
                 return true;
             }
-            if (!parseModuleByFields(element)) {
+            CodeGenerator generator = getProxyClass(element);
+            if(!ElementHelper.processAnnotation(mTypeUtils, mPrinter, element.getAnnotationMirrors(), generator.getFieldDatas())){
                 return true;
             }
         }
        //generate code
-       for (ProxyClass proxyClass_ : mProxyClassMap.values()) {
-            proxyClass_.generateProxy(mPrinter, mFiler);
+       for (CodeGenerator generator : mProxyClassMap.values()) {
+           if(!generator.generateProxy(mPrinter, mFiler)){
+               return true;
+           }
         }
         mProxyClassMap.clear();
         return false;
     }
 
-    //element 我们要的注解元素 (Fields)
-    private boolean parseModuleByFields(Element element) {
-
-        ProxyClass proxyClass = getProxyClass(element);
-        //获得该元素上的注解
-        List<? extends AnnotationMirror> mirrors = element.getAnnotationMirrors();
-        for (AnnotationMirror am : mirrors) {
-            Element e1 = am.getAnnotationType().asElement();
-            //note("am.getAnnotationType().getTypeArguments(): " + am.getAnnotationType().getTypeArguments());
-           // note("am.getAnnotationType().getEnclosingType(): " + am.getAnnotationType().getEnclosingType()); //none
-            Element e1_enclosing = e1.getEnclosingElement();
-            TypeKind kind = e1.asType().getKind();
-            note("e1.kind = " + kind.name()); //DECLARED
-            if(!(e1_enclosing instanceof QualifiedNameable)){
-                continue;
-            }
-            note( "e1_enclosing).getQualifiedName(): " + ((QualifiedNameable) e1_enclosing).getQualifiedName());
-            if(!TARGET_PACKAGE.equals( ((QualifiedNameable) e1_enclosing).getQualifiedName().toString() )){
-                continue;
-            }
-
-           // note(e1.getEnclosingElement() instanceof TypeElement);         //false
-           // note(">>>>>>> test: " + e1.getEnclosedElements());             //value()
-           // note(">>>>>>> test: " + e1_enclosing);                                 //com.heaven7.java.data.mediator
-           // note(">>>>>>> test: " + (e1_enclosing instanceof QualifiedNameable));       //true
-           // note(">>>>>>> test: " + (e1.getEnclosingElement() instanceof TypeElement)); //false
-
-            note("e1: " + e1, ",simple name = " + e1.getSimpleName(), ",e1.getName() = "
-                    + e1.getClass().getSimpleName());
-           // note("e1_is_anno: " + (e1.getKind() == ElementKind.ANNOTATION_TYPE)); //true
-           // note("e1_Fields: " + e1.getAnnotation(Fields.class)); //null
-          //  note("e1_Field: " + e1.getAnnotation(Field.class));   //null
-            note("AnnotationMirror: " + am);
-
-            Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
-            note("am.getElementValues() = map . is " + map);
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
-                ExecutableElement key = en.getKey();
-                note("key: " + key);//the method of annotation
-                AnnotationValue value = en.getValue();
-                Object target = value.getValue();
-                if (target == null || !(target instanceof List)) {
-                    error("@Fields's value() must be a list.");
-                    return false;
-                }
-                List list = (List) target;
-                if(list.isEmpty()){
-                    error("@Fields's value() must have value list.");
-                    return false;
-                }
-                Object obj = list.get(0);
-                if(!(obj instanceof AnnotationMirror)){
-                    error("@Fields's value() must have list of @Field.");
-                    return false;
-                }
-                if(!iterateField((List<? extends AnnotationMirror>)list, proxyClass)){
-                    return false;
-                }
-               // proxyClass.setDataModuleFields(list);
-            }
-        }
-        return true;
-    }
-
-    private boolean iterateField(List<? extends AnnotationMirror> list, ProxyClass proxyClass) {
-        note("=================== start iterateField() ====================");
-        for(AnnotationMirror am1 : list) {
-            Element element = am1.getAnnotationType().asElement().getEnclosingElement();
-            if (!(element instanceof QualifiedNameable)) {
-                error("annotation element not instanceof QualifiedNameable)");
-                return false;
-            }
-            if (!TARGET_PACKAGE.equals(((QualifiedNameable) element).getQualifiedName().toString())) {
-                return false;
-            }
-            Map<? extends ExecutableElement, ? extends AnnotationValue> map = am1.getElementValues();
-
-            FieldData data = new FieldData();
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
-
-                ExecutableElement key = en.getKey();
-                AnnotationValue av = en.getValue();
-                note("test >>>: " + av.getValue());
-
-                switch (key.getSimpleName().toString()) {
-                    case STR_PROP_NAME:
-                        data.setPropertyName(av.getValue().toString());
-                        break;
-
-                    case STR_SERIA_NAME:
-                        data.setSerializeName(av.getValue().toString());
-                        break;
-
-                    case STR_FLAGS:
-                        data.setFlags(Integer.valueOf(av.getValue().toString()));
-                        break;
-
-                    case STR_COMPLEXT_TYPE:
-                        data.setComplexType(Integer.valueOf(av.getValue().toString()));
-                        break;
-
-                    case STR_TYPE:
-                        note("STR_TYPE >>> " + av.getValue().toString());
-                        FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypeUtils, (TypeMirror) av.getValue());
-                        data.setTypeCompat(tc);
-                        tc.replaceIfNeed(mPrinter);
-                        break;
-
-                    default:
-                        note("unsupport name = " + key.getSimpleName().toString());
-                }
-            }
-            proxyClass.addFieldData(data);
-        }
-        return true;
-    }
-
     /**
      * 生成或获取注解元素所对应的ProxyClass类
      */
-    private ProxyClass getProxyClass(Element element) {
+    private CodeGenerator getProxyClass(Element element) {
         //被注解的变量所在的类
         TypeElement classElement = (TypeElement) element;
         String qualifiedName = classElement.getQualifiedName().toString();
-        ProxyClass proxyClass = mProxyClassMap.get(qualifiedName);
+        CodeGenerator proxyClass = mProxyClassMap.get(qualifiedName);
         if (proxyClass == null) {
-            proxyClass = new ProxyClass(mTypeUtils, mElementUtils, classElement);
+            proxyClass = new CodeGenerator(mTypeUtils, mElementUtils, classElement);
             mProxyClassMap.put(qualifiedName, proxyClass);
         }
         return proxyClass;

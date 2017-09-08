@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.heaven7.java.data.mediator.processor.Util.*;
 
 /**
- * an element info contains the weight of the element.
  * Created by heaven7 on 2017/9/5 0005.
  */
 public class ElementHelper {
@@ -21,32 +20,6 @@ public class ElementHelper {
     private static final String TAG = "ElementHelper";
     private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private static final String KEY_FIELDS_ANNO = "value";
-
-    private final TypeElement mElement;
-    private final Elements mElements;
-    private final Types mTypes;
-    private final ProcessorPrinter mPrintter;
-
-    private final List<FieldData> mFieldDatas;
-
-    public ElementHelper(Types mTypes, ProcessorPrinter mPrintter, Elements mElements, TypeElement mElement) {
-        this.mPrintter = mPrintter;
-        this.mTypes = mTypes;
-        this.mElements = mElements;
-        this.mElement = mElement;
-        this.mFieldDatas = new ArrayList<>();
-    }
-
-    public TypeElement getElement() {
-        return mElement;
-    }
-    public boolean preprocess() {
-        List<? extends AnnotationMirror> annoMirrors = mElement.getAnnotationMirrors();
-        if (!processAnnotation(mTypes, mPrintter, annoMirrors , mFieldDatas))
-            return false;
-        //List<? extends TypeMirror> interfaces = mElement.getInterfaces();
-        return true;
-    }
 
     //process @Fields
     public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,
@@ -155,25 +128,4 @@ public class ElementHelper {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "ElementHelper{" +
-                "mElement=" + mElement+
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ElementHelper that = (ElementHelper) o;
-
-        return mElement.equals(that.mElement);
-    }
-
-    @Override
-    public int hashCode() {
-        return mElement.hashCode();
-    }
 }

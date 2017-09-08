@@ -10,6 +10,7 @@ import static com.heaven7.java.data.mediator.processor.Util.getPropNameForMethod
 
 /**
  * the base member builder. just build method for interface.
+ * often used to build common member(field and method.)
  * Created by heaven7 on 2017/8/30.
  */
 public class BaseMemberBuilder {

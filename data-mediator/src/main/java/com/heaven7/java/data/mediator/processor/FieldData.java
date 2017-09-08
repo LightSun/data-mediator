@@ -8,7 +8,6 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FieldData {
@@ -24,8 +23,8 @@ public class FieldData {
     public static final int FLAG_COPY = 0x00000010;//16
     public static final int FLAG_RESET = 0x00000020;//32
 
-    public static final int FLAG_SERIALIZABLE = 0x00000040;//64
-    public static final int FLAG_PARCEABLE = 0x00000080;//128
+    //public static final int FLAG_SERIALIZABLE = 0x00000040; //64
+    public static final int FLAG_PARCEABLE    = 0x00000080; //128
 
     /**
      * @ Expose : serialize, deserialize, default is true

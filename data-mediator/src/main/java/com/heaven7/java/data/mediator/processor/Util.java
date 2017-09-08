@@ -24,10 +24,12 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
     public static final String STR_TYPE = "type";
     public static final String STR_COMPLEXT_TYPE = "complexType";
 
+    public static final String NAME_PARCELABLE = "android.os.Parcelable";
     public static final String NAME_COPYA = "com.heaven7.java.data.mediator.ICopyable";
     public static final String NAME_RESET = "com.heaven7.java.data.mediator.IResetable";
     public static final String NAME_SHARE = "com.heaven7.java.data.mediator.IShareable";
     public static final String NAME_SNAP = "com.heaven7.java.data.mediator.ISnapable";
+
     public static final String INTERFACE_SUFFIX = "Module";
     public static final String IMPL_SUFFIX = "Module_Impl";
 
@@ -39,10 +41,12 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
         final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
         final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
+        final TypeInterfaceFiller sParcelable = new TypeParcelableFiller();
         sFillerMap.put(sCopyFiller.getInterfaceName(), sCopyFiller);
         sFillerMap.put(sResetFiller.getInterfaceName(), sResetFiller);
         sFillerMap.put(sShareFiller.getInterfaceName(), sShareFiller);
         sFillerMap.put(sSnapFiller.getInterfaceName(), sSnapFiller);
+        sFillerMap.put(sParcelable.getInterfaceName(), sParcelable);
     }
 
     public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
@@ -85,7 +89,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
                                                                   TypeMirror mirror, ProcessorPrinter pp) {
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         String interfaceName = te.getQualifiedName().toString();
-        pp.note("applyInterface() >>> interface name = " + interfaceName);
+        pp.note("getInterfaceMethodBuilders() >>> interface name = " + interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
         if (list == null || list.size() == 0) {
@@ -94,15 +98,62 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
         int i = 0;
         for (Element e : list) {
-            ExecutableElement ee = (ExecutableElement) e;
-            MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
-                    .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
-            builders[i++] = builder;
+            pp.note("interface method: kind = " + e.getKind() + " ," + e);
+            if(e instanceof ExecutableElement){
+                ExecutableElement ee = (ExecutableElement) e;
+                MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
+                        .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
+                builders[i++] = builder;
+            }
         }
         return builders;
     }
 
+    /**
+     * get field builder.
+     * @param pkgName the package name
+     * @param classname the class name
+     * @param tc the type element wrapper.
+     * @param map the map.
+     * @return the field builders.
+     */
+    public static MethodSpec.Builder[] getImplClassConstructBuilders(String pkgName, String classname,
+                                                                TypeCompat tc, Map<String, List<FieldData>> map,
+                                                                     boolean hasSuperClass) {
+        final TypeElement te = tc.getElementAsType();
+        String interfaceIname = te.getQualifiedName().toString();
+        final TypeInterfaceFiller filler = sFillerMap.get(interfaceIname);
+        if(filler != null) {
+            final List<FieldData> datas = map.get(filler.getInterfaceName());
+            final String interName = te.getSimpleName().toString();
+            return filler.createConstructBuilder(pkgName, interName, classname, datas , hasSuperClass);
+        }
+        return null;
+    }
+
+    /**
+     * get field builder.
+     * @param pkgName the package name
+     * @param classname the class name
+     * @param tc the type element wrapper.
+     * @param map the map.
+     * @return the field builders.
+     */
+    public static FieldSpec.Builder[] getImplClassFieldBuilders(String pkgName, String classname,
+                                                                  TypeCompat tc, Map<String, List<FieldData>> map) {
+        final TypeElement te = tc.getElementAsType();
+        String interfaceIname = te.getQualifiedName().toString();
+        final TypeInterfaceFiller filler = sFillerMap.get(interfaceIname);
+        if(filler != null) {
+            final List<FieldData> datas = map.get(filler.getInterfaceName());
+            final String interName = te.getSimpleName().toString();
+            return filler.createFieldBuilder(pkgName, interName, classname, datas);
+        }
+        return null;
+    }
+
     //classname  : current class , here mirror is interface .can't be primitive.
+    //tc indicate interface
     public static MethodSpec.Builder[] getImplClassMethodBuilders(String pkgName, String classname,
                                                                   TypeName returnReplace,
                                                                   TypeCompat tc,
@@ -110,7 +161,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         pp.note("map = " + map);
         final TypeElement te = tc.getElementAsType();
         String interfaceName = te.getQualifiedName().toString();
-        pp.note("applyInterface() >>> interface name = " + interfaceName);
+        pp.note("getImplClassMethodBuilders() >>> interface name = " + interfaceName);
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
@@ -121,6 +172,10 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
         int i = 0;
         for (Element e : list) {
+            pp.note("interface method: kind = " + e.getKind() + " ," + e);
+            if( !(e instanceof ExecutableElement)){
+                continue;
+            }
             ExecutableElement ee = (ExecutableElement) e;
             MethodSpec.Builder builder = overriding(ee, pp, returnReplace)
                     .addModifiers(Modifier.PUBLIC);
