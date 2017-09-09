@@ -73,16 +73,17 @@ public abstract class TypeInterfaceFiller {
 
     /**
      * add method statement for builder with list of FieldData which has this filler's flags.
-     *
-     * @param curPkg              current package name of generate java file.
-     * @param curClassName        current simple class name of generate java file.
+     *  @param curPkg              current package name of generate java file.
      * @param parentInterfaceName the parent of current class which will generate java file.
-     * @param ee                  the execute element.
+     * @param curClassName        current simple class name of generate java file.
+     * @param ee                  the execute element. often is the method of interface.
      * @param builder             the method builder.
      * @param list                the FieldData list
+     * @param hasSuperClass       true if have super class.
      */
     public abstract void buildMethodStatement(String curPkg, String parentInterfaceName, String curClassName,
-                                              ExecutableElement ee, MethodSpec.Builder builder, List<FieldData> list);
+                                              ExecutableElement ee, MethodSpec.Builder builder,
+                                              List<FieldData> list, boolean hasSuperClass);
 
     /**
      *  create field builder. if you want. eg: android.os.Parcelable

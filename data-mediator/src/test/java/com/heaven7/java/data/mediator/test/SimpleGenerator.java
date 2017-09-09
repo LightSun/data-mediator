@@ -22,6 +22,28 @@ public class SimpleGenerator {
             "Parcelable");
 
     public static void main(String[] args){
+        //testParcelConstructor();
+        testMultiControlFlow();
+    }
+
+    private static void testMultiControlFlow() {
+        MethodSpec.Builder builder = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PROTECTED)
+                .addParameter(parcel, "in");
+        builder.addStatement("boolean result = true");
+        builder.beginControlFlow("if (result)")
+                    .addStatement("int[] arr = new int[5]")
+                    .beginControlFlow("for(int i= 0 ; i < 5 ; i++)")
+                    .addStatement("arr[i] = i")
+                    .endControlFlow();
+        builder.nextControlFlow("else")
+                .addStatement("$T.out.println($N)", System.class, "this is else")
+                .endControlFlow();
+
+        testMethod(builder.build());
+    }
+
+    private static void testParcelConstructor() {
         final String in = "in";
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PROTECTED)
@@ -34,6 +56,10 @@ public class SimpleGenerator {
                 .endControlFlow()
                 .build();
 
+        testMethod(methodSpec);
+    }
+
+    private static void testMethod(MethodSpec methodSpec) {
         TypeSpec typeSpec = TypeSpec.classBuilder(mClassname)
                 .addModifiers(Modifier.PUBLIC)
                 .addSuperinterface(parcelable)

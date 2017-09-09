@@ -27,7 +27,8 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
 
     @Override
     public void buildMethodStatement(String curPkg, String parentInterfaceName, String curClassName,
-                                     ExecutableElement ee, MethodSpec.Builder builder, List<FieldData> list) {
+                                     ExecutableElement ee, MethodSpec.Builder builder, List<FieldData> list,
+                                     boolean hasSuperClass) {
         note("start buildMethodStatement --------------");
         TypeName current = TypeVariableName.get(curClassName);
         builder.addStatement("$T result = new $T()", current, current);

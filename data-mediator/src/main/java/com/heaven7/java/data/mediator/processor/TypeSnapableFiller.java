@@ -25,7 +25,7 @@ public class TypeSnapableFiller extends TypeResetableFiller {
     @Override
     public void buildMethodStatement(String curPkg, String parentInterfaceName,
                                      String curClassName, ExecutableElement ee,
-                                     MethodSpec.Builder builder, List<FieldData> list) {
+                                     MethodSpec.Builder builder, List<FieldData> list, boolean hasSuperClass) {
         note("start buildMethodStatement --------------", list);
         if(list != null && !list.isEmpty()) {
             for (FieldData fd : list) {

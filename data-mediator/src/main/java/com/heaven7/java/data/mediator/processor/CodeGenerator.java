@@ -142,7 +142,7 @@ public class CodeGenerator {
 
                 //methods
                 MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
-                        className, selfParamType, tc, mPrinter, groupMap);
+                        className, selfParamType, tc, mPrinter, groupMap, usedSuperClass);
                 mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
                     mPrinter.note("implBuilder >>> start builders");
