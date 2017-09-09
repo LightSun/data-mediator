@@ -121,7 +121,8 @@ public class CodeGenerator {
                     }
                 }
                 //fields
-                FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(packageName, className, tc, groupMap);
+                FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(packageName,
+                        className, tc, groupMap);
                 if(fieldBuilders != null){
                     for( FieldSpec.Builder fieldBuilder : fieldBuilders){
                         implBuilder.addField(fieldBuilder.build());
@@ -129,7 +130,8 @@ public class CodeGenerator {
                 }
 
                 //constructor
-                MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName, className, tc, groupMap, usedSuperClass);
+                MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName,
+                        className, tc, groupMap, usedSuperClass);
                 if(constructors != null ){
                     for (MethodSpec.Builder builder : constructors){
                         if(builder != null){

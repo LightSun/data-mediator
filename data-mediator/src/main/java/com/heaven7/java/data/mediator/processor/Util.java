@@ -314,14 +314,31 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
     /**
      * get property name. eg: name to Name(get, set)
      *
-     * @param prop the target name
+     * @param fd the field data
      * @return the changed name for get/set method
      */
-    public static String getPropNameForMethod(String prop) {
+    public static String getPropNameForMethod(FieldData fd) {
+        /*String suffix = "";
+        switch (fd.getComplexType()){
+            case COMPLEXT_ARRAY:
+                suffix = "Array";
+                break;
+
+            case COMPLEXT_LIST:
+                suffix = "List";
+                break;
+
+            default:
+                suffix="";
+                break;
+        }*/
+        String prop = fd.getPropertyName();
         if (prop == null || "".equals(prop.trim())) {
             throw new IllegalStateException("property name can't be empty");
         }
-        return prop.substring(0, 1).toUpperCase().concat(prop.substring(1));
+        return prop.substring(0, 1)
+                .toUpperCase()
+                .concat(prop.substring(1));
     }
 
     /**

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 public @interface Field {
 
 	String propName();
-	String seriaName();
+	String seriaName() default "";
 	Class<?> type() default String.class;
 	int complexType() default 0;
 	int flags() default 0;

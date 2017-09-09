@@ -30,7 +30,7 @@ public class BaseMemberBuilder {
         }
         MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
-            String nameForMethod = getPropNameForMethod(field.getPropertyName());
+            String nameForMethod = getPropNameForMethod(field);
 
             TypeInfo info = new TypeInfo();
             getTypeName(field, info);
