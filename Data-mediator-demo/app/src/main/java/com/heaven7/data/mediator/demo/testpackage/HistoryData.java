@@ -11,7 +11,7 @@ import java.util.List;
  * Created by heaven7 on 2017/9/8 0008.
  */
 
-public class HistoryData extends ResultData implements Parcelable {
+public class HistoryData implements Parcelable {
 
     private int age;
     private long id;
@@ -23,6 +23,11 @@ public class HistoryData extends ResultData implements Parcelable {
     double testDouble;
     private char testChar;
 
+    private Long testLONG;
+    private Double testDOUBLE;
+    private Character testCharacter;
+    private Boolean testBOOLEAN;
+    private Short testSHORT;
 
     private String name;
     private ResultData data;
@@ -33,6 +38,7 @@ public class HistoryData extends ResultData implements Parcelable {
     private int[] testArrayInt;
     //private short[] testArrayShort; //short bugs, in parcelable plugin
     private Integer[] testArrayInteger;
+   // private Character[] testArrayCHAR; // error,  in parcelable plugin
 
     public HistoryData() {
     }
@@ -44,7 +50,6 @@ public class HistoryData extends ResultData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        super.writeToParcel(dest, flags);
         dest.writeInt(this.age);
         dest.writeLong(this.id);
         dest.writeInt(this.testShort);
@@ -53,17 +58,20 @@ public class HistoryData extends ResultData implements Parcelable {
         dest.writeFloat(this.testFloat);
         dest.writeDouble(this.testDouble);
         dest.writeInt(this.testChar);
+        dest.writeValue(this.testLONG);
+        dest.writeValue(this.testDOUBLE);
+        dest.writeSerializable(this.testCharacter);
+        dest.writeValue(this.testBOOLEAN);
+        dest.writeValue(this.testSHORT);
         dest.writeString(this.name);
         dest.writeParcelable(this.data, flags);
         dest.writeTypedList(this.datas);
         dest.writeTypedArray(this.testArrayResultData, flags);
         dest.writeIntArray(this.testArrayInt);
-        //dest.writeIntArray(this.testArrayShort);
         dest.writeArray(this.testArrayInteger);
     }
 
     protected HistoryData(Parcel in) {
-        super(in);
         this.age = in.readInt();
         this.id = in.readLong();
         this.testShort = (short) in.readInt();
@@ -72,12 +80,16 @@ public class HistoryData extends ResultData implements Parcelable {
         this.testFloat = in.readFloat();
         this.testDouble = in.readDouble();
         this.testChar = (char) in.readInt();
+        this.testLONG = (Long) in.readValue(Long.class.getClassLoader());
+        this.testDOUBLE = (Double) in.readValue(Double.class.getClassLoader());
+        this.testCharacter = (Character) in.readSerializable();
+        this.testBOOLEAN = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.testSHORT = (Short) in.readValue(Short.class.getClassLoader());
         this.name = in.readString();
         this.data = in.readParcelable(ResultData.class.getClassLoader());
         this.datas = in.createTypedArrayList(ResultData.CREATOR);
         this.testArrayResultData = in.createTypedArray(ResultData.CREATOR);
         this.testArrayInt = in.createIntArray();
-       // this.testArrayShort = in.readParcelable(short[].class.getClassLoader());
         this.testArrayInteger = (Integer[]) in.readArray(Integer[].class.getClassLoader());
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 public class ResultData implements Parcelable {
 
     private List<Integer> intergers ;
+    private List<Character> characters ;
     private List<Intent> intents ;
 
     private String[] testStrs ;
@@ -30,6 +31,7 @@ public class ResultData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(this.intergers);
+        dest.writeList(this.characters);
         dest.writeTypedList(this.intents);
         dest.writeStringArray(this.testStrs);
         dest.writeStringList(this.strs);
@@ -38,6 +40,8 @@ public class ResultData implements Parcelable {
     protected ResultData(Parcel in) {
         this.intergers = new ArrayList<Integer>();
         in.readList(this.intergers, Integer.class.getClassLoader());
+        this.characters = new ArrayList<Character>();
+        in.readList(this.characters, Character.class.getClassLoader());
         this.intents = in.createTypedArrayList(Intent.CREATOR);
         this.testStrs = in.createStringArray();
         this.strs = in.createStringArrayList();
