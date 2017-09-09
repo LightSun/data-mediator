@@ -29,6 +29,7 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
     public static final String NAME_RESET = "com.heaven7.java.data.mediator.IResetable";
     public static final String NAME_SHARE = "com.heaven7.java.data.mediator.IShareable";
     public static final String NAME_SNAP = "com.heaven7.java.data.mediator.ISnapable";
+    public static final String NAME_SERIALIZABLE  = "java.io.Serializable";
 
     public static final String INTERFACE_SUFFIX = "Module";
     public static final String IMPL_SUFFIX = "Module_Impl";
@@ -42,11 +43,13 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
         final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
         final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
         final TypeInterfaceFiller sParcelable = new TypeParcelableFiller();
+        final TypeInterfaceFiller sSerializable = new TypeSerializableFiller();
         sFillerMap.put(sCopyFiller.getInterfaceName(), sCopyFiller);
         sFillerMap.put(sResetFiller.getInterfaceName(), sResetFiller);
         sFillerMap.put(sShareFiller.getInterfaceName(), sShareFiller);
         sFillerMap.put(sSnapFiller.getInterfaceName(), sSnapFiller);
         sFillerMap.put(sParcelable.getInterfaceName(), sParcelable);
+        sFillerMap.put(sSerializable.getInterfaceName(), sSerializable);
     }
 
     public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
@@ -324,6 +327,9 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
     }
 
     public static boolean hasFlag(int flags, int require) {
+        if(flags == 0 || require == 0){
+            return false;
+        }
         return (flags & require) == require;
     }
 

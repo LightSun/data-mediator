@@ -19,15 +19,15 @@ public class BaseMemberBuilder {
     public static final String GET_PREFIX = "get";
 
 
-    public void build(TypeSpec.Builder builder, List<FieldData> mFields) {
-        //add private static final long serialVersionUID
-        builder.addSuperinterface(ClassName.get("java.io","Serializable"));
+    public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
+        //add private static final long serialVersionUID //moved to TypeSerializableFiller
+      /*  builder.addSuperinterface(ClassName.get("java.io","Serializable"));
         if(!isInterface()){
             builder.addField(FieldSpec.builder(long.class, "serialVersionUID",
                     Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
                     .initializer(" 1L")
                     .build());
-        }
+        }*/
         MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
             String nameForMethod = getPropNameForMethod(field);
@@ -49,11 +49,10 @@ public class BaseMemberBuilder {
                     .addMethod(set.build());
 
         }
+        if(constructorBuilder != null){
+            builder.addMethod(constructorBuilder.build());
+        }
     }
-    protected boolean isInterface(){
-        return true;
-    }
-
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         return null;
     }
