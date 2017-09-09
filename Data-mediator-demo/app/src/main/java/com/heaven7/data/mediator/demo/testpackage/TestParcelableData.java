@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
+import java.io.Serializable;
+
 import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_ARRAY;
 import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_LIST;
 import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_PARCEABLE;
@@ -74,5 +76,5 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_PARCEABLE;
         @Field(propName = "test_String_array", type = String.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_ARRAY),
         @Field(propName = "test_String_list", type = String.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_LIST),
 })
-public interface TestParcelableData extends Parcelable{
+public interface TestParcelableData extends Parcelable, Serializable{
 }
