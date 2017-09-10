@@ -2,6 +2,7 @@ package com.heaven7.data.mediator.demo.testpackage;
 
 import android.os.Parcelable;
 
+import com.heaven7.data.mediator.demo.ResultData;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
@@ -75,6 +76,10 @@ import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_PARCEABLE;
         @Field(propName = "test_String", type = String.class, flags = FLAG_PARCEABLE),
         @Field(propName = "test_String_array", type = String.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_ARRAY),
         @Field(propName = "test_String_list", type = String.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_LIST),
+//any object
+        @Field(propName = "test_ResultData", type = ResultData.class, flags = FLAG_PARCEABLE),
+        @Field(propName = "test_ResultData_list", type = ResultData.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_LIST),
+        @Field(propName = "test_ResultData_array", type = ResultData.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_ARRAY),
 })
 public interface TestParcelableData extends Parcelable, Serializable{
 }
