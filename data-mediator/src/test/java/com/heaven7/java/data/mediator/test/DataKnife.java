@@ -1,10 +1,5 @@
 package com.heaven7.java.data.mediator.test;
 
-import com.heaven7.java.data.mediator.OnDataChangeListener;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * note parceable ? pool size.?
  * @author heaven7
@@ -45,7 +40,7 @@ public class DataKnife {
 	}
 	//auto generate Proxy
 	public static class Proxy{
-		OnDataChangeListener l;
+		//OnDataChangeListener l;
 		//getInt(). long, double, char, byte, boolean, float, shortInt, date
 	}
 
