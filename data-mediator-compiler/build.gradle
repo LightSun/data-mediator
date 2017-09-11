@@ -16,6 +16,13 @@ repositories {
 allprojects {
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
+    repositories {
+        jcenter()
+    }
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
 }
 
 // In this section you declare the dependencies for your production and test code
