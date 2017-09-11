@@ -23,6 +23,7 @@ allprojects {
 dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup:javapoet:1.9.0'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0'
 }
 
 publish {
