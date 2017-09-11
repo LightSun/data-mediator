@@ -1,5 +1,11 @@
 package com.heaven7.java.data.mediator.test;
 
+import com.heaven7.java.data.mediator.BaseMediator;
+import com.heaven7.java.data.mediator.DataMediatorCallback;
+import com.heaven7.java.data.mediator.Property;
+
+import java.lang.reflect.Field;
+
 /**
  * note parceable ? pool size.?
  * @author heaven7
@@ -40,8 +46,31 @@ public class DataKnife {
 	}
 	//auto generate Proxy
 	public static class Proxy{
+
+		final TestBean mBean;
+		DataMediatorCallback observer;
+		Proxy(TestBean bean){
+			this.mBean = bean;
+		}
 		//OnDataChangeListener l;
 		//getInt(). long, double, char, byte, boolean, float, shortInt, date
+
+		public Proxy setAge(int age){
+		    //some code
+			//if...changed.
+			//bserver.onDataChanged(mBean, );
+           return this;
+		}
+	}
+	public static void main(String[]args){
+		//Field
+		/*BaseMediator<TestBean> bm = new BaseMediator<>(new TestBean(null));
+		bm.addCallback(new DataMediatorCallback<Object>() {
+			@Override
+			public void onPropertyValueChanged(Object data, Property prop, Object oldValue, Object newValue) {
+
+			}
+		});*/
 	}
 
 }
