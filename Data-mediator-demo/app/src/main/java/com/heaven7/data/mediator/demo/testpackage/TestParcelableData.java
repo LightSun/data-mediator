@@ -8,9 +8,7 @@ import com.heaven7.java.data.mediator.Fields;
 
 import java.io.Serializable;
 
-import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_ARRAY;
-import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_LIST;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_PARCEABLE;
+import static com.heaven7.data.mediator.demo.FieldFlags.*;
 /**
  * Created by heaven7 on 2017/9/9.
  */

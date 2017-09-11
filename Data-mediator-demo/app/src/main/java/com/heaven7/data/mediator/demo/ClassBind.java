@@ -5,7 +5,7 @@ import com.heaven7.data.mediator.demo.testpackage.TestBind2;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
-import static com.heaven7.java.data.mediator.processor.FieldData.*;
+import static com.heaven7.data.mediator.demo.FieldFlags.*;
 /**
  * Created by heaven7 on 2017/9/5 0005.
  */
@@ -21,5 +21,6 @@ import static com.heaven7.java.data.mediator.processor.FieldData.*;
       @Field(propName = "student4", seriaName = "class_4", type = TestBind.class)
 })
 public interface ClassBind extends TestBind2{ //here不能多继承，
+
 }
 

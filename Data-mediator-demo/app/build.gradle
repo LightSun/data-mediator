@@ -29,7 +29,18 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 
-    apt files('libs/data-mediator.jar')
+    //apt files('libs/data-mediator.jar')
     compile 'com.squareup:javapoet:1.9.0'
     compile "com.google.code.gson:gson:2.7"
+
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0'
+
+    //compile 'com.jakewharton:butterknife:8.8.1'
+
+}
+apt {
+    processor "com.heaven7.java.data.mediator.compiler.MediatorAnnotationProcessor"
+    // if you only want to run the processors above
+   // disableDiscovery true
 }

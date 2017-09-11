@@ -7,16 +7,7 @@ import com.heaven7.java.data.mediator.IResetable;
 import com.heaven7.java.data.mediator.IShareable;
 import com.heaven7.java.data.mediator.ISnapable;
 
-import java.text.Format;
-
-import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_ARRAY;
-import static com.heaven7.java.data.mediator.processor.FieldData.COMPLEXT_LIST;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_COPY;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_EXPOSE_DEFAULT;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_EXPOSE_SERIALIZE_FALSE;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_RESET;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_SHARE;
-import static com.heaven7.java.data.mediator.processor.FieldData.FLAG_SNAP;
+import static com.heaven7.data.mediator.demo.FieldFlags.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
