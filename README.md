@@ -10,8 +10,12 @@ generate code for you.
 * Field: support multi type , primitive and with it's box. String, and any object type. The sample as Array and List.
 * Field: support multi scope. like: Reset, Copy, Snap, Share, Parcelable.
 * support depend or extends another data module. (extends only support one.)
+
+Will support
 * auto generate proxy(medaitor) class for listen the data change. (doing)
 * double bind for android. (doing).
+* data cache (doing).
+
 
 Here is a simple definition of data entity.
 ```java
@@ -33,7 +37,7 @@ public interface StudentBind extends ICopyable, IResetable, IShareable, ISnapabl
 }
  
 ```
-
+For documentation and additional information see [the wiki](https://github.com/LightSun/data-mediator/wiki).
 
 
 
