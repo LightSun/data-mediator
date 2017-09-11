@@ -12,6 +12,11 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import java.util.List;
 
+/**
+ * indicate the field data of {@linkplain com.heaven7.java.data.mediator.Field}.
+ * note flags shouldn't changed . it will effect the lib data-mediator.
+ * @author heaven7
+ */
 /*public*/ class FieldData {
 
     public static final int COMPLEXT_ARRAY = 1;

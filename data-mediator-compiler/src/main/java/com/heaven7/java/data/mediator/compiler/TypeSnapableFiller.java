@@ -8,7 +8,7 @@ import java.util.List;
 import static com.heaven7.java.data.mediator.compiler.Util.getInitValue;
 
 /**
- * Created by Administrator on 2017/9/1 0001.
+ * Created by heaven7 on 2017/9/1 0001.
  */
 /*public*/ class TypeSnapableFiller extends TypeResetableFiller {
 
