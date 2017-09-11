@@ -33,5 +33,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface Fields {
 
+	/**
+	 * define the all fields for data-module
+	 * @return the definition of all fields.
+	 */
 	Field[] value();
 }
