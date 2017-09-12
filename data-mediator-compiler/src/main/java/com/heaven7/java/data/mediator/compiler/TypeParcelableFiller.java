@@ -45,10 +45,12 @@ import java.util.List;
         if (hasSuperClass) {
             builder.addStatement("super(in)");
         }
-        for (FieldData fieldData : datas) {
-            addReadParcelStatement(builder, fieldData, "in");
+        if(datas != null) {
+            for (FieldData fieldData : datas) {
+                addReadParcelStatement(builder, fieldData, "in");
+            }
+            mShortDefined = false;
         }
-        mShortDefined = false;
         return new MethodSpec.Builder[]{ builder };
     }
 
