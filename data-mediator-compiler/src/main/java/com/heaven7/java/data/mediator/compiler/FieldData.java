@@ -146,6 +146,7 @@ import java.util.List;
                 pp.note("TypeCompat", "replaceIfNeed", "Element = null");
             }else{
                 boolean needReplace = false;
+                //when depend another interface(@Fields) need reply.
                 List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
@@ -158,7 +159,7 @@ import java.util.List;
                     }
                 }
                 if(needReplace){
-                    String str = tm.toString();
+                    final String str = tm.toString();
                     int lastIndexOfDot = str.lastIndexOf(".");
                     mTypeName_interface = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  Util.INTERFACE_SUFFIX );

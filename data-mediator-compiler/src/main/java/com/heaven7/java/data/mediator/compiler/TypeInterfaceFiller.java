@@ -30,7 +30,13 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     protected void note(Object... objs) {
         final ProcessorPrinter printer = getLogPrinter();
         if (printer != null) {
-            printer.note(getClass().getSimpleName() + " >>> ", objs);
+            printer.note(getClass().getSimpleName() +" >>> ", objs);
+        }
+    }
+    protected void note(String method, Object... objs) {
+        final ProcessorPrinter printer = getLogPrinter();
+        if (printer != null) {
+            printer.note(getClass().getSimpleName(), method, objs);
         }
     }
 

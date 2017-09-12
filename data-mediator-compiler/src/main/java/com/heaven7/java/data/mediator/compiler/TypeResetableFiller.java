@@ -27,6 +27,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.getInitValue;
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder, List<FieldData> list, boolean hasSuperClass) {
         note("start buildMethodStatement --------------");
+        if(hasSuperClass){
+            builder.addStatement("super.reset()");
+        }
         if(list != null && !list.isEmpty()) {
             for (FieldData fd : list) {
                 builder.addStatement("this.$L = $L", fd.getPropertyName(),

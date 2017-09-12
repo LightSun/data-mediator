@@ -3,6 +3,9 @@ package com.heaven7.data.mediator.demo;
 import com.heaven7.data.mediator.demo.testpackage.TestBind;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ICopyable;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.heaven7.java.data.mediator.FieldFlags.*;
 
@@ -17,5 +20,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
                 complexType = COMPLEXT_ARRAY, flags = FLAG_RESET | FLAG_SNAP),
         @Field(propName = "student4", seriaName = "class_4", type = TestBind.class)
 })
-public interface TestInterface2 extends StudentBind {
+public interface TestInterface2 extends StudentBind ,ICopyable{
 }

@@ -257,6 +257,7 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
        /* final ParameterizedTypeName typeName = ParameterizedTypeName.get(
                 ClassName.get(Comparable.class), ClassName.get("com.squareup.tacos", "Taco"));*/
         //pp.note("return type is " + returnType.getKind()); //TYPEVAR
+        final boolean isParcelable = interfaceName.equals("android.os.Parcelable");
 
         List<? extends VariableElement> parameters = method.getParameters();
         for (VariableElement parameter : parameters) {
@@ -264,7 +265,7 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
             TypeName type = TypeName.get(asType);
             String name = parameter.getSimpleName().toString();
             //for parcelable.
-            if(interfaceName.equals("android.os.Parcelable")) {
+            if(isParcelable) {
                 if (methodName.equals("writeToParcel")) {
                     if (asType.toString().equals("android.os.Parcel")) {
                         name = "dest";

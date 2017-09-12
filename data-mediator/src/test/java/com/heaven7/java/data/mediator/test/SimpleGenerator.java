@@ -21,9 +21,14 @@ public class SimpleGenerator {
     private static ClassName parcelable = ClassName.get("com.heaven7.java.data.mediator.test",
             "Parcelable");
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         //testParcelConstructor();
-        testMultiControlFlow();
+       // testMultiControlFlow();
+        testOverrideSuperClassMethod();
+    }
+
+    private static void testOverrideSuperClassMethod() {
+
     }
 
     private static void testMultiControlFlow() {
@@ -37,7 +42,7 @@ public class SimpleGenerator {
                     .addStatement("arr[i] = i")
                     .endControlFlow();
         builder.nextControlFlow("else")
-                .addStatement("$T.out.println($N)", System.class, "this is else")
+                .addStatement("$T.out.println($S)", System.class, "this is else")
                 .endControlFlow();
 
         testMethod(builder.build());

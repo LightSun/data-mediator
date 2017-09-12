@@ -12,4 +12,10 @@ public interface ICopyable<T> {
 	 * @return the copied data
 	 */
 	T copy();
+
+	/**
+	 * copy the data out to the target.
+	 * @param out the out object.
+	 */
+	void copyTo(T out);
 }
