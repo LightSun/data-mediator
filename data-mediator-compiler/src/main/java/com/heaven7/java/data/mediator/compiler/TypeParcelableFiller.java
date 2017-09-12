@@ -68,10 +68,12 @@ import java.util.List;
                if(hasSuperClass){
                    builder.addStatement("super.writeToParcel(dest, flags)");
                }
-               for (FieldData fieldData : list) {
-                   addWriteParcelStatement(builder, fieldData);
+               if(list != null) {
+                   for (FieldData fieldData : list) {
+                       addWriteParcelStatement(builder, fieldData);
+                   }
+                   mShortDefined = false;
                }
-               mShortDefined = false;
                break;
        }
     }
