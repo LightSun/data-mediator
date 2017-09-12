@@ -30,10 +30,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //apt files('libs/data-mediator.jar')
-    compile 'com.squareup:javapoet:1.9.0'
     compile "com.google.code.gson:gson:2.7"
 
     compile 'com.heaven7.java.data.mediator:data-mediator:1.0'
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0'
+    apt 'com.squareup:javapoet:1.9.0'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0.2'
 }
