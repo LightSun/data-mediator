@@ -1,23 +1,27 @@
 data-mediator
 =======================================
 
-auto generate code for data/entity on java or android platform  which uses annotation processing to 
-generate code for you.
+利用编译时注解技术， 在java和android平台自动生成 数据实体的代码。
 
-* auto generate interface and impl class which can implements Serializable and Parcelable(android).
-* auto generate set and get methods for data
-* Field: support generate field annoattion for 'Google-Gson'.
-* Field: support multi type , primitive and with it's box. String, and any object type. The sample as Array and List.
-* Field: support multi scope. like: Reset, Copy, Snap, Share, Parcelable.
-* support depend or extends another data module. (extends only support one.)
+# 特点
+- 自动生成数据的接口和实现类.可自动实现Serializable和 Parcelable(android)接口。
+- 为数据实体 自动生成get 和 set方法 
+- 字段: 支持生成字段的注解 for 'Google-Gson'.
+- 字段: 支持多种类型 , 8大基本类型及其包装类型， String类型, 和其他类型 . 数组和list结构同样支持。（map暂不支持parcelable）
+- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。
+      作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
+      
+- 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
+   * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
+    所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
 
-Will support
-* auto generate proxy(medaitor) class for listen the data change. (doing)
-* double bind for android. (doing).
-* data cache (doing).
+# 即将支持的特性
+- 自动生成代理层 以便监听数据变化。
+- 实现android平台的双向绑定
+- 自定义数据缓存。
 
 
-Here is a simple definition of data entity.
+下面是一个简单的数据定义。
 ```java
 @Fields({
         @Field(propName = "name", seriaName = "heaven7", type = String.class),
@@ -37,7 +41,7 @@ public interface StudentBind extends ICopyable, IResetable, IShareable, ISnapabl
 }
  
 ```
-For documentation and additional information see [the wiki](https://github.com/LightSun/data-mediator/wiki).
+更多文档请看 [the wiki](https://github.com/LightSun/data-mediator/wiki).
 
 
 
