@@ -6,7 +6,7 @@ import com.heaven7.data.mediator.demo.ResultData;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
-import static com.heaven7.data.mediator.demo.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.*;
 
 /**
  * Created by Administrator on 2017/9/7 0007.

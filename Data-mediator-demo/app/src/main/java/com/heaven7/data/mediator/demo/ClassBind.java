@@ -5,7 +5,7 @@ import com.heaven7.data.mediator.demo.testpackage.TestBind2;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
-import static com.heaven7.data.mediator.demo.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.*;
 /**
  * Created by heaven7 on 2017/9/5 0005.
  */

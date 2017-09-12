@@ -7,7 +7,7 @@ import com.heaven7.java.data.mediator.IResetable;
 import com.heaven7.java.data.mediator.IShareable;
 import com.heaven7.java.data.mediator.ISnapable;
 
-import static com.heaven7.data.mediator.demo.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
