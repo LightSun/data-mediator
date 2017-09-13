@@ -23,7 +23,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
     @Override
     protected MethodSpec.Builder onBuildGet(FieldData field, String nameForMethod, TypeInfo info) {
-        MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
+        MethodSpec.Builder get = MethodSpec.methodBuilder(DataMediatorConstants.GET_PREFIX + nameForMethod)
                 .returns(info.typeName)
                 .addModifiers(Modifier.PUBLIC)
                .addCode("return $N;\n", field.getPropertyName());
@@ -31,7 +31,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     }
     @Override
     protected MethodSpec.Builder onBuildSet(FieldData field, String nameForMethod, TypeInfo info) {
-        MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
+        MethodSpec.Builder set = MethodSpec.methodBuilder(DataMediatorConstants.SET_PREFIX + nameForMethod)
                 .addParameter(info.typeName, info.paramName)
                 .returns(TypeName.VOID)
                 .addModifiers(Modifier.PUBLIC)

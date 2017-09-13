@@ -1,5 +1,9 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.fillers;
 
+import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
+import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.ExecutableElement;
@@ -10,25 +14,25 @@ import static com.heaven7.java.data.mediator.compiler.Util.getInitValue;
 /**
  * Created by heaven7 on 2017/9/1 0001.
  */
-/*public*/ class TypeSnapableFiller extends TypeResetableFiller {
+
+public class TypeResetableFiller extends TypeInterfaceFiller {
 
     @Override
     public String getInterfaceName() {
-        return Util.NAME_SNAP;
+        return DataMediatorConstants.NAME_RESET;
     }
-
     @Override
     public int getInterfaceFlag() {
-        return FieldData.FLAG_SNAP;
+        return FieldData.FLAG_RESET;
     }
 
     @Override
     public void buildMethodStatement(String curPkg, String parentInterfaceName,
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder, List<FieldData> list, boolean hasSuperClass) {
-        note("start buildMethodStatement --------------", list);
+        note("start buildMethodStatement --------------");
         if(hasSuperClass){
-            builder.addStatement("super.clearSnap()");
+            builder.addStatement("super.reset()");
         }
         if(list != null && !list.isEmpty()) {
             for (FieldData fd : list) {
@@ -38,5 +42,4 @@ import static com.heaven7.java.data.mediator.compiler.Util.getInitValue;
         }
         note("end buildMethodStatement --------------");
     }
-
 }

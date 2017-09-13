@@ -170,9 +170,9 @@ public class FieldData {
                     final String str = tm.toString();
                     int lastIndexOfDot = str.lastIndexOf(".");
                     mTypeName_interface = ClassName.get(str.substring(0, lastIndexOfDot),
-                            str.substring(lastIndexOfDot + 1)+  Util.INTERFACE_SUFFIX );
+                            str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.INTERFACE_SUFFIX );
                     mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
-                            str.substring(lastIndexOfDot + 1)+  Util.IMPL_SUFFIX );
+                            str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX );
 
                    // mTypeName_interface = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
                 }

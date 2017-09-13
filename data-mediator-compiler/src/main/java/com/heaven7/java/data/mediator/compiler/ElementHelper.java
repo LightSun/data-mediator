@@ -6,7 +6,7 @@ import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.Map;
 
-import static com.heaven7.java.data.mediator.compiler.Util.*;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
 /**
  * Created by heaven7 on 2017/9/5 0005.

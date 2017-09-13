@@ -1,5 +1,6 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.fillers;
 
+import com.heaven7.java.data.mediator.compiler.*;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -9,7 +10,6 @@ import javax.lang.model.element.ExecutableElement;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.compiler.FieldData.FLAG_COPY;
-import static com.heaven7.java.data.mediator.compiler.Util.NAME_COPYA;
 
 /**
  * Created by heaven7 on 2017/9/1 0001.
@@ -21,7 +21,7 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
 
     @Override
     public String getInterfaceName() {
-        return NAME_COPYA;
+        return DataMediatorConstants.NAME_COPYA;
     }
 
     @Override
@@ -74,8 +74,8 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
                     for (FieldData fd : list) {
                         note(method," ======= fd = " + fd.getPropertyName());
                         final String nameForMethod = Util.getPropNameForMethod(fd);
-                        final String setMethodName = BaseMemberBuilder.SET_PREFIX + nameForMethod;
-                        final String getMethodName = BaseMemberBuilder.GET_PREFIX + nameForMethod;
+                        final String setMethodName = DataMediatorConstants.SET_PREFIX + nameForMethod;
+                        final String getMethodName = DataMediatorConstants.GET_PREFIX + nameForMethod;
                         builder.addStatement("result.$N(this.$N())", setMethodName, getMethodName);
                     }
                 }

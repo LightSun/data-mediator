@@ -15,19 +15,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
  */
 /*public*/ class BaseMemberBuilder {
 
-    public static final String SET_PREFIX = "set";
-    public static final String GET_PREFIX = "get";
-
 
     public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
-        //add private static final long serialVersionUID //moved to TypeSerializableFiller
-      /*  builder.addSuperinterface(ClassName.get("java.io","Serializable"));
-        if(!isInterface()){
-            builder.addField(FieldSpec.builder(long.class, "serialVersionUID",
-                    Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
-                    .initializer(" 1L")
-                    .build());
-        }*/
         MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
             String nameForMethod = getPropNameForMethod(field);
@@ -66,7 +55,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
 
     protected MethodSpec.Builder onBuildGet(FieldData field,
                                             String nameForMethod, TypeInfo info) {
-        MethodSpec.Builder get = MethodSpec.methodBuilder(GET_PREFIX + nameForMethod)
+        MethodSpec.Builder get = MethodSpec.methodBuilder(DataMediatorConstants.GET_PREFIX + nameForMethod)
                 .returns(info.typeName)
                 .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
         return get;
@@ -74,7 +63,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
 
     protected MethodSpec.Builder onBuildSet(FieldData field,
                                             String nameForMethod, TypeInfo info) {
-        MethodSpec.Builder set = MethodSpec.methodBuilder(SET_PREFIX + nameForMethod)
+        MethodSpec.Builder set = MethodSpec.methodBuilder(DataMediatorConstants.SET_PREFIX + nameForMethod)
                 .addParameter(info.typeName, info.paramName)
                 .returns(TypeName.VOID)
                 .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);

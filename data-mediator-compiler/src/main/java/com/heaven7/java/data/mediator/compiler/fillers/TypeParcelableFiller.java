@@ -1,5 +1,8 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.fillers;
 
+import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.ExecutableElement;
@@ -8,10 +11,12 @@ import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+
 /**
  * Created by heaven7 on 2017/9/8 0008.
  */
-/*public*/ class TypeParcelableFiller extends TypeInterfaceFiller {
+public class TypeParcelableFiller extends TypeInterfaceFiller {
 
     private static final String METHOD_WRITE_TO_PARCEL = "writeToParcel";
     private static final String METHOD_DESC_CONTENT = "describeContents";
@@ -27,7 +32,7 @@ import java.util.List;
 
     @Override
     public String getInterfaceName() {
-        return Util.NAME_PARCELABLE;
+        return DataMediatorConstants.NAME_PARCELABLE;
     }
 
     @Override
@@ -540,25 +545,4 @@ import java.util.List;
                 break;
         }
     }
-
-    private static final String NAME_int      = "int";
-    private static final String NAME_long     = "long";
-    private static final String NAME_short    = "short";
-    private static final String NAME_byte     = "byte";
-    private static final String NAME_boolean  = "boolean";
-    private static final String NAME_float    = "float";
-    private static final String NAME_double   = "double";
-    private static final String NAME_char     = "char";
-
-    private static final String NAME_INTEGER    = "java.lang.Integer";
-    private static final String NAME_LONG       = "java.lang.Long";
-    private static final String NAME_SHORT      = "java.lang.Short";
-    private static final String NAME_BYTE       = "java.lang.Byte";
-    private static final String NAME_BOOLEAN    = "java.lang.Boolean";
-    private static final String NAME_FLOAT      = "java.lang.Float";
-    private static final String NAME_DOUBLE     = "java.lang.Double";
-    private static final String NAME_CHARACTER  =  "java.lang.Character";
-
-    private static final String NAME_STRING =  "java.lang.String";
-   // private static final String NAME_SPARSE_ARRAY =  "android.util.SparseArray";
 }

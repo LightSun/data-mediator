@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.compiler.fillers.*;
 import com.heaven7.java.data.mediator.compiler.replacer.CopyReplacer;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
@@ -13,28 +14,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-/*public*/ class Util {
-
-    public static final String STR_PROP_NAME = "propName";
-    public static final String STR_SERIA_NAME = "seriaName";
-    public static final String STR_FLAGS = "flags";
-    public static final String STR_TYPE = "type";
-    public static final String STR_COMPLEXT_TYPE = "complexType";
-
-    public static final String NAME_PARCELABLE = "android.os.Parcelable";
-    public static final String NAME_COPYA = "com.heaven7.java.data.mediator.ICopyable";
-    public static final String NAME_RESET = "com.heaven7.java.data.mediator.IResetable";
-    public static final String NAME_SHARE = "com.heaven7.java.data.mediator.IShareable";
-    public static final String NAME_SNAP = "com.heaven7.java.data.mediator.ISnapable";
-    public static final String NAME_SERIALIZABLE = "java.io.Serializable";
-
-    public static final String INTERFACE_SUFFIX = "Module";
-    public static final String IMPL_SUFFIX = "Module_Impl";
+public class Util {
 
     private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
     private static final HashMap<String, BaseTypeReplacer> sReplacerMap;
@@ -56,22 +42,6 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 
         sReplacerMap = new HashMap<>();
         sReplacerMap.put(NAME_COPYA, new CopyReplacer());
-    }
-
-    public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
-            throws ClassNotFoundException {
-        pp.note("============== start applyType() ============ ");
-        /*
-         * 如果这个type不是java和android系统自带的。很可能异常。
-         * com.heaven7.data.mediator.demo.TestBind（依赖的注解）  正在处理...这里肯定异常
-         */
-       /* default:
-            try {
-                data.setType(Class.forName(type.toString().trim()));
-            } catch (ClassNotFoundException e) {
-                pp.note("can't find class . " + type.toString());
-            }
-            break;*/
     }
 
     public static void setLogPrinter(ProcessorPrinter pp) {
@@ -329,28 +299,6 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
         return methodBuilder;
     }
 
-    public static void test(TypeMirror mirror, ProcessorPrinter pp) {
-        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-        Name paramType = te.getQualifiedName();
-        pp.note("test() >>> paramType = " + paramType.toString());
-
-        final List<? extends Element> list = te.getEnclosedElements();
-        for (Element e : list) {
-            ExecutableElement ee = (ExecutableElement) e;
-            pp.note("ee_getSimpleName: " + ee.getSimpleName());
-            pp.note("ee_return: " + ee.getReturnType());
-            pp.note("ee_getTypeParameters: " + ee.getTypeParameters());
-            pp.note("ee_getThrownTypes: " + ee.getThrownTypes());
-            // pp.note("ee_getReceiverType: " + ee.getReceiverType());
-        }
-        pp.note("test() >>> getTypeParameters = " + te.getTypeParameters());
-        pp.note("test() >>> getEnclosedElements = " + list);
-        pp.note("test() >>> getEnclosedElements__2 = " + Arrays.toString(
-                list.get(0).getClass().getInterfaces()));
-        pp.note("test() >>> getEnclosingElement = " + te.getEnclosingElement());
-        // pp.note("test() >>> getInterfaces = " + te.getInterfaces());
-    }
-
     //serializeable.
     static Modifier[] getFieldModifier(FieldData fieldData) {
         final int flags = fieldData.getFlags();
@@ -454,5 +402,43 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
                 return null;
         }
 
+    }
+
+    public static void test(TypeMirror mirror, ProcessorPrinter pp) {
+        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
+        Name paramType = te.getQualifiedName();
+        pp.note("test() >>> paramType = " + paramType.toString());
+
+        final List<? extends Element> list = te.getEnclosedElements();
+        for (Element e : list) {
+            ExecutableElement ee = (ExecutableElement) e;
+            pp.note("ee_getSimpleName: " + ee.getSimpleName());
+            pp.note("ee_return: " + ee.getReturnType());
+            pp.note("ee_getTypeParameters: " + ee.getTypeParameters());
+            pp.note("ee_getThrownTypes: " + ee.getThrownTypes());
+            // pp.note("ee_getReceiverType: " + ee.getReceiverType());
+        }
+        pp.note("test() >>> getTypeParameters = " + te.getTypeParameters());
+        pp.note("test() >>> getEnclosedElements = " + list);
+        pp.note("test() >>> getEnclosedElements__2 = " + Arrays.toString(
+                list.get(0).getClass().getInterfaces()));
+        pp.note("test() >>> getEnclosingElement = " + te.getEnclosingElement());
+        // pp.note("test() >>> getInterfaces = " + te.getInterfaces());
+    }
+
+    public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
+            throws ClassNotFoundException {
+        pp.note("============== start applyType() ============ ");
+        /*
+         * 如果这个type不是java和android系统自带的。很可能异常。
+         * com.heaven7.data.mediator.demo.TestBind（依赖的注解）  正在处理...这里肯定异常
+         */
+       /* default:
+            try {
+                data.setType(Class.forName(type.toString().trim()));
+            } catch (ClassNotFoundException e) {
+                pp.note("can't find class . " + type.toString());
+            }
+            break;*/
     }
 }

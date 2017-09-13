@@ -66,7 +66,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
          * for interface.
          */
         //public interface xxxModule extends xx1,xx2{  }
-        final String interfaceName = mElement.getSimpleName() + Util.INTERFACE_SUFFIX;
+        final String interfaceName = mElement.getSimpleName() + DataMediatorConstants.INTERFACE_SUFFIX;
         TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
                 .addModifiers(Modifier.PUBLIC);
         final TypeName selfParamType = TypeVariableName.get(interfaceName);
@@ -108,7 +108,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
          step2: class/interface
          step3: package name
          */
-        final String className = mElement.getSimpleName() + Util.IMPL_SUFFIX;
+        final String className = mElement.getSimpleName() + DataMediatorConstants.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
 

@@ -12,10 +12,10 @@ import java.util.Map;
 import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
 /**
- * type interface filler for impl
+ * type interface fillers for impl
  * Created by heaven7 on 2017/9/1 0001.
  */
-/*public*/ abstract class TypeInterfaceFiller {
+public abstract class TypeInterfaceFiller {
 
     private WeakReference<ProcessorPrinter> mWeakPrinter;
 
@@ -78,7 +78,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     }
 
     /**
-     * add method statement for builder with list of FieldData which has this filler's flags.
+     * add method statement for builder with list of FieldData which has this fillers's flags.
      *  @param curPkg              current package name of generate java file.
      * @param parentInterfaceName the parent of current class which will generate java file.
      * @param curClassName        current simple class name of generate java file.

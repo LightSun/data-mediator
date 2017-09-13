@@ -1,5 +1,9 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.fillers;
 
+import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
+import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
@@ -10,10 +14,10 @@ import java.util.List;
 /**
  * Created by heaven7 on 2017/9/9.
  */
-/*public*/ class TypeSerializableFiller extends TypeInterfaceFiller {
+public class TypeSerializableFiller extends TypeInterfaceFiller {
     @Override
     public String getInterfaceName() {
-        return Util.NAME_SERIALIZABLE;
+        return DataMediatorConstants.NAME_SERIALIZABLE;
     }
 
     @Override
