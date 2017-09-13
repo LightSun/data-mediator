@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
@@ -27,6 +28,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     private final Elements mElements;
     private final Types mTypes;
     private final List<FieldData> mFields = new ArrayList<FieldData>();
+    private final TargetClassInfo mClassInfo = new TargetClassInfo();
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
@@ -50,8 +52,11 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
      * @param mPrinter
      */
     public boolean generateProxy(ProcessorPrinter mPrinter, Filer filer) {
+        //package name
+        final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
         mPrinter.note(" <<< generateProxy >>> field datas = " + mFields);
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
+        //final TypeMirror superclass = mElement.getSuperclass();
         mPrinter.note("super interfaces: " + interfaces);
 
         setLogPrinter(mPrinter);
@@ -66,10 +71,18 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 .addModifiers(Modifier.PUBLIC);
         final TypeName selfParamType = TypeVariableName.get(interfaceName);
 
+        //set target class info
+        mClassInfo.setPackageName(packageName);
+        mClassInfo.setCurrentClassname(interfaceName);
+        mClassInfo.setDirectParentInterfaceName(interfaceName);
+        mClassInfo.setSuperClass(null);
+        mClassInfo.setSuperInterfaces(interfaces);
+
+        //handle super interface with method.
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
-                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(
+                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(mClassInfo,
                         selfParamType, tm, mPrinter);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
@@ -87,8 +100,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         sInterfaceBuilder.build(interfaceBuilder, mFields);
 
         TypeSpec interfaceModule = interfaceBuilder.build();
-        //package name
-        String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
+
         final JavaFile interfaceFile = JavaFile.builder(packageName, interfaceModule).build();
         /**
          * for impl class:
@@ -99,6 +111,14 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         final String className = mElement.getSimpleName() + Util.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
+
+        //set target class info
+        mClassInfo.setPackageName(packageName);
+        mClassInfo.setCurrentClassname(className);
+        mClassInfo.setDirectParentInterfaceName(interfaceName);
+        mClassInfo.setSuperClass(null);
+        mClassInfo.setSuperInterfaces(interfaces);
+
        // implBuilder.superclass()
         boolean usedSuperClass = false ;
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
@@ -117,6 +137,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                         return false;
                     }else{
                         implBuilder.superclass(superclassType);
+                        mClassInfo.setSuperClass(superclassType);
                         usedSuperClass = true;
                     }
                 }
@@ -141,8 +162,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 }
 
                 //methods
-                MethodSpec.Builder[] builders =  getImplClassMethodBuilders(packageName,
-                        className, selfParamType, tc, mPrinter, groupMap, usedSuperClass);
+                MethodSpec.Builder[] builders =  getImplClassMethodBuilders(mClassInfo,
+                        selfParamType, tc, mPrinter, groupMap, usedSuperClass);
                 mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
                     mPrinter.note("implBuilder >>> start builders");
@@ -164,6 +185,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         } catch (IOException e) {
             mPrinter.error(Util.toString(e));
             return false;
+        }finally {
+            Util.reset();
         }
         return true;
     }

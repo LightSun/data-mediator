@@ -14,10 +14,10 @@ import static com.heaven7.java.data.mediator.compiler.Util.NAME_COPYA;
 /**
  * Created by heaven7 on 2017/9/1 0001.
  */
-/*public*/ class TypeCopyableFiller extends TypeInterfaceFiller {
+public class TypeCopyableFiller extends TypeInterfaceFiller {
 
-    private static final String  NAME_COPY     = "copy";
-    private static final String  NAME_COPY_TO  = "copyTo";
+    public static final String  NAME_COPY     = "copy";
+    public static final String  NAME_COPY_TO  = "copyTo";
 
     @Override
     public String getInterfaceName() {
@@ -63,18 +63,20 @@ import static com.heaven7.java.data.mediator.compiler.Util.NAME_COPYA;
              }
              */
             case NAME_COPY_TO:
-                String paramName = "out";
+                final String paramName = "out";
                 if(hasSuperClass){
                     builder.addStatement("super.copyTo($N)", paramName);
                 }
 
                 builder.beginControlFlow("if($N instanceof $T)", paramName, parentInterface)
-                        .addStatement("$T result = ($T)$N", current, current, paramName);
+                        .addStatement("$T result = ($T)$N", parentInterface, parentInterface, paramName);
                 if(list != null && !list.isEmpty()) {
                     for (FieldData fd : list) {
-                        //TODO 接口替换问题。 copyTo(IStudent out)
                         note(method," ======= fd = " + fd.getPropertyName());
-                        builder.addStatement("result.$L = this.$L", fd.getPropertyName(), fd.getPropertyName());
+                        final String nameForMethod = Util.getPropNameForMethod(fd);
+                        final String setMethodName = BaseMemberBuilder.SET_PREFIX + nameForMethod;
+                        final String getMethodName = BaseMemberBuilder.GET_PREFIX + nameForMethod;
+                        builder.addStatement("result.$N(this.$N())", setMethodName, getMethodName);
                     }
                 }
                 builder.endControlFlow();

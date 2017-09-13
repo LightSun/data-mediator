@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.Fields;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
@@ -17,7 +18,7 @@ import java.util.List;
  * note flags shouldn't changed . it will effect the lib data-mediator.
  * @author heaven7
  */
-/*public*/ class FieldData {
+public class FieldData {
 
     public static final int COMPLEXT_ARRAY = 1;
     public static final int COMPLEXT_LIST = 2;
@@ -118,12 +119,19 @@ import java.util.List;
             this.tm = tm;
             this.types = types;
         }
-        public TypeName getSuperClassTypeName(){
+        public @Nullable TypeName getSuperClassTypeName(){
             if(mTypeName_impl != null){
                 return mTypeName_impl;
             }
             return null;
         }
+        public @Nullable TypeName getReplaceInterfaceTypeName(){
+            if(mTypeName_interface != null){
+                return mTypeName_interface;
+            }
+            return null;
+        }
+
         public TypeName getInterfaceTypeName(){
             if(mTypeName_interface != null){
                 return mTypeName_interface;
