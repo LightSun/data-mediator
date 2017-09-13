@@ -15,7 +15,7 @@ public interface ICopyable<T> {
 
 	/**
 	 * copy the data out to the target.
-	 * @param out the out object.
+	 * @param out the out object. it should be the type T.
 	 */
-	void copyTo(T out);
+	void copyTo(Object out);
 }
