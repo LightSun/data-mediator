@@ -65,4 +65,18 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     }
 
 
+    @Override
+    public Object copy() {
+        return getTarget().copy();
+    }
+
+    @Override
+    public void copyTo(Object out) {
+        getTarget().copyTo(out);
+    }
+
+    @Override
+    public void reset() {
+        getTarget().reset();
+    }
 }
