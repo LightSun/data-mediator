@@ -11,17 +11,9 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     private static final Property PROP_AGE   = new Property("int", "age", 0);
     private static final Property PROP_NAME  = new Property("java.lang.String", "name", 0);
     private static final Property PROP_ID    = new Property("java.lang.String", "id", 0);
-    private EqualsComparator mEqualsComparator = DefaultEqualsComparator.getInstance();
 
     public StudentModule_Proxy(IStudent student){
        super(student);
-    }
-
-    public EqualsComparator getEqualsComparator() {
-        return mEqualsComparator;
-    }
-    public void setEqualsComparator(EqualsComparator mEqualsComparator) {
-        this.mEqualsComparator = mEqualsComparator;
     }
 
     @Override
@@ -33,7 +25,7 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     public void setAge(int age) {
         IStudent target = getTarget();
         int oldValue = target.getAge();
-        if(oldValue == age){
+        if(getEqualsComparator().isEquals(oldValue, age)){
             return;
         }
         target.setAge(age);
@@ -49,14 +41,8 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     public void setName(String name) {
         IStudent target = getTarget();
         String oldValue = target.getName();
-        if(name != null ){
-            if(name.equals(oldValue)){
-                return;
-            }
-        }else {
-            if(oldValue == null){
-                return;
-            }
+        if(getEqualsComparator().isEquals(oldValue, name)){
+            return;
         }
         target.setName(name);
         dispatchCallbacks(PROP_NAME, oldValue, name);
@@ -71,14 +57,8 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     public void setId(String id) {
         IStudent target = getTarget();
         String oldValue = target.getName();
-        if(id != null ){
-            if(id.equals(oldValue)){
-                return;
-            }
-        }else {
-            if(oldValue == null){
-                return;
-            }
+        if(getEqualsComparator().isEquals(oldValue, id)){
+            return;
         }
         target.setId(id);
         dispatchCallbacks(PROP_ID, oldValue, id);
