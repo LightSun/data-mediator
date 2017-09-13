@@ -3,7 +3,7 @@ package com.heaven7.java.data.mediator.test.copy;
 /**
  * Created by heaven7 on 2017/9/12 0012.
  */
-public class GoodStudent extends Student {
+public class GoodStudent extends Student implements IGoodStudent{
 
     private int thinking;
 
@@ -24,8 +24,8 @@ public class GoodStudent extends Student {
     @Override
     public void copyTo(IStudent out) {
         super.copyTo(out);
-        if(out instanceof GoodStudent){
-            GoodStudent gs = (GoodStudent) out;
+        if(out instanceof IGoodStudent){
+            IGoodStudent gs = (IGoodStudent) out;
             gs.setThinking(getThinking());
         }
     }
