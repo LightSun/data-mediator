@@ -119,10 +119,10 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
     }
 
     private void addWriteParcelStatement(MethodSpec.Builder builder, FieldData fieldData) {
-        //TODO
+        //TODO sparceArray and etc.
         final TypeMirror tm = fieldData.getTypeCompat().getTypeMirror();
         final String prop = fieldData.getPropertyName();
-        final TypeName typeName = TypeName.get(tm);
+        //final TypeName typeName = TypeName.get(tm);
         final String dest = "dest";
         final String flags = "flags";
 
