@@ -38,4 +38,19 @@ public class StudentModuleImpl implements IStudent {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public Object copy() {
+        return null;
+    }
+
+    @Override
+    public void copyTo(Object out) {
+
+    }
+
+    @Override
+    public void reset() {
+
+    }
 }
