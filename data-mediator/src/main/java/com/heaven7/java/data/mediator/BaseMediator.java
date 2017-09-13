@@ -47,6 +47,9 @@ public class BaseMediator<T>{
      * @since 1.0.2
      */
     public void setEqualsComparator(EqualsComparator comparator) {
+        if(comparator == null){
+            throw new NullPointerException();
+        }
         this.mEqualsComparator = comparator;
     }
 
