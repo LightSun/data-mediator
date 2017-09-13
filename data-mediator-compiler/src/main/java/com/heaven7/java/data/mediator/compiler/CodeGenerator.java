@@ -174,6 +174,20 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                     }
                     mPrinter.note("implBuilder >>> start  end ...builderss");
                 }
+
+                //override the super method of the super interfaces' superinterface(like ICopyable and etc.)
+                for(TypeMirror temp_tm : tc.getElementAsType().getInterfaces()){
+                    FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
+                    builders =  getImplClassMethodBuilders(mClassInfo,
+                            selfParamType, temp_tc, mPrinter, groupMap, usedSuperClass);
+                    if(builders != null){
+                        for (MethodSpec.Builder builder : builders){
+                            if(builder != null) {
+                                implBuilder.addMethod(builder.build());
+                            }
+                        }
+                    }
+                }
             }
         }
         sClassBuilder.build(implBuilder, mFields);

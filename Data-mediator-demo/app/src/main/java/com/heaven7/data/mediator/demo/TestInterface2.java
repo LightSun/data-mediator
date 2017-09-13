@@ -22,5 +22,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
                 complexType = COMPLEXT_ARRAY, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "student4", seriaName = "class_4", type = TestBind.class, flags = FLAGS_ALL_SCOPES)
 })
-public interface TestInterface2 extends StudentBind ,ICopyable, IResetable, IShareable, ISnapable {
+public interface TestInterface2 extends StudentBind {
 }
