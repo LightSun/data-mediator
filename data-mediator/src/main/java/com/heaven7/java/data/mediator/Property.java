@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator;
 
 /**
+ * this is a property class indicate a field of Entity Data.
  * Created by heaven7 on 2017/9/11 0011.
  */
 public class Property{
@@ -18,6 +19,12 @@ public class Property{
      private final String name;
      private final int complexType;
 
+     /**
+      * create a property instance by type , name  and complex type
+      * @param type the type string. eg: 'int', 'java.lang.Integer'
+      * @param name the property name
+      * @param complexType the complex type. see {@linkplain FieldFlags#COMPLEXT_ARRAY} and {@linkplain FieldFlags#COMPLEXT_LIST}
+      */
      public Property(String type, String name, int complexType) {
           if(type == null || name == null){
                throw new NullPointerException();
@@ -27,6 +34,11 @@ public class Property{
           this.complexType = complexType;
      }
 
+     /**
+      * get the property base type.
+      * @return the base type.
+      * @see #getComplexType()
+      */
      public Class<?> getType() {
           switch (type){
                case TYPE_int:
@@ -52,13 +64,30 @@ public class Property{
                throw new RuntimeException(e);
           }
      }
+
+     /**
+      * get the property name.
+      * @return the property name
+      */
      public String getName() {
           return name;
      }
+
+     /**
+      * get the complex type
+      * @return the complex type
+      */
      public int getComplexType() {
           return complexType;
      }
 
+     /**
+      * {@inheritDoc}
+      * @param o the object
+      * @return true if equals.
+      * @see Object#equals(Object)
+      * @since 1.0.3
+      */
      @Override
      public boolean equals(Object o) {
           if (this == o) return true;
@@ -71,6 +100,12 @@ public class Property{
           return name.equals(property.name);
      }
 
+     /**
+      * {@inheritDoc}
+      * @return the hash code.
+      * @see Object#hashCode()
+      * @since 1.0.3
+      */
      @Override
      public int hashCode() {
           int result = type.hashCode();
