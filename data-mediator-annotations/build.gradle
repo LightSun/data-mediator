@@ -17,6 +17,12 @@ buildscript {
 repositories {
     jcenter()
 }
+allprojects {
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
@@ -25,7 +31,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.annotation'
     artifactId = 'data-mediator-annotations'
-    publishVersion = '1.0'
+    publishVersion = '1.0.1'
     desc = 'this is a annotation lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }
