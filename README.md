@@ -16,8 +16,9 @@ data-mediator
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
     所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
 
+-  自动生成代理层 以便监听数据变化。
+
 # 即将支持的特性
-- 自动生成代理层 以便监听数据变化。
 - 实现android平台的双向绑定
 - 丰富的调用层支持和数据缓存
 - 更多接口的支持
