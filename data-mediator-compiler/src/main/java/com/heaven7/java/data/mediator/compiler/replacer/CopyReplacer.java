@@ -1,7 +1,7 @@
 package com.heaven7.java.data.mediator.compiler.replacer;
 
 import com.heaven7.java.data.mediator.compiler.BaseTypeReplacer;
-import com.heaven7.java.data.mediator.compiler.TypeCopyableFiller;
+import com.heaven7.java.data.mediator.compiler.fillers.TypeCopyableFiller;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeVariableName;
 

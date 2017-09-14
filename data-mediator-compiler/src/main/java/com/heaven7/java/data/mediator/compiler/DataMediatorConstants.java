@@ -3,8 +3,16 @@ package com.heaven7.java.data.mediator.compiler;
 /**
  * Created by heaven7 on 2017/9/13 0013.
  */
-public class DataMediatorConstants {
+public final class DataMediatorConstants {
 
+    // some cs of MediatorSharedProperties
+    public static final String SIMPLE_NAME_PROPERTY      = "Property";
+    public static final String PKG_PROP                  = "com.heaven7.java.data.mediator";
+    public static final String PKG_SHARED_PROP           = "com.heaven7.java.data.mediator.factory";
+    public static final String SIMPLE_NAME_SHARED_PROP   = "MediatorSharedProperties";
+    public static final String SIMPLE_NAME_BASE_MEDIATOR = "BaseMediator";
+
+    //field name of anno
     public static final String STR_PROP_NAME = "propName";
     public static final String STR_SERIA_NAME = "seriaName";
     public static final String STR_FLAGS = "flags";
@@ -19,7 +27,8 @@ public class DataMediatorConstants {
     public static final String NAME_SERIALIZABLE = "java.io.Serializable";
 
     public static final String INTERFACE_SUFFIX = "Module";
-    public static final String IMPL_SUFFIX = "Module_Impl";
+    public static final String IMPL_SUFFIX      = "Module_Impl";
+    public static final String PROXY_SUFFIX     = "_Proxy";
 
     public static final String SET_PREFIX = "set";
     public static final String GET_PREFIX = "get";

@@ -108,6 +108,27 @@ public class FieldData {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FieldData fieldData = (FieldData) o;
+
+        if (complexType != fieldData.complexType) return false;
+        if (propertyName != null ? !propertyName.equals(fieldData.propertyName) : fieldData.propertyName != null)
+            return false;
+        return mTypeCompat != null ? mTypeCompat.equals(fieldData.mTypeCompat) : fieldData.mTypeCompat == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = propertyName != null ? propertyName.hashCode() : 0;
+        result = 31 * result + complexType;
+        result = 31 * result + (mTypeCompat != null ? mTypeCompat.hashCode() : 0);
+        return result;
+    }
+
     public static class TypeCompat {
 
         private final TypeMirror tm;
@@ -177,6 +198,27 @@ public class FieldData {
                    // mTypeName_interface = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
                 }
             }
+        }
+
+        public String toString(){
+            return tm.toString();
+        }
+
+        @Override
+        public int hashCode() {
+            return tm.toString().hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(obj == this) {
+                return true;
+            }
+            if (obj== null || getClass() != obj.getClass())
+                return false;
+            TypeCompat other = (TypeCompat) obj;
+
+            return other.tm.toString().equals(other.tm.toString());
         }
     }
 

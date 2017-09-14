@@ -20,6 +20,10 @@ repositories {
 allprojects {
     sourceCompatibility = 1.7
     targetCompatibility = 1.7
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
 }
 
 // In this section you declare the dependencies for your production and test code
@@ -34,7 +38,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator'
     artifactId = 'data-mediator'
-    publishVersion = '1.0.2'
+    publishVersion = '1.0.3-beta'
     desc = 'this is a java lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }

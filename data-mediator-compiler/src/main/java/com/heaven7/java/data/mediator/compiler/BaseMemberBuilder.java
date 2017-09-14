@@ -5,8 +5,8 @@ import com.squareup.javapoet.*;
 import javax.lang.model.element.Modifier;
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.compiler.Util.getParamName;
 import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
+import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
 
 /**
  * the base member builder. just build method for interface.
@@ -68,28 +68,5 @@ import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
                 .returns(TypeName.VOID)
                 .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
         return set;
-    }
-
-    static void getTypeName(FieldData field, TypeInfo info) {
-        final FieldData.TypeCompat typeCompat = field.getTypeCompat();
-        TypeName rawTypeName = typeCompat.getInterfaceTypeName();
-        switch (field.getComplexType()) {
-            case FieldData.COMPLEXT_ARRAY:
-                info.setTypeName(ArrayTypeName.of(rawTypeName));
-                info.setParamName("array1");
-                break;
-
-            case FieldData.COMPLEXT_LIST:
-                info.setParamName("list1");
-                TypeName typeName = ParameterizedTypeName.get(ClassName.get(List.class),
-                        rawTypeName.box());
-                info.setTypeName(typeName);
-                break;
-
-            default:
-                info.setTypeName(rawTypeName);
-                info.setParamName(getParamName(typeCompat.getTypeMirror()));
-                break;
-        }
     }
 }

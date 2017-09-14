@@ -4,13 +4,17 @@ import com.heaven7.java.data.mediator.BaseMediator;
 import com.heaven7.java.data.mediator.Property;
 
 /**
+ * generate proxy step:
+ *    1, generate MediatorSharedProperties.
+ *    2, generate filed .like 'PROP_AGE' and etc.
+ *    3, override method for interface (property or others)
  * Created by heaven7 on 2017/9/13 0013.
  */
 public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStudent{
 
-    private static final Property PROP_AGE   = new Property("int", "age", 0);
-    private static final Property PROP_NAME  = new Property("java.lang.String", "name", 0);
-    private static final Property PROP_ID    = new Property("java.lang.String", "id", 0);
+    private static final Property PROP_AGE   = MediatorSharedProperties.get("int", "age", 0);
+    private static final Property PROP_NAME  = MediatorSharedProperties.get("java.lang.String", "name", 0);
+    private static final Property PROP_ID    = MediatorSharedProperties.get("java.lang.String", "id", 0);
 
     public StudentModule_Proxy(IStudent student){
        super(student);
@@ -66,8 +70,8 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
 
 
     @Override
-    public Object copy() {
-        return getTarget().copy();
+    public IStudent copy() {
+        return (IStudent) getTarget().copy();
     }
 
     @Override
@@ -78,5 +82,15 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     @Override
     public void reset() {
         getTarget().reset();
+    }
+
+    @Override
+    public void clearShare() {
+        getTarget().clearShare();
+    }
+
+    @Override
+    public void clearSnap() {
+        getTarget().clearSnap();
     }
 }

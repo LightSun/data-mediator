@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
@@ -116,4 +117,12 @@ public abstract class TypeInterfaceFiller {
                                                        List<FieldData> datas, boolean hasSuperClass) {
         return null;
     }
+
+    /**
+     * build super methods for proxy. (override method from super.)
+     * @param builder the method builder.
+     * @param ee the method element
+     * @param cn_interface the class name of interface. may copy need.
+     */
+    public abstract void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface);
 }

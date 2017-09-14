@@ -5,11 +5,13 @@ import com.heaven7.java.data.mediator.compiler.replacer.CopyReplacer;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
+import javax.annotation.processing.Filer;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
+import javax.lang.model.util.Types;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
@@ -20,19 +22,22 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-public class Util {
+public final class Util {
 
     private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
     private static final HashMap<String, BaseTypeReplacer> sReplacerMap;
 
     static {
         sFillerMap = new HashMap<String, TypeInterfaceFiller>();
+
         final TypeInterfaceFiller sCopyFiller = new TypeCopyableFiller();
         final TypeInterfaceFiller sResetFiller = new TypeResetableFiller();
         final TypeInterfaceFiller sShareFiller = new TypeShareableFiller();
         final TypeInterfaceFiller sSnapFiller = new TypeSnapableFiller();
+
         final TypeInterfaceFiller sParcelable = new TypeParcelableFiller();
         final TypeInterfaceFiller sSerializable = new TypeSerializableFiller();
+
         sFillerMap.put(sCopyFiller.getInterfaceName(), sCopyFiller);
         sFillerMap.put(sResetFiller.getInterfaceName(), sResetFiller);
         sFillerMap.put(sShareFiller.getInterfaceName(), sShareFiller);
@@ -42,6 +47,29 @@ public class Util {
 
         sReplacerMap = new HashMap<>();
         sReplacerMap.put(NAME_COPYA, new CopyReplacer());
+    }
+
+    public static void getTypeName(FieldData field, TypeInfo info) {
+        final FieldData.TypeCompat typeCompat = field.getTypeCompat();
+        TypeName rawTypeName = typeCompat.getInterfaceTypeName();
+        switch (field.getComplexType()) {
+            case FieldData.COMPLEXT_ARRAY:
+                info.setTypeName(ArrayTypeName.of(rawTypeName));
+                info.setParamName(field.getPropertyName() + "1");
+                break;
+
+            case FieldData.COMPLEXT_LIST:
+                info.setParamName(field.getPropertyName() + "1");
+                TypeName typeName = ParameterizedTypeName.get(ClassName.get(List.class),
+                        rawTypeName.box());
+                info.setTypeName(typeName);
+                break;
+
+            default:
+                info.setTypeName(rawTypeName);
+                info.setParamName(getParamName(typeCompat.getTypeMirror()));
+                break;
+        }
     }
 
     public static void setLogPrinter(ProcessorPrinter pp) {
@@ -121,6 +149,74 @@ public class Util {
         return null;
     }
 
+    //te is the target element to generate  Proxy.
+    public static List<MethodSpec.Builder> getProxyClassMethodBuilders(TargetClassInfo info, TypeElement te,
+                                                                   Types types, ProcessorPrinter pp){
+
+        //the method builders for super interface.
+        final List<MethodSpec.Builder> methodBuilders =  new ArrayList<>();
+        final ClassName cn_inter = ClassName.get(info.getPackageName(), info.getDirectParentInterfaceName());
+
+        List<? extends TypeMirror> interfaces = getProxyWantInterfaces(te, types);
+        for(TypeMirror tm : interfaces){
+            TypeCompat tc = new TypeCompat(types, tm);
+            TypeElement type = tc.getElementAsType();
+            String interfaceName = type.getQualifiedName().toString();
+            final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
+
+            //get all method element
+            final List<? extends Element> list = type.getEnclosedElements();
+            if (list == null || list.size() == 0) {
+                return methodBuilders;
+            }
+            for(Element e : list){
+                pp.note("getProxyClassMethodBuilders >>> interface method: kind = " + e.getKind()
+                        + " ," + e.getSimpleName() + ", e = " + e);
+                if (!(e instanceof ExecutableElement)) {
+                    continue;
+                }
+                ExecutableElement ee = (ExecutableElement) e;
+                MethodSpec.Builder builder = overriding(info, interfaceName, ee, pp, cn_inter)
+                        .addModifiers(Modifier.PUBLIC);
+                if(filler != null){
+                    filler.buildProxyMethod(builder, ee, cn_inter);
+                    methodBuilders.add(builder);
+                }
+            }
+        }
+        return methodBuilders;
+    }
+
+    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types){
+        return getProxyWantInterfaces(te, types , new ArrayList<String>());
+    }
+    /**
+     * get the interface that proxy want.
+     * @param te the type element of current visit which is annotated by {@literal @}{@linkplain com.heaven7.java.data.mediator.Fields}.
+     * @param types the type util
+     * @return the all interfaces proxy need.
+     */
+    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types, List<String> existInterfaces) {
+
+        final List<TypeMirror> list = new ArrayList<>();
+
+        List<? extends TypeMirror> interfaces = te.getInterfaces();
+        for(TypeMirror tm: interfaces){
+            TypeCompat tc = new TypeCompat(types, tm);
+            TypeElement newTe = tc.getElementAsType();
+            String interfaceName = newTe.getQualifiedName().toString();
+            if(sFillerMap.get(interfaceName) != null){
+                if(!existInterfaces.contains(interfaceName)) {
+                    list.add(tm);
+                    existInterfaces.add(interfaceName);
+                }
+            }else{
+                list.addAll(getProxyWantInterfaces(newTe, types, existInterfaces));
+            }
+        }
+        return list;
+    }
+
     /**
      * get field builder.
      *
@@ -168,7 +264,7 @@ public class Util {
             if (!(e instanceof ExecutableElement)) {
                 continue;
             }
-            // may have inner class/interface/field
+            // may have inner class/interface/field.so 'e' may not be method
             ExecutableElement ee = (ExecutableElement) e;
             MethodSpec.Builder builder = overriding(info,interfaceName,  ee, pp, returnReplace)
                     .addModifiers(Modifier.PUBLIC);

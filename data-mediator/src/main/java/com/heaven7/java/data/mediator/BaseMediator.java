@@ -20,6 +20,9 @@ public class BaseMediator<T>{
      * @param target the target object which is ready to been act as agent by this.
      */
     public BaseMediator(T target){
+         if(target == null){
+             throw new NullPointerException();
+         }
          this.mTarget = target;
          this.mCallbacks = new ArrayList<>();
     }

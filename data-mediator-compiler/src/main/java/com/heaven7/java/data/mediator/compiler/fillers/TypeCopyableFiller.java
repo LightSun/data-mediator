@@ -83,18 +83,25 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
                 break;
 
             default:
-                note("");
+                note("buildMethodStatement","unsupport override : " + ee.getSimpleName().toString());
         }
-      /*  TypeName current = TypeVariableName.get(curClassName);
-        builder.addStatement("$T result = new $T()", current, current);
-        if(list != null && !list.isEmpty()) {
-            for (FieldData fd : list) {
-                note(" ======= fd = " + fd.getPropertyName());
-                builder.addStatement("result.$L = this.$L", fd.getPropertyName(), fd.getPropertyName());
-            }
-        }
-        builder.addStatement("return result");*/
         note(method, "end  --------------");
+    }
+
+    @Override
+    public void buildProxyMethod(MethodSpec.Builder  builder, ExecutableElement ee, ClassName cn_interface) {
+        switch (ee.getSimpleName().toString()){
+            case NAME_COPY:
+                builder.addStatement("return ($T) getTarget().copy()", cn_interface);
+                break;
+
+            case NAME_COPY_TO:
+                builder.addStatement("getTarget().copyTo(out)");
+                break;
+
+            default:
+                note("buildProxyMethod","unsupport override methods : " + ee.getSimpleName().toString());
+        }
     }
 }
 /**

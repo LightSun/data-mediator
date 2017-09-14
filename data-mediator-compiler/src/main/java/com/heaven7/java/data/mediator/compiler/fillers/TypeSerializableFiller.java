@@ -4,6 +4,7 @@ import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
 import com.heaven7.java.data.mediator.compiler.Util;
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
 
@@ -40,5 +41,10 @@ public class TypeSerializableFiller extends TypeInterfaceFiller {
                 Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
                 .initializer(" 1L");
         return new FieldSpec.Builder []{ builder };
+    }
+
+    @Override
+    public void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface) {
+        // no need
     }
 }

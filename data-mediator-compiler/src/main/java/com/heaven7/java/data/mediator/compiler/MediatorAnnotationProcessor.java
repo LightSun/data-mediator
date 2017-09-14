@@ -4,17 +4,13 @@ import com.heaven7.java.data.mediator.Fields;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
@@ -95,9 +91,18 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 return true;
             }
         }
-       //generate code
+        //generate SharedProperties.
+        final Set<FieldData> fields = new HashSet<>();
+        for (CodeGenerator generator : mProxyClassMap.values()) {
+            fields.addAll(generator.getFieldDatas());
+        }
+        if(!SharedPropertiesGenerator.generateSharedProperties(fields, mFiler, mPrinter)){
+            return true;
+        }
+
+       //generate module interface and impl code
        for (CodeGenerator generator : mProxyClassMap.values()) {
-           if(!generator.generateProxy(mPrinter, mFiler)){
+           if(!generator.generateJavaFile(mSuperDelegate ,mFiler, mPrinter)){
                return true;
            }
         }
@@ -160,7 +165,28 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             error(enclosingElement, msg);
             isValid = false;
         }
-
         return isValid;
     }
+
+    private final ISuperFieldDelegate mSuperDelegate = new ISuperFieldDelegate() {
+        @Override
+        public List<FieldData> getDependFields(TypeElement te) {
+            List<FieldData> list = new ArrayList<>();
+
+            List<? extends AnnotationMirror> mirrors = te.getAnnotationMirrors();
+            for(AnnotationMirror am : mirrors){
+                DeclaredType type = am.getAnnotationType();
+                if(type.toString().equals(Fields.class.getName())){
+                    list.addAll(getProxyClass(te).getFieldDatas());
+                }
+            }
+            //a depend b, b depend c ,,, etc.
+            List<? extends TypeMirror> superInterfaces = te.getInterfaces();
+            for(TypeMirror tm : superInterfaces){
+                final TypeElement newTe = (TypeElement) ((DeclaredType) tm).asElement();
+                list.addAll(getDependFields(newTe)); //recursion
+            }
+            return list;
+        }
+    };
 }

@@ -19,6 +19,9 @@ public class Property{
      private final int complexType;
 
      public Property(String type, String name, int complexType) {
+          if(type == null || name == null){
+               throw new NullPointerException();
+          }
           this.type = type;
           this.name = name;
           this.complexType = complexType;
@@ -54,5 +57,25 @@ public class Property{
      }
      public int getComplexType() {
           return complexType;
+     }
+
+     @Override
+     public boolean equals(Object o) {
+          if (this == o) return true;
+          if (o == null || getClass() != o.getClass()) return false;
+
+          Property property = (Property) o;
+
+          if (complexType != property.complexType) return false;
+          if (!type.equals(property.type)) return false;
+          return name.equals(property.name);
+     }
+
+     @Override
+     public int hashCode() {
+          int result = type.hashCode();
+          result = 31 * result + name.hashCode();
+          result = 31 * result + complexType;
+          return result;
      }
 }

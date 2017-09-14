@@ -41,6 +41,23 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
     }
 
     @Override
+    public void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface) {
+        switch (ee.getSimpleName().toString()){
+            case METHOD_DESC_CONTENT:
+                builder.addStatement("return 0");
+                break;
+
+            case METHOD_WRITE_TO_PARCEL:
+                builder.addStatement("throw new $T($S)", UnsupportedOperationException.class,
+                        "proxy don't support parcelable. you should use "+ DataMediatorConstants.IMPL_SUFFIX +" class instead.");
+                break;
+
+            default:
+                note("buildProxyMethod", "unsupport override method: " + ee.getSimpleName().toString());
+        }
+    }
+
+    @Override
     public MethodSpec.Builder[] createConstructBuilder(String pkgName, String interName, String classname,
                                                        List<FieldData> datas, boolean hasSuperClass) {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()

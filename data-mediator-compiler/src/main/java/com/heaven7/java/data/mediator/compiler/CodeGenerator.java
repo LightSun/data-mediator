@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PROXY_SUFFIX;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 /**
@@ -51,7 +52,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
      *  3：parceable. 等处理
      * @param mPrinter
      */
-    public boolean generateProxy(ProcessorPrinter mPrinter, Filer filer) {
+    public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
         mPrinter.note(" <<< generateProxy >>> field datas = " + mFields);
@@ -193,9 +194,21 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         sClassBuilder.build(implBuilder, mFields);
         //here classFile is a class .java file
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
+
         try {
             interfaceFile.writeTo(filer);
             classFile.writeTo(filer);
+
+            //handle proxy class.
+            mClassInfo.setCurrentClassname(interfaceName + PROXY_SUFFIX);
+            mClassInfo.setSuperClass(null);
+
+            //generate some method from super class.
+            List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(mClassInfo, mElement, mTypes, mPrinter);
+            //generate proxy class. with bese method for fields.
+            if(!ProxyGenerator.generateProxy(mClassInfo, mFields, builders, delegate, filer, mPrinter)){
+                return false;
+            }
         } catch (IOException e) {
             mPrinter.error(Util.toString(e));
             return false;
