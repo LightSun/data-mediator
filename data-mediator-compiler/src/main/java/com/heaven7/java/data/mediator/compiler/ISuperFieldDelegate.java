@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 import javax.lang.model.element.TypeElement;
 import java.util.List;
+import java.util.Set;
 
 /**
  * the super field delegate which is used to get field from super interface that is annotated by
@@ -15,6 +16,6 @@ public interface ISuperFieldDelegate {
      * @param te the current type element which to generate .java file,
      * @return the all depend fields.
      */
-    List<FieldData>  getDependFields(TypeElement te);
+    Set<FieldData> getDependFields(TypeElement te);
 
 }

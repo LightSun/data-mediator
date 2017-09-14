@@ -8,6 +8,7 @@ import javax.tools.Diagnostic;
  */
 /*public*/ class ProcessorPrinter {
 
+    private static final boolean sDebug = false;
     private final Messager mMessager;
 
     public ProcessorPrinter(Messager mMessager) {
@@ -33,6 +34,9 @@ import javax.tools.Diagnostic;
         print(Diagnostic.Kind.ERROR, obj1, objs);
     }
     public void print(Diagnostic.Kind kind, Object obj1, Object... objs) {
+        if(!sDebug){
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(obj1 != null ? obj1.toString() : null).append(" ");
         for (Object obj : objs) {

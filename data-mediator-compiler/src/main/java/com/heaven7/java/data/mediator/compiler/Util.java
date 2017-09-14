@@ -24,6 +24,7 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
  */
 public final class Util {
 
+    private static final String TAG = "Util";
     private static final HashMap<String, TypeInterfaceFiller> sFillerMap;
     private static final HashMap<String, BaseTypeReplacer> sReplacerMap;
 
@@ -157,7 +158,8 @@ public final class Util {
         final List<MethodSpec.Builder> methodBuilders =  new ArrayList<>();
         final ClassName cn_inter = ClassName.get(info.getPackageName(), info.getDirectParentInterfaceName());
 
-        List<? extends TypeMirror> interfaces = getProxyWantInterfaces(te, types);
+        List<? extends TypeMirror> interfaces = getProxyWantInterfaces(te, types, pp);
+        pp.note(TAG, "getProxyClassMethodBuilders", "te : " + te + " ,superinterfaces = " + interfaces);
         for(TypeMirror tm : interfaces){
             TypeCompat tc = new TypeCompat(types, tm);
             TypeElement type = tc.getElementAsType();
@@ -166,9 +168,6 @@ public final class Util {
 
             //get all method element
             final List<? extends Element> list = type.getEnclosedElements();
-            if (list == null || list.size() == 0) {
-                return methodBuilders;
-            }
             for(Element e : list){
                 pp.note("getProxyClassMethodBuilders >>> interface method: kind = " + e.getKind()
                         + " ," + e.getSimpleName() + ", e = " + e);
@@ -187,8 +186,8 @@ public final class Util {
         return methodBuilders;
     }
 
-    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types){
-        return getProxyWantInterfaces(te, types , new ArrayList<String>());
+    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types, ProcessorPrinter pp){
+        return getProxyWantInterfaces(te, types , new ArrayList<String>(), pp);
     }
     /**
      * get the interface that proxy want.
@@ -196,12 +195,15 @@ public final class Util {
      * @param types the type util
      * @return the all interfaces proxy need.
      */
-    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types, List<String> existInterfaces) {
+    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types,
+                                                                     List<String> existInterfaces, ProcessorPrinter pp) {
 
+        pp.note(TAG, "getProxyWantInterfaces", "start >>> te : " + te);
         final List<TypeMirror> list = new ArrayList<>();
 
         List<? extends TypeMirror> interfaces = te.getInterfaces();
         for(TypeMirror tm: interfaces){
+            pp.note(TAG, "getProxyWantInterfaces", "TypeMirror : " + tm);
             TypeCompat tc = new TypeCompat(types, tm);
             TypeElement newTe = tc.getElementAsType();
             String interfaceName = newTe.getQualifiedName().toString();
@@ -211,9 +213,10 @@ public final class Util {
                     existInterfaces.add(interfaceName);
                 }
             }else{
-                list.addAll(getProxyWantInterfaces(newTe, types, existInterfaces));
+                list.addAll(getProxyWantInterfaces(newTe, types, existInterfaces, pp));
             }
         }
+        pp.note(TAG, "getProxyWantInterfaces", "end >>> te : " + te);
         return list;
     }
 

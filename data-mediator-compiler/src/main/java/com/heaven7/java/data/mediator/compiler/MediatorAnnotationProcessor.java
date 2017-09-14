@@ -32,7 +32,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     private ProcessorPrinter mPrinter; ////日志相关的处理
     private Types mTypeUtils;
 
-    private Map<String, CodeGenerator> mProxyClassMap = new HashMap<>();
+    private final Map<String, CodeGenerator> mProxyClassMap = new HashMap<>();
 
     private void note(Object msg, Object... objs) {
         mPrinter.note(msg, objs);
@@ -41,9 +41,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     private void error(Object obj1, Object... objs) {
         mPrinter.error(obj1, objs);
     }
-    /**
-     * 处理器的初始化方法，可以获取相关的工具类
-     */
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -54,9 +52,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         mPrinter.note(TAG, "init", processingEnv.getOptions());
     }
 
-    /**
-     * 指定哪些注解应该被注解处理器注册
-     */
     @Override
     public Set<String> getSupportedOptions() {
         Set<String> types = new LinkedHashSet<>();
@@ -65,20 +60,16 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         return types;
     }
 
-    /**
-     * 用来指定你使用的 java 版本
-     */
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
     }
-
-    /**
-     * 处理器的主方法，用于扫描处理注解，生成java文件
-     */
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         note("annotations: " + annotations);
+        if(annotations.isEmpty()){
+            return false;
+        }
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
@@ -170,8 +161,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
     private final ISuperFieldDelegate mSuperDelegate = new ISuperFieldDelegate() {
         @Override
-        public List<FieldData> getDependFields(TypeElement te) {
-            List<FieldData> list = new ArrayList<>();
+        public Set<FieldData> getDependFields(TypeElement te) {
+            Set<FieldData> list = new HashSet<>();
 
             List<? extends AnnotationMirror> mirrors = te.getAnnotationMirrors();
             for(AnnotationMirror am : mirrors){

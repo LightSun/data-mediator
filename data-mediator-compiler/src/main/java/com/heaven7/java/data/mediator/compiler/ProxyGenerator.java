@@ -46,7 +46,7 @@ public class ProxyGenerator {
         List<? extends TypeMirror> superInterfaces = info.getSuperInterfaces();
         for(TypeMirror mirror : superInterfaces){
             final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-            List<FieldData> dependFields = delegate.getDependFields(te);
+            Set<FieldData> dependFields = delegate.getDependFields(te);
             if(dependFields != null){
                 temp_datas.addAll(dependFields);
             }
@@ -112,9 +112,9 @@ public class ProxyGenerator {
                     .addParameter(info.getTypeName(), paramName)
                     .addStatement("$T target = getTarget()", cn_inter)
                     .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName)
-                    .beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
-                    .addStatement("return")
-                    .endControlFlow()
+                        .beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
+                        .addStatement("return")
+                        .endControlFlow()
                     .addStatement("target.$N($N)", setMethodName, paramName)
                     .addStatement("dispatchCallbacks($N, oldValue, $N)",  fieldName, paramName)
                     .build());
