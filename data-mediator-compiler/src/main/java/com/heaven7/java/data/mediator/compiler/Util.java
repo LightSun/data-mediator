@@ -109,7 +109,7 @@ public final class Util {
 
             default:
                 info.setTypeName(rawTypeName);
-                info.setParamName(getParamName(typeCompat.getTypeMirror()));
+                info.setParamName(field.getPropertyName() + "1");
                 break;
         }
     }

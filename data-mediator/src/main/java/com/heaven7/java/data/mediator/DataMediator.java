@@ -29,10 +29,21 @@ public final class DataMediator<T> {
     }
 
     /**
-     * get the module data.
+     * get the exact module data.
      * @return the module data.
      */
     public final T getData(){
+        return getBaseMediator().getTarget();
+    }
+
+    /**
+     * get the data proxy which support additional features, such as: property change callback.
+     * @return the data proxy.
+     * @see DataMediatorCallback
+     * @see BaseMediator
+     * @since 1.0.6
+     */
+    public final T getDataProxy(){
         return (T) mediator;
     }
 
