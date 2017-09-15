@@ -40,9 +40,9 @@ data-mediator
 ```java
 dependencies {
     //......
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.0.1'
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0.4'
+    compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
     apt 'com.squareup:javapoet:1.9.0'
     
     // 如果需要生成对应的gson注解。请加入gson依赖。比如
