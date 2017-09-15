@@ -55,9 +55,15 @@ public final class FieldFlags {
     public static final int FLAG_RESET    = 0x00000020;//32
 
     /**
+     * a scope flag for toString method.
+     * @since 1.0.5
+     */
+    public static final int FLAG_TO_STRING = 0x00000040; //64
+
+    /**
      * a scope flag. that means the field is parcelable which will be used by android.os.Parcelable.
      */
-    public static final int FLAG_PARCEABLE = 0x00000080; //128
+    public static final int FLAG_PARCELABLE = 0x00000080; //128
 
     /**
      * a flag of third lib google-gson : that means the field will add annotation com.google.gson.annotations.Expose.
@@ -102,12 +108,12 @@ public final class FieldFlags {
 
     /**
      * a complex flags. which have multi flags. {@linkplain #FLAG_SNAP},{@linkplain #FLAG_RESET},
-     * {@linkplain #FLAG_SHARE}, {@linkplain #FLAG_COPY}, {@linkplain #FLAG_PARCEABLE}.
+     * {@linkplain #FLAG_SHARE}, {@linkplain #FLAG_COPY}, {@linkplain #FLAG_PARCELABLE}.
      * @see #FLAG_SNAP
      * @see #FLAG_RESET
      * @see #FLAG_SHARE
      * @see #FLAG_COPY
-     * @see #FLAG_PARCEABLE
+     * @see #FLAG_PARCELABLE
      */
-    public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE | FLAG_COPY | FLAG_PARCEABLE;
+    public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
 }
