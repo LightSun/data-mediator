@@ -1,5 +1,6 @@
 data-mediator
 =======================================
+ see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
   方便数据层的使用。支持gson.
 
@@ -17,7 +18,7 @@ data-mediator
 - 字段: 支持生成字段的注解 for 'Google-Gson'.
 - 字段: 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 和其他类型 .
   数组和list结构同样支持。（map暂不支持parcelable）
-- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。
+- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
       作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
       
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
@@ -120,6 +121,22 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 ```
 
 
+# License
 
+    Copyright 2017   
+                group of data-mediator
+        member: heaven7(donshine723@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 
