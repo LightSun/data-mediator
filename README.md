@@ -6,6 +6,7 @@ data-mediator
 
 # 特点
 - 自动生成数据的接口和实现类.可自动实现Serializable和 Parcelable(android)接口。
+- 自动生成代理层 以便监听数据变化。
 - 为数据实体 自动生成get 和 set方法 
 - 字段: 支持生成字段的注解 for 'Google-Gson'.
 - 字段: 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 和其他类型 .
@@ -17,10 +18,9 @@ data-mediator
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
     所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
 
--  自动生成代理层 以便监听数据变化。
+- 支持android平台的双向绑定
 
 # 即将支持的特性
-- 实现android平台的双向绑定
 - 丰富的调用层支持和数据缓存
 - 更多接口的支持
 
@@ -64,78 +64,51 @@ public interface Student extends Serializable, Parcelable{
 }
 ```
 
-生成的实现类为
+5, 点击android studio 工具栏上的图标
+  <img src="/res/as_make_project.png" alt="make roject icon" width="35px" height="36px" />
+  即可自动生成代码（数据定义没变化，不会重新生成）。
+
+
+6, 调用示例 （来自data-mediator-demo下的[TestDoubleBindActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestDoubleBindActivity.java)）
 ```java
-public class StudentModule_Impl implements StudentModule, Serializable, Parcelable {
-  private static final long serialVersionUID =  1L;
+/**
+ * 双向绑定示例程序.
+ */
+public class TestDoubleBindActivity extends AppCompatActivity {
 
-  public static final Parcelable.Creator<StudentModule_Impl> CREATOR = new Parcelable.Creator<StudentModule_Impl>() {
+    @BindView(R.id.tv_desc)
+    TextView mTv_desc;
+
+    DataMediator<StudentModule> mMediator;
+
     @Override
-    public StudentModule_Impl createFromParcel(Parcel in) {
-      return new StudentModule_Impl(in);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        //为数据模型创建  中介者。
+        mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
+        //双向绑定
+        DoubleBindUtil.bindDouble(mMediator, mTv_desc, "name");
+
+        mMediator.getDataProxy().setName("heaven7");
     }
 
-    @Override
-    public StudentModule_Impl[] newArray(int size) {
-      return new StudentModule_Impl[size];
+    //从TextView 设置文本, 同事改变数据的属性.
+    @OnClick(R.id.bt_set_text_on_TextView)
+    public void onClickSetTextOnTextView(View v){
+        mTv_desc.setText("set by set_text_on_TextView");
     }
-  };
 
-  private int age;
+    //从数据代理去设置 数据属性，同时更改绑定的TextView属性
+    @OnClick(R.id.bt_set_text_on_mediator)
+    public void onClickSetTextOnMediator(View v){
+        mMediator.getDataProxy().setName("set_text_on_mediator");
+    }
 
-  private String name;
-
-  private long id;
-
-  protected StudentModule_Impl(Parcel in) {
-    this.age = in.readInt();
-    this.name = in.readString();
-    this.id = in.readLong();
-  }
-
-  public StudentModule_Impl() {
-  }
-
-  @Override
-  public int describeContents() {
-    return 0;
-  }
-
-  @Override
-  public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.age);
-    dest.writeString(this.name);
-    dest.writeLong(this.id);
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public void setAge(int int1) {
-    this.age = int1;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String string1) {
-    this.name = string1;
-  }
-
-  public long getId() {
-    return id;
-  }
-
-  public void setId(long long1) {
-    this.id = long1;
-  }
 }
-
 ```
-
-更多文档请看 [the wiki](https://github.com/LightSun/data-mediator/wiki).
 
 
 
