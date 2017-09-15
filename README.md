@@ -18,7 +18,7 @@ data-mediator
 - 字段: 支持生成字段的注解 for 'Google-Gson'.
 - 字段: 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 和其他类型 .
   数组和list结构同样支持。（map暂不支持parcelable）
-- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。
+- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
       作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
       
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
