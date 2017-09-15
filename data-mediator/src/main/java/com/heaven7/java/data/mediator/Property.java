@@ -1,5 +1,8 @@
 package com.heaven7.java.data.mediator;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 /**
  * this is a property class indicate a field of Entity Data.
  * Created by heaven7 on 2017/9/11 0011.
@@ -35,7 +38,7 @@ public class Property{
      }
 
      /**
-      * get the property base type.
+      * get base the property type.
       * @return the base type.
       * @see #getComplexType()
       */
@@ -62,6 +65,31 @@ public class Property{
                return Class.forName(type);
           } catch (ClassNotFoundException e) {
                throw new RuntimeException(e);
+          }
+     }
+
+     /**
+      * get the actual type .no matter is array, list or  primitive .
+      * <p>if you use reflect to set property. you should care, here is a demo:</p>
+      * <code><pre>
+      TestBean bean = new TestBean(null);
+      Method setArray = TestBean.class.getMethod("setArray",
+      Array.newInstance(String.class,0).getClass());
+      setArray.invoke(bean, (Object)new String[]{"123", "456"});
+      * </pre></code>
+      * @return the actual type.
+      * @since 1.0.7
+      */
+     public Class<?> getActualType(){
+          switch (getComplexType()){
+               case FieldFlags.COMPLEXT_ARRAY:
+                    return Array.newInstance(getType(), 0).getClass();
+
+               case FieldFlags.COMPLEXT_LIST:
+                    return List.class;
+
+               default:
+                   return getType();
           }
      }
 
