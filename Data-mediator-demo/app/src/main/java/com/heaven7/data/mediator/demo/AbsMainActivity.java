@@ -1,4 +1,4 @@
-package com.heaven7.data.mediator.demo.activity;
+package com.heaven7.data.mediator.demo;
 
 import android.app.Activity;
 import android.app.ListActivity;
