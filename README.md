@@ -17,7 +17,8 @@ data-mediator
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
     所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
-
+    
+- 支持toString和 FLAG_TO_STRING 标志.
 - 支持android平台的双向绑定
 
 # 即将支持的特性
