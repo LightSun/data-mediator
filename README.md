@@ -66,8 +66,8 @@ public interface Student extends Serializable, Parcelable{
 
 5, 点击android studio 工具栏上的图标
 
-  <img src="/res/as_make_project.png" alt="make roject icon" width="35px" height="36px" />
-  
+   ![make project](res/as_make_project.png)
+
   即可自动生成代码（数据定义没变化，不会重新生成）。
 
 
