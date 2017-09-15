@@ -53,4 +53,14 @@ public class StudentModuleImpl implements IStudent {
     public void reset() {
 
     }
+
+    @Override
+    public void clearShare() {
+
+    }
+
+    @Override
+    public void clearSnap() {
+
+    }
 }

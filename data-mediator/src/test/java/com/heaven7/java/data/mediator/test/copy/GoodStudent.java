@@ -22,7 +22,7 @@ public class GoodStudent extends Student implements IGoodStudent{
     }
 
     @Override
-    public void copyTo(IStudent out) {
+    public void copyTo(Object out) {
         super.copyTo(out);
         if(out instanceof IGoodStudent){
             IGoodStudent gs = (IGoodStudent) out;

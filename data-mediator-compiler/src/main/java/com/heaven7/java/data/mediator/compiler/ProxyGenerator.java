@@ -65,6 +65,19 @@ public class ProxyGenerator {
                 typeBuilder.addMethod(builder.build());
             }
         }
+        //addToString
+        /**
+         @Override
+        public String toString() {
+        return getTarget().toString();
+        }
+         */
+        MethodSpec.Builder toString = MethodSpec.methodBuilder("toString")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Override.class)
+                .returns(String.class)
+                .addStatement("return getTarget().toString()");
+        typeBuilder.addMethod(toString.build());
 
         TypeSpec typeSpec = typeBuilder.build();
         try {

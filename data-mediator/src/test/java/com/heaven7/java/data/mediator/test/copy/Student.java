@@ -25,7 +25,9 @@ public class Student implements IStudent, ICopyable<IStudent> {
     }
 
     @Override
-    public void copyTo(IStudent out) {
-        out.setName(this.name);
+    public void copyTo(Object out) {
+        if(out instanceof IStudent){
+            ((IStudent)out).setName(this.getName());
+        }
     }
 }

@@ -93,4 +93,9 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     public void clearSnap() {
         getTarget().clearSnap();
     }
+
+    @Override
+    public String toString() {
+        return getTarget().toString();
+    }
 }

@@ -37,7 +37,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
 
     @Override
     public int getInterfaceFlag() {
-        return FieldData.FLAG_PARCEABLE;
+        return FieldData.FLAG_PARCELABLE;
     }
 
     @Override

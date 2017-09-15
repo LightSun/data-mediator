@@ -10,10 +10,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
@@ -26,7 +23,39 @@ public class PoetTest {
     public static void main(String[] args){
         //generateSharedProperties();
         //generateSharedProperties2();
-        testGenerateProxy();
+       // testGenerateProxy();
+        testToStringBuilder();
+    }
+
+    private static void testToStringBuilder(){
+        List<FieldData> set = new ArrayList<>();
+        FieldData fd = new FieldData();
+        fd.setPropertyName("name");
+        fd.setFlags(FieldData.FLAG_TO_STRING);
+        fd.setTypeCompat(new TypeCompatImpl(null, new TypeMirrorImpl("java.lang.String")));
+
+        set.add(fd);
+        fd = new FieldData();
+        fd.setPropertyName("id");
+        fd.setFlags(FieldData.FLAG_TO_STRING);
+        fd.setTypeCompat(new TypeCompatImpl(null, new TypeMirrorImpl("java.lang.String")));
+        set.add(fd);
+
+        fd = new FieldData();
+        fd.setPropertyName("age");
+        fd.setFlags(FieldData.FLAG_TO_STRING);
+        fd.setTypeCompat(new TypeCompatImpl(null, new TypeMirrorImpl("int")));
+        set.add(fd);
+
+        MethodSpec.Builder toStringBuilder = Util.createToStringBuilderForImpl(set, false);
+
+        TypeSpec typeSpec = TypeSpec.classBuilder("TestBean")
+                .addModifiers(Modifier.PUBLIC)
+                .addMethod(toStringBuilder.build())
+                .build();
+
+        String test = JavaFile.builder("com.heaven7.test", typeSpec).build().toString();
+        System.out.println(test);
     }
 
     private static void testGenerateProxy() {

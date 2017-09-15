@@ -39,6 +39,11 @@ public class DataKnife {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		return "test_value";
+	}
+
 	//PoolConfig
 	//hide
 	private static class Pool{

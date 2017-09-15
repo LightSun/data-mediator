@@ -50,6 +50,47 @@ public final class Util {
         sReplacerMap.put(NAME_COPYA, new CopyReplacer());
     }
 
+    public static MethodSpec.Builder createToStringBuilderForImpl(List<FieldData> dataList, boolean hasSuper){
+        ClassName cn_objects = ClassName.get("com.heaven7.java.base.util", "Objects");
+        MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString")
+                .addModifiers(Modifier.PUBLIC)
+                .addAnnotation(Override.class)
+                .returns(String.class);
+
+        final List<FieldData> tempList = new ArrayList<>();
+        for ( FieldData fd : dataList) {
+            if (hasFlag(fd.getFlags(), FLAG_TO_STRING)) {
+                tempList.add(fd);
+            }
+        }
+        if(tempList.isEmpty()){
+            toStringBuilder.addCode(CodeBlock.of("$T.ToStringHelper helper = $T.toStringHelper(this);\n",
+                    cn_objects, cn_objects));
+        }else {
+            toStringBuilder.addCode(CodeBlock.of("$T.ToStringHelper helper = $T.toStringHelper(this)\n",
+                    cn_objects, cn_objects));
+            for (int size = tempList.size(), i = 0; i < size; i++) {
+                FieldData fd = tempList.get(i);
+                if (hasFlag(fd.getFlags(), FLAG_TO_STRING)) {
+                    if (i == size - 1) {
+                        toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N));\n",
+                                fd.getPropertyName(), String.class, fd.getPropertyName());
+                    } else {
+                        toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N))\n",
+                                fd.getPropertyName(), String.class, fd.getPropertyName());
+                    }
+                }
+            }
+        }
+
+        if(hasSuper){
+            toStringBuilder.addStatement("return helper.toString() + super.toString()");
+        }else {
+            toStringBuilder.addStatement("return helper.toString()");
+        }
+        return toStringBuilder;
+    }
+
     public static void getTypeName(FieldData field, TypeInfo info) {
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
         TypeName rawTypeName = typeCompat.getInterfaceTypeName();

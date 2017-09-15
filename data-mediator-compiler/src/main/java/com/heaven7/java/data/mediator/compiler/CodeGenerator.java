@@ -13,8 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PROXY_SUFFIX;
+import static com.heaven7.java.data.mediator.compiler.FieldData.FLAG_TO_STRING;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 /**
@@ -46,11 +48,11 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     }
 
     /**
-     *  生成所需要的接口 ， 类
-     *  1: 生成正确。
-     *  2：重新生成问题
-     *  3：parceable. 等处理
-     * @param mPrinter
+     * generate interface, impl and proxy .java files.
+     * @param delegate the super field delegate
+     * @param filer the filer,
+     * @param mPrinter the log printer
+     * @return true if generate success.
      */
     public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
         //package name
@@ -98,6 +100,12 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 interfaceBuilder.addSuperinterface(tc.getInterfaceTypeName());
             }
         }
+        //add String toString.
+        interfaceBuilder.addMethod(MethodSpec.methodBuilder("toString")
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .returns(String.class)
+                .build());
+
         sInterfaceBuilder.build(interfaceBuilder, mFields);
 
         TypeSpec interfaceModule = interfaceBuilder.build();
@@ -191,11 +199,16 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 }
             }
         }
+        //add String toString().
+        implBuilder.addMethod(createToStringBuilderForImpl(mFields, usedSuperClass)
+                .build());
+
         sClassBuilder.build(implBuilder, mFields);
         //here classFile is a class .java file
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
 
         try {
+            //interface and impl
             interfaceFile.writeTo(filer);
             classFile.writeTo(filer);
 
