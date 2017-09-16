@@ -119,6 +119,41 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 
 }
 ```
+# 注解 @Field类成员说明.
+``java
+@Target(ElementType.ANNOTATION_TYPE)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Field {
+
+//指定属性名称， 主要用于set,get方法。 和 字段的名称.比如 我们属性为name的。那么get .方法为setName
+	String propName();
+ 
+ // 指定gson @SerializedName 注解的名称。默认是不添加这个注解的。 用途请见[gson](https://github.com/google/gson)
+	String seriaName() default "";
+ 
+ //指定字段的基本类型
+	Class<?> type() default String.class;
+ 
+ //指定字段的复合类型. 目前支持list和array. 其他暂不支持。
+	int complexType() default 0;
+ 
+ //字段支持的标志，有：
+ //    FLAG_TRANSIENT， 用于不被序列化(Serializable).
+ //    FLAG_VOLATILE:   用于普通多线程。(线程少的情况)
+ //    FLAG_SNAP:       字段的域标志。 表示当实现ISnapable 接口后， 该字段会支持这个接口。
+ //    FLAG_SHARE:      字段的域标志。 表示当实现IShareable接口后， 该字段会支持这个接口。
+ //    FLAG_COPY:       字段的域标志。 表示当实现ICopyable 接口后， 该字段会支持这个接口。
+ //    FLAG_RESET:　　　字段的域标志。 表示当实现IResetable 接口后， 该字段会支持这个接口。　
+ //    FLAG_TO_STRING:  字段的域标志。表示会参与toString.
+ //    FLAG_PARCELABLE: 字段的域标志。表示会参与parcelable (android)
+ //    FLAG_EXPOSE_DEFAULT:             表示将会生成默认的gson注解@Expose. 默认  serialize = true, deserialize = true
+ //    FLAG_EXPOSE_SERIALIZE_FALSE:     表示@Expose注解的 serialize = false.
+ //    FLAG_EXPOSE_DESERIALIZE_FALSE：  表示@Expose注解的 deserialize = false.
+ //ps : 所有这个标志均在 FieldFlags类中、
+	int flags() default 0;
+ 
+}
+```
 
 
 # License
