@@ -3,7 +3,6 @@ package com.heaven7.java.data.mediator.compiler.fillers;
 import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
-import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -30,7 +29,7 @@ public class TypeSerializableFiller extends TypeInterfaceFiller {
     public void buildMethodStatement(String curPkg, String parentInterfaceName,
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder,
-                                     List<FieldData> list, boolean hasSuperClass) {
+                                     List<FieldData> list, boolean hasSuperClass, int superFlagsForParent) {
         // don't need
     }
 

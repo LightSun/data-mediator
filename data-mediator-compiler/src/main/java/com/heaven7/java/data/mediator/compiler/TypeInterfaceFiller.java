@@ -49,7 +49,7 @@ public abstract class TypeInterfaceFiller {
     public abstract String getInterfaceName();
 
     /**
-     * get interface flag.
+     * get interface flag. or 0 if not use/focued
      *
      * @return the inter face flag.
      */
@@ -80,17 +80,18 @@ public abstract class TypeInterfaceFiller {
 
     /**
      * add method statement for builder with list of FieldData which has this fillers's flags.
-     *  @param curPkg              current package name of generate java file.
+     * @param curPkg              current package name of generate java file.
      * @param parentInterfaceName the parent of current class which will generate java file.
      * @param curClassName        current simple class name of generate java file.
      * @param ee                  the execute element. often is the method of interface.
      * @param builder             the method builder.
      * @param list                the FieldData list
      * @param hasSuperClass       true if have super class.
+     * @param superInterfaceFlagsForParent the super interface flags for parent.
      */
     public abstract void buildMethodStatement(String curPkg, String parentInterfaceName, String curClassName,
                                               ExecutableElement ee, MethodSpec.Builder builder,
-                                              List<FieldData> list, boolean hasSuperClass);
+                       List<FieldData> list, boolean hasSuperClass, int superInterfaceFlagsForParent);
 
     /**
      *  create field builder. if you want. eg: android.os.Parcelable
@@ -100,7 +101,8 @@ public abstract class TypeInterfaceFiller {
      * @param datas the field datas.
      * @return the field data array.
      */
-    public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName, String classname, List<FieldData> datas) {
+    public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName,
+                                                  String classname, List<FieldData> datas) {
         return null;
     }
 
@@ -111,10 +113,11 @@ public abstract class TypeInterfaceFiller {
      * @param classname the classname
      * @param datas the field datas.
      * @param hasSuperClass true if have super class.
+     * @param superFlagsForParent super interface flags for parent.
      * @return the constructor builders.
      */
     public MethodSpec.Builder[] createConstructBuilder(String pkgName, String interName, String classname,
-                                                       List<FieldData> datas, boolean hasSuperClass) {
+                       List<FieldData> datas, boolean hasSuperClass, int superFlagsForParent) {
         return null;
     }
 

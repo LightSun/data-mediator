@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.compiler.test;
+package com.heaven7.java.data.mediator.test;
 
 import com.heaven7.java.data.mediator.ICopyable;
 import com.heaven7.java.data.mediator.IResetable;

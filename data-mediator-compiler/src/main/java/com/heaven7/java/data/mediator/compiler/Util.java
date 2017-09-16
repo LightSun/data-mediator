@@ -5,7 +5,6 @@ import com.heaven7.java.data.mediator.compiler.replacer.CopyReplacer;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
-import javax.annotation.processing.Filer;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -16,7 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_COPYA;
 import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 
 /**
@@ -175,18 +174,20 @@ public final class Util {
      * @param classname the class name
      * @param tc        the type element wrapper.
      * @param map       the map.
+     * @param superFlagsForParent
      * @return the field builders.
      */
     public static MethodSpec.Builder[] getImplClassConstructBuilders(String pkgName, String classname,
                                                                      TypeCompat tc, Map<String, List<FieldData>> map,
-                                                                     boolean hasSuperClass) {
+                                                                     boolean hasSuperClass, int superFlagsForParent) {
         final TypeElement te = tc.getElementAsType();
         String interfaceIname = te.getQualifiedName().toString();
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceIname);
         if (filler != null) {
             final List<FieldData> datas = map.get(filler.getInterfaceName());
             final String interName = te.getSimpleName().toString();
-            return filler.createConstructBuilder(pkgName, interName, classname, datas, hasSuperClass);
+            return filler.createConstructBuilder(pkgName, interName, classname,
+                    datas, hasSuperClass, superFlagsForParent);
         }
         return null;
     }
@@ -199,7 +200,7 @@ public final class Util {
         final List<MethodSpec.Builder> methodBuilders =  new ArrayList<>();
         final ClassName cn_inter = ClassName.get(info.getPackageName(), info.getDirectParentInterfaceName());
 
-        List<? extends TypeMirror> interfaces = getProxyWantInterfaces(te, types, pp);
+        List<? extends TypeMirror> interfaces = getAttentionInterfaces(te, types, pp);
         pp.note(TAG, "getProxyClassMethodBuilders", "te : " + te + " ,superinterfaces = " + interfaces);
         for(TypeMirror tm : interfaces){
             TypeCompat tc = new TypeCompat(types, tm);
@@ -227,24 +228,68 @@ public final class Util {
         return methodBuilders;
     }
 
-    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types, ProcessorPrinter pp){
-        return getProxyWantInterfaces(te, types , new ArrayList<String>(), pp);
+    /**
+     * get the super interface flags for parent
+     * @param te the current type element
+     * @param pp the log printer
+     * @return the flags.
+     */
+    public static int getSuperInterfaceFlagForParent(TypeElement te,
+                             Types types, ProcessorPrinter pp){
+        List<? extends TypeMirror> interfaces = te.getInterfaces();
+        for(TypeMirror tm: interfaces) {
+            pp.note(TAG, "getSuperInteraceFlagForParent", "TypeMirror : " + tm);
+            TypeCompat tc = new TypeCompat(types, tm);
+            if(tc.getReplaceInterfaceTypeName() != null){
+                //we want.
+                int sum = 0;
+                for(Integer val : getSuperInterfaceFlags(tc.getElementAsType(), types, pp)){
+                    sum += val;
+                }
+                return sum;
+            }
+        }
+        return 0;
+    }
+    private static Set<Integer> getSuperInterfaceFlags(TypeElement te,
+                                                Types types, ProcessorPrinter pp){
+        Set<Integer> set = new HashSet<>();
+        List<? extends TypeMirror> interfaces = te.getInterfaces();
+        for(TypeMirror tm: interfaces) {
+            pp.note(TAG, "getSuperInteraceFlag", "TypeMirror : " + tm);
+            TypeCompat tc = new TypeCompat(types, tm);
+            TypeElement newTe = tc.getElementAsType();
+            String interfaceName = newTe.getQualifiedName().toString();
+            final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
+            if (filler != null) {
+                set.add(filler.getInterfaceFlag());
+            }else{
+                set.addAll(getSuperInterfaceFlags(te, types, pp));
+            }
+        }
+        return set;
+    }
+
+    public static List<? extends TypeMirror> getAttentionInterfaces(TypeElement te,
+                           Types types, ProcessorPrinter pp){
+        return getAttentionInterfaces(te, types , new ArrayList<String>(), pp);
     }
     /**
-     * get the interface that proxy want.
-     * @param te the type element of current visit which is annotated by {@literal @}{@linkplain com.heaven7.java.data.mediator.Fields}.
+     * get the focus/attention interface ,like Parcelable, IReset and etc..
+     * @param te the type element of current visit
+     *           which is annotated by {@literal @}{@linkplain com.heaven7.java.data.mediator.Fields}.
      * @param types the type util
      * @return the all interfaces proxy need.
      */
-    private static List<? extends TypeMirror> getProxyWantInterfaces(TypeElement te, Types types,
+    private static List<? extends TypeMirror> getAttentionInterfaces(TypeElement te, Types types,
                                                                      List<String> existInterfaces, ProcessorPrinter pp) {
 
-        pp.note(TAG, "getProxyWantInterfaces", "start >>> te : " + te);
+        pp.note(TAG, "getAttentionInterfaces", "start >>> te : " + te);
         final List<TypeMirror> list = new ArrayList<>();
 
         List<? extends TypeMirror> interfaces = te.getInterfaces();
         for(TypeMirror tm: interfaces){
-            pp.note(TAG, "getProxyWantInterfaces", "TypeMirror : " + tm);
+            pp.note(TAG, "getAttentionInterfaces", "TypeMirror : " + tm);
             TypeCompat tc = new TypeCompat(types, tm);
             TypeElement newTe = tc.getElementAsType();
             String interfaceName = newTe.getQualifiedName().toString();
@@ -254,10 +299,10 @@ public final class Util {
                     existInterfaces.add(interfaceName);
                 }
             }else{
-                list.addAll(getProxyWantInterfaces(newTe, types, existInterfaces, pp));
+                list.addAll(getAttentionInterfaces(newTe, types, existInterfaces, pp));
             }
         }
-        pp.note(TAG, "getProxyWantInterfaces", "end >>> te : " + te);
+        pp.note(TAG, "getAttentionInterfaces", "end >>> te : " + te);
         return list;
     }
 
@@ -285,10 +330,11 @@ public final class Util {
 
     //classname  : current class , here mirror is interface .can't be primitive.
     //tc indicate interface
+    //superFlagsForParent  super interface flags for parent
     public static MethodSpec.Builder[] getImplClassMethodBuilders(TargetClassInfo info,
                                                                   TypeName returnReplace, TypeCompat tc,
-                                                                  ProcessorPrinter pp, Map<String, List<FieldData>> map,
-                                                                  boolean usedSuperClass) {
+                                           ProcessorPrinter pp, Map<String, List<FieldData>> map,
+                                        boolean usedSuperClass, int superFlagsForParent) {
         pp.note("map = " + map);
         final TypeElement te = tc.getElementAsType();
         final String interfaceName = te.getQualifiedName().toString();
@@ -317,8 +363,9 @@ public final class Util {
                 final String interName = te.getSimpleName().toString();
                 pp.note("interface name = " + interName);
                 pp.note("field datas = " + datas);
-                filler.buildMethodStatement(info.getPackageName(), info.getDirectParentInterfaceName(), info.getCurrentClassname(),
-                        ee, builder, datas, usedSuperClass);
+                filler.buildMethodStatement(info.getPackageName(),
+                        info.getDirectParentInterfaceName(), info.getCurrentClassname(),
+                        ee, builder, datas, usedSuperClass , superFlagsForParent);
             }
             builders[i++] = builder;
         }

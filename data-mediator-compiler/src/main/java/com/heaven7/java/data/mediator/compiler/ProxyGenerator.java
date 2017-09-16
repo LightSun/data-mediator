@@ -94,14 +94,12 @@ public class ProxyGenerator {
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
 
-        int index = 0;
         //fields and methods.
         for(FieldData field : set){
             final TypeInfo info = new TypeInfo();
             getTypeName(field, info);
 
-            final String fieldName = "PROP_" + field.getPropertyName().toUpperCase() + "_" + index;
-            index ++;
+            final String fieldName = "PROP_" + field.getPropertyName();
             typeBuilder.addField(FieldSpec.builder(cn_prop,
                     fieldName, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                     .initializer("$T.get($S, $S, $L)",

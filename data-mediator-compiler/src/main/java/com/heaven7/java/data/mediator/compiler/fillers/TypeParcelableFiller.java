@@ -59,12 +59,12 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
 
     @Override
     public MethodSpec.Builder[] createConstructBuilder(String pkgName, String interName, String classname,
-                                                       List<FieldData> datas, boolean hasSuperClass) {
+                             List<FieldData> datas, boolean hasSuperClass, int superFlagsForParent) {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PROTECTED)
                 .addParameter(mParcel, "in");
 
-        if (hasSuperClass) {
+        if (hasSuperClass && (superFlagsForParent & getInterfaceFlag()) != 0) {
             builder.addStatement("super(in)");
         }
         if(datas != null) {
@@ -79,7 +79,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
     @Override
     public void buildMethodStatement(String curPkg, String parentInterfaceName, String curClassName,
                                      ExecutableElement ee, MethodSpec.Builder builder,
-                                     List<FieldData> list, boolean hasSuperClass) {
+                                     List<FieldData> list, boolean hasSuperClass, int superFlagsForParent) {
        switch (ee.getSimpleName().toString()){
            case METHOD_DESC_CONTENT:
                builder.addStatement("return 0");
@@ -87,7 +87,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
 
            case METHOD_WRITE_TO_PARCEL:
              //super.writeToParcel(dest, flags);
-               if(hasSuperClass){
+               if(hasSuperClass && (superFlagsForParent & getInterfaceFlag()) != 0){
                    builder.addStatement("super.writeToParcel(dest, flags)");
                }
                if(list != null) {
@@ -320,9 +320,12 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
     //TODO next version will support SparseArray and etc.
     private void addReadParcelStatement(MethodSpec.Builder builder, FieldData fieldData, String in) {
 
-        final TypeMirror tm = fieldData.getTypeCompat().getTypeMirror();
+        final FieldData.TypeCompat typeCompat = fieldData.getTypeCompat();
+        final boolean isReplaced = typeCompat.getSuperClassTypeName() != null;
+        final TypeMirror tm = typeCompat.getTypeMirror();
         final String prop = fieldData.getPropertyName();
-        final TypeName typeName = TypeName.get(tm);
+        final TypeName typeName = isReplaced ? typeCompat.getSuperClassTypeName() : TypeName.get(tm);
+        final TypeName typeName_raw = typeCompat.getInterfaceTypeName();
 
         switch (fieldData.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY: {
@@ -472,8 +475,19 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
                         break;
 
                     default:
-                         //  this.intents = in.createTypedArrayList(Intent.CREATOR);
-                        builder.addStatement("this.$N = $N.createTypedArrayList($T.CREATOR)", prop, in, typeName);
+                        // this.intents = in.createTypedArrayList(Intent.CREATOR);
+                        if(isReplaced){
+                            /*
+                List<? super TestBindModule_Impl> list = in.createTypedArrayList(TestBindModule_Impl.CREATOR);
+                this.student2 = (List<TestBindModule>) list;
+                             */
+                            builder.addStatement("$T<? super $T> list_$N = $N.createTypedArrayList($T.CREATOR)",
+                                          List.class, typeName, prop, in, typeName)
+                                    .addStatement("this.$N = (List<$T>)list_$N", prop, typeName_raw, prop);
+                        }else {
+                            builder.addStatement("this.$N = $N.createTypedArrayList($T.CREATOR)",
+                                    prop, in, typeName);
+                        }
                         break;
 
                 }

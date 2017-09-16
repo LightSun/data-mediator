@@ -33,7 +33,7 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
     @Override
     public void buildMethodStatement(String curPkg, String parentInterfaceName, String curClassName,
                                      ExecutableElement ee, MethodSpec.Builder builder, List<FieldData> list,
-                                     boolean hasSuperClass) {
+                                     boolean hasSuperClass, int superFlagsForParent) {
         final String method = "buildMethodStatement";
         note(method, "start  --------------");
 

@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.compiler.test;
+package com.heaven7.java.data.mediator.test;
 
 import com.heaven7.java.data.mediator.BaseMediator;
 import com.heaven7.java.data.mediator.Property;
@@ -10,7 +10,7 @@ import com.heaven7.java.data.mediator.Property;
  *    3, override method for interface (property or others)
  * Created by heaven7 on 2017/9/13 0013.
  */
-public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStudent{
+public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStudent {
 
     private static final Property PROP_AGE   = MediatorSharedProperties.get("int", "age", 0);
     private static final Property PROP_NAME  = MediatorSharedProperties.get("java.lang.String", "name", 0);

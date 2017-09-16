@@ -13,10 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PROXY_SUFFIX;
-import static com.heaven7.java.data.mediator.compiler.FieldData.FLAG_TO_STRING;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 /**
@@ -128,7 +126,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
-       // implBuilder.superclass()
+        final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
+        // implBuilder.superclass()
         boolean usedSuperClass = false ;
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
@@ -150,7 +149,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                         usedSuperClass = true;
                     }
                 }
-                //fields
+              /*  //fields
                 FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(packageName,
                         className, tc, groupMap);
                 if(fieldBuilders != null){
@@ -161,7 +160,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
 
                 //constructor
                 MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName,
-                        className, tc, groupMap, usedSuperClass);
+                        className, tc, groupMap, usedSuperClass, superFlagsForParent);
                 if(constructors != null ){
                     for (MethodSpec.Builder builder : constructors){
                         if(builder != null){
@@ -172,7 +171,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
 
                 //methods
                 MethodSpec.Builder[] builders =  getImplClassMethodBuilders(mClassInfo,
-                        selfParamType, tc, mPrinter, groupMap, usedSuperClass);
+                        selfParamType, tc, mPrinter, groupMap, usedSuperClass, superFlagsForParent);
                 mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
                 if(builders != null){
                     mPrinter.note("implBuilder >>> start builders");
@@ -183,9 +182,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                     }
                     mPrinter.note("implBuilder >>> start  end ...builderss");
                 }
-
+*/
                 //override the super method of the super interfaces' superinterface(like ICopyable and etc.)
-                for(TypeMirror temp_tm : tc.getElementAsType().getInterfaces()){
+               /* for(TypeMirror temp_tm : tc.getElementAsType().getInterfaces()){
                     FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
                     builders =  getImplClassMethodBuilders(mClassInfo,
                             selfParamType, temp_tc, mPrinter, groupMap, usedSuperClass);
@@ -195,6 +194,55 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                                 implBuilder.addMethod(builder.build());
                             }
                         }
+                    }*/
+                   //override super constructor for parcelable. and etc.
+                   // note : super class may not impl Parcelable..
+/*                   constructors = getImplClassConstructBuilders(packageName,
+                            className, temp_tc, groupMap, usedSuperClass);
+                    if(constructors != null ){
+                        for (MethodSpec.Builder builder : constructors){
+                            if(builder != null){
+                                implBuilder.addMethod(builder.build());
+                            }
+                        }
+                    }
+                }*/
+            }
+        }
+        //do something for super class/interface
+        final List<? extends TypeMirror> mirrors = getAttentionInterfaces(mElement, mTypes, mPrinter);
+        for(TypeMirror temp_tm : mirrors){
+            FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
+            //normal methods
+           MethodSpec.Builder[] builders =  getImplClassMethodBuilders(mClassInfo,
+                    selfParamType, temp_tc, mPrinter,
+                   groupMap, usedSuperClass, superFlagsForParent);
+            if(builders != null){
+                for (MethodSpec.Builder builder : builders){
+                    if(builder != null) {
+                        implBuilder.addMethod(builder.build());
+                    }
+                }
+            }
+            //override super [constructor] for parcelable. and etc.
+            // note : super class may not impl Parcelable.
+            MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName,
+                    className, temp_tc, groupMap, usedSuperClass, superFlagsForParent);
+            if(constructors != null ){
+                for (MethodSpec.Builder builder : constructors){
+                    if(builder != null){
+                        implBuilder.addMethod(builder.build());
+                    }
+                }
+            }
+
+            //[fields]
+            final FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(
+                    packageName, className, temp_tc, groupMap);
+            if(fieldBuilders != null) {
+                for (FieldSpec.Builder builder : fieldBuilders) {
+                    if(builder != null){
+                        implBuilder.addField(builder.build());
                     }
                 }
             }
@@ -217,7 +265,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             mClassInfo.setSuperClass(null);
 
             //generate some method from super class.
-            List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(mClassInfo, mElement, mTypes, mPrinter);
+            List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(
+                    mClassInfo, mElement, mTypes, mPrinter);
             //generate proxy class. with bese method for fields.
             if(!ProxyGenerator.generateProxy(mClassInfo, mFields, builders, delegate, filer, mPrinter)){
                 return false;

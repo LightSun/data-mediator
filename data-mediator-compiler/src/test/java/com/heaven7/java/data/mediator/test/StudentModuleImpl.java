@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.compiler.test;
+package com.heaven7.java.data.mediator.test;
 
 /**
  * Created by heaven7 on 2017/9/13 0013.
