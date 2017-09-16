@@ -34,12 +34,12 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
     private final Map<String, CodeGenerator> mProxyClassMap = new HashMap<>();
 
-    private void note(Object msg, Object... objs) {
-        mPrinter.note(msg, objs);
+    private void note(String method, Object... objs) {
+        mPrinter.note(TAG, method, objs);
     }
 
-    private void error(Object obj1, Object... objs) {
-        mPrinter.error(obj1, objs);
+    private void error(String method, Object... objs) {
+        mPrinter.error(TAG ,method, objs);
     }
 
     @Override
@@ -66,14 +66,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     }
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        note("annotations: " + annotations);
+        note("process","annotations: " + annotations);
         if(annotations.isEmpty()){
             return false;
         }
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
-            note("@Fields >>> element = " + element);
+            note(":process" ,"@Fields >>> element = " + element);
             if (!isValid(Fields.class, "interface", element)) {
                 return true;
             }
@@ -122,7 +122,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         //被注解的类的全名
         String qualifiedName = enclosingElement.getQualifiedName().toString();
         // anno = com.heaven7.java.data.mediator.Fields ,parent element is: com.heaven7.data.mediator.demo.Student
-        note("anno = " + annotationClass.getName() + " ,full name is: " + qualifiedName);
+        note(TAG, "isValid","anno = " + annotationClass.getName() + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
         // 所在的类不能是private或static修饰
@@ -130,7 +130,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
             String msg = String.format("@%s %s must not be private or static. (%s.%s)", annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
-            error(enclosingElement, msg);
+            error("isValid", enclosingElement, msg);
             isValid = false;
         }
 
@@ -138,7 +138,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if (enclosingElement.getKind() != ElementKind.INTERFACE) {
             String msg = String.format("@%s %s may only be contained in interfaces. (%s.%s)", annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
-            error(enclosingElement, msg);
+            error("isValid",enclosingElement, msg);
             isValid = false;
         }
 
@@ -146,14 +146,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if (qualifiedName.startsWith("android.")) {
             String msg = String.format("@%s-annotated class incorrectly in Android framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);
-            error(enclosingElement, msg);
+            error("isValid",enclosingElement, msg);
             isValid = false;
         }
         //不能在java框架层注解
         if (qualifiedName.startsWith("java.")) {
             String msg = String.format("@%s-annotated class incorrectly in Java framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);
-            error(enclosingElement, msg);
+            error("isValid",enclosingElement, msg);
             isValid = false;
         }
         return isValid;

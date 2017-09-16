@@ -28,12 +28,6 @@ public abstract class TypeInterfaceFiller {
         return mWeakPrinter != null ? mWeakPrinter.get() : null;
     }
 
-    protected void note(Object... objs) {
-        final ProcessorPrinter printer = getLogPrinter();
-        if (printer != null) {
-            printer.note(getClass().getSimpleName() +" >>> ", objs);
-        }
-    }
     protected void note(String method, Object... objs) {
         final ProcessorPrinter printer = getLogPrinter();
         if (printer != null) {

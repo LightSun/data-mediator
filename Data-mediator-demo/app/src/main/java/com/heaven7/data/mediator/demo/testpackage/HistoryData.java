@@ -11,7 +11,7 @@ import java.util.List;
  * Created by heaven7 on 2017/9/8 0008.
  */
 
-public class HistoryData implements Parcelable {
+public class HistoryData /*extends ResultData*/ implements Parcelable {
 
     private int age;
     private long id;

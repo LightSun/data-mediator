@@ -22,6 +22,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
  */
 /*public*/ class CodeGenerator {
 
+    private static final String TAG = CodeGenerator.class.getSimpleName();
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 
@@ -53,16 +54,17 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
      * @return true if generate success.
      */
     public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
+
+        final String log_method = "generateJavaFile";
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
-        mPrinter.note(" <<< generateProxy >>> field datas = " + mFields);
+        mPrinter.note(TAG, log_method,  "fields = "+mFields);
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
-        //final TypeMirror superclass = mElement.getSuperclass();
-        mPrinter.note("super interfaces: " + interfaces);
+        mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);
 
         setLogPrinter(mPrinter);
         final Map<String, List<FieldData>> groupMap = groupFieldByInterface(mFields);
-        mPrinter.note("generateProxy >> groupMap = " + groupMap);
+       // mPrinter.note("generateProxy >> groupMap = " + groupMap);
         /**
          * for interface.
          */
@@ -131,7 +133,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         boolean usedSuperClass = false ;
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
-            mPrinter.note("implBuilder >>> start interfaces ");
+            //mPrinter.note("implBuilder >>> start interfaces ");
             for(TypeMirror tm : interfaces){
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
@@ -141,7 +143,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 TypeName superclassType = tc.getSuperClassTypeName();
                 if(superclassType != null){
                     if(usedSuperClass){
-                        mPrinter.error("implBuilder >> can only have one super class.");
+                        mPrinter.error(TAG, log_method, "implBuilder >> can only have one super class.");
                         return false;
                     }else{
                         implBuilder.superclass(superclassType);
@@ -149,64 +151,6 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                         usedSuperClass = true;
                     }
                 }
-              /*  //fields
-                FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(packageName,
-                        className, tc, groupMap);
-                if(fieldBuilders != null){
-                    for( FieldSpec.Builder fieldBuilder : fieldBuilders){
-                        implBuilder.addField(fieldBuilder.build());
-                    }
-                }
-
-                //constructor
-                MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName,
-                        className, tc, groupMap, usedSuperClass, superFlagsForParent);
-                if(constructors != null ){
-                    for (MethodSpec.Builder builder : constructors){
-                        if(builder != null){
-                            implBuilder.addMethod(builder.build());
-                        }
-                    }
-                }
-
-                //methods
-                MethodSpec.Builder[] builders =  getImplClassMethodBuilders(mClassInfo,
-                        selfParamType, tc, mPrinter, groupMap, usedSuperClass, superFlagsForParent);
-                mPrinter.note("implBuilder >>> start  MethodSpec.Builder[] s: " + tm);
-                if(builders != null){
-                    mPrinter.note("implBuilder >>> start builders");
-                    for (MethodSpec.Builder builder : builders){
-                        if(builder != null) {
-                            implBuilder.addMethod(builder.build());
-                        }
-                    }
-                    mPrinter.note("implBuilder >>> start  end ...builderss");
-                }
-*/
-                //override the super method of the super interfaces' superinterface(like ICopyable and etc.)
-               /* for(TypeMirror temp_tm : tc.getElementAsType().getInterfaces()){
-                    FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
-                    builders =  getImplClassMethodBuilders(mClassInfo,
-                            selfParamType, temp_tc, mPrinter, groupMap, usedSuperClass);
-                    if(builders != null){
-                        for (MethodSpec.Builder builder : builders){
-                            if(builder != null) {
-                                implBuilder.addMethod(builder.build());
-                            }
-                        }
-                    }*/
-                   //override super constructor for parcelable. and etc.
-                   // note : super class may not impl Parcelable..
-/*                   constructors = getImplClassConstructBuilders(packageName,
-                            className, temp_tc, groupMap, usedSuperClass);
-                    if(constructors != null ){
-                        for (MethodSpec.Builder builder : constructors){
-                            if(builder != null){
-                                implBuilder.addMethod(builder.build());
-                            }
-                        }
-                    }
-                }*/
             }
         }
         //do something for super class/interface
@@ -272,7 +216,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 return false;
             }
         } catch (IOException e) {
-            mPrinter.error(Util.toString(e));
+            mPrinter.error(TAG, log_method, Util.toString(e));
             return false;
         }finally {
             Util.reset();

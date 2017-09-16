@@ -63,7 +63,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
     public static boolean iterateField(Types types ,List<? extends AnnotationMirror> list, ProcessorPrinter pp, List<FieldData> datas) {
         final String methodName = "iterateField";
-        pp.note("=================== start iterate @Field() ====================");
+        pp.note(TAG, "iterateField", "=================== start iterate @Field() ====================");
         for (AnnotationMirror am1 : list) {
             if (!isValidAnnotation(am1, pp)) {
                 return false;

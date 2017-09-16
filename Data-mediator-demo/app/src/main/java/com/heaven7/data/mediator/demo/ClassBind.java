@@ -13,7 +13,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
 //only ClassBind extends ICopyable.  FLAG_COPY can used.
 
 @Fields({
-      @Field(propName = "student", seriaName = "class_1", type = TestBind.class),
+      @Field(propName = "student", seriaName = "class_1", type = TestBind.class, flags = FLAGS_ALL_SCOPES),
       @Field(propName = "student2", seriaName = "class_2", type = TestBind.class,
               complexType = COMPLEXT_LIST, flags = FLAG_COPY | FLAG_RESET),
       @Field(propName = "student3", seriaName = "class_3", type = TestBind.class,

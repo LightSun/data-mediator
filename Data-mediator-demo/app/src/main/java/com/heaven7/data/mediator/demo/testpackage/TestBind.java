@@ -1,5 +1,7 @@
 package com.heaven7.data.mediator.demo.testpackage;
 
+import android.os.Parcelable;
+
 import com.heaven7.data.mediator.demo.ResultData;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
@@ -11,5 +13,5 @@ import com.heaven7.java.data.mediator.Fields;
         @Field(propName = "name", seriaName = "heaven7", type = String.class),
         @Field(propName = "data", seriaName = "result", type = ResultData.class),
 })
-public interface TestBind {
+public interface TestBind extends Parcelable{
 }

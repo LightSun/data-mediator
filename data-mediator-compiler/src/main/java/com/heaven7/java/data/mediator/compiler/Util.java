@@ -145,7 +145,7 @@ public final class Util {
                                                                   TypeMirror mirror, ProcessorPrinter pp) {
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         final String interfaceName = te.getQualifiedName().toString();
-        pp.note("getInterfaceMethodBuilders() >>> interface name = " + interfaceName);
+        pp.note(TAG, "getInterfaceMethodBuilders", "interface name = " + interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
         if (list == null || list.size() == 0) {
@@ -154,8 +154,6 @@ public final class Util {
         MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
         int i = 0;
         for (Element e : list) {
-            pp.note("getInterfaceMethodBuilders >>> interface method: kind = " + e.getKind()
-                    + " ," + e.getSimpleName() + ", e = " + e);
             //may have inner class/interface/field
             if (e instanceof ExecutableElement) {
                 ExecutableElement ee = (ExecutableElement) e;
@@ -211,8 +209,6 @@ public final class Util {
             //get all method element
             final List<? extends Element> list = type.getEnclosedElements();
             for(Element e : list){
-                pp.note("getProxyClassMethodBuilders >>> interface method: kind = " + e.getKind()
-                        + " ," + e.getSimpleName() + ", e = " + e);
                 if (!(e instanceof ExecutableElement)) {
                     continue;
                 }
@@ -236,14 +232,20 @@ public final class Util {
      */
     public static int getSuperInterfaceFlagForParent(TypeElement te,
                              Types types, ProcessorPrinter pp){
+        final String tag = te.getSimpleName().toString();
         List<? extends TypeMirror> interfaces = te.getInterfaces();
         for(TypeMirror tm: interfaces) {
-            pp.note(TAG, "getSuperInteraceFlagForParent", "TypeMirror : " + tm);
+           // pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm);
             TypeCompat tc = new TypeCompat(types, tm);
+            tc.replaceIfNeed(pp);
+            pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm
+                    + " , replace_inter = " + tc.getReplaceInterfaceTypeName());
             if(tc.getReplaceInterfaceTypeName() != null){
                 //we want.
                 int sum = 0;
-                for(Integer val : getSuperInterfaceFlags(tc.getElementAsType(), types, pp)){
+                final Set<Integer> flags = getSuperInterfaceFlags(tag,
+                        tc.getElementAsType(), types, pp);
+                for(Integer val : flags){
                     sum += val;
                 }
                 return sum;
@@ -251,20 +253,21 @@ public final class Util {
         }
         return 0;
     }
-    private static Set<Integer> getSuperInterfaceFlags(TypeElement te,
-                                                Types types, ProcessorPrinter pp){
-        Set<Integer> set = new HashSet<>();
-        List<? extends TypeMirror> interfaces = te.getInterfaces();
+    private static Set<Integer> getSuperInterfaceFlags(String tag, TypeElement te,
+                                                       Types types, ProcessorPrinter pp){
+        final Set<Integer> set = new HashSet<>();
+        final List<? extends TypeMirror> interfaces = te.getInterfaces();
         for(TypeMirror tm: interfaces) {
-            pp.note(TAG, "getSuperInteraceFlag", "TypeMirror : " + tm);
+            pp.note(TAG + "_" + tag, "getSuperInterfaceFlags", "TypeMirror : " + tm);
             TypeCompat tc = new TypeCompat(types, tm);
             TypeElement newTe = tc.getElementAsType();
             String interfaceName = newTe.getQualifiedName().toString();
             final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
             if (filler != null) {
+                pp.note(tag, "getSuperInterfaceFlags", "has interface flag = " + interfaceName);
                 set.add(filler.getInterfaceFlag());
             }else{
-                set.addAll(getSuperInterfaceFlags(te, types, pp));
+                set.addAll(getSuperInterfaceFlags(tag, newTe, types, pp));
             }
         }
         return set;
@@ -335,10 +338,9 @@ public final class Util {
                                                                   TypeName returnReplace, TypeCompat tc,
                                            ProcessorPrinter pp, Map<String, List<FieldData>> map,
                                         boolean usedSuperClass, int superFlagsForParent) {
-        pp.note("map = " + map);
         final TypeElement te = tc.getElementAsType();
         final String interfaceName = te.getQualifiedName().toString();
-        pp.note("getImplClassMethodBuilders() >>> interface name = " + interfaceName);
+        pp.note(TAG, "getImplClassMethodBuilders() >>> interface name = " + interfaceName);
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
@@ -349,8 +351,6 @@ public final class Util {
         MethodSpec.Builder[] builders = new MethodSpec.Builder[list.size()];
         int i = 0;
         for (Element e : list) {
-            pp.note("getImplClassMethodBuilders >>> interface method: kind = " + e.getKind()
-                    + " ," + e.getSimpleName() + ", e = " + e);
             if (!(e instanceof ExecutableElement)) {
                 continue;
             }
@@ -361,8 +361,8 @@ public final class Util {
             if (filler != null) {
                 final List<FieldData> datas = map.get(filler.getInterfaceName());
                 final String interName = te.getSimpleName().toString();
-                pp.note("interface name = " + interName);
-                pp.note("field datas = " + datas);
+                pp.note(TAG , "getImplClassMethodBuilders", "interface name = " + interName);
+                pp.note(TAG , "getImplClassMethodBuilders","field datas = " + datas);
                 filler.buildMethodStatement(info.getPackageName(),
                         info.getDirectParentInterfaceName(), info.getCurrentClassname(),
                         ee, builder, datas, usedSuperClass , superFlagsForParent);
@@ -594,38 +594,22 @@ public final class Util {
     public static void test(TypeMirror mirror, ProcessorPrinter pp) {
         final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
         Name paramType = te.getQualifiedName();
-        pp.note("test() >>> paramType = " + paramType.toString());
+        pp.note(TAG, "test", "paramType = " + paramType.toString());
 
         final List<? extends Element> list = te.getEnclosedElements();
         for (Element e : list) {
             ExecutableElement ee = (ExecutableElement) e;
-            pp.note("ee_getSimpleName: " + ee.getSimpleName());
-            pp.note("ee_return: " + ee.getReturnType());
-            pp.note("ee_getTypeParameters: " + ee.getTypeParameters());
-            pp.note("ee_getThrownTypes: " + ee.getThrownTypes());
+            pp.note(TAG, "test", "ee_getSimpleName: " + ee.getSimpleName());
+            pp.note(TAG, "test", "ee_return: " + ee.getReturnType());
+            pp.note(TAG, "test", "ee_getTypeParameters: " + ee.getTypeParameters());
+            pp.note(TAG, "test", "ee_getThrownTypes: " + ee.getThrownTypes());
             // pp.note("ee_getReceiverType: " + ee.getReceiverType());
         }
-        pp.note("test() >>> getTypeParameters = " + te.getTypeParameters());
-        pp.note("test() >>> getEnclosedElements = " + list);
-        pp.note("test() >>> getEnclosedElements__2 = " + Arrays.toString(
+        pp.note(TAG, "test", "getTypeParameters = " + te.getTypeParameters());
+        pp.note(TAG, "test", "getEnclosedElements = " + list);
+        pp.note(TAG, "test", "getEnclosedElements__2 = " + Arrays.toString(
                 list.get(0).getClass().getInterfaces()));
-        pp.note("test() >>> getEnclosingElement = " + te.getEnclosingElement());
+        pp.note(TAG, "test", "getEnclosingElement = " + te.getEnclosingElement());
         // pp.note("test() >>> getInterfaces = " + te.getInterfaces());
-    }
-
-    public static void applyType(FieldData data, TypeMirror type, ProcessorPrinter pp)
-            throws ClassNotFoundException {
-        pp.note("============== start applyType() ============ ");
-        /*
-         * 如果这个type不是java和android系统自带的。很可能异常。
-         * com.heaven7.data.mediator.demo.TestBind（依赖的注解）  正在处理...这里肯定异常
-         */
-       /* default:
-            try {
-                data.setType(Class.forName(type.toString().trim()));
-            } catch (ClassNotFoundException e) {
-                pp.note("can't find class . " + type.toString());
-            }
-            break;*/
     }
 }
