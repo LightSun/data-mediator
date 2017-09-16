@@ -126,7 +126,7 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 @Retention(RetentionPolicy.SOURCE)
 public @interface Field {
 
-//指定属性名称， 主要用于set,get方法。 和 字段的名称.比如 我们属性为name的。那么get .方法为setName
+//指定属性名称， 主要用于set,get方法。 和 字段的名称.比如 我们属性为name的。那么get.set方法为getName, setName
 	String propName();
  
  // 指定gson @SerializedName 注解的名称。默认是不添加这个注解的。 用途请见[gson](https://github.com/google/gson)
