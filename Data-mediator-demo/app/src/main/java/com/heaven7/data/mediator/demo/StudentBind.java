@@ -2,12 +2,16 @@ package com.heaven7.data.mediator.demo;
 
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
-import com.heaven7.java.data.mediator.ICopyable;
-import com.heaven7.java.data.mediator.IResetable;
-import com.heaven7.java.data.mediator.IShareable;
-import com.heaven7.java.data.mediator.ISnapable;
+import com.heaven7.java.data.mediator.IDataMediator;
 
-import static com.heaven7.java.data.mediator.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_COPY;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_DEFAULT;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_SERIALIZE_FALSE;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_RESET;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SHARE;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -26,5 +30,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP
         ),
 })
-public interface StudentBind extends ICopyable, IResetable, IShareable, ISnapable {
+public interface StudentBind extends IDataMediator{
 }
