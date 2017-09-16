@@ -119,8 +119,9 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 
 }
 ```
+
 # 注解 @Field类成员说明.
-``java
+```java
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface Field {
