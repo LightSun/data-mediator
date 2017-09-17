@@ -4,6 +4,7 @@ import android.os.Parcelable;
 
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.IDataMediator;
 
 import static com.heaven7.java.data.mediator.FieldFlags.*;
 
@@ -16,5 +17,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
         @Field(propName = "name3", seriaName = "xxx3", type = Integer.class, complexType = COMPLEXT_LIST),
         @Field(propName = "data", seriaName = "result", type = ResultData.class, flags = FLAG_PARCELABLE),
 })
-public interface TestBind2 extends Parcelable {
+public interface TestBind2 extends Parcelable , IDataMediator {
 }

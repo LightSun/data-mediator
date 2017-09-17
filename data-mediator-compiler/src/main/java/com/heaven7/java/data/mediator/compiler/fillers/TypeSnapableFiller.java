@@ -30,7 +30,7 @@ public class TypeSnapableFiller extends TypeResetableFiller {
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder, List<FieldData> list, boolean hasSuperClass, int superFlagsForParent) {
         note("start buildMethodStatement --------------", list);
-        if(hasSuperClass){
+        if(hasSuperClass && (superFlagsForParent & getInterfaceFlag()) != 0){
             builder.addStatement("super.clearSnap()");
         }
         if(list != null && !list.isEmpty()) {

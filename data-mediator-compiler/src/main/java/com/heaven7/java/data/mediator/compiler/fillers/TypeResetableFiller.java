@@ -31,7 +31,7 @@ public class TypeResetableFiller extends TypeInterfaceFiller {
                                      String curClassName, ExecutableElement ee,
                                      MethodSpec.Builder builder, List<FieldData> list, boolean hasSuperClass, int superFlagsForParent) {
         note("start buildMethodStatement --------------");
-        if(hasSuperClass){
+        if(hasSuperClass && (superFlagsForParent & getInterfaceFlag()) != 0){
             builder.addStatement("super.reset()");
         }
         if(list != null && !list.isEmpty()) {

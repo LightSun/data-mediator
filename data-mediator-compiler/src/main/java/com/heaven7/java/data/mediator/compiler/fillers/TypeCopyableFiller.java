@@ -64,7 +64,7 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
              */
             case NAME_COPY_TO:
                 final String paramName = "out";
-                if(hasSuperClass){
+                if(hasSuperClass && (superFlagsForParent & getInterfaceFlag()) != 0 ){
                     builder.addStatement("super.copyTo($N)", paramName);
                 }
 

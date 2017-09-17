@@ -2,6 +2,7 @@ package com.heaven7.data.mediator.demo.testpackage;
 
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.IDataMediator;
 
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
@@ -24,7 +25,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
               complexType = COMPLEXT_ARRAY, flags = FLAG_RESET | FLAG_SNAP),
       @Field(propName = "student4", seriaName = "class_4", type = TestBind.class)
 })
-public interface ClassBind extends TestBind2{ //here不能多继承，
+public interface ClassBind extends TestBind2 ,IDataMediator{ //here不能多继承，
 
 }
 
