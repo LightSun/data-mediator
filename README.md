@@ -136,6 +136,8 @@ public @interface Field {
 	Class<?> type() default String.class;
  
  //指定字段的复合类型. 目前支持list和array. 其他暂不支持。
+ // array为：FieldFlags.COMPLEX_ARRAY  
+ // List:    FieldFlags.COMPLEX_LIST
 	int complexType() default 0;
  
  //字段支持的标志，有：
