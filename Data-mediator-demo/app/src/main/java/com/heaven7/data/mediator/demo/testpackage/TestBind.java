@@ -2,7 +2,6 @@ package com.heaven7.data.mediator.demo.testpackage;
 
 import android.os.Parcelable;
 
-import com.heaven7.data.mediator.demo.ResultData;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 

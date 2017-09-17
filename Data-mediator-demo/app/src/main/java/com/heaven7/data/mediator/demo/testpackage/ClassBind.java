@@ -1,11 +1,15 @@
-package com.heaven7.data.mediator.demo;
+package com.heaven7.data.mediator.demo.testpackage;
 
-import com.heaven7.data.mediator.demo.testpackage.TestBind;
-import com.heaven7.data.mediator.demo.testpackage.TestBind2;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
-import static com.heaven7.java.data.mediator.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_COPY;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_RESET;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
+
 /**
  * Created by heaven7 on 2017/9/5 0005.
  */

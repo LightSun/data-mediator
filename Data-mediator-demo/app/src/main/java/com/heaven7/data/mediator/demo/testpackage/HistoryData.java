@@ -3,8 +3,6 @@ package com.heaven7.data.mediator.demo.testpackage;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.heaven7.data.mediator.demo.ResultData;
-
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package com.heaven7.data.mediator.demo;
+package com.heaven7.data.mediator.demo.testpackage;
 
 import android.content.Intent;
 import android.os.Parcel;
