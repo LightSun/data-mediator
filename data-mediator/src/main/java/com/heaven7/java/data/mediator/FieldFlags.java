@@ -107,13 +107,14 @@ public final class FieldFlags {
 
 
     /**
-     * a complex flags. which have multi flags. {@linkplain #FLAG_SNAP},{@linkplain #FLAG_RESET},
-     * {@linkplain #FLAG_SHARE}, {@linkplain #FLAG_COPY}, {@linkplain #FLAG_PARCELABLE}.
+     * a complex flags. which have multi flags. .
      * @see #FLAG_SNAP
      * @see #FLAG_RESET
      * @see #FLAG_SHARE
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
+     * @see #FLAG_TO_STRING
      */
-    public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
+    public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
+            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
 }
