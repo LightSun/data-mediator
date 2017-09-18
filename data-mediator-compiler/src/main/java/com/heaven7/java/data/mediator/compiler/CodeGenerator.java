@@ -228,7 +228,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             //generate some method from super class.
             List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(
                     mClassInfo, mElement, mTypes, mPrinter);
-            //generate proxy class. with beae method for fields.
+            //generate proxy class. with base method for fields.
             superFields.addAll(mFields);
             if(!ProxyGenerator.generateProxy(mClassInfo, superFields, normalJavaBean ,builders, filer, mPrinter)){
                 return false;

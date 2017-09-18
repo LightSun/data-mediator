@@ -14,6 +14,19 @@ public class NormalTest {
 
         List<IStudent> list3 = (List<IStudent>) list;
         list3.get(0).setName("455556456");
+
+        //省，市, 区，学校，年级，班级。
+
+        // 对象:  外教，学生。 班级？
+        // 房间： 房间号， 开始时间-预计结束时间-实际结束时间。 课程类型，状态(进行中.未开始，已结束)
+        // 同一个老师, 助教，学生不能在多个房间。(修改--)
+
+        log(Math.E);
+        log(Math.exp(1));
+    }
+
+    private static void  log (Object obj){
+        System.out.println(obj);
     }
 
 }
