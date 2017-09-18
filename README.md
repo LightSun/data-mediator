@@ -28,9 +28,9 @@ data-mediator
 - 支持toString和 FLAG_TO_STRING 标志.
 - 支持android平台的双向绑定
 - 支持链式调用. data-mediator-compiler 1.0.9 之后默认链式。
-   如果需要回到普通的java bean. 则需要将注解 @fields的方法 boolean enableChain()。 返回false. 
-   需要注意的是，如果模型之间有继承关系。则需要将父module定义的enableChain 和 child的 enableChain 值相同, 否则编译错误。
-   下面是示例：
+   <br>如果需要回到普通的java bean. 则需要将注解 @fields的方法 boolean enableChain()。 返回false. 
+   <br>需要注意的是，如果模型之间有继承关系。则需要将父module定义的enableChain 和 child的 enableChain 值相同, 否则编译错误。
+   <br>下面是示例：
  ```java
   DataMediator<StudentModule> mediator = DataMediatorFactory.createDataMediator(StudentModule.class);
         //数据代理层
