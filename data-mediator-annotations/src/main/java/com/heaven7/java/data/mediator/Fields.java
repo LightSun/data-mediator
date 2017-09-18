@@ -46,6 +46,7 @@ public @interface Fields {
 	 * </pre></code>
 	 *
 	 * @return true if you like chain call.
+	 * @since 1.0.2
 	 */
 	boolean enableChain() default true;
 }
