@@ -17,14 +17,14 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
 
 //only ClassBind extends ICopyable.  FLAG_COPY can used.
 
-@Fields({
+@Fields(value = {
       @Field(propName = "student", seriaName = "class_1", type = TestBind.class, flags = FLAGS_ALL_SCOPES),
       @Field(propName = "student2", seriaName = "class_2", type = TestBind.class,
               complexType = COMPLEXT_LIST, flags = FLAG_COPY | FLAG_RESET),
       @Field(propName = "student3", seriaName = "class_3", type = TestBind.class,
               complexType = COMPLEXT_ARRAY, flags = FLAG_RESET | FLAG_SNAP),
       @Field(propName = "student4", seriaName = "class_4", type = TestBind.class)
-})
+}, enableChain = false)
 public interface ClassBind extends TestBind2 ,IDataMediator{ //here不能多继承，
 
 }

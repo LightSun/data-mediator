@@ -16,10 +16,13 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String TAG = "ElementHelper";
     private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private static final String KEY_FIELDS_ANNO = "value";
+    private static final String KEY_ENABLE_CHAIN = "enableChain";
 
     //process @Fields
     public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,
-                                             List<? extends AnnotationMirror> annoMirrors, List<FieldData> mFieldDatas) {
+                                             List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
+        final List<FieldData> mFieldDatas = cg.getFieldDatas();
+
         final String methodName = "processAnnotation";
         //@Fields
         for (AnnotationMirror am : annoMirrors) {
@@ -32,29 +35,35 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
                 ExecutableElement key = en.getKey();
                 pp.note(TAG, methodName, "key: " + key);//the method of annotation
-                if (key.getSimpleName().toString().equals(KEY_FIELDS_ANNO)) {
-                    //get all @Field(...)
-                    AnnotationValue value = en.getValue();
-                    Object target = value.getValue();
-                    if (target == null || !(target instanceof List)) {
-                        pp.error(TAG, methodName, "@Fields's value() must be a list.");
-                        return false;
+
+                switch (key.getSimpleName().toString()){
+                    case KEY_FIELDS_ANNO:{
+                        //get all @Field(...)
+                        AnnotationValue value = en.getValue();
+                        Object target = value.getValue();
+                        if (target == null || !(target instanceof List)) {
+                            pp.error(TAG, methodName, "@Fields's value() must be a list.");
+                            return false;
+                        }
+                        List list = (List) target;
+                        if (list.isEmpty()) {
+                            pp.error(TAG, methodName, "@Fields's value() must have value list.");
+                            return false;
+                        }
+                        Object obj = list.get(0);
+                        if (!(obj instanceof AnnotationMirror)) {
+                            pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
+                            return false;
+                        }
+                        if (!iterateField(mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
+                            return false;
+                        }
                     }
-                    List list = (List) target;
-                    if (list.isEmpty()) {
-                        pp.error(TAG, methodName, "@Fields's value() must have value list.");
-                        return false;
-                    }
-                    Object obj = list.get(0);
-                    if (!(obj instanceof AnnotationMirror)) {
-                        pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
-                        return false;
-                    }
-                    if (!iterateField(mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
-                        return false;
-                    }
-                } else {
-                    //do other. current not use
+                        break;
+
+                    case KEY_ENABLE_CHAIN:
+                        cg.setEnableChain((Boolean) en.getValue().getValue());
+                        break;
                 }
             }
         }

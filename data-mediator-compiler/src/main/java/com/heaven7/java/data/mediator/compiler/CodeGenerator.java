@@ -29,6 +29,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     private final Elements mElements;
     private final Types mTypes;
     private final List<FieldData> mFields = new ArrayList<FieldData>();
+    private boolean mEnableChain = true;
+
     private final TargetClassInfo mClassInfo = new TargetClassInfo();
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
@@ -41,6 +43,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         mFields.add(data);
     }
 
+    public void setEnableChain(boolean mEnableChain) {
+        this.mEnableChain = mEnableChain;
+    }
     public  List<FieldData> getFieldDatas(){
         return mFields;
     }
@@ -54,7 +59,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
      */
     public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
 
-        final boolean normalJavaBean = false;
+        final boolean normalJavaBean = !mEnableChain;
         final String log_method = "generateJavaFile";
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
@@ -77,8 +82,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 }
             }
         }
-       // mPrinter.note("generateProxy >> groupMap = " + groupMap);
-        /**
+        /*
          * for interface.
          */
         //public interface xxxModule extends xx1,xx2{  }
