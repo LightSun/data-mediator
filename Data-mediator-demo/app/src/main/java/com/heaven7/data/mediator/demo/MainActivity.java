@@ -13,7 +13,9 @@ public class MainActivity extends AbsMainActivity {
 
     @Override
     protected void addDemos(List<ActivityInfo> list) {
+        list.add(new ActivityInfo(TestPropertyChangeActivity.class, "TestPropertyChangeActivity"));
         list.add(new ActivityInfo(TestDoubleBindActivity.class, "ToastTestActivity"));
+        list.add(new ActivityInfo(TestChainCallActivity.class, "TestChainCallActivity"));
 
     }
 }
