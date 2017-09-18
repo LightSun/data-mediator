@@ -18,6 +18,7 @@
         </activity>
         <!-- demos -->
         <activity android:name=".activity.TestDoubleBindActivity"/>
+        <activity android:name=".activity.TestChainCallActivity"/>
 
 
     </application>

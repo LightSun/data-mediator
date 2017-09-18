@@ -28,7 +28,7 @@ public class TestDoubleBindActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.ac_test_double_bind);
         ButterKnife.bind(this);
 
         //为数据模型创建  中介者。
