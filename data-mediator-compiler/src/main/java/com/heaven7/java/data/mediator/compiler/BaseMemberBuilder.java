@@ -4,6 +4,7 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
+import java.util.Set;
 
 import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
 import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
@@ -16,7 +17,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
 /*public*/ class BaseMemberBuilder {
 
 
-    public final void build(TypeSpec.Builder builder, List<FieldData> mFields) {
+    public final void build(TypeSpec.Builder builder, List<FieldData> mFields, Set<FieldData> superFields, TypeName typeOfReturn) {
         MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
             String nameForMethod = getPropNameForMethod(field);
@@ -30,7 +31,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
             }
             //get and set
             MethodSpec.Builder get = onBuildGet(field, nameForMethod, info);
-            MethodSpec.Builder set = onBuildSet(field, nameForMethod, info);
+            MethodSpec.Builder set = onBuildSet(field, nameForMethod, info, typeOfReturn);
             if(constructorBuilder != null){
                 onBuildConstructor(constructorBuilder, field, info);
             }
@@ -38,10 +39,22 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
                     .addMethod(set.build());
 
         }
+        //change method for super. if use chain mode. chain mode means set method not return void. just return bean interface.
+        if(typeOfReturn != TypeName.VOID && superFields != null){
+            for (FieldData field : superFields){
+                String nameForMethod = getPropNameForMethod(field);
+
+                TypeInfo info = new TypeInfo();
+                getTypeName(field, info);
+                MethodSpec.Builder set = onBuildSuperSet(field, nameForMethod, info, typeOfReturn);
+                builder.addMethod(set.build());
+            }
+        }
         if(constructorBuilder != null){
             builder.addMethod(constructorBuilder.build());
         }
     }
+
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         return null;
     }
@@ -62,10 +75,18 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
     }
 
     protected MethodSpec.Builder onBuildSet(FieldData field,
-                                            String nameForMethod, TypeInfo info) {
+                                            String nameForMethod, TypeInfo info, TypeName typeOfReturn) {
         MethodSpec.Builder set = MethodSpec.methodBuilder(DataMediatorConstants.SET_PREFIX + nameForMethod)
                 .addParameter(info.typeName, info.paramName)
-                .returns(TypeName.VOID)
+                .returns(typeOfReturn)
+                .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
+        return set;
+    }
+
+    protected MethodSpec.Builder onBuildSuperSet(FieldData field, String nameForMethod, TypeInfo info, TypeName typeOfReturn) {
+        MethodSpec.Builder set = MethodSpec.methodBuilder(DataMediatorConstants.SET_PREFIX + nameForMethod)
+                .addParameter(info.typeName, info.paramName)
+                .returns(typeOfReturn)
                 .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC);
         return set;
     }

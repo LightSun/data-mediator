@@ -24,8 +24,8 @@ public class ProxyGenerator {
 
     private static final String TAG = ProxyGenerator.class.getSimpleName();
 
-    public static boolean generateProxy(TargetClassInfo info, List<FieldData> list,
-                                        List<MethodSpec.Builder> superMethods, ISuperFieldDelegate delegate,
+    public static boolean generateProxy(TargetClassInfo info, Set<FieldData> allFields, boolean normalJavaBean ,
+                                        List<MethodSpec.Builder> superMethods,
                                         Filer filer, ProcessorPrinter pp) {
         //String interfaceName  = "IStudent";
        // String pkg  = "com.heaven7.java.data.mediator.compiler.test";
@@ -41,18 +41,8 @@ public class ProxyGenerator {
                 .superclass(superTypeName)
                 .addSuperinterface(cn_inter);
 
-        final Set<FieldData> temp_datas = new HashSet<>(list);
-        //find super fields.
-        List<? extends TypeMirror> superInterfaces = info.getSuperInterfaces();
-        for(TypeMirror mirror : superInterfaces){
-            final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-            Set<FieldData> dependFields = delegate.getDependFields(te);
-            if(dependFields != null){
-                temp_datas.addAll(dependFields);
-            }
-        }
         //build field and methods.
-        buildFieldsAndMethods(temp_datas, cn_inter, typeBuilder);
+        buildFieldsAndMethods(allFields, cn_inter, typeBuilder, normalJavaBean);
 
         //constructor
         typeBuilder.addMethod(MethodSpec.constructorBuilder().addParameter(cn_inter, "base")
@@ -90,7 +80,7 @@ public class ProxyGenerator {
         return true;
     }
 
-    private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter, TypeSpec.Builder typeBuilder) {
+    private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter, TypeSpec.Builder typeBuilder, boolean normalJavaBean) {
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
 
@@ -117,18 +107,28 @@ public class ProxyGenerator {
             //set
             final String setMethodName = SET_PREFIX + nameForMethod;
             final String paramName = info.getParamName();
-            typeBuilder.addMethod(MethodSpec.methodBuilder(setMethodName)
+
+            MethodSpec.Builder setBuilder = MethodSpec.methodBuilder(setMethodName)
                     .addModifiers(Modifier.PUBLIC)
-                    .returns(TypeName.VOID)
+                    .returns(normalJavaBean ? TypeName.VOID : cn_inter)
                     .addParameter(info.getTypeName(), paramName)
                     .addStatement("$T target = getTarget()", cn_inter)
-                    .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName)
-                        .beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
-                        .addStatement("return")
+                    .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName);
+            if(!normalJavaBean){
+                setBuilder.beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
+                        .addCode("return this;\n")
                         .endControlFlow()
-                    .addStatement("target.$N($N)", setMethodName, paramName)
-                    .addStatement("dispatchCallbacks($N, oldValue, $N)",  fieldName, paramName)
-                    .build());
+                        .addStatement("target.$N($N)", setMethodName, paramName)
+                        .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName)
+                        .addCode("return this;\n");
+            }else{
+                setBuilder.beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
+                        .addCode("return ;\n")
+                        .endControlFlow()
+                        .addStatement("target.$N($N)", setMethodName, paramName)
+                        .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName);
+            }
+            typeBuilder.addMethod(setBuilder.build());
         }
     }
 }

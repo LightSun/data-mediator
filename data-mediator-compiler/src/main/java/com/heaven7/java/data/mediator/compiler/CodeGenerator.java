@@ -6,13 +6,12 @@ import com.squareup.javapoet.*;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PROXY_SUFFIX;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
@@ -55,6 +54,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
      */
     public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
 
+        final boolean normalJavaBean = false;
         final String log_method = "generateJavaFile";
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
@@ -64,6 +64,19 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
 
         setLogPrinter(mPrinter);
         final Map<String, List<FieldData>> groupMap = groupFieldByInterface(mFields);
+
+        //super fields
+        final Set<FieldData> superFields = new HashSet<>();
+        //find super fields.
+        if(interfaces != null) {
+            for (TypeMirror mirror : interfaces) {
+                final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
+                Set<FieldData> dependFields = delegate.getDependFields(te);
+                if (dependFields != null) {
+                    superFields.addAll(dependFields);
+                }
+            }
+        }
        // mPrinter.note("generateProxy >> groupMap = " + groupMap);
         /**
          * for interface.
@@ -106,7 +119,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 .returns(String.class)
                 .build());
 
-        sInterfaceBuilder.build(interfaceBuilder, mFields);
+        sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,  normalJavaBean ? TypeName.VOID : selfParamType);
 
         TypeSpec interfaceModule = interfaceBuilder.build();
 
@@ -195,7 +208,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         implBuilder.addMethod(createToStringBuilderForImpl(mFields, usedSuperClass)
                 .build());
 
-        sClassBuilder.build(implBuilder, mFields);
+        sClassBuilder.build(implBuilder, mFields, superFields, normalJavaBean ? TypeName.VOID : selfParamType);
         //here classFile is a class .java file
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
 
@@ -211,8 +224,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             //generate some method from super class.
             List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(
                     mClassInfo, mElement, mTypes, mPrinter);
-            //generate proxy class. with bese method for fields.
-            if(!ProxyGenerator.generateProxy(mClassInfo, mFields, builders, delegate, filer, mPrinter)){
+            //generate proxy class. with beae method for fields.
+            superFields.addAll(mFields);
+            if(!ProxyGenerator.generateProxy(mClassInfo, superFields, normalJavaBean ,builders, filer, mPrinter)){
                 return false;
             }
         } catch (IOException e) {

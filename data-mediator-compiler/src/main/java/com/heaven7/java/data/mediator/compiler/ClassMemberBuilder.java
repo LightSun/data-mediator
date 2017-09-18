@@ -30,15 +30,31 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
         return get;
     }
     @Override
-    protected MethodSpec.Builder onBuildSet(FieldData field, String nameForMethod, TypeInfo info) {
+    protected MethodSpec.Builder onBuildSet(FieldData field, String nameForMethod, TypeInfo info, TypeName typeOfReturn) {
         MethodSpec.Builder set = MethodSpec.methodBuilder(DataMediatorConstants.SET_PREFIX + nameForMethod)
                 .addParameter(info.typeName, info.paramName)
-                .returns(TypeName.VOID)
+                .returns(typeOfReturn)
                 .addModifiers(Modifier.PUBLIC)
                 .addCode("this.$N = $N;\n", field.getPropertyName(), info.paramName)
                 ;
+        if(typeOfReturn != TypeName.VOID){
+            set.addCode("return this;\n");
+        }
         return set;
     }
+
+    @Override
+    protected MethodSpec.Builder onBuildSuperSet(FieldData field, String nameForMethod, TypeInfo info, TypeName typeOfReturn) {
+        final String setMethodName = DataMediatorConstants.SET_PREFIX + nameForMethod;
+        MethodSpec.Builder set = MethodSpec.methodBuilder(setMethodName)
+                .addParameter(info.typeName, info.paramName)
+                .returns(typeOfReturn)
+                .addModifiers(Modifier.PUBLIC)
+                .addCode("return ($T)super.$N($N);\n", typeOfReturn, setMethodName, info.paramName)
+                ;
+        return set;
+    }
+
     @Override
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         final FieldSpec.Builder builder   = FieldSpec.builder(info.typeName,
