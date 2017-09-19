@@ -16,6 +16,7 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestPropertyChangeActivity.class, "TestPropertyChangeActivity"));
         list.add(new ActivityInfo(TestDoubleBindActivity.class, "ToastTestActivity"));
         list.add(new ActivityInfo(TestChainCallActivity.class, "TestChainCallActivity"));
+        list.add(new ActivityInfo(TestParcelableDataActivity.class, "TestParcelableDataActivity"));
 
     }
 }

@@ -20,6 +20,8 @@
         <activity android:name=".activity.TestDoubleBindActivity"/>
         <activity android:name=".activity.TestChainCallActivity"/>
         <activity android:name=".activity.TestPropertyChangeActivity"/>
+        <activity android:name=".activity.TestParcelableDataActivity"/>
+        <activity android:name=".activity.LogForParcelableActivity"/>
 
 
     </application>

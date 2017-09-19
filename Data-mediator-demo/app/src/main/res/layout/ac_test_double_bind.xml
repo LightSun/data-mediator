@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.heaven7.data.mediator.demo.TestDoubleBindDemo">
+    >
 
     <TextView
         android:id="@+id/tv_desc"
@@ -31,6 +31,9 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:singleLine="false"
         android:textAllCaps="false"
         android:textColor="@android:color/black"
         android:text="set_text_on_mediator"
