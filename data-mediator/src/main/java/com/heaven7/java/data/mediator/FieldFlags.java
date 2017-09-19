@@ -117,4 +117,23 @@ public final class FieldFlags {
      */
     public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
             | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
+
+    /**
+     * a main complex flags . which have multi flags
+     * @see #FLAG_COPY
+     * @see #FLAG_PARCELABLE
+     * @see #FLAG_TO_STRING
+     * @since 1.0.7
+     */
+    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
+    /**
+     * a complex flags . which means gson no expose
+     * <pre>{@literal @}Expose(serialize = false,
+     deserialize = false) </pre>
+     * @see #FLAG_EXPOSE_DEFAULT
+     * @see #FLAG_EXPOSE_SERIALIZE_FALSE
+     * @see #FLAG_EXPOSE_DESERIALIZE_FALSE
+     * @since 1.0.7
+     */
+    public static final int FLAGS_NO_EXPOSE = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE | FLAG_EXPOSE_DESERIALIZE_FALSE;
 }
