@@ -176,7 +176,7 @@ public @interface Field {
 }
 ```
 
-# Release version.
+# Latest versions.
 [click this to see](https://github.com/LightSun/data-mediator/wiki/Latest-verson-of-all-lib)
 
 # License
