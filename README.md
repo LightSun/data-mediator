@@ -171,7 +171,7 @@ public @interface Field {
  //    FLAG_EXPOSE_SERIALIZE_FALSE:     表示@Expose注解的 serialize = false.
  //    FLAG_EXPOSE_DESERIALIZE_FALSE：  表示@Expose注解的 deserialize = false.
  //ps : 所有这个标志均在 FieldFlags类中、
-	int flags() default 0;
+	int flags() default 0; //1.0.12后默认flags = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE. 编译层支持
  
 }
 ```
