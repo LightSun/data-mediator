@@ -68,22 +68,32 @@ public final class Util {
         }else {
             toStringBuilder.addCode(CodeBlock.of("$T.ToStringHelper helper = $T.toStringHelper(this)\n",
                     cn_objects, cn_objects));
+
             for (int size = tempList.size(), i = 0; i < size; i++) {
                 FieldData fd = tempList.get(i);
                 if (hasFlag(fd.getFlags(), FLAG_TO_STRING)) {
                     if (i == size - 1) {
-                        toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N));\n",
-                                fd.getPropertyName(), String.class, fd.getPropertyName());
+                        if(fd.getComplexType() == FieldData.COMPLEXT_ARRAY){
+                            toStringBuilder.addCode("    .add($S, $T.toString(this.$N));\n",
+                                    fd.getPropertyName(), Arrays.class, fd.getPropertyName());
+                        }else{
+                            toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N));\n",
+                                    fd.getPropertyName(), String.class, fd.getPropertyName());
+                        }
                     } else {
-                        toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N))\n",
-                                fd.getPropertyName(), String.class, fd.getPropertyName());
+                        if(fd.getComplexType() == FieldData.COMPLEXT_ARRAY){
+                            toStringBuilder.addCode("    .add($S, $T.toString(this.$N))\n",
+                                    fd.getPropertyName(), Arrays.class, fd.getPropertyName());
+                        }else{
+                            toStringBuilder.addCode("    .add($S, $T.valueOf(this.$N))\n",
+                                    fd.getPropertyName(), String.class, fd.getPropertyName());
+                        }
                     }
                 }
             }
         }
-
         if(hasSuper){
-            toStringBuilder.addStatement("return helper.toString() + super.toString()");
+            toStringBuilder.addStatement("return helper.toString() + $S + super.toString()", "#_@super_#");
         }else {
             toStringBuilder.addStatement("return helper.toString()");
         }
