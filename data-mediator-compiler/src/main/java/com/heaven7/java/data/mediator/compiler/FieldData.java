@@ -47,6 +47,9 @@ public class FieldData {
      */
     public static final int FLAG_EXPOSE_DESERIALIZE_FALSE = 0x00000400;//1024
 
+    /** the common flags */
+    public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE;
+
     private String propertyName;
     private String serializeName;
     private int flags;
