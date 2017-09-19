@@ -52,7 +52,7 @@ public class FieldData {
 
     private String propertyName;
     private String serializeName;
-    private int flags;
+    private int flags = FLAGS_MAIN;  //default to main flags
     private int complexType;
     private TypeCompat mTypeCompat;
 

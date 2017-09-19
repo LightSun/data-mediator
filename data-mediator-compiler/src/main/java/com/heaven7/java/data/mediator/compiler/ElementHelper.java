@@ -96,12 +96,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         break;
 
                     case STR_FLAGS: {
-                        Integer flags = Integer.valueOf(av.getValue().toString());
-                        if(flags == 0){
-                            //default to main flags
-                            flags = FieldData.FLAGS_MAIN;
-                        }
-                        data.setFlags(flags);
+                        data.setFlags(Integer.valueOf(av.getValue().toString()));
                     }
                         break;
 
