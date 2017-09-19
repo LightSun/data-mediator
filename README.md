@@ -1,4 +1,4 @@
-[ ![data-mediator-compiler-Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-compiler/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-compiler/_latestVersion)
+data-mediator-compiler: [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-compiler/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-compiler/_latestVersion)
 =======================================
 data-mediator
 =======================================
