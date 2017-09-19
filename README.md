@@ -1,3 +1,7 @@
+[ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-compiler/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-compiler/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-annotations/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-annotations/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator/_latestVersion)
+
 data-mediator
 =======================================
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
