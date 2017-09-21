@@ -6,13 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by heaven7 on 2017/9/21 0021.
+ * Created by Administrator on 2017/9/21 0021.
  */
 
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
-public @interface BindSingle {
+public @interface DataDefine {
 
     int id() default 0;
-    String value();
+    Class<?> value();
 }
