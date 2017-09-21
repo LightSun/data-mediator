@@ -1,0 +1,43 @@
+//group 'com.heaven7.java.data.mediator.common'
+//version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.4.0'
+    }
+}
+
+sourceCompatibility = 1.7
+
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+allprojects {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+publish {
+    userOrg = 'lightsun' //bintray user name
+    groupId = 'com.heaven7.java.data.mediator.common'
+    artifactId = 'data-mediator-common'
+    publishVersion = '1.0'
+    desc = 'this is a common java lib of data mediator. '
+    website = 'https://github.com/LightSun/data-mediator'
+}
