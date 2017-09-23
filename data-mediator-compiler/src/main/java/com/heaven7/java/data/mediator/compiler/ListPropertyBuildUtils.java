@@ -15,7 +15,7 @@ public final class ListPropertyBuildUtils{
         ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
         TypeName returnType = ParameterizedTypeName.get(cn_editor,
                 WildcardTypeName.subtypeOf(curModule) , info.getSimpleTypeNameBoxed());
-        return MethodSpec.methodBuilder(NEW_PREFIX + nameForMethod + EDITOR_SUFFIX)
+        return MethodSpec.methodBuilder(BEGIN_PREFIX + nameForMethod + EDITOR_SUFFIX)
                 .returns(returnType);
     }
 

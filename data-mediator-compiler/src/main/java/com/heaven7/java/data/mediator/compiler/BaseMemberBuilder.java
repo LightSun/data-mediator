@@ -20,6 +20,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
 /*public*/ class BaseMemberBuilder {
 
 
+    //typeOfReturn used for chain call
     public final void build(TypeSpec.Builder builder, List<FieldData> mFields, Set<FieldData> superFields,
                             TypeName typeOfReturn, TypeName curModule) {
         MethodSpec.Builder constructorBuilder = onCreateConstructor();

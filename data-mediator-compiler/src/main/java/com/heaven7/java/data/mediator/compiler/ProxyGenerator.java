@@ -136,8 +136,8 @@ public class ProxyGenerator {
 
             //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
             if(field.isList()){
-                final MethodSpec.Builder listEditor = ListPropertyBuildUtils.buildListEditorWithoutModifier(field,
-                        nameForMethod, info, cn_inter)
+                final MethodSpec.Builder listEditor = ListPropertyBuildUtils.buildListEditorWithoutModifier(
+                              field, nameForMethod, info, cn_inter)
                         .addModifiers(Modifier.PUBLIC)
                         .addStatement("$T target = getTarget()",cn_inter)
                         .addStatement("List<$T> values = target.$N()", info.getSimpleTypeNameBoxed(), getMethodName)

@@ -136,10 +136,10 @@ public class ListPropertyEditor<D, T> {
     }
 
     /**
-     * reverse the module control
+     * end the editor and return to the module type object.
      * @return the module type object.
      */
-    public D reverse(){
+    public D end(){
         //in generate code . BaseMediator often impl the module interface.
         if(mMediator != null){
             return (D) mMediator;

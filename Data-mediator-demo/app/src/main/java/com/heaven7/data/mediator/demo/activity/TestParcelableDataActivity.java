@@ -36,7 +36,6 @@ public class TestParcelableDataActivity extends BaseActivity {
 
     private DataMediator<ClassBindModule> mClassMediator;
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.ac_test_double_bind;

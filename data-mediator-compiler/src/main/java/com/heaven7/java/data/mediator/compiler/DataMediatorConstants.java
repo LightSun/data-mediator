@@ -37,8 +37,8 @@ public final class DataMediatorConstants {
     public static final String GET_PREFIX = "get";
    // public static final String ADD_PREFIX    = "add";
     //public static final String REMOVE_PREFIX = "remove";
-    public static final String NEW_PREFIX    = "new";
-    public static final String EDITOR_SUFFIX = "editor";
+    public static final String BEGIN_PREFIX   = "begin";
+    public static final String EDITOR_SUFFIX  = "Editor";
 
     public static final String NAME_int      = "int";
     public static final String NAME_long     = "long";
