@@ -4,6 +4,10 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 
+import java.util.ArrayList;
+
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_PROP;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_LIST_PROP_EDITOR;
 import static com.heaven7.java.data.mediator.compiler.Util.getFieldModifier;
 import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
@@ -19,6 +23,21 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
         //default public empty constructor
         return MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC);
+    }
+
+    @Override
+    protected MethodSpec.Builder onBuildListEditor(FieldData field, String nameForMethod,
+                                                   TypeInfo info, TypeName curModule) {
+        ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
+        return ListPropertyBuildUtils.buildListEditorWithoutModifier(
+                     field, nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC)
+                    .beginControlFlow("if ($N == null)", field.getPropertyName())
+                    .addStatement("$N = new $T<>()", field.getPropertyName(), ArrayList.class)
+                    .endControlFlow()
+                .addStatement("return new $T<$T,$T>(this, $N, null, null)",
+                        cn_editor, curModule, info.getSimpleTypeNameBoxed(), field.getPropertyName())
+                ;
     }
 
     @Override

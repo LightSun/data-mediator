@@ -1,7 +1,12 @@
 package com.heaven7.java.data.mediator.test;
 
 import com.heaven7.java.data.mediator.BaseMediator;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
 import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.compiler.FieldData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * generate proxy step:
@@ -15,6 +20,7 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     private static final Property PROP_AGE   = MediatorSharedProperties.get("int", "age", 0);
     private static final Property PROP_NAME  = MediatorSharedProperties.get("java.lang.String", "name", 0);
     private static final Property PROP_ID    = MediatorSharedProperties.get("java.lang.String", "id", 0);
+    private static final Property PROP_TAGS    = MediatorSharedProperties.get("java.lang.String", "tag", FieldData.COMPLEXT_LIST);
 
     public StudentModule_Proxy(IStudent student){
        super(student);
@@ -68,6 +74,26 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
         dispatchCallbacks(PROP_ID, oldValue, id);
     }
 
+    @Override
+    public void setTags(List<String> tags) {
+        getTarget().setTags(tags);
+    }
+
+    @Override
+    public List<String> getTags() {
+        return getTarget().getTags();
+    }
+
+    @Override
+    public ListPropertyEditor<IStudent, String> newTagsEditor() {
+        IStudent target = getTarget();
+        List<String> tags = target.getTags();
+        if(tags == null){
+            tags = new ArrayList<>();
+            target.setTags(tags);
+        }
+        return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
+    }
 
     @Override
     public IStudent copy() {

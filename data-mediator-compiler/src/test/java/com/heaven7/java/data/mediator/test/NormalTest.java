@@ -15,6 +15,8 @@ public class NormalTest {
         List<IStudent> list3 = (List<IStudent>) list;
         list3.get(0).setName("455556456");
 
+        //list.removeAll(list3);
+       // list.addAll(StudentModuleImpl);
         //省，市, 区，学校，年级，班级。
 
         // 对象:  外教，学生。 班级？

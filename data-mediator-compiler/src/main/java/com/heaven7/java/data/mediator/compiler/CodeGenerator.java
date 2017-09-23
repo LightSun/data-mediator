@@ -123,7 +123,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 .returns(String.class)
                 .build());
 
-        sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,  normalJavaBean ? TypeName.VOID : selfParamType);
+        sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,
+                normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
 
         TypeSpec interfaceModule = interfaceBuilder.build();
 
@@ -212,7 +213,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         implBuilder.addMethod(createToStringBuilderForImpl(mFields, usedSuperClass)
                 .build());
 
-        sClassBuilder.build(implBuilder, mFields, superFields, normalJavaBean ? TypeName.VOID : selfParamType);
+        sClassBuilder.build(implBuilder, mFields, superFields,
+                normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
         //here classFile is a class .java file
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
 

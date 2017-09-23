@@ -5,12 +5,15 @@ package com.heaven7.java.data.mediator.compiler;
  */
 public final class DataMediatorConstants {
 
+    public static final String PARAM_NAME = "index";
+
     // some cs of MediatorSharedProperties
     public static final String SIMPLE_NAME_PROPERTY      = "Property";
     public static final String PKG_PROP                  = "com.heaven7.java.data.mediator";
     public static final String PKG_SHARED_PROP           = "com.heaven7.java.data.mediator.factory";
-    public static final String SIMPLE_NAME_SHARED_PROP   = "MediatorSharedProperties";
-    public static final String SIMPLE_NAME_BASE_MEDIATOR = "BaseMediator";
+    public static final String SIMPLE_NAME_SHARED_PROP      = "MediatorSharedProperties";
+    public static final String SIMPLE_NAME_BASE_MEDIATOR    = "BaseMediator";
+    public static final String SIMPLE_NAME_LIST_PROP_EDITOR = "ListPropertyEditor";
 
     //field name of anno
     public static final String STR_PROP_NAME = "propName";
@@ -32,6 +35,10 @@ public final class DataMediatorConstants {
 
     public static final String SET_PREFIX = "set";
     public static final String GET_PREFIX = "get";
+   // public static final String ADD_PREFIX    = "add";
+    //public static final String REMOVE_PREFIX = "remove";
+    public static final String NEW_PREFIX    = "new";
+    public static final String EDITOR_SUFFIX = "editor";
 
     public static final String NAME_int      = "int";
     public static final String NAME_long     = "long";

@@ -103,6 +103,7 @@ public final class Util {
     public static void getTypeName(FieldData field, TypeInfo info) {
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
         TypeName rawTypeName = typeCompat.getInterfaceTypeName();
+        info.setSimpleTypeName(rawTypeName);
         switch (field.getComplexType()) {
             case FieldData.COMPLEXT_ARRAY:
                 info.setTypeName(ArrayTypeName.of(rawTypeName));

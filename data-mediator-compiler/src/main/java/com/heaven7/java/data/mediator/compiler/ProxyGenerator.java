@@ -5,11 +5,8 @@ import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -80,9 +77,15 @@ public class ProxyGenerator {
         return true;
     }
 
-    private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter, TypeSpec.Builder typeBuilder, boolean normalJavaBean) {
+    private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter,
+                                              TypeSpec.Builder typeBuilder, boolean normalJavaBean) {
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+
+        //all set/add/remove return this type.
+        final TypeName returnType = normalJavaBean ? TypeName.VOID : cn_inter;
+        //for list prop
+        final ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
 
         //fields and methods.
         for(FieldData field : set){
@@ -93,10 +96,11 @@ public class ProxyGenerator {
             typeBuilder.addField(FieldSpec.builder(cn_prop,
                     fieldName, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                     .initializer("$T.get($S, $S, $L)",
-                            cn_shared_properties, field.getTypeCompat().toString(), field.getPropertyName(), field.getComplexType())
+                            cn_shared_properties, field.getTypeCompat().toString(),
+                            field.getPropertyName(), field.getComplexType())
                     .build());
             //get
-            String nameForMethod = Util.getPropNameForMethod(field);
+            final String nameForMethod = Util.getPropNameForMethod(field);
             final String getMethodName = GET_PREFIX + nameForMethod;
             typeBuilder.addMethod(MethodSpec.methodBuilder(getMethodName)
                     .returns(info.getTypeName())
@@ -110,7 +114,7 @@ public class ProxyGenerator {
 
             MethodSpec.Builder setBuilder = MethodSpec.methodBuilder(setMethodName)
                     .addModifiers(Modifier.PUBLIC)
-                    .returns(normalJavaBean ? TypeName.VOID : cn_inter)
+                    .returns(returnType)
                     .addParameter(info.getTypeName(), paramName)
                     .addStatement("$T target = getTarget()", cn_inter)
                     .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName);
@@ -129,6 +133,31 @@ public class ProxyGenerator {
                         .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName);
             }
             typeBuilder.addMethod(setBuilder.build());
+
+            //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
+            if(field.isList()){
+                final MethodSpec.Builder listEditor = ListPropertyBuildUtils.buildListEditorWithoutModifier(field,
+                        nameForMethod, info, cn_inter)
+                        .addModifiers(Modifier.PUBLIC)
+                        .addStatement("$T target = getTarget()",cn_inter)
+                        .addStatement("List<$T> values = target.$N()", info.getSimpleTypeNameBoxed(), getMethodName)
+                        .beginControlFlow("if(values == null)")
+                        .addStatement("values = new $T<>()", ArrayList.class)
+                        .addStatement("target.$N(values)", setMethodName)
+                        .endControlFlow()
+                        .addStatement("return new $T<$T,$T>(target, values, $N, this)",
+                                cn_editor, cn_inter, info.getSimpleTypeNameBoxed(), fieldName);
+                typeBuilder.addMethod(listEditor.build());
+            }
+            /*
+             IStudent target = getTarget();
+             List<String> tags = target.getTags();
+             if(tags == null){
+             tags = new ArrayList<>();
+             target.setTags(tags);
+             }
+             return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
+             */
         }
     }
 }

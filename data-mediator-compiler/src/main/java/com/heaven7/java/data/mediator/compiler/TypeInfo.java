@@ -6,8 +6,9 @@ import com.squareup.javapoet.TypeName;
  * Created by heaven7 on 2017/8/30.
  */
 /*public*/ class TypeInfo {
-    TypeName typeName; //type name
+    TypeName typeName; //type name. may be list .array
     String paramName;  //parameter name
+    TypeName simpleTypeName;
 
     public TypeInfo() {
     }
@@ -24,4 +25,14 @@ import com.squareup.javapoet.TypeName;
     public void setParamName(String paramName) {
         this.paramName = paramName;
     }
+    public TypeName getSimpleTypeNameBoxed() {
+        return simpleTypeName.box();
+    }
+    public TypeName getSimpleTypeName() {
+        return simpleTypeName;
+    }
+    public void setSimpleTypeName(TypeName rawTypeName) {
+        this.simpleTypeName = rawTypeName;
+    }
+
 }

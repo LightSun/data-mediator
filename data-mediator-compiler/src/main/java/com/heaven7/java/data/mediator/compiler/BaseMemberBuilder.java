@@ -1,6 +1,9 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.FieldSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
@@ -17,7 +20,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
 /*public*/ class BaseMemberBuilder {
 
 
-    public final void build(TypeSpec.Builder builder, List<FieldData> mFields, Set<FieldData> superFields, TypeName typeOfReturn) {
+    public final void build(TypeSpec.Builder builder, List<FieldData> mFields, Set<FieldData> superFields,
+                            TypeName typeOfReturn, TypeName curModule) {
         MethodSpec.Builder constructorBuilder = onCreateConstructor();
         for (FieldData field : mFields) {
             String nameForMethod = getPropNameForMethod(field);
@@ -37,7 +41,11 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
             }
             builder.addMethod(get.build())
                     .addMethod(set.build());
-
+            // for add/remove Callbacks .
+            if(field.isList()){
+                MethodSpec.Builder listEditor = onBuildListEditor(field, nameForMethod, info, curModule);
+                builder.addMethod(listEditor.build());
+            }
         }
         //change method for super. if use chain mode. chain mode means set method not return void. just return bean interface.
         if(typeOfReturn != TypeName.VOID && superFields != null){
@@ -55,6 +63,14 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
         }
     }
 
+    protected MethodSpec.Builder onBuildListEditor(FieldData field, String nameForMethod,
+                                                 TypeInfo info, TypeName curModule) {
+        return ListPropertyBuildUtils.buildListEditorWithoutModifier(
+                         field, nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
+    }
+
+    //==========================================================================================
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         return null;
     }

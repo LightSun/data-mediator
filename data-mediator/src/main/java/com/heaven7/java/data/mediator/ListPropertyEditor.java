@@ -111,12 +111,14 @@ public class ListPropertyEditor<D, T> {
     public void remove(T t){
         Throwables.checkNull(t);
         if(mList.remove(t)){
-            if(mTemp == null){
-                mTemp = new ArrayList<T>();
+            if(mMediator != null) {
+                if (mTemp == null) {
+                    mTemp = new ArrayList<T>();
+                }
+                mTemp.add(t);
+                mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
+                mTemp.clear();
             }
-            mTemp.add(t);
-            mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
-            mTemp.clear();
         }
     }
     /**

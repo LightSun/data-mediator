@@ -1,9 +1,8 @@
 package com.heaven7.java.data.mediator.test;
 
-import com.heaven7.java.data.mediator.ICopyable;
-import com.heaven7.java.data.mediator.IResetable;
-import com.heaven7.java.data.mediator.IShareable;
-import com.heaven7.java.data.mediator.ISnapable;
+import com.heaven7.java.data.mediator.*;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/9/13 0013.
@@ -20,4 +19,8 @@ public interface IStudent extends ICopyable, IResetable, IShareable, ISnapable{
     String getId();
 
     void setId(String id);
+
+    void setTags(List<String> tags);
+    List<String> getTags();
+    ListPropertyEditor<IStudent,String> newTagsEditor();
 }
