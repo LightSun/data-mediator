@@ -1,5 +1,7 @@
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.data.mediator.util.PlatformDependent;
+
 /**
  * Created by heaven7 on 2017/9/14 0014.
  * @since 1.0.4
@@ -68,6 +70,37 @@ public final class DataMediatorFactory {
             throw new IllegalArgumentException("target object(" + t.getClass().getName() + ") can't wrap to DataMediator.");
         }
         return new DataMediator<>(new BaseMediator<T>(t));
+    }
+
+    /**
+     * create binder for target data mediator.
+     * @param mediator the data mediator.
+     * @param <T> the module data type
+     * @return the binder.
+     * @since 1.0.8
+     */
+    public static <T> Binder<T> createBinder(DataMediator<T> mediator) {
+        if (PlatformDependent.isAndroid()) {
+            try {
+                final Class<?> clazz = Class.forName("com.heaven7.android.data.mediator.BinderSupplierImpl");
+                IBinderSupplier<T> supplier = (IBinderSupplier<T>) clazz.newInstance();
+                return supplier.create(mediator);
+            } catch (Exception e) {
+                throw new RuntimeException("create binder failed.", e);
+            }
+        }else{
+            return new Binder<T>(mediator);
+        }
+    }
+    /**
+     * create binder for target module class..
+     * @param moduleClass the module data class.
+     * @param <T> the module data type
+     * @return the binder.
+     * @since 1.0.8
+     */
+    public static <T> Binder<T> createBinder(Class<T> moduleClass){
+        return createBinder(createDataMediator(moduleClass));
     }
 
 
