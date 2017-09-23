@@ -93,12 +93,71 @@ public class BaseMediator<T>{
 
     /**
      * dispatch the change event to the callbacks.
+     * <p>use {@linkplain #dispatchValueChanged(Property, Object, Object)} instead</p>
      * @param prop the property which is changed.
      * @param oldValue the old value of property
      * @param newValue the new value of property
      */
+    @Deprecated
     public void dispatchCallbacks(Property prop, Object oldValue, Object newValue) {
-        /*
+        dispatchValueChanged(prop, oldValue, newValue);
+    }
+    /**
+     * dispatch the change event of property.
+     * @param prop the property which is changed.
+     * @param oldValue the old value of property
+     * @param newValue the new value of property
+     * @since 1.0.8
+     */
+    public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
+        final DataMediatorCallback[] arrLocal = getCallbacksInternal();
+        for (int i = arrLocal.length-1; i>=0; i--) {
+            arrLocal[i].onPropertyValueChanged(mTarget, prop, oldValue, newValue);
+        }
+    }
+    /**
+     * dispatch the add event of property.
+     * @param prop the property which is changed.
+     * @param newValue the newest value of property
+     * @param addedValue the values which is added.
+     * @since 1.0.8
+     */
+    public void dispatchAddValues(Property prop, Object newValue, Object addedValue) {
+        final DataMediatorCallback[] arrLocal = getCallbacksInternal();
+        for (int i = arrLocal.length-1; i>=0; i--) {
+            arrLocal[i].onAddPropertyValues(mTarget, prop, newValue, addedValue);
+        }
+    }
+    /**
+     * dispatch the add event with index of property.
+     * @param prop the property which is changed.
+     * @param newValue the newest value of property
+     * @param addValue the values which is added.
+     * @param index the index to add.
+     * @since 1.0.8
+     */
+    public void dispatchAddValuesWithIndex(Property prop,Object newValue, Object addValue, int index) {
+        final DataMediatorCallback[] arrLocal = getCallbacksInternal();
+        for (int i = arrLocal.length-1; i>=0; i--) {
+            arrLocal[i].onAddPropertyValuesWithIndex(mTarget, prop,
+                    newValue, addValue, index);
+        }
+    }
+    /**
+     * dispatch the remove event of property.
+     * @param prop the property which is changed.
+     * @param newValue the newest value of property
+     * @param removeValues the values which is removed..
+     * @since 1.0.8
+     */
+    public void dispatchRemoveValues(Property prop, Object newValue, Object removeValues) {
+        final DataMediatorCallback[] arrLocal = getCallbacksInternal();
+        for (int i = arrLocal.length-1; i>=0; i--) {
+            arrLocal[i].onRemovePropertyValues(mTarget, prop, newValue, removeValues);
+        }
+    }
+    private DataMediatorCallback[] getCallbacksInternal(){
+          /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
          */
@@ -107,8 +166,6 @@ public class BaseMediator<T>{
         synchronized (this) {
             arrLocal = mCallbacks.toArray(new DataMediatorCallback[mCallbacks.size()]);
         }
-
-        for (int i = arrLocal.length-1; i>=0; i--)
-            arrLocal[i].onPropertyValueChanged(mTarget ,prop, oldValue, newValue);
+        return arrLocal;
     }
 }
