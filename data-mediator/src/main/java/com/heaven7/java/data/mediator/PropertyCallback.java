@@ -14,4 +14,13 @@ public interface PropertyCallback<T> {
      * @param newValue the new value of property
      */
     void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue);
+
+    /**
+     * called on property applied.
+     * @param data the module data.
+     * @param prop the property
+     * @param value the applied value.
+     * @since 1.0.8
+     */
+    void onPropertyApplied(T data, Property prop, Object value);
 }

@@ -111,6 +111,7 @@ public class BaseMediator<T>{
     public void dispatchCallbacks(Property prop, Object oldValue, Object newValue) {
         dispatchValueChanged(prop, oldValue, newValue);
     }
+
     /**
      * dispatch the change event of property.
      * @param prop the property which is changed.
@@ -122,6 +123,18 @@ public class BaseMediator<T>{
         final DataMediatorCallback[] arrLocal = getCallbacksInternal();
         for (int i = arrLocal.length-1; i>=0; i--) {
             arrLocal[i].onPropertyValueChanged(mTarget, prop, oldValue, newValue);
+        }
+    }
+
+    /**
+     * dispatch the apply event for target property.
+     * @param prop the property
+     * @param value the value of property.
+     */
+    public void dispatchValueApplied(Property prop, Object value) {
+        final DataMediatorCallback[] arrLocal = getCallbacksInternal();
+        for (int i = arrLocal.length-1; i>=0; i--) {
+            arrLocal[i].onPropertyApplied(mTarget, prop, value);
         }
     }
     /**

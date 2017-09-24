@@ -285,6 +285,10 @@ public abstract class Binder<T> {
         public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
 
         }
+        @Override
+        public void onPropertyApplied(T data, Property prop, Object value) {
+            onPropertyValueChanged(data, prop, null, value);
+        }
     }
 
 }

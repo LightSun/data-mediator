@@ -40,6 +40,12 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
                     callback.onPropertyValueChanged(data, prop, oldValue, newValue);
                 }
             }
+            @Override
+            public void onPropertyApplied(T data, Property prop, Object value) {
+                if(prop.getName().equals(propertyName)) {
+                    callback.onPropertyApplied(data, prop, value);
+                }
+            }
         };
     }
 
@@ -51,8 +57,13 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @param newValue the new value of property
      * @since 1.0
      */
+    @Override
     public abstract void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue);
 
+    @Override
+    public void onPropertyApplied(T data, Property prop, Object value){
+        onPropertyValueChanged(data, prop, null, value);
+    }
 
     /**
      * called on add property values.
@@ -110,6 +121,14 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
                 callback.onPropertyValueChanged(data, prop, oldValue, newValue);
             }
         }
+
+        @Override
+        public void onPropertyApplied(T data, Property prop, Object value) {
+            if(prop.getName().equals(propertyName)) {
+                callback.onPropertyApplied(data, prop, value);
+            }
+        }
+
         @Override
         public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue) {
             if(prop.getName().equals(propertyName)) {
