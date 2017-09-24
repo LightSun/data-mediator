@@ -79,4 +79,11 @@ public final class DataMediator<T> {
         mediator.setEqualsComparator(comparator);
     }
 
+    /**
+     * @see BaseMediator#apply()
+     * @since 1.0.8
+     */
+    public void apply(){
+
+    }
 }

@@ -88,9 +88,8 @@ public final class DataMediatorFactory {
             } catch (Exception e) {
                 throw new RuntimeException("create binder failed.", e);
             }
-        }else{
-            return new Binder<T>(mediator);
         }
+        throw new UnsupportedOperationException("caused by currently only support android platform.");
     }
     /**
      * create binder for target module class..

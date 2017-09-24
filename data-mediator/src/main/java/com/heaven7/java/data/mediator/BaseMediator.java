@@ -92,6 +92,15 @@ public class BaseMediator<T>{
     }
 
     /**
+     * apply all current properties. that means notify all property value changed except
+     * empty(null or no element).
+     * @since 1.0.8
+     */
+    public void apply(){
+
+    }
+
+    /**
      * dispatch the change event to the callbacks.
      * <p>use {@linkplain #dispatchValueChanged(Property, Object, Object)} instead</p>
      * @param prop the property which is changed.
