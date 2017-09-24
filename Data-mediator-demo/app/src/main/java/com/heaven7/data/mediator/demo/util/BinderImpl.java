@@ -1,17 +1,9 @@
 package com.heaven7.data.mediator.demo.util;
 
-import android.widget.TextView;
-
-import com.heaven7.java.data.mediator.DataMediator;
-import com.heaven7.java.data.mediator.DataMediatorCallback;
-import com.heaven7.java.data.mediator.Property;
-
-import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
-
 /**
  * Created by heaven7 on 2017/9/22.
  */
+/*
 public class BinderImpl<T> {
 
     private final WeakHashMap<Object, DataMediatorCallback<T>> mMap;
@@ -21,18 +13,33 @@ public class BinderImpl<T> {
         this.mMediator = mMediator;
         this.mMap = new WeakHashMap<>();
     }
-
-    public BinderImpl bind(TextView view , String property){
-        final ViewCallbackImpl<T> callback = new ViewCallbackImpl<>(view, property);
-        mMap.put(view, callback);
-        mMediator.addDataMediatorCallback(callback);
+    public BinderImpl bind(String property, TextView view){
+        return bind(property, view, new TextPropertyCallback<T>(view));
+    }
+    public BinderImpl bind(String property, View key, PropertyCallback<T> callback){
+        Throwables.checkNull(key);
+        final DataMediatorCallback<T> temp = DataMediatorCallback.create(property, callback);
+        mMap.put(key, temp);
+        mMediator.addDataMediatorCallback(temp);
         return this;
     }
-    public  BinderImpl bindList(IDataMediatorAdapter adapter, String property){
+    public  BinderImpl bind(String property, RecyclerView view){
+        final RecyclerView.Adapter adapter = view.getAdapter();
+        if(adapter == null || !(adapter instanceof ListPropertyCallback)){
+            throw new IllegalStateException("must set adapter and the adapter " +
+                    "must impl ListPropertyCallback !");
+        }
+        return bind(property, view, (ListPropertyCallback<T>) adapter);
+    }
+    public  BinderImpl bind(String property, View key, ListPropertyCallback<T> callback){
+        Throwables.checkNull(key);
+        final DataMediatorCallback<T> temp = DataMediatorCallback.create(property, callback);
+        mMap.put(key, temp);
+        mMediator.addDataMediatorCallback(temp);
         return this;
     }
-    public BinderImpl unbind(TextView view){
-        final DataMediatorCallback<T> callback = mMap.remove(view);
+    public BinderImpl unbind(View key){
+        final DataMediatorCallback<T> callback = mMap.remove(key);
         if(callback != null){
             mMediator.removeDataMediatorCallback(callback);
         }
@@ -43,54 +50,36 @@ public class BinderImpl<T> {
         mMediator.removeDataMediatorCallbacks();
     }
 
-    public interface IDataMediatorAdapter{
-
-    }
-
-    private static class AdapterCallbckImpl<T> extends DataMediatorCallback<T>{
-        final WeakReference<IDataMediatorAdapter> mWeakAdapter;
-        final String propertyName;
-
-        public AdapterCallbckImpl(IDataMediatorAdapter adapter, String propertyName) {
-            this.mWeakAdapter = new WeakReference<>(adapter);
-            this.propertyName = propertyName;
+    private static class TextPropertyCallback<T> extends SimplePropertyCallback<T>{
+        public TextPropertyCallback(View tv) {
+            super(tv);
         }
-
         @Override
-        public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
-            IDataMediatorAdapter adapter = mWeakAdapter.get();
-            if(adapter == null){
-                //view is recycled
-                return;
-            }
-            if(prop.getName().equals(propertyName)){
-                //  TODO adapter.apply(oldValue, newValue);
-            }
+        protected void apply(View view, Object newValue) {
+            ((TextView)view).setText(String.valueOf(newValue));
         }
     }
 
-    private static class ViewCallbackImpl<T> extends DataMediatorCallback<T>{
+    public static abstract class SimplePropertyCallback<T> implements PropertyCallback<T> {
 
-        final WeakReference<TextView> mWeakTextView;
-        final String propertyName;
+        final WeakReference<View> mWeakTextView;
 
-        public ViewCallbackImpl(TextView tv, String propertyName) {
+        public SimplePropertyCallback(View tv) {
             this.mWeakTextView = new WeakReference<>(tv);
-            this.propertyName = propertyName;
         }
-
         @Override
         public void onPropertyValueChanged(T data, Property prop,
                                            Object oldValue, Object newValue) {
-            TextView tv = mWeakTextView.get();
-            if(tv == null){
+            View view = mWeakTextView.get();
+            if(view == null){
                 //view is recycled
                 return;
             }
-            if(prop.getName().equals(propertyName)){
-                tv.setText(String.valueOf(newValue));
-            }
+            apply(view, newValue);
         }
+
+        protected abstract void apply(View view, Object newValue);
     }
 
 }
+*/

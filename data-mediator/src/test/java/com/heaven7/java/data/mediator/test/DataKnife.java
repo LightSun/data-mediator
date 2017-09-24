@@ -1,10 +1,6 @@
 package com.heaven7.java.data.mediator.test;
 
-import com.heaven7.java.data.mediator.BaseMediator;
 import com.heaven7.java.data.mediator.DataMediatorCallback;
-import com.heaven7.java.data.mediator.Property;
-
-import java.lang.reflect.Field;
 
 /**
  * note parceable ? pool size.?
@@ -76,6 +72,12 @@ public class DataKnife {
 
 			}
 		});*/
+		Object value = 0;
+		System.out.println(value.getClass().isPrimitive()); //false
+		System.out.println(value.getClass());
+		System.out.println((0d) == 0);
+		System.out.println((0d) == 0);
+		//System.out.println(((Number)value) == 0); //false
 	}
 
 }

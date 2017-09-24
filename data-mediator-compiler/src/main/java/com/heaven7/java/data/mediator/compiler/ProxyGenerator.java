@@ -151,7 +151,7 @@ public class ProxyGenerator {
             }
             typeBuilder.addMethod(setBuilder.build());
             //add apply statement.
-            applyBuilder.addStatement("dispatchValueApplied( $N, $N )", fieldName, getMethodName);
+            applyBuilder.addStatement("dispatchValueApplied( $N, $N())", fieldName, getMethodName);
 
             //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
             if(field.isList()){
