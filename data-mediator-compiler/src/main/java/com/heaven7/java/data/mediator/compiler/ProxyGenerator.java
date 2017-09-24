@@ -21,6 +21,7 @@ public class ProxyGenerator {
 
     private static final String TAG = ProxyGenerator.class.getSimpleName();
 
+    //allFields include supers'
     public static boolean generateProxy(TargetClassInfo info, Set<FieldData> allFields, boolean normalJavaBean ,
                                         List<MethodSpec.Builder> superMethods,
                                         Filer filer, ProcessorPrinter pp) {
@@ -38,14 +39,14 @@ public class ProxyGenerator {
                 .superclass(superTypeName)
                 .addSuperinterface(cn_inter);
 
-        //build field and methods.
-        buildFieldsAndMethods(allFields, cn_inter, typeBuilder, normalJavaBean);
-
         //constructor
         typeBuilder.addMethod(MethodSpec.constructorBuilder().addParameter(cn_inter, "base")
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("super(base)")
                 .build());
+        //build field and methods.
+        buildFieldsAndMethods(allFields, cn_inter, typeBuilder, normalJavaBean);
+
         //override super methods from super interface .like IResetable.
         if(superMethods != null) {
             for (MethodSpec.Builder builder : superMethods) {
@@ -87,11 +88,27 @@ public class ProxyGenerator {
         //for list prop
         final ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
 
+        /*
+         @Override
+         public void apply() {
+         dispatchValueApplied(PROP_AGE, getAge());
+         dispatchValueApplied(PROP_NAME, getName());
+         dispatchValueApplied(PROP_ID, getId());
+         dispatchValueApplied(PROP_TAGS, getTags());
+         }
+         */
+        //override apply from BaseMediator.
+        final MethodSpec.Builder applyBuilder = MethodSpec.methodBuilder("apply")
+                .addAnnotation(Override.class)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeName.VOID);
+
         //fields and methods.
         for(FieldData field : set){
             final TypeInfo info = new TypeInfo();
             getTypeName(field, info);
 
+            //static field name
             final String fieldName = "PROP_" + field.getPropertyName();
             typeBuilder.addField(FieldSpec.builder(cn_prop,
                     fieldName, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
@@ -133,6 +150,8 @@ public class ProxyGenerator {
                         .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName);
             }
             typeBuilder.addMethod(setBuilder.build());
+            //add apply statement.
+            applyBuilder.addStatement("dispatchValueApplied( $N, $N )", fieldName, getMethodName);
 
             //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
             if(field.isList()){
@@ -159,5 +178,6 @@ public class ProxyGenerator {
              return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
              */
         }
+        typeBuilder.addMethod(applyBuilder.build());
     }
 }

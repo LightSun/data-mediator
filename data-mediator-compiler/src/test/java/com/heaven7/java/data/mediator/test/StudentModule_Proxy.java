@@ -20,10 +20,18 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     private static final Property PROP_AGE   = MediatorSharedProperties.get("int", "age", 0);
     private static final Property PROP_NAME  = MediatorSharedProperties.get("java.lang.String", "name", 0);
     private static final Property PROP_ID    = MediatorSharedProperties.get("java.lang.String", "id", 0);
-    private static final Property PROP_TAGS    = MediatorSharedProperties.get("java.lang.String", "tag", FieldData.COMPLEXT_LIST);
+    private static final Property PROP_TAGS  = MediatorSharedProperties.get("java.lang.String", "tag", FieldData.COMPLEXT_LIST);
 
     public StudentModule_Proxy(IStudent student){
        super(student);
+    }
+
+    @Override
+    public void apply() {
+        dispatchValueApplied(PROP_AGE, getAge());
+        dispatchValueApplied(PROP_NAME, getName());
+        dispatchValueApplied(PROP_ID, getId());
+        dispatchValueApplied(PROP_TAGS, getTags());
     }
 
     @Override
