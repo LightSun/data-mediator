@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Data-mediator-demo.iml" filepath="$PROJECT_DIR$/Data-mediator-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/data-mediator-android/data-mediator-android.iml" filepath="$PROJECT_DIR$/data-mediator-android/data-mediator-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-mediator-android/data-mediator-android.iml" filepath="$PROJECT_DIR$/data-mediator-android/data-mediator-android.iml" />
     </modules>
   </component>
 </project>

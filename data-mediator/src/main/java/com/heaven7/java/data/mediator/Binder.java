@@ -41,8 +41,8 @@ public abstract class Binder<T> {
      * empty(null or no element).
      * @since 1.0.8
      */
-    public void apply(){
-        getDataMediator().apply();
+    public void applyProperties(){
+        getDataMediator().applyProperties();
     }
     /**
      * get the real module data.

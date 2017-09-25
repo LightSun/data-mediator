@@ -81,10 +81,10 @@ public final class DataMediator<T> {
 
     /**
      * apply all properties.
-     * @see BaseMediator#apply()
+     * @see BaseMediator#applyProperties()
      * @since 1.0.8
      */
-    public void apply(){
-        mediator.apply();
+    public void applyProperties(){
+        mediator.applyProperties();
     }
 }

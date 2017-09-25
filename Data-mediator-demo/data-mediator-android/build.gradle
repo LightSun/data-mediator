@@ -30,5 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.heaven7.core.util:util-v1:1.1.2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.0.8-beta10'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.0.8-beta11'
 }

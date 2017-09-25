@@ -1,7 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import javax.lang.model.element.TypeElement;
-import java.util.List;
 import java.util.Set;
 
 /**

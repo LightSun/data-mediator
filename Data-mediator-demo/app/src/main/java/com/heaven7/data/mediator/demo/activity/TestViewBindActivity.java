@@ -40,8 +40,7 @@ public class TestViewBindActivity extends BaseActivity {
          binder.bindBackground("background", mV_bg)
                  .bindBackgroundRes("backgroundRes", mV_bg_res)
                  .bindBackgroundColor("backgroundColor", mV_bg_color)
-                 .bindEnable("enable", mV_enable)
-                 .apply();
+                 .bindEnable("enable", mV_enable);
     }
     @Override
     protected void onDestroy() {

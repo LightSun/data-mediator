@@ -1,8 +1,10 @@
 package com.heaven7.java.data.mediator.test;
 
+import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.BaseMediator;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
 import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.PropertyInterceptor;
 import com.heaven7.java.data.mediator.compiler.FieldData;
 
 import java.util.ArrayList;
@@ -27,11 +29,14 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     }
 
     @Override
-    public void apply() {
-        dispatchValueApplied(PROP_AGE, getAge());
-        dispatchValueApplied(PROP_NAME, getName());
-        dispatchValueApplied(PROP_ID, getId());
-        dispatchValueApplied(PROP_TAGS, getTags());
+    public void applyProperties(PropertyInterceptor interceptor) {
+        Throwables.checkNull(interceptor);
+        startBatchApply(interceptor)
+                .addProperty(PROP_AGE, getAge())
+                .addProperty(PROP_NAME, getName())
+                .addProperty(PROP_ID, getId())
+                .addProperty(PROP_TAGS, getTags())
+                .apply();
     }
 
     @Override
@@ -47,7 +52,7 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
             return;
         }
         target.setAge(age);
-        dispatchCallbacks(PROP_AGE, oldValue, age);
+        dispatchValueChanged(PROP_AGE, oldValue, age);
     }
 
     @Override
@@ -63,7 +68,7 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
             return;
         }
         target.setName(name);
-        dispatchCallbacks(PROP_NAME, oldValue, name);
+        dispatchValueChanged(PROP_NAME, oldValue, name);
     }
 
     @Override
@@ -79,7 +84,7 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
             return;
         }
         target.setId(id);
-        dispatchCallbacks(PROP_ID, oldValue, id);
+        dispatchValueChanged(PROP_ID, oldValue, id);
     }
 
     @Override

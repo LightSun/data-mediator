@@ -2,6 +2,8 @@ package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.data.mediator.util.PlatformDependent;
 
+import java.lang.reflect.Constructor;
+
 /**
  * Created by heaven7 on 2017/9/14 0014.
  * @since 1.0.4
@@ -47,7 +49,7 @@ public final class DataMediatorFactory {
             Class<?> proxyClazz = Class.forName(name);
             return new DataMediator<T>((BaseMediator<T>) proxyClazz.getConstructor(clazz).newInstance(t));
         } catch (Exception e) {
-            throw new IllegalArgumentException("can't create module proxt for class("+ clazz.getName()
+            throw new IllegalArgumentException("can't create module proxy for class("+ clazz.getName()
                     + ")! have you make project or rebuild ? " ,e);
         }
     }
@@ -66,10 +68,22 @@ public final class DataMediatorFactory {
         if(t instanceof BaseMediator){
             return new DataMediator<T>((BaseMediator<T>) t);
         }
-        if(!t.getClass().getName().endsWith(SUFFIX_IMPL)){
-            throw new IllegalArgumentException("target object(" + t.getClass().getName() + ") can't wrap to DataMediator.");
+        String ImplName = t.getClass().getName();
+        if(!ImplName.endsWith(SUFFIX_IMPL)){
+            throw new IllegalArgumentException("target object(" + ImplName + ") can't wrap to DataMediator.");
         }
-        return new DataMediator<>(new BaseMediator<T>(t));
+        final String interfaceName = ImplName.substring(0, ImplName.lastIndexOf(SUFFIX_IMPL));
+        if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
+            throw new IllegalArgumentException("the argument isn't support.");
+        }
+        try {
+            Class<?> proxyClazz = Class.forName(interfaceName + SUFFIX_PROXY);
+            Constructor<?> constructor = proxyClazz.getConstructor(Class.forName(interfaceName));
+            return new DataMediator<T>((BaseMediator<T>) constructor.newInstance(t));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("can't create module proxy for class("+ ImplName
+                    + ")! have you make project or rebuild ? " ,e);
+        }
     }
 
     /**

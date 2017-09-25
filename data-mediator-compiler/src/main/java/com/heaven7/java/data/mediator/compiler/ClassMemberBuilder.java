@@ -3,7 +3,6 @@ package com.heaven7.java.data.mediator.compiler;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
-
 import java.util.ArrayList;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_PROP;

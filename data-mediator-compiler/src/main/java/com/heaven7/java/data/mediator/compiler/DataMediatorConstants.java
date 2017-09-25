@@ -5,15 +5,16 @@ package com.heaven7.java.data.mediator.compiler;
  */
 public final class DataMediatorConstants {
 
-    public static final String PARAM_NAME = "index";
+    //public static final String PARAM_NAME = "index";
 
     // some cs of MediatorSharedProperties
-    public static final String SIMPLE_NAME_PROPERTY      = "Property";
-    public static final String PKG_PROP                  = "com.heaven7.java.data.mediator";
-    public static final String PKG_SHARED_PROP           = "com.heaven7.java.data.mediator.factory";
-    public static final String SIMPLE_NAME_SHARED_PROP      = "MediatorSharedProperties";
-    public static final String SIMPLE_NAME_BASE_MEDIATOR    = "BaseMediator";
-    public static final String SIMPLE_NAME_LIST_PROP_EDITOR = "ListPropertyEditor";
+    public static final String SIMPLE_NAME_PROPERTY          = "Property";
+    public static final String PKG_PROP                      = "com.heaven7.java.data.mediator";
+    public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.factory";
+    public static final String SIMPLE_NAME_SHARED_PROP       = "MediatorSharedProperties";
+    public static final String SIMPLE_NAME_BASE_MEDIATOR     = "BaseMediator";
+    public static final String SIMPLE_NAME_LIST_PROP_EDITOR  = "ListPropertyEditor";
+    public static final String SIMPLE_NAME_PROP_INTERCEPTOR  = "PropertyInterceptor";
 
     //field name of anno
     public static final String STR_PROP_NAME = "propName";

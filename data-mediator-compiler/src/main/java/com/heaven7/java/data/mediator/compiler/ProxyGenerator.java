@@ -81,7 +81,11 @@ public class ProxyGenerator {
     private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter,
                                               TypeSpec.Builder typeBuilder, boolean normalJavaBean) {
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
+        ClassName cn_prop_interceptor = ClassName.get(PKG_PROP, SIMPLE_NAME_PROP_INTERCEPTOR);
         ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+
+        ClassName cn_throwables = ClassName.get("com.heaven7.java.base.util", "Throwables");
+
 
         //all set/add/remove return this type.
         final TypeName returnType = normalJavaBean ? TypeName.VOID : cn_inter;
@@ -89,26 +93,32 @@ public class ProxyGenerator {
         final ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
 
         /*
-         @Override
-         public void apply() {
-         dispatchValueApplied(PROP_AGE, getAge());
-         dispatchValueApplied(PROP_NAME, getName());
-         dispatchValueApplied(PROP_ID, getId());
-         dispatchValueApplied(PROP_TAGS, getTags());
-         }
+    @Override
+    public void applyProperties(PropertyInterceptor interceptor) {
+        Throwables.checkNull(interceptor);
+        startBatchApply(interceptor)
+                .addProperty(PROP_AGE, getAge())
+                .addProperty(PROP_NAME, getName())
+                .addProperty(PROP_ID, getId())
+                .addProperty(PROP_TAGS, getTags())
+                .apply();
+    }
          */
         //override apply from BaseMediator.
-        final MethodSpec.Builder applyBuilder = MethodSpec.methodBuilder("apply")
+        final MethodSpec.Builder applyBuilder = MethodSpec.methodBuilder("applyProperties")
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
-                .returns(TypeName.VOID);
+                .returns(TypeName.VOID)
+                .addParameter(cn_prop_interceptor, "interceptor")
+                .addStatement("$T.checkNull(interceptor)", cn_throwables)
+                .addCode("startBatchApply(interceptor)\n");
 
         //fields and methods.
         for(FieldData field : set){
             final TypeInfo info = new TypeInfo();
             getTypeName(field, info);
 
-            //static field name
+            //static field name (PROP_xxx)
             final String fieldName = "PROP_" + field.getPropertyName();
             typeBuilder.addField(FieldSpec.builder(cn_prop,
                     fieldName, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
@@ -151,7 +161,7 @@ public class ProxyGenerator {
             }
             typeBuilder.addMethod(setBuilder.build());
             //add apply statement.
-            applyBuilder.addStatement("dispatchValueApplied( $N, $N())", fieldName, getMethodName);
+            applyBuilder.addCode("  .addProperty($N, $N())\n", fieldName, getMethodName);
 
             //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
             if(field.isList()){
@@ -178,6 +188,7 @@ public class ProxyGenerator {
              return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
              */
         }
+        applyBuilder.addCode(".apply();\n");
         typeBuilder.addMethod(applyBuilder.build());
     }
 }

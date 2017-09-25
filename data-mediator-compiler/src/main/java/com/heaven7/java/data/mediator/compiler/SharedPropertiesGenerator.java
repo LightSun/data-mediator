@@ -8,10 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_SHARED_PROP;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_SHARED_PROP;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_PROP;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_PROPERTY;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
 /**
  * Created by heaven7 on 2017/9/14 0014.

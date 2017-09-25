@@ -38,6 +38,31 @@ public class Property{
      }
 
      /**
+      * indicate the type of property is primitive or not.
+      * @return true if is primitive
+      * @since 1.0.8
+      */
+     public boolean isPrimitive(){
+          switch (complexType){
+               case FieldFlags.COMPLEXT_ARRAY:
+               case FieldFlags.COMPLEXT_LIST:
+                    return false;
+          }
+          switch (type){
+               case TYPE_int:
+               case TYPE_long:
+               case TYPE_short:
+               case TYPE_byte:
+               case TYPE_boolean:
+               case TYPE_float:
+               case TYPE_double:
+               case TYPE_char:
+                    return true;
+          }
+          return false;
+     }
+
+     /**
       * get base the property type.
       * @return the base type.
       * @see #getComplexType()

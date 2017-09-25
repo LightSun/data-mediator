@@ -95,9 +95,8 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         data.setSerializeName(av.getValue().toString());
                         break;
 
-                    case STR_FLAGS: {
+                    case STR_FLAGS:
                         data.setFlags(Integer.valueOf(av.getValue().toString()));
-                    }
                         break;
 
                     case STR_COMPLEXT_TYPE:
