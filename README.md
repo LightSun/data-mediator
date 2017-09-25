@@ -5,6 +5,7 @@
 data-mediator
 =======================================
  <img src="res/data_mediator_base_binder.gif" alt="base binder demo" width="300px" />
+ <img src="res/data_mediator_binder_tv.gif" alt="binder TextView demo" width="300px" />
 
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
@@ -49,6 +50,61 @@ data-mediator
         mediator.getData().setName(null)
                 .setAge(0)
                 .setId(0);
+ ```
+ - 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
+ <br>下面是Textview demo
+ ```java
+ 
+ //...........关键代码
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        initResource(context);
+        mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
+        mBinder.bindText("text", mTv)
+                .bindTextRes("textRes", mTv)
+                .bindTextColor("textColor", mTv)
+                .bindTextColorRes("textColorRes", mTv)
+                .bindTextSize("textSize", mTv)
+                .bindTextSizeRes("textSizeRes", mTv);
+        mProxy = mBinder.getDataProxy();
+    }
+
+    @OnClick(R.id.bt_text)
+    public void onClickChangeText(View v){
+        //改变文本
+        mProxy.setText(getString(mTextRess[mRan.nextInt(5)]));
+    }
+    @OnClick(R.id.bt_text_res)
+    public void onClickChangeTextRes(View v){
+        //改变文本---通过资源id
+        mProxy.setTextRes(mTextRess[mRan.nextInt(5)]);
+    }
+
+
+    @OnClick(R.id.bt_text_color)
+    public void onClickChangeTextColor(View v){
+        //改变文本颜色
+        mProxy.setTextColor(getResources().getColor(mColorRess[mRan.nextInt(5)]));
+    }
+    @OnClick(R.id.bt_text_color_res)
+    public void onClickChangeTextColorRes(View v){
+        //改变文本颜色---通过资源id
+        mProxy.setTextColorRes(mColorRess[mRan.nextInt(5)]);
+    }
+
+
+    @OnClick(R.id.bt_text_size)
+    public void onClickChangeTextSize(View v){
+        //改变文本大小
+        mProxy.setTextSize(getResources().getDimensionPixelSize(mTextSizeRess[mRan.nextInt(5)]));
+    }
+
+    @OnClick(R.id.bt_text_size_res)
+    public void onClickChangeTextSizeRes(View v){
+        //改变文本大小---通过资源id
+        mProxy.setTextSizeRes(mTextSizeRess[mRan.nextInt(5)]);
+    }
+//..............
  ```
 
 
