@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Data-mediator-demo</string>
+
+    <string name="text_1">Google one</string>
+    <string name="text_2">Google two</string>
+    <string name="text_3">Google three</string>
+    <string name="text_4">Google four</string>
+    <string name="text_5">Google five</string>
 </resources>

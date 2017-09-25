@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
+ * 测试 绑定view控件的基本属性: setBackground, setBackgroundColor,setBackgroundResource.setEnable等
  * Created by heaven7 on 2017/9/24.
  */
 public class TestViewBindActivity extends BaseActivity {
@@ -90,28 +91,28 @@ public class TestViewBindActivity extends BaseActivity {
     }
 
     @OnClick(R.id.bt_change_bg)
-    public void onClickChanageBg(View v){
+    public void onClickChangeBg(View v){
         //改变背景（drawable）
         binder.getDataProxy().setBackground(mUserDrawable1 ? mDrawable2 : mDrawable1);
         mUserDrawable1 = !mUserDrawable1;
     }
 
     @OnClick(R.id.bt_change_bg_color)
-    public void onClickChanageBgColor(View v){
+    public void onClickChangeBgColor(View v){
         //改变背景（color）
         binder.getDataProxy().setBackgroundColor(mUserColor1 ? mColor2 : mColor1);
         mUserColor1 = !mUserColor1;
     }
 
     @OnClick(R.id.bt_change_bg_res)
-    public void onClickChanageBgRes(View v){
+    public void onClickChangeBgRes(View v){
         //改变背景（resource id）
         binder.getDataProxy().setBackgroundRes(mUserRes1 ? mResId2 : mResId1);
         mUserRes1 = !mUserRes1;
     }
 
     @OnClick(R.id.bt_change_enable)
-    public void onClickChanageEnable(View v){
+    public void onClickChangeEnable(View v){
         //改变enable 状态
         binder.getDataProxy().setEnable(!binder.getData().getEnable());
     }

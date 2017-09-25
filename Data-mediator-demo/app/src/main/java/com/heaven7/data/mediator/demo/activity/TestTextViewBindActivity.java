@@ -20,7 +20,7 @@ import butterknife.OnClick;
  * Created by heaven7 on 2017/9/25 0025.
  */
 
-public class TextTextViewBindActivity extends BaseActivity {
+public class TestTextViewBindActivity extends BaseActivity {
 
     @BindView(R.id.tv)
     TextView mTv;
@@ -49,30 +49,6 @@ public class TextTextViewBindActivity extends BaseActivity {
                 .bindTextSize("textSize", mTv)
                 .bindTextSizeRes("textSizeRes", mTv);
         mProxy = mBinder.getDataProxy();
-    }
-
-    private void initResource(Context context) {
-        mTextRess = new int[]{
-                R.string.text_1,
-                R.string.text_2,
-                R.string.text_3,
-                R.string.text_4,
-                R.string.text_5,
-        };
-        mColorRess = new int []{
-                R.color.colorAccent,
-                R.color.colorPrimary,
-                R.color.colorPrimaryDark,
-                android.R.color.black,
-                android.R.color.holo_red_light,
-        };
-        mTextSizeRess = new int []{
-                R.dimen.size_15,
-                R.dimen.size_20,
-                R.dimen.size_25,
-                R.dimen.size_30,
-                R.dimen.size_35,
-        };
     }
 
     @OnClick(R.id.bt_text)
@@ -110,5 +86,30 @@ public class TextTextViewBindActivity extends BaseActivity {
         //改变文本大小---通过资源id
         mProxy.setTextSizeRes(mTextSizeRess[mRan.nextInt(5)]);
     }
+
+    private void initResource(Context context) {
+        mTextRess = new int[]{
+                R.string.text_1,
+                R.string.text_2,
+                R.string.text_3,
+                R.string.text_4,
+                R.string.text_5,
+        };
+        mColorRess = new int []{
+                R.color.colorAccent,
+                R.color.colorPrimary,
+                R.color.colorPrimaryDark,
+                android.R.color.black,
+                android.R.color.holo_red_light,
+        };
+        mTextSizeRess = new int []{
+                R.dimen.size_15,
+                R.dimen.size_20,
+                R.dimen.size_25,
+                R.dimen.size_30,
+                R.dimen.size_35,
+        };
+    }
+
 
 }
