@@ -8,18 +8,27 @@ package com.heaven7.java.data.mediator;
  */
 public abstract class PropertyInterceptor {
 
+    /**
+     * a interceptor that never intercept.
+     */
     public static final PropertyInterceptor NEVER = new PropertyInterceptor() {
         @Override
         public boolean shouldIntercept(Object data, Property prop, Object value) {
             return false;
         }
     };
+    /**
+     * a interceptor when value is null. it will intercept.
+     */
     public static final PropertyInterceptor NULL = new PropertyInterceptor() {
         @Override
         public boolean shouldIntercept(Object data, Property prop, Object value) {
             return value == null;
         }
     };
+    /**
+     * a interceptor when value is null or 0. it will intercept.
+     */
     public static final PropertyInterceptor NULL_AND_ZERO = new PropertyInterceptor() {
         @Override
         public boolean shouldIntercept(Object data, Property prop, Object value) {

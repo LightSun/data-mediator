@@ -65,12 +65,12 @@ public class TestViewBindActivity extends BaseActivity {
         mUserRes1 = true;
         mUserColor1 = true;
 
-        //绑定并 首次应用属性
+        //绑定并 首次应用属性(绑定只需要1次)
          binder.bindBackground("background", mV_bg)
                  .bindBackgroundRes("backgroundRes", mV_bg_res)
                  .bindBackgroundColor("backgroundColor", mV_bg_color)
                  .bindEnable("enable", mV_enable)
-                 .applyProperties(PropertyInterceptor.NULL);
+                 .applyProperties(PropertyInterceptor.NULL);//应用
     }
 
     private void initResource(Context context) {
@@ -95,18 +95,21 @@ public class TestViewBindActivity extends BaseActivity {
         binder.getDataProxy().setBackground(mUserDrawable1 ? mDrawable2 : mDrawable1);
         mUserDrawable1 = !mUserDrawable1;
     }
+
     @OnClick(R.id.bt_change_bg_color)
     public void onClickChanageBgColor(View v){
         //改变背景（color）
         binder.getDataProxy().setBackgroundColor(mUserColor1 ? mColor2 : mColor1);
         mUserColor1 = !mUserColor1;
     }
+
     @OnClick(R.id.bt_change_bg_res)
     public void onClickChanageBgRes(View v){
         //改变背景（resource id）
         binder.getDataProxy().setBackgroundRes(mUserRes1 ? mResId2 : mResId1);
         mUserRes1 = !mUserRes1;
     }
+
     @OnClick(R.id.bt_change_enable)
     public void onClickChanageEnable(View v){
         //改变enable 状态

@@ -120,6 +120,28 @@ public abstract class Binder<T> {
      * @return this.
      */
     public abstract Binder<T> bindCheckable(String property, Object checkableView);
+
+    /**
+     * bind visibility of view (on android the visibility is masked as int.).
+     * @param property the property
+     * @param view the view. eg: android.view.View on android platform
+     * @param forceAsBoolean  force to use property as boolean or not. if true that means on android:
+     *                      only support  View.GONE(false) and View.VISIBLE(true).
+     * @return this.
+     */
+    public abstract Binder<T> bindVisibility(String property, Object view, boolean forceAsBoolean);
+
+    /**
+     * bind visibility of view (on android the visibility is masked as int.).
+     * here force use property of visibility as boolean.
+     * @param property the property
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     */
+    public Binder<T> bindVisibility(String property, Object view){
+        return bindVisibility(property, view, true);
+    }
+
     /**
      * bind enable of view.
      * @param property the property
@@ -127,6 +149,27 @@ public abstract class Binder<T> {
      * @return this.
      */
     public abstract Binder<T> bindEnable(String property, Object view);
+    /**
+     * bind background resource of view.
+     * @param property the property
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     */
+    public abstract Binder<T> bindBackgroundRes(String property, Object view);
+    /**
+     * bind background drawable of view.
+     * @param property the property
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     */
+    public abstract Binder<T> bindBackground(String property, Object view);
+    /**
+     * bind background color of view.
+     * @param property the property
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     */
+    public abstract Binder<T> bindBackgroundColor(String property, Object view);
     /**
      * bind text of Text view.
      * @param property the property
@@ -176,27 +219,6 @@ public abstract class Binder<T> {
      * @return this.
      */
     public abstract Binder<T> bindTextSizeDp(String property, Object textView);
-    /**
-     * bind background resource of view.
-     * @param property the property
-     * @param view the view. eg: android.view.View on android platform
-     * @return this.
-     */
-    public abstract Binder<T> bindBackgroundRes(String property, Object view);
-    /**
-     * bind background drawable of view.
-     * @param property the property
-     * @param view the view. eg: android.view.View on android platform
-     * @return this.
-     */
-    public abstract Binder<T> bindBackground(String property, Object view);
-    /**
-     * bind background color of view.
-     * @param property the property
-     * @param view the view. eg: android.view.View on android platform
-     * @return this.
-     */
-    public abstract Binder<T> bindBackgroundColor(String property, Object view);
     /**
      * bind image url of image view.
      * @param property the property

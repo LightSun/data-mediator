@@ -33,6 +33,15 @@ import com.heaven7.java.data.mediator.Property;
     }
 
     @Override
+    public Binder<T> bindVisibility(String property, Object view, boolean forceAsBoolean) {
+        if(!(view instanceof View)){
+            throw new IllegalArgumentException("must be any child of android.view.View");
+        }
+        bind(property, new VisibilityBinderCallback<T>((View)view, forceAsBoolean));
+        return this;
+    }
+
+    @Override
     public Binder<T> bindCheckable(String property, Object view){
         if(!(view instanceof Checkable) || !(view instanceof View)){
             throw new IllegalArgumentException("must be Checkable View");
@@ -201,6 +210,25 @@ import com.heaven7.java.data.mediator.Property;
         return true;
     }
     //=================================== internal class ==========================
+    private static class VisibilityBinderCallback<T> extends SimpleBinderCallback2<T>{
+
+        final boolean mForceAsBoolean;
+
+        public VisibilityBinderCallback(View tv, boolean forceAsBoolean) {
+            super(tv);
+            this.mForceAsBoolean = forceAsBoolean;
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            if(mForceAsBoolean){
+                view.setVisibility(Boolean.valueOf(newValue.toString())
+                        ? View.VISIBLE : View.GONE);
+            }else{
+                view.setVisibility(Integer.valueOf(newValue.toString()));
+            }
+        }
+    }
+
     private static class EnableBinderCallback<T> extends SimpleBinderCallback2<T> {
         public EnableBinderCallback(View tv) {
             super(tv);
