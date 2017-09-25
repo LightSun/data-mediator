@@ -51,6 +51,60 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
+ - 新增万能的Dinder. 支持绑定任意控件的属性。(常用的已经集成)
+ ```java
+ 
+ //...........关键代码
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        initResource(context);
+        mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
+        mBinder.bindText("text", mTv)
+                .bindTextRes("textRes", mTv)
+                .bindTextColor("textColor", mTv)
+                .bindTextColorRes("textColorRes", mTv)
+                .bindTextSize("textSize", mTv)
+                .bindTextSizeRes("textSizeRes", mTv);
+        mProxy = mBinder.getDataProxy();
+    }
+
+    @OnClick(R.id.bt_text)
+    public void onClickChangeText(View v){
+        //改变文本
+        mProxy.setText(getString(mTextRess[mRan.nextInt(5)]));
+    }
+    @OnClick(R.id.bt_text_res)
+    public void onClickChangeTextRes(View v){
+        //改变文本---通过资源id
+        mProxy.setTextRes(mTextRess[mRan.nextInt(5)]);
+    }
+
+
+    @OnClick(R.id.bt_text_color)
+    public void onClickChangeTextColor(View v){
+        //改变文本颜色
+        mProxy.setTextColor(getResources().getColor(mColorRess[mRan.nextInt(5)]));
+    }
+    @OnClick(R.id.bt_text_color_res)
+    public void onClickChangeTextColorRes(View v){
+        //改变文本颜色---通过资源id
+        mProxy.setTextColorRes(mColorRess[mRan.nextInt(5)]);
+    }
+
+
+    @OnClick(R.id.bt_text_size)
+    public void onClickChangeTextSize(View v){
+        //改变文本大小
+        mProxy.setTextSize(getResources().getDimensionPixelSize(mTextSizeRess[mRan.nextInt(5)]));
+    }
+
+    @OnClick(R.id.bt_text_size_res)
+    public void onClickChangeTextSizeRes(View v){
+        //改变文本大小---通过资源id
+        mProxy.setTextSizeRes(mTextSizeRess[mRan.nextInt(5)]);
+    }
+//..............
+ ```
 
 
 # 即将支持的特性
