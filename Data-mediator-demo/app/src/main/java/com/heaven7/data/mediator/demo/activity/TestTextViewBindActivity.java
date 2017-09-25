@@ -42,12 +42,14 @@ public class TestTextViewBindActivity extends BaseActivity {
     protected void onInit(Context context, Bundle savedInstanceState) {
         initResource(context);
         mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
-        mBinder.bindText("text", mTv)
-                .bindTextRes("textRes", mTv)
-                .bindTextColor("textColor", mTv)
-                .bindTextColorRes("textColorRes", mTv)
-                .bindTextSize("textSize", mTv)
-                .bindTextSizeRes("textSizeRes", mTv);
+        mBinder.beginBatchTextViewBinder(mTv)
+                .bindText("text")
+                .bindTextRes("textRes")
+                .bindTextColor("textColor")
+                .bindTextColorRes("textColorRes")
+                .bindTextSize("textSize")
+                .bindTextSizeRes("textSizeRes")
+                .end();
         mProxy = mBinder.getDataProxy();
     }
 

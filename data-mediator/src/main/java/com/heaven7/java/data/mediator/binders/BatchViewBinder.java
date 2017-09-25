@@ -80,7 +80,7 @@ public class BatchViewBinder<T> {
      * @return this.
      */
     public BatchViewBinder<T> bindBackground(String property) {
-        mBinder.bindBackgroundRes(property, mView);
+        mBinder.bindBackground(property, mView);
         return this;
     }
 
