@@ -37,27 +37,34 @@ public abstract class Binder<T> {
     }
 
     /**
-     * apply all current properties. that means notify all property value changed except
-     * empty(null or no element).
-     * @since 1.0.8
-     */
-    public void applyProperties(){
-        getDataMediator().applyProperties();
-    }
-    /**
      * get the real module data.
      * @return the real module data.
      */
     public T getData(){
         return getDataMediator().getData();
     }
-
     /**
      * get the proxy of module data.
      * @return the proxy of module data.
      */
     public T getDataProxy(){
         return getDataMediator().getDataProxy();
+    }
+
+    /**
+     * apply all current properties. that means notify all property value apply.
+     * @since 1.0.8
+     */
+    public void applyProperties(){
+        getDataMediator().applyProperties();
+    }
+    /**
+     * apply all current properties with target interceptor. that means notify all property value apply.
+     * @param interceptor the property interceptor
+     * @since 1.0.8
+     */
+    public void applyProperties(PropertyInterceptor interceptor){
+        getDataMediator().applyProperties(interceptor);
     }
 
     /**

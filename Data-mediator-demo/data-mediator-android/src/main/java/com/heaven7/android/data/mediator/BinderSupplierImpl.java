@@ -3,7 +3,6 @@ package com.heaven7.android.data.mediator;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.IBinderSupplier;
-
 /**
  * the binder supplier
  * Created by heaven7 on 2017/9/24.

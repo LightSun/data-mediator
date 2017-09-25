@@ -87,4 +87,14 @@ public final class DataMediator<T> {
     public void applyProperties(){
         mediator.applyProperties();
     }
+
+    /**
+     * apply all properties with target interceptor.
+     * @param interceptor the property interceptor
+     * @see BaseMediator#applyProperties(PropertyInterceptor)
+     * @since 1.0.8
+     */
+    public void applyProperties(PropertyInterceptor interceptor){
+        mediator.applyProperties(interceptor);
+    }
 }

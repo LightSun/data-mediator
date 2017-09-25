@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--定义一个带圆角,白色背景,绿色边框的矩形-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--圆角-->
+    <corners android:radius="52dp" />
+    <!--填充颜色-->
+    <solid android:color="#00bd79" />
+</shape>

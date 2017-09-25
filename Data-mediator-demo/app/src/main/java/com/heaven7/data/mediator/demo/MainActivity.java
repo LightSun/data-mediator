@@ -18,5 +18,7 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestChainCallActivity.class, "TestChainCallActivity"));
         list.add(new ActivityInfo(TestParcelableDataActivity.class, "TestParcelableDataActivity"));
 
+        list.add(new ActivityInfo(TestViewBindActivity.class, "Test binder view property"));
+
     }
 }
