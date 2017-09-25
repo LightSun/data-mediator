@@ -54,7 +54,6 @@ public class TestViewBindActivity extends BaseActivity {
 
         initResource(context);
 
-        //TODO handle exist property/data?
          binder = DataMediatorFactory.createBinder(ViewBindModule.class);
         //初始化属性。
          binder.getDataProxy()
