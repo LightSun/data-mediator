@@ -5,10 +5,10 @@
 data-mediator
 =======================================
  <img src="res/data_mediator_base_binder.gif" alt="base binder demo" width="300px" />
-=======================================
+
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
-  方便数据层的使用。支持gson.
+  方便数据层的使用。支持gson. 通过操作binder和代理 实现绝大部分开发属性设置。（setText, setTextColor 等等）
 
 # 设计思想
 - 整个设计分3层： 模型层，代理层，调用层
