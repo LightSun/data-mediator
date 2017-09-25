@@ -2,6 +2,8 @@ package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Throwables;
+import com.heaven7.java.data.mediator.binders.BatchTextViewBinder;
+import com.heaven7.java.data.mediator.binders.BatchViewBinder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,6 +111,25 @@ public abstract class Binder<T> {
      */
     protected boolean shouldUseWeakMap(){
         return false;
+    }
+
+    //============================ batch binder =================================================
+
+    /**
+     * begin batch view binder
+     * @param view the view. on android is any child of "android.view.View"
+     * @return batch view binder.
+     */
+    public BatchViewBinder<T> beginBatchViewBinder(Object view){
+        return new BatchViewBinder<T>(this, view);
+    }
+    /**
+     * begin batch text view binder
+     * @param view the text view. on android is any child of "android.widget.TextView"
+     * @return batch text view binder.
+     */
+    public BatchTextViewBinder<T> beginBatchTextViewBinder(Object view){
+        return new BatchTextViewBinder<T>(this, view);
     }
 
     //============================== special =========================================//
