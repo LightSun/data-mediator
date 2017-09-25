@@ -51,7 +51,8 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
- - 新增万能的Dinder. 支持绑定任意控件的属性。(常用的已经集成)
+ - 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
+ <br>下面是Textview demo
  ```java
  
  //...........关键代码
