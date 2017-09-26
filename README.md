@@ -19,20 +19,20 @@ data-mediator
 
 # 特点
 - 自动生成数据的接口和实现类.可自动实现Serializable和 Parcelable(android)接口。
-- 自动生成代理层 以便监听数据变化。
-- 为数据实体 自动生成get 和 set方法 
-- 字段: 支持生成字段的注解 for 'Google-Gson'.
-- 字段: 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 和其他类型 .
-  数组和list结构同样支持。（map暂不支持parcelable）
-- 字段: 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
-      作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
-      
+  <br>自动生成get/is , set , toString方法.
+  <br>自动生成代理层 以便监听数据变化。
+- 字段:
+  * 1, 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 
+   <br> 和其他类型 .数组和list结构同样支持。（map暂不支持parcelable）
+  * 2, 支持生成字段的gson注解 for 'Google-Gson'.
+  * 3, 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
+  <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
+  <br>     比如 toString. 可选择某些字段参加或者不参加toString方法.
+      
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
-    所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
+     <br> 所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
     
-- 支持toString和 FLAG_TO_STRING 标志.
-- 支持android平台的双向绑定
 - 支持链式调用. data-mediator-compiler 1.0.9 之后默认链式。
    <br>1), 如果需要回到普通的java bean. 则需要将注解 @fields的方法 boolean enableChain()。 返回false. 
    <br>2), 需要注意的是，如果模型之间有继承关系。则需要将父module定义的enableChain 和 child的 enableChain 值相同, 否则编译错误。
@@ -50,7 +50,7 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
- - 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
+ - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br>下面是Textview demo
  ```java
  
