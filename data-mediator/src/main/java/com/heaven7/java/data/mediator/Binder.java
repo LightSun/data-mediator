@@ -75,7 +75,7 @@ public abstract class Binder<T> {
      * @param callback the property callback of binder
      * @return this.
      */
-    public Binder<T> bind(String property, BinderCallback<T> callback){
+    public Binder<T> bind(String property, BinderCallback<? super T> callback){
         DataMediatorCallback<T> temp = DataMediatorCallback.create(property, callback);
         if(callback.getTag() != null){
             mMap.put(callback.getTag(), temp);

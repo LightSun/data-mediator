@@ -2,6 +2,7 @@ package com.heaven7.data.mediator.demo.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,9 +16,10 @@ import com.heaven7.data.mediator.demo.module.RecyclerListBindModule;
 import com.heaven7.data.mediator.demo.testpackage.StudentModule;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
-import com.heaven7.java.data.mediator.Property;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,12 +31,14 @@ import butterknife.OnClick;
 
 public class TestRecyclerListBindActivity extends BaseActivity {
 
+    private static final Random sRan = new Random();
 
     @BindView(R.id.rv)
     RecyclerView mRv;
 
-    Binder<RecyclerListBindModule> mBinder;
+    private Binder<RecyclerListBindModule> mBinder;
     private TestRecyclerListAdapter<StudentModule> mAdapter;
+
 
     @Override
     protected int getLayoutId() {
@@ -45,8 +49,36 @@ public class TestRecyclerListBindActivity extends BaseActivity {
     protected void onInit(Context context, Bundle savedInstanceState) {
         initAdapter();
         mBinder = DataMediatorFactory.createBinder(RecyclerListBindModule.class);
-        /*mBinder.bind(RecyclerListBindModule.PROP_students.getName(),
-                new ListBinderCallback<RecyclerListBindModule>(mAdapter));*/
+        //通用的绑定方法. 这里用于绑定列表
+        mBinder.bind(RecyclerListBindModule.PROP_students.getName(),
+                new ListBinderCallback<>(mAdapter));
+    }
+    //添加一个item
+    @OnClick(R.id.bt_add)
+    public void onClickAddItem(View v){
+        mBinder.getDataProxy().beginStudentsEditor()
+                .add(0, createItem());
+    }
+
+    //添加一组items
+    @OnClick(R.id.bt_add_all)
+    public void onClickAddItems(View v){
+        List<StudentModule> list = createItems();
+        mBinder.getDataProxy().beginStudentsEditor()
+                .addAll(list);
+    }
+
+    //删除一个 item
+    @OnClick(R.id.bt_remove)
+    public void onClickRemoveItem(View v){
+        mBinder.getDataProxy().beginStudentsEditor()
+                .remove(0);
+    }
+
+    //替换所有items
+    @OnClick(R.id.bt_replace)
+    public void onClickReplaceItem(View v){
+        mBinder.getDataProxy().setStudents(createItems());
     }
 
     private void initAdapter() {
@@ -62,12 +94,24 @@ public class TestRecyclerListBindActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.bt_change_items)
-    public void onClickChangeItems(View v){
-
+    private static StudentModule createItem(){
+        StudentModule data = DataMediatorFactory.createData(StudentModule.class);
+        data.setAge(sRan.nextInt(10001));
+        data.setName("google__" + sRan.nextInt(100));
+        return data;
+    }
+    @NonNull
+    private List<StudentModule> createItems() {
+        List<StudentModule> list = new ArrayList<>();
+        //just mock data
+        final int count = sRan.nextInt(10) + 1;
+        for (int i =0 ; i< count ; i++){
+            list.add(createItem());
+        }
+        return list;
     }
 
-     private static abstract class TestRecyclerListAdapter<T extends ISelectable>
+    private static abstract class TestRecyclerListAdapter<T extends ISelectable>
              extends QuickRecycleViewAdapter<T> implements
              ListBinderCallback.IItemManager<T>{
 

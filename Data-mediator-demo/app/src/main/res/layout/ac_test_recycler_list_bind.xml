@@ -6,14 +6,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <Button
-        android:id="@+id/bt_change_items"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textAllCaps="false"
-        android:text="change items"
-        tools:ignore="HardcodedText" />
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+        >
+        <Button
+            android:id="@+id/bt_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="add an item"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bt_add_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="add all items"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+        >
+        <Button
+            android:id="@+id/bt_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="remove an item"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bt_replace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="replace all items"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView

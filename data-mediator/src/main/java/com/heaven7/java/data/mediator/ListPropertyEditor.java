@@ -44,7 +44,7 @@ public class ListPropertyEditor<D, T> {
      * add a value to the property.
      * @param t the value data.
      */
-    public void add(T t){
+    public ListPropertyEditor<D, T> add(T t){
         Throwables.checkNull(t);
         //dispatch if need.
         if(mList.add(t) && mMediator != null){
@@ -55,6 +55,7 @@ public class ListPropertyEditor<D, T> {
             mMediator.dispatchAddValues(mProperty, mList, mTemp);
             mTemp.clear();
         }
+        return this;
     }
 
     /**
@@ -62,7 +63,7 @@ public class ListPropertyEditor<D, T> {
      * @param index the index
      * @param t the value data.
      */
-    public void add(int index ,T t){
+    public ListPropertyEditor<D, T> add(int index ,T t){
         Throwables.checkNull(t);
         mList.add(index, t);
         //dispatch if need.
@@ -74,6 +75,7 @@ public class ListPropertyEditor<D, T> {
             mMediator.dispatchAddValuesWithIndex(mProperty, mList, mTemp, index);
             mTemp.clear();
         }
+        return this;
     }
 
     /**
@@ -81,7 +83,7 @@ public class ListPropertyEditor<D, T> {
      * @param index the index
      * @param collection the collection
      */
-    public void addAll(int index , Collection<? extends T> collection){
+    public ListPropertyEditor<D, T> addAll(int index , Collection<? extends T> collection){
         Throwables.checkNull(collection);
         if(!collection.isEmpty() && mList.addAll(index, collection)) {
             //dispatch if need.
@@ -89,12 +91,13 @@ public class ListPropertyEditor<D, T> {
                 mMediator.dispatchAddValuesWithIndex(mProperty, mList, collection, index);
             }
         }
+        return this;
     }
     /**
      * add the all value data which is indicate by target collection.
      * @param collection the collection
      */
-    public void addAll(Collection<? extends T> collection){
+    public ListPropertyEditor<D, T> addAll(Collection<? extends T> collection){
         Throwables.checkNull(collection);
         if(!collection.isEmpty() && mList.addAll(collection)) {
             //dispatch if need.
@@ -102,13 +105,14 @@ public class ListPropertyEditor<D, T> {
                 mMediator.dispatchAddValues(mProperty, mList, collection);
             }
         }
+        return this;
     }
 
     /**
      * remove the value data from collection.
      * @param t the value data
      */
-    public void remove(T t){
+    public ListPropertyEditor<D, T> remove(T t){
         Throwables.checkNull(t);
         if(mList.remove(t)){
             if(mMediator != null) {
@@ -120,12 +124,32 @@ public class ListPropertyEditor<D, T> {
                 mTemp.clear();
             }
         }
+        return this;
+    }
+    /**
+     * remove the index data from collection.
+     * @param index the index data
+     */
+    public ListPropertyEditor<D, T> remove(int index){
+        Throwables.checkNegativeValue(index);
+        if(mList.size()> index){
+            T t = mList.remove(index);
+            if(mMediator != null && t != null) {
+                if (mTemp == null) {
+                    mTemp = new ArrayList<T>();
+                }
+                mTemp.add(t);
+                mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
+                mTemp.clear();
+            }
+        }
+        return this;
     }
     /**
      * remove the all value data which is indicate by target collection.
      * @param collection the collection
      */
-    public void removeAll(Collection<? extends T> collection){
+    public ListPropertyEditor<D, T> removeAll(Collection<? extends T> collection){
         Throwables.checkNull(collection);
         if(!collection.isEmpty() && mList.removeAll(collection)) {
             //dispatch if need.
@@ -133,6 +157,25 @@ public class ListPropertyEditor<D, T> {
                 mMediator.dispatchRemoveValues(mProperty, mList, collection);
             }
         }
+        return this;
+    }
+
+    /**
+     * remove the all value data.
+     */
+    public ListPropertyEditor<D, T> clearAll(){
+        if(!mList.isEmpty()) {
+            //dispatch if need.
+            if(mMediator != null){
+                mTemp.addAll(mList);
+                mList.clear();
+                mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
+                mTemp.clear();
+            }else{
+                mList.clear();
+            }
+        }
+        return this;
     }
 
     /**
