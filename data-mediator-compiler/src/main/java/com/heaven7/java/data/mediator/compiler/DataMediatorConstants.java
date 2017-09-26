@@ -5,12 +5,28 @@ package com.heaven7.java.data.mediator.compiler;
  */
 public final class DataMediatorConstants {
 
-    //public static final String PARAM_NAME = "index";
+    public static final FieldData FD_SELECTABLE ;
+
+    static {
+        FD_SELECTABLE = new FieldData();
+        FD_SELECTABLE.setPropertyName("selected");
+        FD_SELECTABLE.setTypeCompat(new FieldData.TypeCompat(null, null){
+            @Override
+            public String toString() {
+                return NAME_boolean;
+            }
+        });
+        FD_SELECTABLE.setComplexType(0);
+    }
 
     // some cs of MediatorSharedProperties
     public static final String SIMPLE_NAME_PROPERTY          = "Property";
     public static final String PKG_PROP                      = "com.heaven7.java.data.mediator";
     public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.factory";
+    public static final String PKG_JAVA_BASE_UTIL            = "com.heaven7.java.base.util";
+
+    public static final String SIMPLE_NAME_THROWABLES        = "Throwables";
+
     public static final String SIMPLE_NAME_SHARED_PROP       = "SharedProperties";
     public static final String SIMPLE_NAME_BASE_MEDIATOR     = "BaseMediator";
     public static final String SIMPLE_NAME_LIST_PROP_EDITOR  = "ListPropertyEditor";
@@ -27,17 +43,18 @@ public final class DataMediatorConstants {
     public static final String NAME_COPYA = "com.heaven7.java.data.mediator.ICopyable";
     public static final String NAME_RESET = "com.heaven7.java.data.mediator.IResetable";
     public static final String NAME_SHARE = "com.heaven7.java.data.mediator.IShareable";
-    public static final String NAME_SNAP = "com.heaven7.java.data.mediator.ISnapable";
+    public static final String NAME_SNAP  = "com.heaven7.java.data.mediator.ISnapable";
     public static final String NAME_SERIALIZABLE = "java.io.Serializable";
+    public static final String NAME_SELECTABLE   = "com.heaven7.adapter.ISelectable";
 
     public static final String INTERFACE_SUFFIX = "Module";
     public static final String IMPL_SUFFIX      = "Module_Impl";
     public static final String PROXY_SUFFIX     = "_Proxy";
 
-    public static final String SET_PREFIX = "set";
-    public static final String GET_PREFIX = "get";
-   // public static final String ADD_PREFIX    = "add";
-    //public static final String REMOVE_PREFIX = "remove";
+    public static final String SET_PREFIX   = "set";
+    public static final String GET_PREFIX   = "get";
+    public static final String IS_PREFIX    = "is";
+
     public static final String BEGIN_PREFIX   = "begin";
     public static final String EDITOR_SUFFIX  = "Editor";
 

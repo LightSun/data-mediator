@@ -20,6 +20,7 @@ public class MainActivity extends AbsMainActivity {
 
         list.add(new ActivityInfo(TestViewBindActivity.class, "Test binder View property"));
         list.add(new ActivityInfo(TestTextViewBindActivity.class, "Test binder TextView property"));
+        list.add(new ActivityInfo(TestRecyclerListBindActivity.class, "Test binder recycler list property"));
 
     }
 }

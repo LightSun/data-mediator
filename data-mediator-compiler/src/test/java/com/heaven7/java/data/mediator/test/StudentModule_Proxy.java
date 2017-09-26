@@ -137,4 +137,20 @@ public class StudentModule_Proxy extends BaseMediator<IStudent> implements IStud
     public String toString() {
         return getTarget().toString();
     }
+
+    @Override
+    public void setSelected(boolean selected) {
+        IStudent target = getTarget();
+        boolean oldValue = target.isSelected();
+        if(getEqualsComparator().isEquals(oldValue, selected)){
+            return;
+        }
+        target.setSelected(selected);
+        dispatchValueChanged(PROP_ID, oldValue, selected);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return getTarget().isSelected();
+    }
 }

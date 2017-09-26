@@ -35,7 +35,7 @@ public class TypeSerializableFiller extends TypeInterfaceFiller {
 
     @Override
     public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName,
-                                                  String classname, List<FieldData> datas) {
+                                                  String classname, List<FieldData> datas, int superFlagsForParent) {
         final FieldSpec.Builder builder = FieldSpec.builder(long.class, "serialVersionUID",
                 Modifier.PRIVATE, Modifier.FINAL, Modifier.STATIC)
                 .initializer(" 1L");

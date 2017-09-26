@@ -16,6 +16,7 @@ import java.io.StringWriter;
 import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_COPYA;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_SELECTABLE;
 import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 
 /**
@@ -37,6 +38,7 @@ public final class Util {
 
         final TypeInterfaceFiller sParcelable = new TypeParcelableFiller();
         final TypeInterfaceFiller sSerializable = new TypeSerializableFiller();
+        final TypeInterfaceFiller sSelectable = new TypeSelectableFiller();
 
         sFillerMap.put(sCopyFiller.getInterfaceName(), sCopyFiller);
         sFillerMap.put(sResetFiller.getInterfaceName(), sResetFiller);
@@ -44,6 +46,7 @@ public final class Util {
         sFillerMap.put(sSnapFiller.getInterfaceName(), sSnapFiller);
         sFillerMap.put(sParcelable.getInterfaceName(), sParcelable);
         sFillerMap.put(sSerializable.getInterfaceName(), sSerializable);
+        sFillerMap.put(sSelectable.getInterfaceName(), sSelectable);
 
         sReplacerMap = new HashMap<>();
         sReplacerMap.put(NAME_COPYA, new CopyReplacer());
@@ -101,6 +104,13 @@ public final class Util {
     }
 
     public static void getTypeName(FieldData field, TypeInfo info) {
+        //special handle FD_SELECTABLE
+        if(field == DataMediatorConstants.FD_SELECTABLE){
+            info.setParamName(field.getPropertyName());
+            info.setSimpleTypeName(TypeName.BOOLEAN);
+            info.setTypeName(TypeName.BOOLEAN);
+            return;
+        }
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
         TypeName rawTypeName = typeCompat.getInterfaceTypeName();
         info.setSimpleTypeName(rawTypeName);
@@ -216,6 +226,10 @@ public final class Util {
             TypeElement type = tc.getElementAsType();
             String interfaceName = type.getQualifiedName().toString();
             final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
+            //for proxy .method build is in ProxyGenerator.
+            if(filler instanceof TypeSelectableFiller){
+                continue;
+            }
 
             //get all method element
             final List<? extends Element> list = type.getEnclosedElements();
@@ -327,17 +341,18 @@ public final class Util {
      * @param classname the class name
      * @param tc        the type element wrapper.
      * @param map       the map.
+     * @param superFlagsForParent super flags for parent
      * @return the field builders.
      */
     public static FieldSpec.Builder[] getImplClassFieldBuilders(String pkgName, String classname,
-                                                                TypeCompat tc, Map<String, List<FieldData>> map) {
+                                                                TypeCompat tc, Map<String, List<FieldData>> map, int superFlagsForParent) {
         final TypeElement te = tc.getElementAsType();
         String interfaceIname = te.getQualifiedName().toString();
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceIname);
         if (filler != null) {
             final List<FieldData> datas = map.get(filler.getInterfaceName());
             final String interName = te.getSimpleName().toString();
-            return filler.createFieldBuilder(pkgName, interName, classname, datas);
+            return filler.createFieldBuilder(pkgName, interName, classname, datas, superFlagsForParent);
         }
         return null;
     }
@@ -353,6 +368,11 @@ public final class Util {
         final String interfaceName = te.getQualifiedName().toString();
         pp.note(TAG, "getImplClassMethodBuilders() >>> interface name = " + interfaceName);
         final TypeInterfaceFiller filler = sFillerMap.get(interfaceName);
+
+        //if super has selectable. and current 'interfaceName' is it. just ignore.
+        if(NAME_SELECTABLE.equals(interfaceName) && hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE)){
+             return null;
+        }
         //get all method element
         final List<? extends Element> list = te.getEnclosedElements();
         if (list == null || list.size() == 0) {
@@ -449,8 +469,9 @@ public final class Util {
        /* final ParameterizedTypeName typeName = ParameterizedTypeName.get(
                 ClassName.get(Comparable.class), ClassName.get("com.squareup.tacos", "Taco"));*/
         //pp.note("return type is " + returnType.getKind()); //TYPEVAR
-        final boolean isParcelable = interfaceName.equals("android.os.Parcelable");
-        final boolean isCopy = interfaceName.equals("com.heaven7.java.data.mediator.ICopyable");
+        final boolean isParcelable = interfaceName.equals(DataMediatorConstants.NAME_PARCELABLE);
+        final boolean isCopy = interfaceName.equals(DataMediatorConstants.NAME_COPYA);
+        final boolean isSelectable = interfaceName.equals(DataMediatorConstants.NAME_SELECTABLE);
 
         List<? extends VariableElement> parameters = method.getParameters();
         for (VariableElement parameter : parameters) {
@@ -478,6 +499,10 @@ public final class Util {
             } else if (isCopy) {
                 if (methodName.equals("copyTo")) {
                     name = "out";
+                }
+            }else if(isSelectable){
+                if (methodName.equals("setSelected")) {
+                    name = "selected";
                 }
             }
             Set<Modifier> parameterModifiers = parameter.getModifiers();

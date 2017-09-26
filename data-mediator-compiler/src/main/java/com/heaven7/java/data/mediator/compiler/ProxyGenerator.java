@@ -80,11 +80,9 @@ public class ProxyGenerator {
 
     private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter,
                                               TypeSpec.Builder typeBuilder, boolean normalJavaBean) {
-        ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
-        ClassName cn_prop_interceptor = ClassName.get(PKG_PROP, SIMPLE_NAME_PROP_INTERCEPTOR);
-        ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
 
-        ClassName cn_throwables = ClassName.get("com.heaven7.java.base.util", "Throwables");
+        ClassName cn_prop_interceptor = ClassName.get(PKG_PROP, SIMPLE_NAME_PROP_INTERCEPTOR);
+        ClassName cn_throwables = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_THROWABLES);
 
 
         //all set/add/remove return this type.
@@ -123,7 +121,7 @@ public class ProxyGenerator {
 
             //get
             final String nameForMethod = Util.getPropNameForMethod(field);
-            final String getMethodName = GET_PREFIX + nameForMethod;
+            final String getMethodName = field.getGetMethodPrefix() + nameForMethod;
             typeBuilder.addMethod(MethodSpec.methodBuilder(getMethodName)
                     .returns(info.getTypeName())
                     .addModifiers(Modifier.PUBLIC)
@@ -136,11 +134,11 @@ public class ProxyGenerator {
 
             MethodSpec.Builder setBuilder = MethodSpec.methodBuilder(setMethodName)
                     .addModifiers(Modifier.PUBLIC)
-                    .returns(returnType)
+                    .returns(field == FD_SELECTABLE ? TypeName.VOID : returnType)
                     .addParameter(info.getTypeName(), paramName)
                     .addStatement("$T target = getTarget()", cn_inter)
                     .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName);
-            if(!normalJavaBean){
+            if(!normalJavaBean && field != FD_SELECTABLE){
                 setBuilder.beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
                         .addCode("return this;\n")
                         .endControlFlow()

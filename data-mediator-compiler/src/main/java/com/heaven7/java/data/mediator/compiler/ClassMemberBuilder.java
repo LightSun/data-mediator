@@ -41,7 +41,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
     @Override
     protected MethodSpec.Builder onBuildGet(FieldData field, String nameForMethod, TypeInfo info) {
-        MethodSpec.Builder get = MethodSpec.methodBuilder(DataMediatorConstants.GET_PREFIX + nameForMethod)
+        MethodSpec.Builder get = MethodSpec.methodBuilder(field.getGetMethodPrefix() + nameForMethod)
                 .returns(info.typeName)
                 .addModifiers(Modifier.PUBLIC)
                .addCode("return $N;\n", field.getPropertyName());

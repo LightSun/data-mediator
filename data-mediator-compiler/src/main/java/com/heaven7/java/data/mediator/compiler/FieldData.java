@@ -13,6 +13,8 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import java.util.List;
 
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_boolean;
+
 /**
  * indicate the field data of {@linkplain com.heaven7.java.data.mediator.Field}.
  * note flags shouldn't changed . it will effect the lib data-mediator.
@@ -49,6 +51,9 @@ public class FieldData {
 
     /** the common flags */
     public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE;
+
+    /** only used in compile lib */
+    public static final int FLAG_SELECTABLE = 0x08000000;
 
     private String propertyName;
     private String serializeName;
@@ -106,6 +111,14 @@ public class FieldData {
 
     public String getFieldConstantName(){
         return "PROP_" + getPropertyName();
+    }
+    public String getGetMethodPrefix(){
+        if(complexType == 0){
+            if(NAME_boolean.equals(getTypeCompat().toString())){
+                return DataMediatorConstants.IS_PREFIX;
+            }
+        }
+        return DataMediatorConstants.GET_PREFIX;
     }
 
     @Override
@@ -213,7 +226,7 @@ public class FieldData {
 
         @Override
         public int hashCode() {
-            return tm.toString().hashCode();
+            return toString().hashCode();
         }
 
         @Override
@@ -225,7 +238,7 @@ public class FieldData {
                 return false;
             TypeCompat other = (TypeCompat) obj;
 
-            return other.tm.toString().equals(other.tm.toString());
+            return other.toString().equals(other.toString());
         }
     }
 

@@ -99,7 +99,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
-        //add all Constant RPOP field on Interface (from proxy moved here)
+        //add all Constant RPOP_xxx field on Interface (from proxy moved here)
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
         for(FieldData field : mFields){
@@ -139,9 +139,6 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,
                 normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
 
-        TypeSpec interfaceModule = interfaceBuilder.build();
-
-        final JavaFile interfaceFile = JavaFile.builder(packageName, interfaceModule).build();
         /**
          * for impl class:
          step1: generate all field and method(need body).
@@ -162,6 +159,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
         // implBuilder.superclass()
         boolean usedSuperClass = false ;
+        boolean hasSelectable = hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE);
         implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
         if(interfaces != null){
             //mPrinter.note("implBuilder >>> start interfaces ");
@@ -182,8 +180,28 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                         usedSuperClass = true;
                     }
                 }
+                //handle selectable
+                if(!hasSelectable){
+                   if(tc.toString().equals(NAME_SELECTABLE)){
+                       hasSelectable = true;
+                   }
+                }
             }
         }
+        //====================== interface static filed for some other interface ==================
+        if(hasSelectable){
+            interfaceBuilder.addField( FieldSpec.builder(cn_prop,
+                    FD_SELECTABLE.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                    .initializer("$T.get($S, $S, $L)",
+                            cn_shared_properties, FD_SELECTABLE.getTypeCompat().toString(),
+                            FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType())
+                    .build());
+        }
+        //build interface
+        final JavaFile interfaceFile = JavaFile.builder(packageName, interfaceBuilder.build()).build();
+        //======================================================================
+
+
         //do something for super class/interface
         final List<? extends TypeMirror> mirrors = getAttentionInterfaces(mElement, mTypes, mPrinter);
         for(TypeMirror temp_tm : mirrors){
@@ -213,7 +231,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
 
             //[fields]
             final FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(
-                    packageName, className, temp_tc, groupMap);
+                    packageName, className, temp_tc, groupMap, superFlagsForParent);
             if(fieldBuilders != null) {
                 for (FieldSpec.Builder builder : fieldBuilders) {
                     if(builder != null){
@@ -243,8 +261,13 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             //generate some method from super class.
             List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(
                     mClassInfo, mElement, mTypes, mPrinter);
-            //generate proxy class. with base method for fields.
+            //to generate proxy class. with base method for fields.
             superFields.addAll(mFields);
+            //add selectable field if need
+            if(hasSelectable){
+                superFields.add(FD_SELECTABLE);
+            }
+            //do generate proxy
             if(!ProxyGenerator.generateProxy(mClassInfo, superFields, normalJavaBean ,builders, filer, mPrinter)){
                 return false;
             }

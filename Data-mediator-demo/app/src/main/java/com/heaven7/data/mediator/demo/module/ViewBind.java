@@ -11,10 +11,10 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
  * Created by heaven7 on 2017/9/24.
  */
 @Fields({
-        @Field(propName = "enable" , type = boolean.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "backgroundRes" , type = int.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "backgroundColor" , type = int.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "background" , type = Drawable.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "enable" , type = boolean.class),
+        @Field(propName = "backgroundRes" , type = int.class),
+        @Field(propName = "backgroundColor" , type = int.class),
+        @Field(propName = "background" , type = Drawable.class),
 })
 public interface ViewBind {
 }

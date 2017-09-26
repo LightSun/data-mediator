@@ -114,7 +114,7 @@ public class TestViewBindActivity extends BaseActivity {
     @OnClick(R.id.bt_change_enable)
     public void onClickChangeEnable(View v){
         //改变enable 状态
-        binder.getDataProxy().setEnable(!binder.getData().getEnable());
+        binder.getDataProxy().setEnable(!binder.getData().isEnable());
     }
 
 }

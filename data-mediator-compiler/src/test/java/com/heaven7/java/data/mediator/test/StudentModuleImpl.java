@@ -87,4 +87,14 @@ public class StudentModuleImpl implements IStudent {
     public void clearSnap() {
 
     }
+
+    @Override
+    public void setSelected(boolean selected) {
+
+    }
+
+    @Override
+    public boolean isSelected() {
+        return false;
+    }
 }

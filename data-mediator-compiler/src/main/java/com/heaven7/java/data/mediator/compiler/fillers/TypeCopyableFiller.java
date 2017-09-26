@@ -78,7 +78,7 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
                         note(method," ======= fd = " + fd.getPropertyName());
                         final String nameForMethod = Util.getPropNameForMethod(fd);
                         final String setMethodName = DataMediatorConstants.SET_PREFIX + nameForMethod;
-                        final String getMethodName = DataMediatorConstants.GET_PREFIX + nameForMethod;
+                        final String getMethodName = fd.getGetMethodPrefix() + nameForMethod;
                         builder.addStatement("result.$N(this.$N())", setMethodName, getMethodName);
                     }
                 }

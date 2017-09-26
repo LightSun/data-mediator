@@ -14,6 +14,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
 /**
  * type interface fillers for impl
+ * often used to fill  fields. constructors, methods for impl class.
+ * not for interface.
  * Created by heaven7 on 2017/9/1 0001.
  */
 public abstract class TypeInterfaceFiller {
@@ -93,10 +95,11 @@ public abstract class TypeInterfaceFiller {
      * @param interName the simple interface name.
      * @param classname the simple class name of generate java file
      * @param datas the field datas.
+     * @param superInterfaceFlagsForParent the super interface flags
      * @return the field data array.
      */
     public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName,
-                                                  String classname, List<FieldData> datas) {
+                                                  String classname, List<FieldData> datas, int superInterfaceFlagsForParent) {
         return null;
     }
 

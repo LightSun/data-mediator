@@ -101,7 +101,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
     }
 
     @Override
-    public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName, String classname, List<FieldData> datas) {
+    public FieldSpec.Builder[] createFieldBuilder(String pkgName, String interName, String classname, List<FieldData> datas, int superFlagsForParent) {
         ClassName obj = ClassName.get(pkgName, classname);
         TypeName creatorOfobj = ParameterizedTypeName.get(mCreator, obj);
 

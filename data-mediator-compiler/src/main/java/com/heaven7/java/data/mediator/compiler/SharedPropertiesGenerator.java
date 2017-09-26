@@ -55,6 +55,9 @@ public class SharedPropertiesGenerator {
 
         CodeBlock.Builder staticBuilder = CodeBlock.builder()
                 .add("sCache = new HashMap<>();\n");
+        //add selected ( for ISelectable)
+        staticBuilder.add("putToCache($S, $S, $L);\n", FD_SELECTABLE.getTypeCompat().toString(),
+                FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType());
         for(FieldData fd : fields){
             staticBuilder.add("putToCache($S, $S, $L);\n", fd.getTypeCompat().toString(),
                     fd.getPropertyName(), fd.getComplexType());

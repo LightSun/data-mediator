@@ -1,5 +1,6 @@
 package com.heaven7.data.mediator.demo.testpackage;
 
+import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.IDataMediator;
@@ -30,5 +31,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP
         ),
 })
-public interface StudentBind extends IDataMediator{
+public interface StudentBind extends IDataMediator, ISelectable{
 }

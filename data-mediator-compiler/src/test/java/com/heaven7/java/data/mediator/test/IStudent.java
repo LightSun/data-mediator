@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/9/13 0013.
  */
-public interface IStudent extends ICopyable, IResetable, IShareable, ISnapable{
+public interface IStudent extends ICopyable, IResetable, IShareable, ISnapable, ISelectable{
     int getAge();
 
     void setAge(int age);
