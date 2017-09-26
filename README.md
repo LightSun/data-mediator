@@ -200,6 +200,7 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 
 }
 ```
+更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo)
 
 # 注解 @Field类成员说明.
 ```java
