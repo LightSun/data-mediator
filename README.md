@@ -242,6 +242,7 @@ public @interface Field {
 data-mediator-compiler:    [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-compiler/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-compiler/_latestVersion)<br>
 data-mediator-annotations: [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-annotations/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-annotations/_latestVersion)<br>
 data-mediator:             [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator/_latestVersion)
+data-mediator-android: 
  [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-android/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-android/_latestVersion)
 
 # refer libs
