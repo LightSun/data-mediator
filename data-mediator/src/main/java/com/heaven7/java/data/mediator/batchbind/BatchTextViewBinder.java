@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.binders;
+package com.heaven7.java.data.mediator.batchbind;
 
 import com.heaven7.java.data.mediator.Binder;
 

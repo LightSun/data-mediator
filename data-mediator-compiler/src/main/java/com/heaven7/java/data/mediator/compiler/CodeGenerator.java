@@ -13,7 +13,8 @@ import javax.lang.model.util.Types;
 import java.io.IOException;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PROXY_SUFFIX;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_SHARED_PROP;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 /**
@@ -97,6 +98,18 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
+
+        //add all Constant RPOP field on Interface (from proxy moved here)
+        ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
+        ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+        for(FieldData field : mFields){
+            interfaceBuilder.addField(FieldSpec.builder(cn_prop,
+                    field.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+                    .initializer("$T.get($S, $S, $L)",
+                            cn_shared_properties, field.getTypeCompat().toString(),
+                            field.getPropertyName(), field.getComplexType())
+                    .build());
+        }
 
         //handle super interface with method.
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));

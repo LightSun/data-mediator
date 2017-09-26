@@ -104,6 +104,10 @@ public class FieldData {
         return complexType == COMPLEXT_ARRAY;
     }
 
+    public String getFieldConstantName(){
+        return "PROP_" + getPropertyName();
+    }
+
     @Override
     public String toString() {
         return "FieldData{" +

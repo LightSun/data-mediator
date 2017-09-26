@@ -1,10 +1,10 @@
-package com.heaven7.java.data.mediator.binders;
+package com.heaven7.java.data.mediator.batchbind;
 
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.Binder;
 
 /**
- * the batch view binder
+ * the batch binder of view,
  *
  * @param <T> the module data type
  * @author heaven7

@@ -118,14 +118,9 @@ public class ProxyGenerator {
             final TypeInfo info = new TypeInfo();
             getTypeName(field, info);
 
-            //static field name (PROP_xxx)
-            final String fieldName = "PROP_" + field.getPropertyName();
-            typeBuilder.addField(FieldSpec.builder(cn_prop,
-                    fieldName, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-                    .initializer("$T.get($S, $S, $L)",
-                            cn_shared_properties, field.getTypeCompat().toString(),
-                            field.getPropertyName(), field.getComplexType())
-                    .build());
+            //static field name (PROP_xxx) which is generated in Interface(like xxxModule).
+            final String fieldName = field.getFieldConstantName();
+
             //get
             final String nameForMethod = Util.getPropNameForMethod(field);
             final String getMethodName = GET_PREFIX + nameForMethod;
