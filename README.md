@@ -136,6 +136,8 @@ dependencies {
     
     // 如果需要生成对应的gson注解。请加入gson依赖。比如
     compile "com.google.code.gson:gson:2.7"
+    // 如果要支持android平台的数据绑定. 请添加依赖
+    compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
 }
 ```
 
