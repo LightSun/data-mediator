@@ -377,7 +377,9 @@ import com.heaven7.java.data.mediator.Property;
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
-            ((TextView)view).setTextColor((Integer) newValue);
+            if(newValue != null) {
+                ((TextView) view).setTextColor((Integer) newValue);
+            }
         }
     }
     private static class TextColorResBinderCallback<T> extends SimpleBinderCallback2<T> {
@@ -386,10 +388,8 @@ import com.heaven7.java.data.mediator.Property;
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
-            if(newValue != null) {
-                ((TextView) view).setTextColor(
-                        view.getResources().getColor((Integer) newValue));
-            }
+            ((TextView) view).setTextColor(
+                    view.getResources().getColor((Integer) newValue));
         }
     }
 }

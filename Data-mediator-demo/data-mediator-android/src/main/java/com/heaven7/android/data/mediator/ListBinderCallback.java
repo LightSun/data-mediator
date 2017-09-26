@@ -15,6 +15,10 @@ public class ListBinderCallback<T> extends Binder.SimpleBinderCallback<Object> {
 
     private final IItemManager<T> mCallback;
 
+    /**
+     * create list binder callback with item manager.
+     * @param mCallback the item manager.
+     */
     public ListBinderCallback(IItemManager<T> mCallback) {
         Throwables.checkNull(mCallback);
         this.mCallback = mCallback;

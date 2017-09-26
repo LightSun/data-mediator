@@ -9,6 +9,7 @@ import com.heaven7.data.mediator.demo.R;
 import com.heaven7.data.mediator.demo.module.TextViewBindModule;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
+import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 import java.util.Random;
 
@@ -43,7 +44,7 @@ public class TestTextViewBindActivity extends BaseActivity {
         initResource(context);
         mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
         mBinder.beginBatchTextViewBinder(mTv)
-                .bindText("text")
+                .bindText(TextViewBindModule.PROP_text.getName())
                 .bindTextRes("textRes")
                 .bindTextColor("textColor")
                 .bindTextColorRes("textColorRes")

@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 import java.lang.ref.WeakReference;
 
@@ -14,9 +15,24 @@ import java.lang.ref.WeakReference;
 public abstract class SimpleBinderCallback2<T> extends Binder.SimpleBinderCallback<T> {
 
     private final WeakReference<View> mWeakTextView;
+    private final PropertyInterceptor mInterceptor;
 
+    /**
+     * create binder callback with default interceptor.
+     * @param tv the view.
+     */
     public SimpleBinderCallback2(View tv) {
+        this(tv, PropertyInterceptor.NULL_AND_ZERO);
+    }
+
+    /**
+     * create binder callback with view and property interceptor.
+     * @param tv the view
+     * @param interceptor the interceptor.
+     */
+    public SimpleBinderCallback2(View tv, PropertyInterceptor interceptor) {
         this.mWeakTextView = new WeakReference<>(tv);
+        this.mInterceptor = interceptor;
     }
 
     @Override
@@ -30,6 +46,9 @@ public abstract class SimpleBinderCallback2<T> extends Binder.SimpleBinderCallba
         View view = mWeakTextView.get();
         if (view == null) {
             //view is recycled
+            return;
+        }
+        if(mInterceptor != null && mInterceptor.shouldIntercept(data, prop, newValue)){
             return;
         }
         apply(prop, view, newValue);

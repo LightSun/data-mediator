@@ -4,7 +4,7 @@ import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.IBinderSupplier;
 /**
- * the binder supplier
+ * the binder supplier. this call is called by reflect. must not change package name and class name.
  * Created by heaven7 on 2017/9/24.
  */
 public class BinderSupplierImpl<T> implements IBinderSupplier<T> {
