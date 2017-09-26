@@ -23,9 +23,10 @@
         <activity android:name=".activity.TestParcelableDataActivity"/>
         <activity android:name=".activity.LogForParcelableActivity"/>
 
-        <activity android:name=".activity.TestViewBindActivity"/>
-        <activity android:name=".activity.TestTextViewBindActivity"/>
-        <activity android:name=".activity.TestRecyclerListBindActivity"/>
+        <activity android:name=".activity.TestViewBindActivity" android:label="TestViewBind"/>
+        <activity android:name=".activity.TestTextViewBindActivity" android:label="TestTextViewBind"/>
+        <activity android:name=".activity.TestRecyclerListBindActivity" android:label="TestRecyclerListBind"/>
+        <activity android:name=".activity.TestRecyclerListBind2Activity" android:label="TestRecyclerListBind2"/>
 
 
     </application>

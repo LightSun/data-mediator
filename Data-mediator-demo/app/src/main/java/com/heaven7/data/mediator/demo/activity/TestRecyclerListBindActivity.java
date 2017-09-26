@@ -49,10 +49,10 @@ public class TestRecyclerListBindActivity extends BaseActivity {
     protected void onInit(Context context, Bundle savedInstanceState) {
         initAdapter();
         mBinder = DataMediatorFactory.createBinder(RecyclerListBindModule.class);
-        //通用的绑定方法. 这里用于绑定列表
-        mBinder.bind(RecyclerListBindModule.PROP_students.getName(),
-                new ListBinderCallback<>(mAdapter));
+
+        onBindListItems(mBinder);
     }
+
     //添加一个item
     @OnClick(R.id.bt_add)
     public void onClickAddItem(View v){
@@ -81,7 +81,13 @@ public class TestRecyclerListBindActivity extends BaseActivity {
         mBinder.getDataProxy().setStudents(createItems());
     }
 
-    private void initAdapter() {
+    protected void onBindListItems(Binder<RecyclerListBindModule> mBinder) {
+        //通用的绑定方法. 这里用于绑定列表
+        mBinder.bind(RecyclerListBindModule.PROP_students.getName(),
+                new ListBinderCallback<>(mAdapter));
+    }
+
+    protected void initAdapter() {
         mRv.setLayoutManager(new LinearLayoutManager(this));
         mRv.setAdapter(mAdapter = new TestRecyclerListAdapter<StudentModule>(
                 R.layout.item_test_recycler_list, null) {
@@ -101,7 +107,7 @@ public class TestRecyclerListBindActivity extends BaseActivity {
         return data;
     }
     @NonNull
-    private List<StudentModule> createItems() {
+    private static List<StudentModule> createItems() {
         List<StudentModule> list = new ArrayList<>();
         //just mock data
         final int count = sRan.nextInt(10) + 1;
