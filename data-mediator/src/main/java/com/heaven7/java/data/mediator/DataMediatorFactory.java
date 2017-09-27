@@ -10,10 +10,19 @@ import java.lang.reflect.Constructor;
  */
 public final class DataMediatorFactory {
 
-    private static final String  SUFFIX_INTERFACE = "Module";
-    private static final String  SUFFIX_IMPL   = "_Impl";
+    /*private*/ static final String  SUFFIX_INTERFACE = "Module";
+    /*private*/ static final String  SUFFIX_IMPL   = "_Impl";
     private static final String  SUFFIX_PROXY  = "_Proxy";
 
+    /**
+     * obtain the data for target class type.
+     * @param clazz the data interface module
+     * @param <T> the data module type
+     * @return the data.
+     */
+    public static <T> T obtainData(Class<T> clazz){
+        return DataPools.obtain(clazz);
+    }
     /**
      * create module data for target interface class.
      * @param clazz the interface class.

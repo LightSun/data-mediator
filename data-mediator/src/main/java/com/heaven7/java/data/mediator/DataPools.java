@@ -1,0 +1,136 @@
+package com.heaven7.java.data.mediator;
+
+import com.heaven7.java.base.anno.VisibleForTest;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_IMPL;
+import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_INTERFACE;
+/**
+ * this class just called by framework internal.(include compiler.)
+ * Created by heaven7 on 2017/9/27 0027.
+ * @since 1.1.0
+ */
+public final class DataPools {
+
+    /**
+     * indicate the data can be put to pool or not.
+     */
+    public interface Poolable{
+        /**
+         * clear all properties for data.
+         * called before put to pool.
+         */
+        void clearProperties();
+
+        /**
+         * recycle this object.
+         */
+        void recycle();
+    }
+
+    /* package */ static <T> T obtain(Class<T> clazz){
+        final String name = clazz.getName();
+        if(!name.endsWith(SUFFIX_INTERFACE)){
+            throw new IllegalArgumentException();
+        }
+        Entry entry = sMap.get(name);
+        final Class<?> impl;
+        try {
+            impl = Class.forName(name + SUFFIX_IMPL);
+            if(entry != null ){
+                T result =  (T) entry.obtain(impl);
+                if(result != null){
+                    return result;
+                }
+            }
+            return (T) sFactory.create(impl);
+        }catch (Exception e){
+            throw new UnsupportedOperationException("can't find impl class ("+ (name + SUFFIX_IMPL) +")" ,e);
+        }
+    }
+
+    public static void recycle(Object moduleData){
+        final String name = moduleData.getClass().getName();
+        if(!name.endsWith(SUFFIX_IMPL)){
+            throw new IllegalArgumentException();
+        }
+        final String interfaceName = name.substring(0, name.lastIndexOf(SUFFIX_IMPL));
+        if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
+            throw new IllegalArgumentException("only support data-mediator module interface.");
+        }
+        Entry entry = sMap.get(interfaceName);
+        if(entry != null){
+            entry.recycle(moduleData);
+        }
+    }
+
+    /**
+     * prepare the pool for target class. this method can only call once. or else throw UnsupportedOperationException.
+     * @param fullClassName the impl class name which is generate by data-mediator-compiler.
+     * @param maxCount the max count of the type pool.
+     */
+    public static void preparePool(String fullClassName, int maxCount){
+        final String interfaceName;
+        if(fullClassName.endsWith(SUFFIX_INTERFACE)){
+            interfaceName = fullClassName;
+        }else {
+            if (!fullClassName.endsWith(SUFFIX_IMPL)) {
+                throw new IllegalArgumentException();
+            }
+            interfaceName = fullClassName.substring(0, fullClassName.lastIndexOf(SUFFIX_IMPL));
+            if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
+                throw new IllegalArgumentException("only support data-mediator module interface.");
+            }
+        }
+        Entry entry = sMap.get(interfaceName);
+        if(entry == null){
+            sMap.put(interfaceName , new Entry(maxCount));
+        }else{
+            throw new UnsupportedOperationException("can't prepare pool more than once.");
+        }
+    }
+
+    /*@VisibleForTest
+    public static int size(Class<?> interClazz){
+        return sMap.get(interClazz.getName()).mQueue.size();
+    }*/
+
+    @VisibleForTest
+    private static final Map<String, Entry> sMap = new HashMap<>();
+
+    static final Factory sFactory = new Factory() {
+        @Override
+        public Object create(Class<?> clazz) throws Exception {
+            return clazz.newInstance();
+        }
+    };
+    private static class Entry{
+
+        final ArrayBlockingQueue<Object> mQueue;
+
+        Entry(int mMaxCount) {
+            mQueue = new ArrayBlockingQueue<>(mMaxCount);
+        }
+
+        boolean recycle(Object data){
+            if(!(data instanceof Poolable)){
+                throw new RuntimeException("data must impl Poolable");
+            }
+            if (!mQueue.contains(data)) {
+                ((Poolable) data).clearProperties();
+                mQueue.offer(data);
+                return true;
+            }
+            return false;
+        }
+        Object obtain(Class<?> clazz) throws Exception {
+            return mQueue.poll();
+        }
+    }
+    private interface Factory{
+        Object create(Class<?> clazz) throws Exception;
+    }
+}

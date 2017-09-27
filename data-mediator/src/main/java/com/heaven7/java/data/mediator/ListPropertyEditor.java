@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * the list property editor.
+ * the mQueue property editor.
  * @param <D> the type module data.
- * @param <T> the parameter type of list property.
+ * @param <T> the parameter type of mQueue property.
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
  */
@@ -23,9 +23,9 @@ public class ListPropertyEditor<D, T> {
     private final D mData;
     private final BaseMediator<D> mMediator;
     /**
-     * create list property editor.
+     * create mQueue property editor.
      * @param data the module data
-     * @param currentValues the current list property values. can't be null(may be used by callback).
+     * @param currentValues the current mQueue property values. can't be null(may be used by callback).
      * @param property the property to edit, can be nul
      * @param mediator the mediator of module. can be null.
      */
@@ -48,9 +48,7 @@ public class ListPropertyEditor<D, T> {
         Throwables.checkNull(t);
         //dispatch if need.
         if(mList.add(t) && mMediator != null){
-            if(mTemp == null){
-                mTemp = new ArrayList<T>();
-            }
+            ensureTempNotNull();
             mTemp.add(t);
             mMediator.dispatchAddValues(mProperty, mList, mTemp);
             mTemp.clear();
@@ -68,9 +66,7 @@ public class ListPropertyEditor<D, T> {
         mList.add(index, t);
         //dispatch if need.
         if(mMediator != null){
-            if(mTemp == null){
-                mTemp = new ArrayList<T>();
-            }
+            ensureTempNotNull();
             mTemp.add(t);
             mMediator.dispatchAddValuesWithIndex(mProperty, mList, mTemp, index);
             mTemp.clear();
@@ -116,9 +112,7 @@ public class ListPropertyEditor<D, T> {
         Throwables.checkNull(t);
         if(mList.remove(t)){
             if(mMediator != null) {
-                if (mTemp == null) {
-                    mTemp = new ArrayList<T>();
-                }
+                ensureTempNotNull();
                 mTemp.add(t);
                 mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
                 mTemp.clear();
@@ -135,9 +129,7 @@ public class ListPropertyEditor<D, T> {
         if(mList.size()> index){
             T t = mList.remove(index);
             if(mMediator != null && t != null) {
-                if (mTemp == null) {
-                    mTemp = new ArrayList<T>();
-                }
+                ensureTempNotNull();
                 mTemp.add(t);
                 mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
                 mTemp.clear();
@@ -167,6 +159,7 @@ public class ListPropertyEditor<D, T> {
         if(!mList.isEmpty()) {
             //dispatch if need.
             if(mMediator != null){
+                ensureTempNotNull();
                 mTemp.addAll(mList);
                 mList.clear();
                 mMediator.dispatchRemoveValues(mProperty, mList, mTemp);
@@ -188,5 +181,11 @@ public class ListPropertyEditor<D, T> {
             return (D) mMediator;
         }
         return mData;
+    }
+
+    private void ensureTempNotNull(){
+        if (mTemp == null) {
+            mTemp = new ArrayList<T>();
+        }
     }
 }
