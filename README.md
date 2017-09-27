@@ -46,6 +46,29 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
+ - 支持数据缓存
+  <br> 1), step1. 用注解标识缓存个数。eg: 
+ ```java
+ @Fields(value = {
+        @Field(propName = "name", seriaName = "heaven7", type = String.class),
+        @Field(propName = "data", seriaName = "result", type = ResultData.class),
+}, maxPoolCount = 100)
+public interface TestBind extends Parcelable{
+}
+ ```
+ <br> 2), 如何获取对象？
+     使用 DataMediatorFactory 获取
+     ```java
+       StudentModule result = DataMediatorFactory.obtain(StudentModule.class);
+     ```
+     
+ <br> 3), 如何回收对象？
+     使用 生成的实体数据对象。 比如StudentModule.
+	```java
+	StudentModule result = ....; //必须是真正的数据。代理层如果调用会报异常.
+	result.recycle();
+	```
+ 
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br> 绑定以后操作数据代理就是操作view.
  <br>下面是Textview demo
