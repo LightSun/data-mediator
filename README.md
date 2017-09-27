@@ -46,6 +46,29 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
+ - 支持数据缓存
+  <br> 1), step1. 用注解标识缓存个数。eg: 
+ ```java
+ @Fields(value = {
+        @Field(propName = "name", seriaName = "heaven7", type = String.class),
+        @Field(propName = "data", seriaName = "result", type = ResultData.class),
+}, maxPoolCount = 100)
+public interface TestBind extends Parcelable{
+}
+ ```
+ <br> 2), 如何获取对象？
+     使用 DataMediatorFactory 获取
+```java
+StudentModule result = DataMediatorFactory.obtain(StudentModule.class);
+```
+     
+ <br> 3), 如何回收对象？
+     使用 生成的实体数据对象。 比如StudentModule.
+```java
+StudentModule result = ....; //必须是真正的数据。代理层如果调用会报异常.
+result.recycle();
+```
+ 
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br> 绑定以后操作数据代理就是操作view.
  <br>下面是Textview demo
@@ -200,6 +223,21 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 }
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
+
+# 混淆配置
+```java
+-keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
+   *;
+}
+-keepclasseswithmembers public interface * extends com.heaven7.java.data.mediator.DataPools$Poolable{
+   *;
+}
+-keep class * extends com.heaven7.java.data.mediator.BaseMediator{
+   *;
+}
+-keep class com.heaven7.java.data.mediator.BaseMediator
+-keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
+```
 
 # 注解 @Field类成员说明.
 ```java
