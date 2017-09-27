@@ -98,7 +98,7 @@ public abstract class Binder<T> {
         return this;
     }
     /**
-     * unbind all property callbacks.
+     * unbind all property callbacks. and auto recycle if need.
      */
     public void unbindAll(){
         mMap.clear();

@@ -57,7 +57,6 @@ public class TestTextViewBindActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         mBinder.unbindAll();
-        mBinder.getData().recycle();
         super.onDestroy();
     }
 
