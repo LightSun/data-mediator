@@ -47,6 +47,7 @@ data-mediator
                 .setId(0);
  ```
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
+ <br> 绑定以后操作数据代理就是操作view.
  <br>下面是Textview demo
  ```java
  
@@ -241,8 +242,9 @@ public @interface Field {
 # Latest versions.
 data-mediator-compiler:    [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-compiler/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-compiler/_latestVersion)<br>
 data-mediator-annotations: [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-annotations/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-annotations/_latestVersion)<br>
-data-mediator:             [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator/_latestVersion)
- [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-android/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-android/_latestVersion)
+data-mediator:             [ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator/_latestVersion)<br>
+data-mediator-android: 
+[ ![Download](https://api.bintray.com/packages/lightsun/maven/data-mediator-android/images/download.svg) ](https://bintray.com/lightsun/maven/data-mediator-android/_latestVersion)
 
 # refer libs
 [javapoet](https://github.com/square/javapoet)
