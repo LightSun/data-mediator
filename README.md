@@ -201,6 +201,21 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
+# 混淆配置
+```java
+-keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
+   *;
+}
+-keepclasseswithmembers public interface * extends com.heaven7.java.data.mediator.DataPools$Poolable{
+   *;
+}
+-keep class * extends com.heaven7.java.data.mediator.BaseMediator{
+   *;
+}
+-keep class com.heaven7.java.data.mediator.BaseMediator
+-keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
+```
+
 # 注解 @Field类成员说明.
 ```java
 @Target(ElementType.ANNOTATION_TYPE)
