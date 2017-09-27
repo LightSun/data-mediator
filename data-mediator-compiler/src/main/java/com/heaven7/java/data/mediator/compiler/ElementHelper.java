@@ -17,6 +17,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
     private static final String KEY_FIELDS_ANNO = "value";
     private static final String KEY_ENABLE_CHAIN = "enableChain";
+    private static final String KEY_MAX_POOL_COUNT = "maxPoolCount";
 
     //process @Fields
     public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,
@@ -63,6 +64,10 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
                     case KEY_ENABLE_CHAIN:
                         cg.setEnableChain((Boolean) en.getValue().getValue());
+                        break;
+
+                    case KEY_MAX_POOL_COUNT:
+                        cg.setMaxPoolCount(Integer.parseInt(en.getValue().getValue().toString()));
                         break;
                 }
             }

@@ -15,8 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_COPYA;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_SELECTABLE;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 
 /**
@@ -595,11 +594,39 @@ public final class Util {
         return data;
     }
 
-    public static Object getInitValue(FieldData fd) {
+    public static void addInitStatement(FieldData fd, MethodSpec.Builder builder){
+        switch (fd.getComplexType()) {
+            case COMPLEXT_ARRAY:
+            case COMPLEXT_LIST:
+                builder.addStatement("this.$N = null", fd.getPropertyName());
+                break;
+
+            default:{
+                switch (fd.getTypeCompat().toString()){
+                    case NAME_float:
+                        builder.addStatement("this.$N = 0f", fd.getPropertyName());
+                        break;
+
+                    case NAME_double:
+                        builder.addStatement("this.$N = 0d", fd.getPropertyName());
+                        break;
+
+                    default:
+                        builder.addStatement("this.$N = $L", fd.getPropertyName(), Util.getInitValue(fd));
+                }
+            }
+
+        }
+    }
+
+    private static Object getInitValue(FieldData fd) {
         switch (fd.getComplexType()) {
             case COMPLEXT_ARRAY:
             case COMPLEXT_LIST:
                 return null;
+        }
+        if(fd == DataMediatorConstants.FD_SELECTABLE){
+            return false;
         }
         final TypeMirror tm = fd.getTypeCompat().getTypeMirror();
         TypeKind kind = tm.getKind();
@@ -613,18 +640,18 @@ public final class Util {
             case BOOLEAN:
                 return false;
 
+            //have a bug when in generate code. javapoet.
             case FLOAT:
-                return 0f;
+                return 0.0f;
 
             case DOUBLE:
-                return 0d;
+                return 0.0d;
 
             case CHAR:
-                return Character.MIN_VALUE;
+                return 0;
             default:
                 return null;
         }
-
     }
 
     public static void test(TypeMirror mirror, ProcessorPrinter pp) {

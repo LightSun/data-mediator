@@ -52,6 +52,10 @@ public final class DataPools {
         }
     }
 
+    /**
+     * recycle the module data.
+     * @param moduleData the module data.
+     */
     public static void recycle(Object moduleData){
         final String name = moduleData.getClass().getName();
         if(!name.endsWith(SUFFIX_IMPL)){

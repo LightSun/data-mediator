@@ -8,9 +8,9 @@ import com.heaven7.java.data.mediator.Fields;
 /**
  * Created by Administrator on 2017/9/7 0007.
  */
-@Fields({
+@Fields(value = {
         @Field(propName = "name", seriaName = "heaven7", type = String.class),
         @Field(propName = "data", seriaName = "result", type = ResultData.class),
-})
+}, maxPoolCount = 100)
 public interface TestBind extends Parcelable{
 }

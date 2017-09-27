@@ -54,6 +54,13 @@ public class TestTextViewBindActivity extends BaseActivity {
         mProxy = mBinder.getDataProxy();
     }
 
+    @Override
+    protected void onDestroy() {
+        mBinder.unbindAll();
+        mBinder.getData().recycle();
+        super.onDestroy();
+    }
+
     @OnClick(R.id.bt_text)
     public void onClickChangeText(View v){
         //改变文本

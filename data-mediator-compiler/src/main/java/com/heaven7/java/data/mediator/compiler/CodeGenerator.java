@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_SHARED_PROP;
 import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 /**
@@ -25,6 +24,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     private static final String TAG = CodeGenerator.class.getSimpleName();
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
+    /*private*/ static final PoolableInsert sPoolInsert = new PoolableInsert();
 
     private final TypeElement mElement;
     private final Elements mElements;
@@ -33,6 +33,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     private boolean mEnableChain = true;
 
     private final TargetClassInfo mClassInfo = new TargetClassInfo();
+    private int mMaxPoolCount; //max pool size
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
@@ -51,6 +52,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         return mFields;
     }
 
+    public void setMaxPoolCount(int maxPoolCount) {
+        this.mMaxPoolCount = maxPoolCount;
+    }
     /**
      * generate interface, impl and proxy .java files.
      * @param delegate the super field delegate
@@ -111,6 +115,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                     .build());
         }
 
+        //extends DataPools.Poolable.
+        sPoolInsert.addSuperInterface(interfaceBuilder);
         //handle super interface with method.
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
         if(interfaces != null){
@@ -149,8 +155,10 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
 
+        // DataPools.preparePool("", 5);
+        sPoolInsert.addStaticCode(implBuilder, packageName, className, mMaxPoolCount);
+
         //set target class info
-        mClassInfo.setPackageName(packageName);
         mClassInfo.setCurrentClassname(className);
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
@@ -240,6 +248,9 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
                 }
             }
         }
+        //override inert interfaces.
+        insertOverrideMethods(implBuilder, usedSuperClass, hasSelectable);
+
         //add String toString().
         implBuilder.addMethod(createToStringBuilderForImpl(mFields, usedSuperClass)
                 .build());
@@ -279,4 +290,15 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         }
         return true;
     }
+
+    private void insertOverrideMethods(TypeSpec.Builder implBuilder, boolean usedSuperClass, boolean hasSelectable) {
+        List<FieldData> list = new ArrayList<>(mFields);
+        //super will handle it. sub class should not handle it.
+        if(!usedSuperClass && hasSelectable){
+            list.add(FD_SELECTABLE);
+        }
+        sPoolInsert.overrideMethodsForImpl(implBuilder, list, usedSuperClass);
+    }
+
+
 }

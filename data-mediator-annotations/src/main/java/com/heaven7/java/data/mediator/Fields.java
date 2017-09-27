@@ -49,4 +49,10 @@ public @interface Fields {
 	 * @since 1.0.2
 	 */
 	boolean enableChain() default true;
+
+	/**
+	 * the max pool count of current module. default 0.
+	 * @return the max pool count.
+	 */
+	int maxPoolCount() default 0;
 }

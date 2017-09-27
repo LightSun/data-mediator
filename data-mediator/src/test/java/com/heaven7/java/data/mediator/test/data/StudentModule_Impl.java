@@ -16,6 +16,10 @@ public class StudentModule_Impl implements StudentModule, Serializable{
 
   private long id;
 
+  static {
+      DataPools.preparePool("", 5);
+  }
+
   public StudentModule_Impl() {
   }
 

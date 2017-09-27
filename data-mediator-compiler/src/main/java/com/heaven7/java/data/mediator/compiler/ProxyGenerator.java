@@ -67,6 +67,9 @@ public class ProxyGenerator {
                 .addStatement("return getTarget().toString()");
         typeBuilder.addMethod(toString.build());
 
+        //add insert override methods(insert interfaces)
+        CodeGenerator.sPoolInsert.overrideMethodsForProxy(typeBuilder);
+
         TypeSpec typeSpec = typeBuilder.build();
         try {
             JavaFile.builder(pkg, typeSpec)

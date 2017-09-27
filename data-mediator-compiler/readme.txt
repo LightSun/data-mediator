@@ -1,0 +1,3 @@
+
+problem:
+should copy 'selected' ?

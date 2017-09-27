@@ -14,7 +14,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -31,10 +35,10 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.7'
 
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.0.8-beta17'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.3'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.0.8-beta18'
     apt 'com.squareup:javapoet:1.9.0'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0.13-beta16'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.0.13-beta24'
 
     compile 'com.heaven7.android.data.mediator:data-mediator-android:1.0.1'
     //compile project(':data-mediator-android')

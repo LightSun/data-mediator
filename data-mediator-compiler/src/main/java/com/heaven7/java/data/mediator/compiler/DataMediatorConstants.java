@@ -31,6 +31,8 @@ public final class DataMediatorConstants {
     public static final String SIMPLE_NAME_BASE_MEDIATOR     = "BaseMediator";
     public static final String SIMPLE_NAME_LIST_PROP_EDITOR  = "ListPropertyEditor";
     public static final String SIMPLE_NAME_PROP_INTERCEPTOR  = "PropertyInterceptor";
+    public static final String SIMPLE_NAME_DATA_POOL         = "DataPools";
+    public static final String SIMPLE_NAME_POOLABLE          = "Poolable";
 
     //field name of anno
     public static final String STR_PROP_NAME = "propName";

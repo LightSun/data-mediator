@@ -25,6 +25,11 @@ public class NormalTest {
 
         log(Math.E);
         log(Math.exp(1));
+
+        Object f = 0f;
+        log(f.getClass().getName());
+        f = 0d;
+        log(f.getClass().getName());
     }
 
     private static void  log (Object obj){
