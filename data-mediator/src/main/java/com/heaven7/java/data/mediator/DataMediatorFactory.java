@@ -19,6 +19,7 @@ public final class DataMediatorFactory {
      * @param clazz the data interface module
      * @param <T> the data module type
      * @return the data.
+     * @since 1.1.0
      */
     public static <T> T obtainData(Class<T> clazz){
         return DataPools.obtain(clazz);

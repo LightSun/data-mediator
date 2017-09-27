@@ -103,6 +103,9 @@ public abstract class Binder<T> {
     public void unbindAll(){
         mMap.clear();
         mMediator.removeDataMediatorCallbacks();
+        if(mMediator.getData() instanceof DataPools.Poolable){
+            ((DataPools.Poolable) mMediator.getData()).recycle();
+        }
     }
     /**
      * should use weak map to save callback which can later call
