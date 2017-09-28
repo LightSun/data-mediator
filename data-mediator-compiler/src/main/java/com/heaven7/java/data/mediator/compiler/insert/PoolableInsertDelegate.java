@@ -1,21 +1,28 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.insert;
 
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.*;
 
-
 import javax.lang.model.element.Modifier;
+
 import java.util.Collection;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_PROP;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_DATA_POOL;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_POOLABLE;
 
 /**
- * 内部接口插入器: Poolable.
- * Created by heaven7 on 2017/9/27 0027.
+ * DataPools.Poolable
+ * Created by heaven7 on 2017/9/28 0028.
  */
-public class PoolableInsert {
+/*public*/ class PoolableInsertDelegate extends IInterfaceInsertDelegate{
 
-    public void addStaticCode(TypeSpec.Builder typeBuilder, String packageName, String className, Object maxCount){
+    @Override
+    public void addStaticCode(TypeSpec.Builder typeBuilder, Object maxCount){
         final int maxPoolCount = (int) maxCount;
+        String packageName = getClassInfo().getPackageName();
+        String className = getClassInfo().getCurrentClassname();
         if(maxPoolCount > 0 ) {
             typeBuilder.addStaticBlock(CodeBlock.of("$T.preparePool($S, $L);\n",
                     ClassName.get(PKG_PROP, SIMPLE_NAME_DATA_POOL),
@@ -23,12 +30,14 @@ public class PoolableInsert {
             ));
         }
     }
-
+    @Override
     public void addSuperInterface(TypeSpec.Builder typeBuilder){
         typeBuilder.addSuperinterface(ClassName.get(PKG_PROP, SIMPLE_NAME_DATA_POOL, SIMPLE_NAME_POOLABLE));
     }
 
-    public void overrideMethodsForImpl(TypeSpec.Builder typeBuilder, Collection<FieldData> fields, boolean hasSuperClass){
+    @Override
+    public void overrideMethodsForImpl(TypeSpec.Builder typeBuilder, Collection<FieldData> fields) {
+        final boolean hasSuperClass = getClassInfo().getSuperClass() != null;
         // void clearProperties();
         MethodSpec.Builder builder_cp = MethodSpec.methodBuilder("clearProperties")
                 .returns(TypeName.VOID)
@@ -52,7 +61,8 @@ public class PoolableInsert {
         typeBuilder.addMethod(builder_cp.build());
     }
 
-    public void overrideMethodsForProxy(TypeSpec.Builder typeBuilder){
+    @Override
+    public void overrideMethodsForProxy(TypeSpec.Builder typeBuilder, Collection<FieldData> fields){
         /*@Override
         public void clearProperties() {
             getTarget().clearProperties();
@@ -72,4 +82,5 @@ public class PoolableInsert {
                 .addStatement("throw new $T($S)", UnsupportedOperationException.class, "proxy class can't call this method.")
                 .build());
     }
+
 }

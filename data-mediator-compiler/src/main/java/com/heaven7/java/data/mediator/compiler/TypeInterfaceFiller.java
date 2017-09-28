@@ -37,6 +37,10 @@ public abstract class TypeInterfaceFiller {
         }
     }
 
+    public void reset(){
+
+    }
+
     /**
      * get the interface full name.
      *

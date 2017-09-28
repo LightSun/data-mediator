@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-import static com.heaven7.java.data.mediator.compiler.Util.*;
+import static com.heaven7.java.data.mediator.compiler.OutInterfaceManager.getSuperInterfaceFlagForParent;
+import static com.heaven7.java.data.mediator.compiler.Util.createToStringBuilderForImpl;
+import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
+import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -24,7 +27,6 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
     private static final String TAG = CodeGenerator.class.getSimpleName();
     private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
-    /*private*/ static final PoolableInsert sPoolInsert = new PoolableInsert();
 
     private final TypeElement mElement;
     private final Elements mElements;
@@ -72,8 +74,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);
 
-        setLogPrinter(mPrinter);
-        final Map<String, List<FieldData>> groupMap = groupFieldByInterface(mFields);
+        OutInterfaceManager.setLogPrinter(mPrinter);
+        final Map<String, List<FieldData>> groupMap = OutInterfaceManager.groupFieldByInterface(mFields);
 
         //super fields
         final Set<FieldData> superFields = new HashSet<>();
@@ -116,12 +118,12 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         }
 
         //extends DataPools.Poolable.
-        sPoolInsert.addSuperInterface(interfaceBuilder);
+        addSuperInterface(interfaceBuilder);
         //handle super interface with method.
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
-                MethodSpec.Builder[] builders = getInterfaceMethodBuilders(mClassInfo,
+                MethodSpec.Builder[] builders = OutInterfaceManager.getInterfaceMethodBuilders(mClassInfo,
                         selfParamType, tm, mPrinter);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
@@ -155,14 +157,15 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
 
-        // DataPools.preparePool("", 5);
-        sPoolInsert.addStaticCode(implBuilder, packageName, className, mMaxPoolCount);
-
         //set target class info
         mClassInfo.setCurrentClassname(className);
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
+
+        // DataPools.preparePool("", 5);
+        setClassInfo(mClassInfo);
+        addStaticCode(implBuilder,  mMaxPoolCount);
 
         final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
         // implBuilder.superclass()
@@ -211,11 +214,11 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
 
 
         //do something for super class/interface
-        final List<? extends TypeMirror> mirrors = getAttentionInterfaces(mElement, mTypes, mPrinter);
+        final List<? extends TypeMirror> mirrors = OutInterfaceManager.getAttentionInterfaces(mElement, mTypes, mPrinter);
         for(TypeMirror temp_tm : mirrors){
             FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
             //normal methods
-           MethodSpec.Builder[] builders =  getImplClassMethodBuilders(mClassInfo,
+           MethodSpec.Builder[] builders =  OutInterfaceManager.getImplClassMethodBuilders(mClassInfo,
                     selfParamType, temp_tc, mPrinter,
                    groupMap, usedSuperClass, superFlagsForParent);
             if(builders != null){
@@ -227,7 +230,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             }
             //override super [constructor] for parcelable. and etc.
             // note : super class may not impl Parcelable.
-            MethodSpec.Builder[] constructors = getImplClassConstructBuilders(packageName,
+            MethodSpec.Builder[] constructors = OutInterfaceManager.getImplClassConstructBuilders(packageName,
                     className, temp_tc, groupMap, usedSuperClass, superFlagsForParent);
             if(constructors != null ){
                 for (MethodSpec.Builder builder : constructors){
@@ -238,7 +241,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             }
 
             //[fields]
-            final FieldSpec.Builder[] fieldBuilders = getImplClassFieldBuilders(
+            final FieldSpec.Builder[] fieldBuilders = OutInterfaceManager.getImplClassFieldBuilders(
                     packageName, className, temp_tc, groupMap, superFlagsForParent);
             if(fieldBuilders != null) {
                 for (FieldSpec.Builder builder : fieldBuilders) {
@@ -270,7 +273,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             mClassInfo.setSuperClass(null);
 
             //generate some method from super class.
-            List<MethodSpec.Builder> builders = Util.getProxyClassMethodBuilders(
+            List<MethodSpec.Builder> builders = OutInterfaceManager.getProxyClassMethodBuilders(
                     mClassInfo, mElement, mTypes, mPrinter);
             //to generate proxy class. with base method for fields.
             superFields.addAll(mFields);
@@ -286,7 +289,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
             mPrinter.error(TAG, log_method, Util.toString(e));
             return false;
         }finally {
-            Util.reset();
+            OutInterfaceManager.reset();
         }
         return true;
     }
@@ -297,7 +300,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.*;
         if(!usedSuperClass && hasSelectable){
             list.add(FD_SELECTABLE);
         }
-        sPoolInsert.overrideMethodsForImpl(implBuilder, list, usedSuperClass);
+        overrideMethodsForImpl(implBuilder, list);
     }
 
 

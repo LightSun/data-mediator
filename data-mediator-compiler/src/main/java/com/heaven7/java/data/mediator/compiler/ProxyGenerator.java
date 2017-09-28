@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.compiler.insert.InsertManager;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
@@ -68,7 +69,7 @@ public class ProxyGenerator {
         typeBuilder.addMethod(toString.build());
 
         //add insert override methods(insert interfaces)
-        CodeGenerator.sPoolInsert.overrideMethodsForProxy(typeBuilder);
+        InsertManager.overrideMethodsForProxy(typeBuilder, null);
 
         TypeSpec typeSpec = typeBuilder.build();
         try {
