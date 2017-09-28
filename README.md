@@ -153,7 +153,7 @@ android.os.Parcelable
 
 //quick adapter库。数据模型作为List结构view的item 需要实现的接口
 com.heaven7.adapter.ISelectable
-// 如果你希望有些属性支持拷贝
+// 如果你希望有些属性支持拷贝 (extends 的时候不要使用泛型,否则还要强转)
 com.heaven7.java.data.mediator.ICopyable
 // 如果你希望有些属性支持 重置
 com.heaven7.java.data.mediator.IResetable
