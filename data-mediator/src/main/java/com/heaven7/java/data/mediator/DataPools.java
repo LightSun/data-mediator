@@ -20,36 +20,15 @@ public final class DataPools {
      */
     public interface Poolable{
         /**
-         * clear all properties for data.
-         * called before put to pool.
+         * clear all properties for data without callback.
+         * auto called before put to pool.
          */
         void clearProperties();
 
         /**
-         * recycle this object.
+         * recycle this object. after call this you should not call any method for data .
          */
         void recycle();
-    }
-
-    /* package */ static <T> T obtain(Class<T> clazz){
-        final String name = clazz.getName();
-        if(!name.endsWith(SUFFIX_INTERFACE)){
-            throw new IllegalArgumentException();
-        }
-        Entry entry = sMap.get(name);
-        final Class<?> impl;
-        try {
-            impl = Class.forName(name + SUFFIX_IMPL);
-            if(entry != null ){
-                T result =  (T) entry.obtain(impl);
-                if(result != null){
-                    return result;
-                }
-            }
-            return (T) sFactory.create(impl);
-        }catch (Exception e){
-            throw new UnsupportedOperationException("can't find impl class ("+ (name + SUFFIX_IMPL) +")" ,e);
-        }
     }
 
     /**
@@ -97,6 +76,27 @@ public final class DataPools {
         }
     }
 
+    /* package */ static <T> T obtain(Class<T> clazz){
+        final String name = clazz.getName();
+        if(!name.endsWith(SUFFIX_INTERFACE)){
+            throw new IllegalArgumentException();
+        }
+        Entry entry = sMap.get(name);
+        final Class<?> impl;
+        try {
+            impl = Class.forName(name + SUFFIX_IMPL);
+            if(entry != null ){
+                T result =  (T) entry.obtain(impl);
+                if(result != null){
+                    return result;
+                }
+            }
+            return (T) sFactory.create(impl);
+        }catch (Exception e){
+            throw new UnsupportedOperationException("can't find impl class ("+ (name + SUFFIX_IMPL) +")" ,e);
+        }
+    }
+
     /*@VisibleForTest
     public static int size(Class<?> interClazz){
         return sMap.get(interClazz.getName()).mQueue.size();
@@ -105,7 +105,7 @@ public final class DataPools {
     @VisibleForTest
     private static final Map<String, Entry> sMap = new HashMap<>();
 
-    static final Factory sFactory = new Factory() {
+    private static final Factory sFactory = new Factory() {
         @Override
         public Object create(Class<?> clazz) throws Exception {
             return clazz.newInstance();
