@@ -142,7 +142,10 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
-# 已经支持的数据模型接口(编译层会自动实现)
+# 扩展接口(继承这些接口后编译层会自动实现)
+ * 数据模型支持接口的扩展。但是只支持已知的。未知的。还没有想好怎么处理。
+ <br>下面是已知的扩展接口
+ 
 ```java
 //java和android的序列化
 java.io.Serializable
