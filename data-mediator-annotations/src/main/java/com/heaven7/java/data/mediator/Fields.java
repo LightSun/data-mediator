@@ -53,6 +53,7 @@ public @interface Fields {
 	/**
 	 * the max pool count of current module. default 0.
 	 * @return the max pool count.
+	 * @since 1.0.3
 	 */
 	int maxPoolCount() default 0;
 }

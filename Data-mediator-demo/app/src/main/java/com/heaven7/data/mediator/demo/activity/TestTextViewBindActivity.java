@@ -43,6 +43,7 @@ public class TestTextViewBindActivity extends BaseActivity {
     protected void onInit(Context context, Bundle savedInstanceState) {
         initResource(context);
         mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
+        //绑定一组属性到TextView
         mBinder.beginBatchTextViewBinder(mTv)
                 .bindText(TextViewBindModule.PROP_text.getName())
                 .bindTextRes("textRes")
