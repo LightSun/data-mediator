@@ -16,9 +16,9 @@
    ```java
    StudentModule result = DataMediatorFactory.obtain(StudentModule.class);
    ```
-   * 3), 如何回收对象？     使用 生成的实体数据对象。 比如StudentModule..
+   * 3), 如何回收对象？     使用 生成的实体数据对象。 比如StudentModule
    ```java
    StudentModule result = ....; //必须是真正的数据。代理层如果调用会报异常.
    result.recycle();
    ```
-   ps: 数据回收之后。请不要再保持引用这个对象，除非重新obtain(因为所有属性将会回归初始状态）。
+   * 4), ps: 数据回收之后。请不要再保持引用这个对象，除非重新obtain(因为所有属性将会回归初始状态）。
