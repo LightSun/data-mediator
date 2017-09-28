@@ -142,6 +142,25 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
+# 已经支持的数据模型接口(编译层会自动实现)
+```java
+//java和android的序列化
+java.io.Serializable
+android.os.Parcelable
+
+//quick adapter库。数据模型作为List结构view的item 需要实现的接口
+com.heaven7.adapter.ISelectable
+// 如果你希望有些属性支持拷贝
+com.heaven7.java.data.mediator.ICopyable
+// 如果你希望有些属性支持 重置
+com.heaven7.java.data.mediator.IResetable
+// 如果你希望有些属性支持 共享(比如多个组件共享数据，后面可以通过clearShare去清除这些共享的数据)
+com.heaven7.java.data.mediator.IShareable
+// 如果你希望有些属性支持 快照。
+com.heaven7.java.data.mediator.ISnapable
+```
+
+
 # 进阶指南
  * [binder-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/binder.md)
  * [数据缓存-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/data_cache.md) 
