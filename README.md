@@ -23,7 +23,7 @@ data-mediator
   * 2, 支持生成字段的gson注解 for 'Google-Gson'.
   * 3, 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
   <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
-  <br>     比如 toString. 可选择某些字段参加或者不参加toString方法.
+  <br>     比如 toString. 可选择某些字段参加或者不参加toString/hashCode/equals方法.
       
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
