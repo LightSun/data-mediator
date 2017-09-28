@@ -10,6 +10,7 @@ import com.heaven7.data.mediator.demo.R;
 import com.heaven7.data.mediator.demo.testpackage.ClassBindModule;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 用于显示传递过来的parcelable数据
@@ -26,6 +27,9 @@ public class LogForParcelableActivity extends BaseActivity {
     @BindView(R.id.tv_desc)
     TextView mTv_desc;
 
+
+    private ClassBindModule mModule;
+
     @Override
     protected int getLayoutId() {
         return R.layout.ac_test_double_bind;
@@ -36,7 +40,18 @@ public class LogForParcelableActivity extends BaseActivity {
         mBt_temp.setVisibility(View.GONE);
         mBt_changeProperty.setText("click to back");
 
-        ClassBindModule module = getIntent().getParcelableExtra(TestParcelableDataActivity.KEY_DATA);
-        mTv_desc.setText(module.toString());
+        mModule = getIntent().getParcelableExtra(TestParcelableDataActivity.KEY_DATA);
+        mTv_desc.setText(mModule.toString());
+    }
+
+    @OnClick(R.id.bt_set_text_on_TextView)
+    public void onClickBack(View v){
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mModule.recycle();
+        super.onDestroy();
     }
 }

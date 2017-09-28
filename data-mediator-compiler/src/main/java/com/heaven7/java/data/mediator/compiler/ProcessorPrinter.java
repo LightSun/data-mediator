@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-/*public*/ class ProcessorPrinter {
+public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
             "Util"

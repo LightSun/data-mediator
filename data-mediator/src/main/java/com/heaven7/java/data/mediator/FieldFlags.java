@@ -107,6 +107,12 @@ public final class FieldFlags {
 
 
     /**
+     *  a scope flag of hashCode and equals method
+     * @since 1.1.1
+     */
+    public static final int FLAG_HASH_EQUALS              = 0x00000800; //2048
+
+    /**
      * a complex flags. which have multi flags. .
      * @see #FLAG_SNAP
      * @see #FLAG_RESET
@@ -114,9 +120,10 @@ public final class FieldFlags {
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
+     * @see #FLAG_HASH_EQUALS
      */
     public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
-            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
+            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_HASH_EQUALS;
 
     /**
      * a main complex flags . which have multi flags
@@ -125,7 +132,7 @@ public final class FieldFlags {
      * @see #FLAG_TO_STRING
      * @since 1.0.7
      */
-    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING;
+    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING ;
     /**
      * a complex flags . which means gson no expose
      * <pre>{@literal @}Expose(serialize = false,
@@ -136,4 +143,14 @@ public final class FieldFlags {
      * @since 1.0.7
      */
     public static final int FLAGS_NO_EXPOSE = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE | FLAG_EXPOSE_DESERIALIZE_FALSE;
+
+    /**
+     * a complex flags. which have multi flags
+     * @see #FLAG_COPY
+     * @see #FLAG_PARCELABLE
+     * @see #FLAG_TO_STRING
+     * @see #FLAG_HASH_EQUALS
+     * @since 1.1.1
+     */
+    public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH_EQUALS;
 }

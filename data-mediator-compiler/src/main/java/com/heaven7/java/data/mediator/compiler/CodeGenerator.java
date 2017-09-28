@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
@@ -251,15 +252,20 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 }
             }
         }
-        //override inert interfaces.
+        //add/override for insert interfaces.
         insertOverrideMethods(implBuilder, usedSuperClass, hasSelectable);
 
         //add String toString().
         implBuilder.addMethod(createToStringBuilderForImpl(mFields, usedSuperClass)
                 .build());
 
+        //get/is/set methods
         sClassBuilder.build(implBuilder, mFields, superFields,
                 normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
+
+        // hashCode and equals.
+        HashEqualsGenerator.generateForImpl(implBuilder, mFields, superFields, mClassInfo, usedSuperClass);
+
         //here classFile is a class .java file
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
 

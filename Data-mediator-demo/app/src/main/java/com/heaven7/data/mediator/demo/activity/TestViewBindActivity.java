@@ -74,22 +74,6 @@ public class TestViewBindActivity extends BaseActivity {
                  .applyProperties(PropertyInterceptor.NULL);//应用
     }
 
-    private void initResource(Context context) {
-        Resources res = context.getResources();
-        mDrawable1 = res.getDrawable(R.mipmap.ic_launcher);
-        mDrawable2 = res.getDrawable(R.mipmap.ic_launcher_round);
-        mResId1 = R.mipmap.ic_launcher;
-        mResId2 = R.mipmap.ic_launcher_round;
-        mColor1 = Color.RED;
-        mColor2 = Color.GREEN;
-    }
-
-    @Override
-    protected void onDestroy() {
-        binder.unbindAll();
-        super.onDestroy();
-    }
-
     @OnClick(R.id.bt_change_bg)
     public void onClickChangeBg(View v){
         //改变背景（drawable）
@@ -115,6 +99,22 @@ public class TestViewBindActivity extends BaseActivity {
     public void onClickChangeEnable(View v){
         //改变enable 状态
         binder.getDataProxy().setEnable(!binder.getData().isEnable());
+    }
+
+    private void initResource(Context context) {
+        Resources res = context.getResources();
+        mDrawable1 = res.getDrawable(R.mipmap.ic_launcher);
+        mDrawable2 = res.getDrawable(R.mipmap.ic_launcher_round);
+        mResId1 = R.mipmap.ic_launcher;
+        mResId2 = R.mipmap.ic_launcher_round;
+        mColor1 = Color.RED;
+        mColor2 = Color.GREEN;
+    }
+
+    @Override
+    protected void onDestroy() {
+        binder.unbindAll();
+        super.onDestroy();
     }
 
 }

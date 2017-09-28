@@ -7,6 +7,8 @@ import com.heaven7.java.data.mediator.IDataMediator;
 
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_COPY;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_DEFAULT;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_SERIALIZE_FALSE;
@@ -17,8 +19,8 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-@Fields({
-        @Field(propName = "name", seriaName = "heaven7", type = String.class),
+@Fields(value = {
+        @Field(propName = "name", seriaName = "heaven7", type = String.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "test_object", seriaName = "test_object",
                 flags = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE, type = Object.class),
         @Field(propName = "test_Format", seriaName = "test_Format", flags = 1, type = Double.class),
@@ -30,6 +32,6 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
                 complexType = COMPLEXT_ARRAY,
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP
         ),
-})
+}, maxPoolCount = 10)
 public interface StudentBind extends IDataMediator, ISelectable{
 }

@@ -9,3 +9,8 @@
 
 
 javax.lang.module Elements 等之类的封装。参考项目: juzu
+
+
+数据初始化?
+扩展接口？
+数据绑定方便的注解？
