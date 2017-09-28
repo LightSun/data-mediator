@@ -47,91 +47,9 @@ data-mediator
                 .setId(0);
  ```
  - 支持数据缓存
-  <br> 1), step1. 用注解标识缓存个数。eg: 
- ```java
- @Fields(value = {
-        @Field(propName = "name", seriaName = "heaven7", type = String.class),
-        @Field(propName = "data", seriaName = "result", type = ResultData.class),
-}, maxPoolCount = 100)
-public interface TestBind extends Parcelable{
-}
- ```
- <br> 2), 如何获取对象？
-     使用 DataMediatorFactory 获取
-```java
-StudentModule result = DataMediatorFactory.obtain(StudentModule.class);
-```
-     
- <br> 3), 如何回收对象？
-     使用 生成的实体数据对象。 比如StudentModule.
-```java
-StudentModule result = ....; //必须是真正的数据。代理层如果调用会报异常.
-result.recycle();
-```
- 
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br> 绑定以后操作数据代理就是操作view.
- <br>下面是Textview demo
- ```java
- 
- //...........关键代码
-    @Override
-    protected void onInit(Context context, Bundle savedInstanceState) {
-        initResource(context);
-        mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
-        mBinder.beginBatchTextViewBinder(mTv)
-                .bindText("text")
-                .bindTextRes("textRes")
-                .bindTextColor("textColor")
-                .bindTextColorRes("textColorRes")
-                .bindTextSize("textSize")
-                .bindTextSizeRes("textSizeRes")
-                .end();
-        mProxy = mBinder.getDataProxy();
-    }
 
-    @OnClick(R.id.bt_text)
-    public void onClickChangeText(View v){
-        //改变文本
-        mProxy.setText(getString(mTextRess[mRan.nextInt(5)]));
-    }
-    @OnClick(R.id.bt_text_res)
-    public void onClickChangeTextRes(View v){
-        //改变文本---通过资源id
-        mProxy.setTextRes(mTextRess[mRan.nextInt(5)]);
-    }
-
-
-    @OnClick(R.id.bt_text_color)
-    public void onClickChangeTextColor(View v){
-        //改变文本颜色
-        mProxy.setTextColor(getResources().getColor(mColorRess[mRan.nextInt(5)]));
-    }
-    @OnClick(R.id.bt_text_color_res)
-    public void onClickChangeTextColorRes(View v){
-        //改变文本颜色---通过资源id
-        mProxy.setTextColorRes(mColorRess[mRan.nextInt(5)]);
-    }
-
-
-    @OnClick(R.id.bt_text_size)
-    public void onClickChangeTextSize(View v){
-        //改变文本大小
-        mProxy.setTextSize(getResources().getDimensionPixelSize(mTextSizeRess[mRan.nextInt(5)]));
-    }
-
-    @OnClick(R.id.bt_text_size_res)
-    public void onClickChangeTextSizeRes(View v){
-        //改变文本大小---通过资源id
-        mProxy.setTextSizeRes(mTextSizeRess[mRan.nextInt(5)]);
-    }
-//..............
- ```
-
-
-# 即将支持的特性
-- 丰富的调用层支持和数据缓存
-- 更多接口的支持
 
 # 快速入门
 
@@ -223,6 +141,11 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 }
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
+
+### data-mediator 进阶指南
+ * [binder-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/binder.md)
+ * [数据缓存-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/data_cache.md) 
+ * [api 说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/api.md)
 
 # 混淆配置
 ```java
