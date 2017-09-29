@@ -1,5 +1,10 @@
 
-### 和Gson搭配.
+# 所有教程
+ * [gson注解生成](#1)
+ * [binder简单应用](#2)
+ * [属性回调](#3)
+ 
+# <h2 id="1">gson注解生成</h2>
  * 最开始的时候想到的就是和gson搭配。sample:
  主要就是生成gson注解。请看下面一个数据模型定义。
  ```java
@@ -33,8 +38,8 @@ public interface StudentBind extends IDataMediator, ISelectable{
   )
   private String name;
   ```
-
-### binder 简单运用.
+  
+# <h2 id="2">binder 简单运用</h2>
 
  * 假设我想绑定一个bean的属性到view的背景上（即setBackground）。那么很简单
  ```java
@@ -50,7 +55,7 @@ public interface StudentBind extends IDataMediator, ISelectable{
  
  ```
 
-### 属性回调
+# <h2 id="3">属性回调</h2>
  * 上面的binder对象实际上是基于属性回调的。
 
  * 实际场景： 
