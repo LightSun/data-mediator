@@ -1,7 +1,13 @@
 
-### API 说明
+# API 说明
 
- * FieldFlags类常量说明.
+ * [FieldFlags类常量说明](#FieldFlags类常量说明)
+ * [注解@Fields成员说明](#注解@Fields成员说明)
+ * [注解@Field类成员说明](#注解@Field类成员说明)
+ * [Binder成员说明](#Binder成员说明)
+ * [BinderCallback说明](#BinderCallback说明)
+ * [DataMediatorFactory成员说明.](#DataMediatorFactory成员说明)
+# FieldFlags类常量说明
  ```java
  
     // 字段复合类型-数组结构。@Field注解 complexType()可指定。默认普通类型
@@ -107,7 +113,7 @@
  
  ``` 
 
- * 注解 @Fields 成员说明
+# 注解@Fields成员说明
   ```java
   public @interface Fields {
 
@@ -128,7 +134,7 @@
 }
 
   ```
- * 注解 @Field类成员说明.
+# 注解@Field类成员说明
     ```java
     @Target(ElementType.ANNOTATION_TYPE)
     @Retention(RetentionPolicy.SOURCE)
@@ -165,7 +171,7 @@
 
     }
     ```
-  *  DataMediatorFactory 成员说明.
+# DataMediatorFactory成员说明.
    ```java
     /**
      根据module的类型，获取module的实体对象（非代理）。
@@ -198,57 +204,8 @@
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass)
    ```
- * DataMediator类说明
- ```java
 
-   //获取基本的中介者对象
-    public final BaseMediator<T> getBaseMediator(){
-        return mediator;
-    }
-
-   //获取实际的数据模型实现
-    public final T getData(){
-        return getBaseMediator().getTarget();
-    }
-
-    //获取数据代理对象
-    public final T getDataProxy(){
-        return (T) mediator;
-    }
-
-    //添加数据回调
-    public void addDataMediatorCallback(DataMediatorCallback<? super T> callback){
-        mediator.addCallback(callback);
-    }
-
-   //移除数据回调
-    public void removeDataMediatorCallback(DataMediatorCallback<? super T> callback) {
-        mediator.removeCallback(callback);
-    }
-
-    //移除所有数据回调
-    public void removeDataMediatorCallbacks() {
-        mediator.removeCallbacks();
-    }
-
-   //设置是否equals的比较器。用于判断数据是否变化的利器。默认是采用equals方法
-    public void setEqualsComparator(EqualsComparator comparator) {
-        mediator.setEqualsComparator(comparator);
-    }
-
-    //应用当前数据的所有属性到 回调上（如果用binder就是绑定的view上）
-    public void applyProperties(){
-        mediator.applyProperties();
-    }
-
-    //应用当前数据的所有属性到 回调上（如果用binder就是绑定的view上）. 同时支持。属性拦截器， 便于部分属性不受影响
-    public void applyProperties(PropertyInterceptor interceptor){
-        mediator.applyProperties(interceptor);
-    }
-}
-
- ```
-* Binder 成员说明.
+# Binder成员说明
   ```java
    
    //获取数据中介者
@@ -359,7 +316,7 @@
     //绑定属性到 ListView的adapter上。 list类型
     public abstract Binder<T> bindList(String property, Object listView);
   ```
- * BinderCallback说明
+# BinderCallback说明
    ```java
    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
