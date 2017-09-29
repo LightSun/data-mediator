@@ -24,7 +24,7 @@ public interface StudentBind extends IDataMediator, ISelectable{
       deserialize = false
   )
   ```
-  结果
+  生成结果
   ```java
   @SerializedName("heaven7")
   @Expose(
