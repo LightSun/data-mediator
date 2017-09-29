@@ -8,7 +8,7 @@
  * [BinderCallback](#BinderCallback说明)
  * [DataMediatorFactory成员](#DataMediatorFactory成员说明)
  
- <h2 id="1">1.FieldFlags类常量说明</h2>
+ <h2 id="1">FieldFlags类常量说明</h2>
  ```java
  
     // 字段复合类型-数组结构。@Field注解 complexType()可指定。默认普通类型
