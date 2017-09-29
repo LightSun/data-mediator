@@ -2,11 +2,11 @@
 
 # API说明
  * [FieldFlags类常量](#1)
- * [注解@Fields成员](#注解@Fields成员说明)
- * [注解@Field类成员](#注解@Field类成员说明)
- * [Binder成员](#Binder成员说明)
- * [BinderCallback](#BinderCallback说明)
- * [DataMediatorFactory成员](#DataMediatorFactory成员说明)
+ * [注解@Fields成员](#2)
+ * [注解@Field类成员](#3)
+ * [DataMediatorFactory成员](#4)
+ * [Binder成员](#5
+ * [BinderCallback](#6)
  
  <h2 id="1">FieldFlags类常量说明</h2>
  ```java
@@ -113,8 +113,8 @@
     public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH_EQUALS;
  
  ``` 
-
-# 注解@Fields成员说明
+ 
+<h2 id="2">注解@Fields成员说明</h2>
   ```java
   public @interface Fields {
 
@@ -135,7 +135,8 @@
 }
 
   ```
-# 注解@Field类成员说明
+  
+<h2 id="3">注解@Field类成员说明</h2>  
     ```java
     @Target(ElementType.ANNOTATION_TYPE)
     @Retention(RetentionPolicy.SOURCE)
@@ -172,7 +173,8 @@
 
     }
     ```
-# DataMediatorFactory成员说明
+    
+<h2 id="4">DataMediatorFactory成员说明</h2>      
    ```java
     /**
      根据module的类型，获取module的实体对象（非代理）。
@@ -205,8 +207,8 @@
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass)
    ```
-
-# Binder成员说明
+   
+<h2 id="5">Binder成员说明</h2>      
   ```java
    
    //获取数据中介者
@@ -317,7 +319,8 @@
     //绑定属性到 ListView的adapter上。 list类型
     public abstract Binder<T> bindList(String property, Object listView);
   ```
-# BinderCallback说明
+  
+<h2 id="6">BinderCallback说明</h2>      
    ```java
    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
