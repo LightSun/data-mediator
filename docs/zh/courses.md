@@ -21,8 +21,17 @@ public interface StudentBind extends IDataMediator, ISelectable{
   ```java
   @Expose(
       serialize = false,
-      deserialize = true
+      deserialize = false
   )
+  ```
+  结果
+  ```java
+  @SerializedName("heaven7")
+  @Expose(
+      serialize = false,
+      deserialize = false
+  )
+  private String name;
   ```
 
 ### binder 简单运用.
