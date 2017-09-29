@@ -198,7 +198,56 @@
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass)
    ```
+ * DataMediator类说明
+ ```java
 
+   //获取基本的中介者对象
+    public final BaseMediator<T> getBaseMediator(){
+        return mediator;
+    }
+
+   //获取实际的数据模型实现
+    public final T getData(){
+        return getBaseMediator().getTarget();
+    }
+
+    //获取数据代理对象
+    public final T getDataProxy(){
+        return (T) mediator;
+    }
+
+    //添加数据回调
+    public void addDataMediatorCallback(DataMediatorCallback<? super T> callback){
+        mediator.addCallback(callback);
+    }
+
+   //移除数据回调
+    public void removeDataMediatorCallback(DataMediatorCallback<? super T> callback) {
+        mediator.removeCallback(callback);
+    }
+
+    //移除所有数据回调
+    public void removeDataMediatorCallbacks() {
+        mediator.removeCallbacks();
+    }
+
+   //设置是否equals的比较器。用于判断数据是否变化的利器。默认是采用equals方法
+    public void setEqualsComparator(EqualsComparator comparator) {
+        mediator.setEqualsComparator(comparator);
+    }
+
+    //应用当前数据的所有属性到 回调上（如果用binder就是绑定的view上）
+    public void applyProperties(){
+        mediator.applyProperties();
+    }
+
+    //应用当前数据的所有属性到 回调上（如果用binder就是绑定的view上）. 同时支持。属性拦截器， 便于部分属性不受影响
+    public void applyProperties(PropertyInterceptor interceptor){
+        mediator.applyProperties(interceptor);
+    }
+}
+
+ ```
 * Binder 成员说明.
   ```java
    
