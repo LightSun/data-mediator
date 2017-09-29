@@ -117,8 +117,8 @@ public interface StudentBind extends IDataMediator, ISelectable{
  ```
  仅仅，属性改变的时候改变一下文本。很简单吧。  
  
- # <h2 id="4">List属性编辑器</h2>
-  * 一般用于绑定列表控件，比如android RecyclerView. 下面是一个demo:
+# <h2 id="4">List属性编辑器</h2>
+ * 一般用于绑定列表控件，比如android RecyclerView. 下面是一个demo:
   ```java
   public class TestRecyclerListBindActivity extends BaseActivity {
 
