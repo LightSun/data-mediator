@@ -142,29 +142,8 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 ```
 更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
-# 扩展接口(继承这些接口后编译层会自动实现)
- * 数据模型支持接口的扩展。但是只支持已知的。未知的。还没有想好怎么处理。
- <br>下面是已知的扩展接口
- 
-```java
-//java和android的序列化
-java.io.Serializable
-android.os.Parcelable
-
-//quick adapter库。数据模型作为List结构view的item 需要实现的接口
-com.heaven7.adapter.ISelectable
-// 如果你希望有些属性支持拷贝 (extends 的时候不要使用泛型,否则还要强转)
-com.heaven7.java.data.mediator.ICopyable
-// 如果你希望有些属性支持 重置
-com.heaven7.java.data.mediator.IResetable
-// 如果你希望有些属性支持 共享(比如多个组件共享数据，后面可以通过clearShare去清除这些共享的数据)
-com.heaven7.java.data.mediator.IShareable
-// 如果你希望有些属性支持 快照。
-com.heaven7.java.data.mediator.ISnapable
-```
-
-
 # 进阶指南
+ * [域和支持的接口说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/scope_desc.md)
  * [binder-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/binder.md)
  * [数据缓存-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/data_cache.md) 
  * [api 说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/api.md)
