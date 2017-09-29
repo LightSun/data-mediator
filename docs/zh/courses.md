@@ -119,7 +119,7 @@ public interface StudentBind extends IDataMediator, ISelectable{
  
 # <h2 id="4">List属性编辑器</h2>
  * 一般用于绑定列表控件，比如android RecyclerView. 下面是一个demo:
-  ```java
+```java
   public class TestRecyclerListBindActivity extends BaseActivity {
 
     private static final Random sRan = new Random();
@@ -241,8 +241,8 @@ public interface StudentBind extends IDataMediator, ISelectable{
     }
 }
 
-  ```
-  复杂么？ 不复杂，第一步绑定了列表。然后改变数据的时候回调到了ListBinderCallback.IItemManager
+```
+ 复杂么？ 不复杂，第一步绑定了列表。然后改变数据的时候回调到了ListBinderCallback.IItemManager
   
  
  
