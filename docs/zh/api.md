@@ -310,41 +310,41 @@
     //绑定属性到 ListView的adapter上。 list类型
     public abstract Binder<T> bindList(String property, Object listView);
   ```
-   * BinderCallback说明
+ * BinderCallback说明
    ```java
    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
-       //打 tag 用于主动解绑。可以为null
-        @Override
-        public Object getTag() {
-            return null;
-        }
+       //打 tag 用于主动解绑。可以为null
+	@Override
+	public Object getTag() {
+	    return null;
+	}
 	// 在添加list 结构的values时被回调。(属性类型List)
-        @Override
-        public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue) {
+	@Override
+	public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue) {
 
-        }
+	}
 	// 在添加list 结构的values时被回调 (携带起始的index)。(属性类型List)
-        @Override
-        public void onAddPropertyValuesWithIndex(T data, Property prop, Object newValue,
-                                                 Object addedValue, int index) {
+	@Override
+	public void onAddPropertyValuesWithIndex(T data, Property prop, Object newValue,
+						 Object addedValue, int index) {
 
-        }
+	}
 	//在 移除 list结构的 Values 时被调用 (属性类型List)
-        @Override
-        public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue) {
+	@Override
+	public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue) {
 
-        }
+	}
 	// 在属性值改变时调用。
-        @Override
-        public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
+	@Override
+	public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
 
-        }
-       // 在属性应用时调用。对应DataMediator/Binder的applyProperties方法
-        @Override
-        public void onPropertyApplied(T data, Property prop, Object value) {
-            onPropertyValueChanged(data, prop, null, value);
-        }
+	}
+       // 在属性应用时调用。对应DataMediator/Binder的applyProperties方法
+	@Override
+	public void onPropertyApplied(T data, Property prop, Object value) {
+	    onPropertyValueChanged(data, prop, null, value);
+	}
     }
 
    ```
