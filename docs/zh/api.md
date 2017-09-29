@@ -7,6 +7,7 @@
  * [DataMediatorFactory成员](#4)
  * [Binder成员](#5)
  * [BinderCallback](#6)
+ * [List属性编辑器](#7)
  
  # <h2 id="1">FieldFlags类常量说明</h2>
  ```java
@@ -358,3 +359,34 @@
     }
 
    ```
+   
+# <h2 id="7">List属性编辑器: ListPropertyEditor</h2>    
+ * 当属性是list结构时， 会自动生成beginXxxEditor()方法返回这个对象。 实体和代理都有。
+```java
+   //添加 一个item
+    public ListPropertyEditor<D, T> add(T t)
+     
+   //添加item到指定的索引
+    public ListPropertyEditor<D, T> add(int index ,T t)
+      
+   // 添加所有item到指定的索引
+    public ListPropertyEditor<D, T> addAll(int index , Collection<? extends T> collection)
+        
+    // 添加所有item
+    public ListPropertyEditor<D, T> addAll(Collection<? extends T> collection)
+       
+
+   //移除 一个item
+    public ListPropertyEditor<D, T> remove(T t)
+   //移除指定索引的item
+    public ListPropertyEditor<D, T> remove(int index)
+      
+   //移除所有包含目标的items
+    public ListPropertyEditor<D, T> removeAll(Collection<? extends T> collection)
+       
+
+   //清空所有item
+    public ListPropertyEditor<D, T> clearAll()
+
+```
+
