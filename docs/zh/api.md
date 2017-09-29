@@ -1,5 +1,5 @@
 
-# API 说明
+# API说明
 
  * [FieldFlags类常量说明](#FieldFlags类常量说明)
  * [注解@Fields成员说明](#注解@Fields成员说明)
@@ -7,7 +7,8 @@
  * [Binder成员说明](#Binder成员说明)
  * [BinderCallback说明](#BinderCallback说明)
  * [DataMediatorFactory成员说明.](#DataMediatorFactory成员说明)
-# FieldFlags类常量说明
+ 
+ # FieldFlags类常量说明
  ```java
  
     // 字段复合类型-数组结构。@Field注解 complexType()可指定。默认普通类型
@@ -171,7 +172,7 @@
 
     }
     ```
-# DataMediatorFactory成员说明.
+# DataMediatorFactory成员说明
    ```java
     /**
      根据module的类型，获取module的实体对象（非代理）。
