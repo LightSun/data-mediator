@@ -1,6 +1,112 @@
 
 ### API 说明
 
+ * FieldFlags类常量说明.
+ ```java
+ 
+    // 字段复合类型-数组结构。@Field注解 complexType()可指定。默认普通类型
+    public static final int COMPLEXT_ARRAY = 1;
+    // 字段复合类型-list结构。 @Field注解 complexType()可指定。默认普通类型
+    public static final int COMPLEXT_LIST = 2;
+
+    // transient标志。用于标识字段是否是 transient,  @Field注解 flags()可指定
+    public static final int FLAG_TRANSIENT = 0x00000001;
+
+   // volatile标志。用于标识字段是否是 volatile,  @Field注解 flags()可指定
+    public static final int FLAG_VOLATILE = 0x00000002;
+
+   // 快照标志。 表示这个字段会参加ISnapable接口的  clearSnap()方法
+    public static final int FLAG_SNAP     = 0x00000004;
+   
+   //共享标志。 表示这个字段会参加IShareable接口的  clearShare()方法
+    public static final int FLAG_SHARE    = 0x00000008;
+   //拷贝标志。 表示这个字段会参加 ICopyable接口的所有方法
+    public static final int FLAG_COPY     = 0x00000010;//16
+    //重置标志。 表示这个字段会参加 IResetable 接口的reset方法。
+    public static final int FLAG_RESET    = 0x00000020;//32
+
+    //toString 标志。表示这个字段会参加toString方法
+    public static final int FLAG_TO_STRING = 0x00000040; //64
+
+    //parcelable标志。 表示这个字段会参加android的序列化到内存 （自动有CREATOR）。
+    public static final int FLAG_PARCELABLE = 0x00000080; //128
+
+    /**
+     gson 的注解@Expose标志。表示会在字段上生成gson - @expose注解(serialize = true,
+     deserialize = true). eg:
+      <pre>@Expose(
+     serialize = true,
+     deserialize = true
+     )</pre>
+     */
+    public static final int FLAG_EXPOSE_DEFAULT = 0x00000100;//256
+    /**
+     gson 的注解@Expose标志。表示会在字段上生成gson - @expose注解.并且 serialize 强制为false,
+     * <pre>@Expose(
+     serialize = false,
+     deserialize = true  //indicate by FLAG_EXPOSE_DESERIALIZE_FALSE
+     )</pre>
+     */
+    public static final int FLAG_EXPOSE_SERIALIZE_FALSE = 0x00000200;//512
+    /**
+     gson 的注解@Expose标志。表示会在字段上生成gson - @expose注解.并且 deserialize 强制为false,
+     该标志和 FLAG_EXPOSE_SERIALIZE_FALSE互不影响
+     * <pre>@Expose(
+     serialize = true,
+     deserialize = false
+     )</pre>    
+     */
+    public static final int FLAG_EXPOSE_DESERIALIZE_FALSE = 0x00000400;//1024
+
+
+    /**
+     * hashCode和Equals标志。 表示字段会参加hashCode和Equals方法。
+     * @since 1.1.1
+     */
+    public static final int FLAG_HASH_EQUALS              = 0x00000800; //2048
+
+    /**
+     * 复合标志。.
+     * @see #FLAG_SNAP 快照
+     * @see #FLAG_RESET 重置
+     * @see #FLAG_SHARE 共享
+     * @see #FLAG_COPY  拷贝
+     * @see #FLAG_PARCELABLE android序列化到内存
+     * @see #FLAG_TO_STRING   toString
+     * @see #FLAG_HASH_EQUALS   hashCode和equals
+     */
+    public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
+            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_HASH_EQUALS;
+
+    /**
+     * 复合标志。
+     * @see #FLAG_COPY         拷贝
+     * @see #FLAG_PARCELABLE     android序列化到内存
+     * @see #FLAG_TO_STRING      toString标志
+     * @since 1.0.7
+     */
+    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING ;
+    /**
+      复合标志. 表示gson注解的@Expose .serialize = false并且deserialize = false.  
+     * @see #FLAG_EXPOSE_DEFAULT
+     * @see #FLAG_EXPOSE_SERIALIZE_FALSE
+     * @see #FLAG_EXPOSE_DESERIALIZE_FALSE
+     * @since 1.0.7
+     */
+    public static final int FLAGS_NO_EXPOSE = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE | FLAG_EXPOSE_DESERIALIZE_FALSE;
+
+    /**
+      复合标志， 表示在 FLAGS_MAIN_SCOPES 上添加 hashCode和equals标志
+     * @see #FLAG_COPY       拷贝
+     * @see #FLAG_PARCELABLE   android序列化到内存
+     * @see #FLAG_TO_STRING    toString标志
+     * @see #FLAG_HASH_EQUALS   hash和equals标志
+     * @since 1.1.1
+     */
+    public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH_EQUALS;
+ 
+ ``` 
+
  * 注解 @Fields 成员说明
   ```java
   public @interface Fields {
