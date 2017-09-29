@@ -6,6 +6,14 @@ data-mediator
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
   方便数据层的使用。支持gson. 通过操作binder和代理 实现绝大部分开发属性设置。（setText, setTextColor 等等）
 
+# 文档导航
+ * [设计思想](#设计思想)
+ * [数据中介者的特点](#特点)
+ * [快速入门](#快速入门)
+ * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
+ * [进阶指南](#进阶指南)
+ * [混淆配置](#混淆配置)
+
 # 设计思想
 - 整个设计分3层： 模型层，代理层，调用层
 
@@ -46,9 +54,9 @@ data-mediator
                 .setAge(0)
                 .setId(0);
  ```
- - 支持数据缓存 (使用请参考下面进阶指南)
+ - 支持数据缓存 (使用请参考下面[进阶指南](#进阶指南))
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
- <br> 绑定以后操作数据代理就是操作view. (使用请参考下面进阶指南)
+ <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
 
 
 # 快速入门
@@ -140,7 +148,8 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 
 }
 ```
-更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
+* [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
+* 更多sample 代码 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
 # 进阶指南
  * [域和支持的接口说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/scope_desc.md)
