@@ -114,7 +114,7 @@
  
  ``` 
  
-<h2 id="2">注解@Fields成员说明</h2>
+# <h2 id="2">注解@Fields成员说明</h2>
   ```java
   public @interface Fields {
 
@@ -135,8 +135,8 @@
 }
 
   ```
-  
-<h2 id="3">注解@Field类成员说明</h2>  
+  
+# <h2 id="3">注解@Field类成员说明</h2>   
     ```java
     @Target(ElementType.ANNOTATION_TYPE)
     @Retention(RetentionPolicy.SOURCE)
@@ -173,8 +173,8 @@
 
     }
     ```
-    
-<h2 id="4">DataMediatorFactory成员说明</h2>      
+    
+# <h2 id="4">DataMediatorFactory成员说明</h2>       
    ```java
     /**
      根据module的类型，获取module的实体对象（非代理）。
@@ -207,8 +207,8 @@
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass)
    ```
-   
-<h2 id="5">Binder成员说明</h2>      
+   
+# <h2 id="5">Binder成员说明</h2>       
   ```java
    
    //获取数据中介者
@@ -319,8 +319,8 @@
     //绑定属性到 ListView的adapter上。 list类型
     public abstract Binder<T> bindList(String property, Object listView);
   ```
-  
-<h2 id="6">BinderCallback说明</h2>      
+  
+# <h2 id="6">BinderCallback说明</h2>       
    ```java
    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
