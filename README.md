@@ -140,7 +140,8 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 
 }
 ```
-更多sample 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
+* [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
+* 更多sample 代码 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
 # 进阶指南
  * [域和支持的接口说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/scope_desc.md)
