@@ -8,7 +8,7 @@ data-mediator
 
 # 文档导航
  * [设计思想](#设计思想)
- * [数据中介者的特点](#特点)
+ * [特点](#特点)
  * [快速入门](#快速入门)
  * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
  * [进阶指南](#进阶指南)
