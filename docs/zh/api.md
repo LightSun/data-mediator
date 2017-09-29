@@ -1,12 +1,12 @@
 
 # API说明
 
- * [FieldFlags类常量说明](#FieldFlags类常量说明)
- * [注解@Fields成员说明](#注解@Fields成员说明)
- * [注解@Field类成员说明](#注解@Field类成员说明)
- * [Binder成员说明](#Binder成员说明)
- * [BinderCallback说明](#BinderCallback说明)
- * [DataMediatorFactory成员说明.](#DataMediatorFactory成员说明)
+ * [FieldFlags类常量](#FieldFlags类常量说明)
+ * [注解@Fields成员](#注解@Fields成员说明)
+ * [注解@Field类成员](#注解@Field类成员说明)
+ * [Binder成员](#Binder成员说明)
+ * [BinderCallback](#BinderCallback说明)
+ * [DataMediatorFactory成员](#DataMediatorFactory成员说明)
  
  # FieldFlags类常量说明
  ```java
