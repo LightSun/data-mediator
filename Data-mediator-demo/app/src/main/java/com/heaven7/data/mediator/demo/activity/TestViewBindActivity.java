@@ -73,7 +73,7 @@ public class TestViewBindActivity extends BaseActivity {
                  .bindBackgroundColor(ViewBindModule.PROP_backgroundColor, mV_bg_color)
                  .bindEnable("enable", mV_enable)
                  .applyProperties(
-                         // 创建一个只接收固定属性的 拦截器。
+                         // 创建一个只接收固定属性的 拦截器。(1.1.2支持的)
                          PropertyInterceptor.createFilter(ViewBindModule.PROP_background,
                                  ViewBindModule.PROP_backgroundRes,
                                  ViewBindModule.PROP_backgroundColor
