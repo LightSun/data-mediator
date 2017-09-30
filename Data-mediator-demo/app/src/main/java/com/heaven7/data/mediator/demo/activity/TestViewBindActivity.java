@@ -67,11 +67,17 @@ public class TestViewBindActivity extends BaseActivity {
         mUserColor1 = true;
 
         //绑定并 首次应用属性(绑定只需要1次)
-         binder.bindBackground("background", mV_bg)
-                 .bindBackgroundRes("backgroundRes", mV_bg_res)
-                 .bindBackgroundColor("backgroundColor", mV_bg_color)
+         binder.bindBackground(ViewBindModule.PROP_background, mV_bg)
+                         //使用生成的property对象。有助于模型变化后用的地方知晓改变。
+                 .bindBackgroundRes(ViewBindModule.PROP_backgroundRes, mV_bg_res)
+                 .bindBackgroundColor(ViewBindModule.PROP_backgroundColor, mV_bg_color)
                  .bindEnable("enable", mV_enable)
-                 .applyProperties(PropertyInterceptor.NULL);//应用
+                 .applyProperties(
+                         // 创建一个只接收固定属性的 拦截器。
+                         PropertyInterceptor.createFilter(ViewBindModule.PROP_background,
+                                 ViewBindModule.PROP_backgroundRes,
+                                 ViewBindModule.PROP_backgroundColor
+                 ));
     }
 
     @OnClick(R.id.bt_change_bg)

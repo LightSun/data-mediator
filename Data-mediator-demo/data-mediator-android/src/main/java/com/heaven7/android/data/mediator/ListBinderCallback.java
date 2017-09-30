@@ -55,6 +55,11 @@ public class ListBinderCallback<T> extends Binder.SimpleBinderCallback<Object> {
         }
     }
 
+    @Override
+    public void onPropertyItemChanged(Object data, Property prop, Object oldItem, Object newItem, int index) {
+        mCallback.onItemChanged(index, (T)oldItem, (T) newItem);
+    }
+
     /**
      * the item manager.
      * @param <T> the item data type
@@ -85,6 +90,15 @@ public class ListBinderCallback<T> extends Binder.SimpleBinderCallback<Object> {
          * @param items the items.
          */
         void replaceItems(List<T> items);
+
+        /**
+         * called on item changed
+         * @param index the index of item
+         * @param oldItem the old item
+         * @param newItem the new item
+         * @since 1.0.3
+         */
+        void onItemChanged(int index, T oldItem, T newItem);
     }
 
 }

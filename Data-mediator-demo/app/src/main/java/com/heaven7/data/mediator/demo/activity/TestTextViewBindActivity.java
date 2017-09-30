@@ -45,9 +45,9 @@ public class TestTextViewBindActivity extends BaseActivity {
         mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
         //绑定一组属性到TextView
         mBinder.beginBatchTextViewBinder(mTv)
-                .bindText(TextViewBindModule.PROP_text.getName())
-                .bindTextRes("textRes")
-                .bindTextColor("textColor")
+                .bindText(TextViewBindModule.PROP_text)
+                .bindTextRes(TextViewBindModule.PROP_textRes)
+                .bindTextColor(TextViewBindModule.PROP_textColor)
                 .bindTextColorRes("textColorRes")
                 .bindTextSize("textSize")
                 .bindTextSizeRes("textSizeRes")

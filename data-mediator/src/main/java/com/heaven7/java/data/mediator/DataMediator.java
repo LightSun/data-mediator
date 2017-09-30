@@ -48,6 +48,23 @@ public final class DataMediator<T> {
     }
 
     /**
+     * get the data consumer.
+     * @return the data consumer
+     * @since 1.1.2
+     */
+    public DataConsumer<T> getDataConsumer() {
+        return mediator.getDataConsumer();
+    }
+    /**
+     * set the data consumer
+     * @param mConsumer the data consumer
+     * @since 1.1.2
+     */
+    public void setDataConsumer(DataConsumer<T> mConsumer) {
+        mediator.setDataConsumer(mConsumer);
+    }
+
+    /**
      * add a data mediator callback
      * @param callback  the data mediator callback
      */
@@ -97,4 +114,21 @@ public final class DataMediator<T> {
     public void applyProperties(PropertyInterceptor interceptor){
         mediator.applyProperties(interceptor);
     }
+
+    /**
+     * apply the data to target consumer.
+     * @param consumer the data consumer
+     * @since 1.1.2
+     */
+    public void applyTo(DataConsumer<T> consumer){
+        mediator.applyTo(consumer);
+    }
+    /**
+     * apply the data to current consumer.so you should calla {@linkplain #setDataConsumer(DataConsumer)} first.
+     * @since 1.1.2
+     */
+    public void applyTo(){
+        mediator.applyTo();
+    }
+
 }

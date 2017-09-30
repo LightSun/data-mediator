@@ -39,4 +39,17 @@ public interface ListPropertyCallback<T> extends PropertyCallback<T>{
      */
     void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue);
 
+
+    /**
+     * called on property item changed.
+     * @param data the data
+     * @param prop the property
+     * @param oldItem the old item
+     * @param newItem the new item
+     * @param index the index of old item
+     * @since 1.1.2
+     */
+    void onPropertyItemChanged(T  data, Property prop, Object oldItem, Object newItem, int index);
+
+
 }

@@ -1,5 +1,8 @@
 package com.heaven7.java.data.mediator;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * the property interceptor.
  * <p>sometimes, we apply properties but don't want to apply invalid value. so just use this to judge.</p>
@@ -54,6 +57,16 @@ public abstract class PropertyInterceptor {
     };
 
     /**
+     * create filter property interceptor.
+     * @param accepts the property to accept. can't be null
+     * @return an instance of PropertyInterceptor.
+     * @since 1.1.2
+     */
+   public static PropertyInterceptor createFilter(Property... accepts){
+       return new FilterPropertyInterceptor(accepts);
+   }
+
+    /**
      * should intercept this apply function or not.
      *
      * @param data  the data.
@@ -62,4 +75,21 @@ public abstract class PropertyInterceptor {
      * @return true if intercept.
      */
     public abstract boolean shouldIntercept(Object data, Property prop, Object value);
+
+    /**
+     * @since 1.1.2
+     */
+    private static class FilterPropertyInterceptor extends PropertyInterceptor{
+
+        private final List<Property> accepts;
+
+        public FilterPropertyInterceptor(Property[] accepts) {
+            this.accepts = Arrays.asList(accepts);
+        }
+
+        @Override
+        public boolean shouldIntercept(Object data, Property prop, Object value) {
+            return !accepts.contains(prop);
+        }
+    }
 }

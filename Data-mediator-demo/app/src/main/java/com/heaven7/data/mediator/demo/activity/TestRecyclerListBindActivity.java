@@ -145,5 +145,10 @@ public class TestRecyclerListBindActivity extends BaseActivity {
         public void replaceItems(List<T> items) {
             getAdapterManager().replaceAllItems(items);
         }
+
+        @Override
+        public void onItemChanged(int index, T oldItem, T newItem) {
+            getAdapterManager().setItem(index, newItem);
+        }
     }
 }

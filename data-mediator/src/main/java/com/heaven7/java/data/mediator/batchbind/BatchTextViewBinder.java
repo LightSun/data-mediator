@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.batchbind;
 
 import com.heaven7.java.data.mediator.Binder;
+import com.heaven7.java.data.mediator.Property;
 
 /**
  *  the batch binder of TextView.
@@ -29,12 +30,32 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         return this;
     }
     /**
+     * bind text of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindText(Property property){
+        mBinder.bindText(property.getName(), mView);
+        return this;
+    }
+    /**
      * bind text resource of Text view.
      * @param property the property
      * @return this.
      */
     public BatchTextViewBinder<T> bindTextRes(String property){
         mBinder.bindTextRes(property, mView);
+        return this;
+    }
+    /**
+     * bind text resource of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextRes(Property property){
+        mBinder.bindTextRes(property.getName(), mView);
         return this;
     }
     /**
@@ -47,12 +68,32 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         return this;
     }
     /**
+     * bind text color of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextColor(Property property){
+        mBinder.bindTextColor(property.getName(), mView);
+        return this;
+    }
+    /**
      * bind text color resource of Text view.
      * @param property the property
      * @return this.
      */
     public BatchTextViewBinder<T> bindTextColorRes(String property){
         mBinder.bindTextColorRes(property, mView);
+        return this;
+    }
+    /**
+     * bind text color resource of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextColorRes(Property property){
+        mBinder.bindTextColorRes(property.getName(), mView);
         return this;
     }
     /**
@@ -65,6 +106,16 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         return this;
     }
     /**
+     * bind text size resource of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextSizeRes(Property property){
+        mBinder.bindTextSizeRes(property.getName(), mView);
+        return this;
+    }
+    /**
      * bind text size of Text view.
      * @param property the property
      * @return this.
@@ -74,12 +125,32 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         return this;
     }
     /**
+     * bind text size of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextSize(Property property){
+        mBinder.bindTextSize(property.getName(), mView);
+        return this;
+    }
+    /**
      * bind text dimension size(dp value) of Text view.
      * @param property the property
      * @return this.
      */
     public BatchTextViewBinder<T> bindTextSizeDp(String property){
         mBinder.bindTextSizeDp(property, mView);
+        return this;
+    }
+    /**
+     * bind text dimension size(dp value) of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchTextViewBinder<T> bindTextSizeDp(Property property){
+        mBinder.bindTextSizeDp(property.getName(), mView);
         return this;
     }
 }

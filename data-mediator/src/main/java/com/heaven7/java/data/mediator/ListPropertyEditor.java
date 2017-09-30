@@ -43,6 +43,7 @@ public class ListPropertyEditor<D, T> {
     /**
      * add a value to the property.
      * @param t the value data.
+     * @return this
      */
     public ListPropertyEditor<D, T> add(T t){
         Throwables.checkNull(t);
@@ -60,6 +61,7 @@ public class ListPropertyEditor<D, T> {
      * add a value to the target index.
      * @param index the index
      * @param t the value data.
+     * @return this
      */
     public ListPropertyEditor<D, T> add(int index ,T t){
         Throwables.checkNull(t);
@@ -75,9 +77,31 @@ public class ListPropertyEditor<D, T> {
     }
 
     /**
+     * set item on target index.
+     * @param index the index to set
+     * @param newT the new item to set .
+     * @return this
+     * @since 1.1.2
+     */
+    public ListPropertyEditor<D, T> set(int index ,T newT){
+        Throwables.checkNegativeValue(index);
+        Throwables.checkNull(newT);
+        if(mList.size() <= index){
+            throw new IllegalArgumentException();
+        }
+        T old = mList.set(index, newT);
+        //dispatch if need.
+        if (mMediator != null) {
+            mMediator.dispatchItemChanged(mProperty, old, newT, index);
+        }
+        return this;
+    }
+
+    /**
      * add the all value data which is indicate by target collection.
      * @param index the index
      * @param collection the collection
+     * @return this                 \
      */
     public ListPropertyEditor<D, T> addAll(int index , Collection<? extends T> collection){
         Throwables.checkNull(collection);
@@ -92,6 +116,7 @@ public class ListPropertyEditor<D, T> {
     /**
      * add the all value data which is indicate by target collection.
      * @param collection the collection
+     * @return this
      */
     public ListPropertyEditor<D, T> addAll(Collection<? extends T> collection){
         Throwables.checkNull(collection);
@@ -107,6 +132,7 @@ public class ListPropertyEditor<D, T> {
     /**
      * remove the value data from collection.
      * @param t the value data
+     * @return this
      */
     public ListPropertyEditor<D, T> remove(T t){
         Throwables.checkNull(t);
@@ -123,6 +149,7 @@ public class ListPropertyEditor<D, T> {
     /**
      * remove the index data from collection.
      * @param index the index data
+     * @return this
      */
     public ListPropertyEditor<D, T> remove(int index){
         Throwables.checkNegativeValue(index);
@@ -140,6 +167,7 @@ public class ListPropertyEditor<D, T> {
     /**
      * remove the all value data which is indicate by target collection.
      * @param collection the collection
+     * @return this
      */
     public ListPropertyEditor<D, T> removeAll(Collection<? extends T> collection){
         Throwables.checkNull(collection);
@@ -154,6 +182,7 @@ public class ListPropertyEditor<D, T> {
 
     /**
      * remove the all value data.
+     * @return this
      */
     public ListPropertyEditor<D, T> clearAll(){
         if(!mList.isEmpty()) {

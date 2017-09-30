@@ -136,113 +136,329 @@ public abstract class Binder<T> {
 
     /**
      * bind checkable of view.
-     * @param property the property
+     * @param property the property of data
      * @param checkableView the check view. eg: android.widget.CheckBox on android platform
      * @return this.
+     * @since 1.1.2
      */
-    public abstract Binder<T> bindCheckable(String property, Object checkableView);
+    public Binder<T> bindCheckable(Property property, Object checkableView){
+        return bindCheckable(property.getName(), checkableView);
+    }
 
     /**
      * bind visibility of view (on android the visibility is masked as int.).
-     * @param property the property
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @param forceAsBoolean  force to use property as boolean or not. if true that means on android:
      *                      only support  View.GONE(false) and View.VISIBLE(true).
      * @return this.
+     * @since 1.1.2
      */
-    public abstract Binder<T> bindVisibility(String property, Object view, boolean forceAsBoolean);
-
+    public Binder<T> bindVisibility(Property property, Object view, boolean forceAsBoolean){
+        return bindVisibility(property.getName(), view, forceAsBoolean);
+    }
     /**
      * bind visibility of view (on android the visibility is masked as int.).
      * here force use property of visibility as boolean.
-     * @param property the property
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindVisibility(Property property, Object view){
+        return bindVisibility(property.getName(), view, true);
+    }
+
+    /**
+     * bind enable of view.
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindEnable(Property property, Object view){
+        return bindEnable(property.getName(), view);
+    }
+    /**
+     * bind background resource of view.
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindBackgroundRes(Property property, Object view){
+        return bindBackground(property.getName(), view);
+    }
+
+    /**
+     * bind background drawable of view.
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindBackground(Property property, Object view){
+        return bindBackground(property.getName(), view);
+    }
+    /**
+     * bind background color of view.
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindBackgroundColor(Property property, Object view){
+        return bindBackgroundColor(property.getName(), view);
+    }
+
+    /**
+     * bind text of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindText(Property property, Object textView){
+        return bindText(property.getName(), textView);
+    }
+    /**
+     * bind text resource of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextRes(Property property, Object textView){
+        return bindTextRes(property.getName(), textView);
+    }
+    /**
+     * bind text color of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextColor(Property property, Object textView){
+        return bindTextColor(property.getName(), textView);
+    }
+    /**
+     * bind text color resource of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextColorRes(Property property, Object textView){
+        return bindTextColorRes(property.getName(), textView);
+    }
+    /**
+     * bind text size resource of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextSizeRes(Property property,Object textView){
+        return bindTextSizeRes(property.getName(), textView);
+    }
+    /**
+     * bind text size of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextSize(Property property, Object textView){
+        return bindTextSize(property.getName(), textView);
+    }
+    /**
+     * bind text dimension size(dp value) of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindTextSizeDp(Property property, Object textView){
+        return bindTextSizeDp(property.getName(), textView);
+    }
+    /**
+     * bind image url of image view.
+     * @param property the property of data
+     * @param imageView the image view. eg: android.widget.ImageView on android platform
+     * @param imgLoader the image loader which can load image.
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindImageUrl(Property property, Object imageView, Object imgLoader){
+        return bindImageUrl(property.getName(), imageView, imgLoader);
+    }
+    /**
+     * bind image uri (android.net.Uri) of image view.
+     * @param property the property of data
+     * @param imageView the image view. eg: android.widget.ImageView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public  Binder<T> bindImageUri(Property property, Object imageView){
+        return bindImageUri(property.getName(), imageView);
+    }
+    /**
+     * bind image resource of image view.
+     * @param property the property of data
+     * @param imageView the image view. eg: android.widget.ImageView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindImageRes(Property property, Object imageView){
+        return bindImageRes(property.getName(), imageView);
+    }
+    /**
+     * bind image drawable of image view.
+     * @param property the property of data
+     * @param imageView the image view. eg: android.widget.ImageView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindImageDrawable(Property property, Object imageView){
+        return bindImageDrawable(property.getName(), imageView);
+    }
+    /**
+     * bind image bitmap of image view.
+     * @param property the property of data
+     * @param imageView the image view. eg: android.widget.ImageView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindImageBitmap(Property property,  Object imageView){
+        return bindImageBitmap(property.getName(), imageView);
+    }
+    /**
+     * bind list of recycler view.
+     * @param property the property of data
+     * @param recyclerView the recycler view. eg: android.support.v7.widget.RecyclerView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindRecyclerList(Property property, Object recyclerView){
+        return bindRecyclerList(property.getName(), recyclerView);
+    }
+    /**
+     * bind list of view.
+     * @param property the property of data
+     * @param listView the list view. eg: android.widget.ListView on android platform
+     * @return this.
+     * @since 1.1.2
+     */
+    public Binder<T> bindList(Property property, Object listView){
+        return bindList(property.getName(), listView);
+    }
+    /**
+     * bind visibility of view (on android the visibility is masked as int.).
+     * here force use property of visibility as boolean.
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
     public Binder<T> bindVisibility(String property, Object view){
         return bindVisibility(property, view, true);
     }
-
+    //============================== abstract =========================================//
+    /**
+     * bind checkable of view.
+     * @param property the property of data
+     * @param checkableView the check view. eg: android.widget.CheckBox on android platform
+     * @return this.
+     */
+    public abstract Binder<T> bindCheckable(String property, Object checkableView);
+    /**
+     * bind visibility of view (on android the visibility is masked as int.).
+     * @param property the property of data
+     * @param view the view. eg: android.view.View on android platform
+     * @param forceAsBoolean  force to use property as boolean or not. if true that means on android:
+     *                      only support  View.GONE(false) and View.VISIBLE(true).
+     * @return this.
+     */
+    public abstract Binder<T> bindVisibility(String property, Object view, boolean forceAsBoolean);
     /**
      * bind enable of view.
-     * @param property the property
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
     public abstract Binder<T> bindEnable(String property, Object view);
     /**
      * bind background resource of view.
-     * @param property the property
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
     public abstract Binder<T> bindBackgroundRes(String property, Object view);
     /**
      * bind background drawable of view.
-     * @param property the property
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
     public abstract Binder<T> bindBackground(String property, Object view);
     /**
      * bind background color of view.
-     * @param property the property
+     * @param property the property of data
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
     public abstract Binder<T> bindBackgroundColor(String property, Object view);
     /**
      * bind text of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindText(String property, Object textView);
     /**
      * bind text resource of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextRes(String property, Object textView);
     /**
      * bind text color of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextColor(String property, Object textView);
     /**
      * bind text color resource of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextColorRes(String property, Object textView);
     /**
      * bind text size resource of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextSizeRes(String property,Object textView);
     /**
      * bind text size of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextSize(String property, Object textView);
     /**
      * bind text dimension size(dp value) of Text view.
-     * @param property the property
+     * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextSizeDp(String property, Object textView);
     /**
      * bind image url of image view.
-     * @param property the property
+     * @param property the property of data
      * @param imageView the image view. eg: android.widget.ImageView on android platform
      * @param imgLoader the image loader which can load image.
      * @return this.
@@ -250,43 +466,43 @@ public abstract class Binder<T> {
     public abstract Binder<T> bindImageUrl(String property, Object imageView, Object imgLoader);
     /**
      * bind image uri (android.net.Uri) of image view.
-     * @param property the property
+     * @param property the property of data
      * @param imageView the image view. eg: android.widget.ImageView on android platform
      * @return this.
      */
     public abstract Binder<T> bindImageUri(String property, Object imageView);
     /**
      * bind image resource of image view.
-     * @param property the property
+     * @param property the property of data
      * @param imageView the image view. eg: android.widget.ImageView on android platform
      * @return this.
      */
     public abstract Binder<T> bindImageRes(String property, Object imageView);
+
     /**
      * bind image drawable of image view.
-     * @param property the property
+     * @param property the property of data
      * @param imageView the image view. eg: android.widget.ImageView on android platform
      * @return this.
      */
     public abstract Binder<T> bindImageDrawable(String property, Object imageView);
     /**
      * bind image bitmap of image view.
-     * @param property the property
+     * @param property the property of data
      * @param imageView the image view. eg: android.widget.ImageView on android platform
      * @return this.
      */
     public abstract Binder<T> bindImageBitmap(String property,  Object imageView);
-
     /**
      * bind list of recycler view.
-     * @param property the property
+     * @param property the property of data
      * @param recyclerView the recycler view. eg: android.support.v7.widget.RecyclerView on android platform
      * @return this.
      */
     public abstract Binder<T> bindRecyclerList(String property, Object recyclerView);
     /**
      * bind list of view.
-     * @param property the property
+     * @param property the property of data
      * @param listView the list view. eg: android.widget.ListView on android platform
      * @return this.
      */
@@ -331,6 +547,12 @@ public abstract class Binder<T> {
         public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue) {
 
         }
+
+        @Override
+        public void onPropertyItemChanged(T data, Property prop, Object oldItem, Object newItem, int index) {
+
+        }
+
         @Override
         public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
 

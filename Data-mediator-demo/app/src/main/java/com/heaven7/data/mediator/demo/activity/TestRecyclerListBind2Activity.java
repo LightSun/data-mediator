@@ -21,7 +21,6 @@ import java.util.List;
 
 public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity {
 
-    private InternalAdapater<StudentModule> mAdapter;
 
     @Override
     protected void onBindListItems(Binder<RecyclerListBindModule> mBinder) {
@@ -32,8 +31,9 @@ public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity 
     @Override
     protected void initAdapter() {
         mRv.setLayoutManager(new LinearLayoutManager(this));
-        mRv.setAdapter(mAdapter = new InternalAdapater<StudentModule>(
+        mRv.setAdapter(new InternalAdapater<StudentModule>(
                 R.layout.item_test_recycler_list, null) {
+
             @Override
             protected void onBindData(Context context, int position,
                                       StudentModule item, int itemLayoutId, ViewHelper helper) {
@@ -43,6 +43,7 @@ public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity 
         });
     }
 
+    // 以实现binder callback的方式.
     private static abstract  class InternalAdapater<T extends ISelectable>
             extends QuickRecycleViewAdapter<T> implements Binder.BinderCallback<RecyclerListBindModule>{
 
@@ -84,6 +85,11 @@ public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity 
         @Override
         public void onPropertyApplied(RecyclerListBindModule data, Property prop, Object value) {
             onPropertyValueChanged(data, prop , null, value);
+        }
+        @Override
+        public void onPropertyItemChanged(RecyclerListBindModule data, Property prop,
+                                          Object oldItem, Object newItem, int index) {
+            getAdapterManager().setItem(index, (T)newItem);
         }
     }
 }

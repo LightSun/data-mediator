@@ -1,8 +1,10 @@
 package com.heaven7.java.data.mediator;
 
 /**
+ * a callback of simple property. if you use list property please use {@linkplain ListPropertyCallback}.
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
+ * @see ListPropertyCallback
  */
 public interface PropertyCallback<T> {
 

@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.batchbind;
 
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.Binder;
+import com.heaven7.java.data.mediator.Property;
 
 /**
  * the batch binder of view,
@@ -42,6 +43,20 @@ public class BatchViewBinder<T> {
 
     /**
      * bind visibility of view (on android the visibility is masked as int.).
+     *
+     * @param property       the property
+     * @param forceAsBoolean force to use property as boolean or not. if true that means on android:
+     *                       only support  View.GONE(false) and View.VISIBLE(true).
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindVisibility(Property property, boolean forceAsBoolean) {
+        mBinder.bindVisibility(property.getName(), mView, forceAsBoolean);
+        return this;
+    }
+
+    /**
+     * bind visibility of view (on android the visibility is masked as int.).
      * here force use property of visibility as boolean.
      *
      * @param property the property
@@ -52,6 +67,18 @@ public class BatchViewBinder<T> {
     }
 
     /**
+     * bind visibility of view (on android the visibility is masked as int.).
+     * here force use property of visibility as boolean.
+     *
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindVisibility(Property property) {
+        return bindVisibility(property.getName(), true);
+    }
+
+    /**
      * bind enable of view.
      *
      * @param property the property
@@ -59,6 +86,17 @@ public class BatchViewBinder<T> {
      */
     public BatchViewBinder<T> bindEnable(String property) {
         mBinder.bindEnable(property, mView);
+        return this;
+    }
+    /**
+     * bind enable of view.
+     *
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindEnable(Property property) {
+        mBinder.bindEnable(property.getName(), mView);
         return this;
     }
 
@@ -72,6 +110,17 @@ public class BatchViewBinder<T> {
         mBinder.bindBackgroundRes(property, mView);
         return this;
     }
+    /**
+     * bind background resource of view.
+     *
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindBackgroundRes(Property property) {
+        mBinder.bindBackgroundRes(property.getName(), mView);
+        return this;
+    }
 
     /**
      * bind background drawable of view.
@@ -83,6 +132,17 @@ public class BatchViewBinder<T> {
         mBinder.bindBackground(property, mView);
         return this;
     }
+    /**
+     * bind background drawable of view.
+     *
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindBackground(Property property) {
+        mBinder.bindBackground(property.getName(), mView);
+        return this;
+    }
 
     /**
      * bind background color of view.
@@ -92,6 +152,17 @@ public class BatchViewBinder<T> {
      */
     public BatchViewBinder<T> bindBackgroundColor(String property) {
         mBinder.bindBackgroundColor(property, mView);
+        return this;
+    }
+    /**
+     * bind background color of view.
+     *
+     * @param property the property
+     * @return this.
+     * @since 1.1.2
+     */
+    public BatchViewBinder<T> bindBackgroundColor(Property property) {
+        mBinder.bindBackgroundColor(property.getName(), mView);
         return this;
     }
 

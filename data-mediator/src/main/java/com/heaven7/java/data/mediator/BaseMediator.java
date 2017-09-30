@@ -3,11 +3,12 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.util.DefaultEqualsComparator;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
+import sun.security.provider.MD2;
 
 import java.util.ArrayList;
 
 /**
- * the base mediator class.
+ * the base module mediator service.
  * Created by heaven7 on 2017/9/11 0011.
  */
 public class BaseMediator<T> {
@@ -15,6 +16,7 @@ public class BaseMediator<T> {
     private final ArrayList<DataMediatorCallback<? super T>> mCallbacks;
     private final T mTarget;
     private EqualsComparator mEqualsComparator = DefaultEqualsComparator.getInstance();
+    private DataConsumer<T> mConsumer;
 
     /**
      * create a base mediator by target object.
@@ -36,6 +38,24 @@ public class BaseMediator<T> {
      */
     public T getTarget() {
         return mTarget;
+    }
+
+    /**
+     * get the data consumer.
+     * @return the data consumer
+     * @since 1.1.2
+     */
+    public DataConsumer<T> getDataConsumer() {
+        return mConsumer;
+    }
+
+    /**
+     * set the data consumer
+     * @param mConsumer the data consumer
+     * @since 1.1.2
+     */
+    public void setDataConsumer(DataConsumer<T> mConsumer) {
+        this.mConsumer = mConsumer;
     }
 
     /**
@@ -119,6 +139,25 @@ public class BaseMediator<T> {
         Throwables.checkNull(interceptor);
         throw new UnsupportedOperationException("you must override this method.");
     }
+
+    /**
+     * apply the data to target consumer.
+     * @param consumer the data consumer
+     * @since 1.1.2
+     */
+    public void applyTo(DataConsumer<T> consumer){
+        Throwables.checkNull(consumer);
+        consumer.accept(getTarget());
+    }
+    /**
+     * apply the data to current consumer. so you should calla {@linkplain #setDataConsumer(DataConsumer)} first.
+     * @since 1.1.2
+     */
+    public void applyTo(){
+        applyTo(mConsumer);
+    }
+
+//=========================================================================
 
     /**
      * dispatch the change event to the callbacks.
@@ -210,6 +249,21 @@ public class BaseMediator<T> {
     }
 
     /**
+     * dispatch item changed which is changed between old item and new item on target index.
+     * @param prop the property of list items
+     * @param oldItem the old item
+     * @param newItem the new item
+     * @param index the index.
+     * @since 1.1.2
+     */
+    public void dispatchItemChanged(Property prop, Object oldItem, Object newItem , int index) {
+        final DataMediatorCallback[] arrLocal = getCallbacks();
+        for (int i = arrLocal.length - 1; i >= 0; i--) {
+            arrLocal[i].onPropertyItemChanged(mTarget, prop, oldItem, newItem, index);
+        }
+    }
+
+    /**
      * get callbacks/
      *
      * @return the callbacks.
@@ -230,6 +284,7 @@ public class BaseMediator<T> {
      * start batch applier.
      * @param interceptor the property  interceptor
      * @return the batch applier.
+     * @since 1.0.8
      */
     protected BatchApplier<T> startBatchApply(PropertyInterceptor interceptor) {
         return new BatchApplier<>(this, interceptor);
