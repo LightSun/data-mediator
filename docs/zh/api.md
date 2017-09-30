@@ -1,13 +1,15 @@
 
-# API 说明
 
- * [FieldFlags类常量说明](#FieldFlags类常量说明)
- * [注解@Fields成员说明](#注解@Fields成员说明)
- * [注解@Field类成员说明](#注解@Field类成员说明)
- * [Binder成员说明](#Binder成员说明)
- * [BinderCallback说明](#BinderCallback说明)
- * [DataMediatorFactory成员说明.](#DataMediatorFactory成员说明)
-# FieldFlags类常量说明
+# API说明
+ * [FieldFlags类常量](#1)
+ * [注解@Fields成员](#2)
+ * [注解@Field类成员](#3)
+ * [DataMediatorFactory成员](#4)
+ * [Binder成员](#5)
+ * [BinderCallback](#6)
+ * [List属性编辑器](#7)
+ 
+ # <h2 id="1">FieldFlags类常量说明</h2>
  ```java
  
     // 字段复合类型-数组结构。@Field注解 complexType()可指定。默认普通类型
@@ -112,8 +114,8 @@
     public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH_EQUALS;
  
  ``` 
-
-# 注解@Fields成员说明
+ 
+# <h2 id="2">注解@Fields成员说明</h2>
   ```java
   public @interface Fields {
 
@@ -134,7 +136,8 @@
 }
 
   ```
-# 注解@Field类成员说明
+  
+# <h2 id="3">注解@Field类成员说明</h2>   
     ```java
     @Target(ElementType.ANNOTATION_TYPE)
     @Retention(RetentionPolicy.SOURCE)
@@ -171,7 +174,8 @@
 
     }
     ```
-# DataMediatorFactory成员说明.
+    
+# <h2 id="4">DataMediatorFactory成员说明</h2>       
    ```java
     /**
      根据module的类型，获取module的实体对象（非代理）。
@@ -204,8 +208,8 @@
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass)
    ```
-
-# Binder成员说明
+   
+# <h2 id="5">Binder成员说明</h2>       
   ```java
    
    //获取数据中介者
@@ -316,7 +320,8 @@
     //绑定属性到 ListView的adapter上。 list类型
     public abstract Binder<T> bindList(String property, Object listView);
   ```
-# BinderCallback说明
+  
+# <h2 id="6">BinderCallback说明</h2>       
    ```java
    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
@@ -354,3 +359,34 @@
     }
 
    ```
+   
+# <h2 id="7">List属性编辑器: ListPropertyEditor</h2>    
+ * 当属性是list结构时， 会自动生成beginXxxEditor()方法返回这个对象。 实体和代理都有。
+```java
+   //添加 一个item
+    public ListPropertyEditor<D, T> add(T t)
+     
+   //添加item到指定的索引
+    public ListPropertyEditor<D, T> add(int index ,T t)
+      
+   // 添加所有item到指定的索引
+    public ListPropertyEditor<D, T> addAll(int index , Collection<? extends T> collection)
+        
+    // 添加所有item
+    public ListPropertyEditor<D, T> addAll(Collection<? extends T> collection)
+       
+
+   //移除 一个item
+    public ListPropertyEditor<D, T> remove(T t)
+   //移除指定索引的item
+    public ListPropertyEditor<D, T> remove(int index)
+      
+   //移除所有包含目标的items
+    public ListPropertyEditor<D, T> removeAll(Collection<? extends T> collection)
+       
+
+   //清空所有item
+    public ListPropertyEditor<D, T> clearAll()
+
+```
+
