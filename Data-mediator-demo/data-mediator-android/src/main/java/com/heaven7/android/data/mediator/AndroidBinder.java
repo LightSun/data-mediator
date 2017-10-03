@@ -34,6 +34,7 @@ import com.heaven7.core.util.ViewHelper;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 /**
  * the binder of android platform.
@@ -54,7 +55,8 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof View)){
             throw new IllegalArgumentException("must be any child of android.view.View");
         }
-        bind(property, new VisibilityBinderCallback<T>((View)view, forceAsBoolean));
+        bind(property, new VisibilityBinderCallback<T>((View)view,
+                getPropertyInterceptor(), forceAsBoolean));
         return this;
     }
 
@@ -63,7 +65,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof Checkable) || !(view instanceof View)){
             throw new IllegalArgumentException("must be Checkable View");
         }
-        bind(property, new CheckableBinderCallback<T>((View) view));
+        bind(property, new CheckableBinderCallback<T>((View) view, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -71,7 +73,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextBinderCallback<T>((TextView) tv));
+        bind(property, new TextBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -79,7 +81,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextResBinderCallback<T>((TextView) tv));
+        bind(property, new TextResBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -87,7 +89,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextColorBinderCallback<T>((TextView) tv));
+        bind(property, new TextColorBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -95,7 +97,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextColorResBinderCallback<T>((TextView) tv));
+        bind(property, new TextColorResBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -103,7 +105,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextSizeResBinderCallback<T>((TextView) tv));
+        bind(property, new TextSizeResBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -111,7 +113,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextSizeBinderCallback<T>((TextView) tv));
+        bind(property, new TextSizeBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -119,7 +121,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextSizeDpBinderCallback<T>((TextView) tv));
+        bind(property, new TextSizeDpBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -127,7 +129,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof View)){
             throw new IllegalArgumentException("must be any child of android.view.View");
         }
-        bind(property, new EnableBinderCallback<T>((View) view));
+        bind(property, new EnableBinderCallback<T>((View) view, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -135,7 +137,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof View)){
             throw new IllegalArgumentException("must be any child of android.view.View");
         }
-        bind(property, new BackgroundResBinderCallback<T>((View) view));
+        bind(property, new BackgroundResBinderCallback<T>((View) view, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -143,7 +145,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof View)){
             throw new IllegalArgumentException("must be any child of android.view.View");
         }
-        bind(property, new BackgroundBinderCallback<T>((View) view));
+        bind(property, new BackgroundBinderCallback<T>((View) view, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -151,7 +153,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(view instanceof View)){
             throw new IllegalArgumentException("must be any child of android.view.View");
         }
-        bind(property, new BackgroundColorBinderCallback<T>((View) view));
+        bind(property, new BackgroundColorBinderCallback<T>((View) view, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -162,7 +164,8 @@ import com.heaven7.java.data.mediator.Property;
         if(!(imageLoader instanceof ViewHelper.IImageLoader)){
             throw new IllegalArgumentException("the loader must be  com.heaven7.core.util.ViewHelper.IImageLoader");
         }
-        bind(property, new ImageUrlBinderCallback<T>((ImageView)imageView, (ViewHelper.IImageLoader) imageLoader));
+        bind(property, new ImageUrlBinderCallback<T>((ImageView)imageView, getPropertyInterceptor(),
+                (ViewHelper.IImageLoader) imageLoader));
         return this;
     }
     @Override
@@ -170,7 +173,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(imageView instanceof ImageView)){
             throw new IllegalArgumentException("the view must be ImageView");
         }
-        bind(property, new ImageUriBinderCallback<T>((ImageView) imageView));
+        bind(property, new ImageUriBinderCallback<T>((ImageView) imageView, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -178,7 +181,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(imageView instanceof ImageView)){
             throw new IllegalArgumentException("the view must be ImageView");
         }
-        bind(property, new ImageResBinderCallback<T>((ImageView) imageView));
+        bind(property, new ImageResBinderCallback<T>((ImageView) imageView, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -186,7 +189,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(imageView instanceof ImageView)){
             throw new IllegalArgumentException("the view must be ImageView");
         }
-        bind(property, new ImageDrawableBinderCallback<T>((ImageView) imageView));
+        bind(property, new ImageDrawableBinderCallback<T>((ImageView) imageView, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -194,7 +197,7 @@ import com.heaven7.java.data.mediator.Property;
         if(!(imageView instanceof ImageView)){
             throw new IllegalArgumentException("the view must be ImageView");
         }
-        bind(property, new ImageBitmapBinderCallback<T>((ImageView) imageView));
+        bind(property, new ImageBitmapBinderCallback<T>((ImageView) imageView, getPropertyInterceptor()));
         return this;
     }
     @Override
@@ -231,8 +234,9 @@ import com.heaven7.java.data.mediator.Property;
 
         final boolean mForceAsBoolean;
 
-        public VisibilityBinderCallback(View tv, boolean forceAsBoolean) {
-            super(tv);
+        public VisibilityBinderCallback(View tv, PropertyInterceptor interceptor,
+                                        boolean forceAsBoolean) {
+            super(tv, interceptor);
             this.mForceAsBoolean = forceAsBoolean;
         }
         @Override
@@ -247,8 +251,8 @@ import com.heaven7.java.data.mediator.Property;
     }
 
     private static class EnableBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public EnableBinderCallback(View tv) {
-            super(tv);
+        public EnableBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv,interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -256,8 +260,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class CheckableBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public CheckableBinderCallback(View tv) {
-            super(tv);
+        public CheckableBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -265,8 +269,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class ImageUriBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public ImageUriBinderCallback(ImageView tv) {
-            super(tv);
+        public ImageUriBinderCallback(ImageView tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -274,8 +278,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class ImageBitmapBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public ImageBitmapBinderCallback(ImageView tv) {
-            super(tv);
+        public ImageBitmapBinderCallback(ImageView tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -283,8 +287,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class ImageDrawableBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public ImageDrawableBinderCallback(ImageView tv) {
-            super(tv);
+        public ImageDrawableBinderCallback(ImageView tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -293,8 +297,8 @@ import com.heaven7.java.data.mediator.Property;
     }
 
     private static class ImageResBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public ImageResBinderCallback(ImageView tv) {
-            super(tv);
+        public ImageResBinderCallback(ImageView tv,  PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -303,8 +307,9 @@ import com.heaven7.java.data.mediator.Property;
     }
     private static class ImageUrlBinderCallback<T> extends SimpleBinderCallback2<T> {
         final ViewHelper.IImageLoader mLoader;
-        public ImageUrlBinderCallback(ImageView tv, ViewHelper.IImageLoader loader) {
-            super(tv);
+        public ImageUrlBinderCallback(View tv, PropertyInterceptor interceptor,
+                                      ViewHelper.IImageLoader loader) {
+            super(tv, interceptor);
             this.mLoader = loader;
         }
         @Override
@@ -313,8 +318,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class BackgroundColorBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public BackgroundColorBinderCallback(View tv) {
-            super(tv);
+        public BackgroundColorBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -322,8 +327,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class BackgroundBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public BackgroundBinderCallback(View tv) {
-            super(tv);
+        public BackgroundBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -331,8 +336,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class BackgroundResBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public BackgroundResBinderCallback(View tv) {
-            super(tv);
+        public BackgroundResBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
@@ -341,8 +346,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextBinderCallback(TextView tv) {
-            super(tv);
+        public TextBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -350,8 +355,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextResBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextResBinderCallback(TextView tv) {
-            super(tv);
+        public TextResBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -360,8 +365,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextSizeResBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextSizeResBinderCallback(TextView tv) {
-            super(tv);
+        public TextSizeResBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -370,8 +375,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextSizeDpBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextSizeDpBinderCallback(TextView tv) {
-            super(tv);
+        public TextSizeDpBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -379,8 +384,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextSizeBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextSizeBinderCallback(TextView tv) {
-            super(tv);
+        public TextSizeBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -389,8 +394,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextColorBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextColorBinderCallback(TextView tv) {
-            super(tv);
+        public TextColorBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {
@@ -400,8 +405,8 @@ import com.heaven7.java.data.mediator.Property;
         }
     }
     private static class TextColorResBinderCallback<T> extends SimpleBinderCallback2<T> {
-        public TextColorResBinderCallback(TextView tv) {
-            super(tv);
+        public TextColorResBinderCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
         }
         @Override
         protected void apply(Property prop, View view,  Object newValue) {

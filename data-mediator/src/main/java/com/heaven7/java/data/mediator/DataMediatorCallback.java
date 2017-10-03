@@ -23,7 +23,8 @@ import com.heaven7.java.base.util.Throwables;
  *  the listener of property change.
  * Created by heaven7 on 2017/9/11 0011.
  */
-public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, ListPropertyCallback<T>{
+public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, ListPropertyCallback<T>
+    {
 
     /**
      * create  {@linkplain DataMediatorCallback} by target property name and callback.
