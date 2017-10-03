@@ -58,14 +58,14 @@ public class ProxyGenerator {
         /**
          @Override
         public String toString() {
-        return getTarget().toString();
+        return _getTarget().toString();
         }
          */
         MethodSpec.Builder toString = MethodSpec.methodBuilder("toString")
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
                 .returns(String.class)
-                .addStatement("return getTarget().toString()");
+                .addStatement("return _getTarget().toString()");
         typeBuilder.addMethod(toString.build());
 
         //add insert override methods(insert interfaces)
@@ -129,7 +129,7 @@ public class ProxyGenerator {
             typeBuilder.addMethod(MethodSpec.methodBuilder(getMethodName)
                     .returns(info.getTypeName())
                     .addModifiers(Modifier.PUBLIC)
-                    .addStatement("return getTarget().$N()", getMethodName)
+                    .addStatement("return _getTarget().$N()", getMethodName)
                     .build());
 
             //set
@@ -140,17 +140,17 @@ public class ProxyGenerator {
                     .addModifiers(Modifier.PUBLIC)
                     .returns(field == FD_SELECTABLE ? TypeName.VOID : returnType)
                     .addParameter(info.getTypeName(), paramName)
-                    .addStatement("$T target = getTarget()", cn_inter)
-                    .addStatement("$T oldValue = getTarget().$N()", info.getTypeName(), getMethodName);
+                    .addStatement("$T target = _getTarget()", cn_inter)
+                    .addStatement("$T oldValue = target.$N()", info.getTypeName(), getMethodName);
             if(!normalJavaBean && field != FD_SELECTABLE){
-                setBuilder.beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
+                setBuilder.beginControlFlow("if(_getEqualsComparator().isEquals(oldValue, $N))", paramName)
                         .addCode("return this;\n")
                         .endControlFlow()
                         .addStatement("target.$N($N)", setMethodName, paramName)
                         .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName)
                         .addCode("return this;\n");
             }else{
-                setBuilder.beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
+                setBuilder.beginControlFlow("if(_getEqualsComparator().isEquals(oldValue, $N))", paramName)
                         .addCode("return ;\n")
                         .endControlFlow()
                         .addStatement("target.$N($N)", setMethodName, paramName)
@@ -165,7 +165,7 @@ public class ProxyGenerator {
                 final MethodSpec.Builder listEditor = ListPropertyBuildUtils.buildListEditorWithoutModifier(
                               field, nameForMethod, info, cn_inter)
                         .addModifiers(Modifier.PUBLIC)
-                        .addStatement("$T target = getTarget()",cn_inter)
+                        .addStatement("$T target = _getTarget()",cn_inter)
                         .addStatement("List<$T> values = target.$N()", info.getSimpleTypeNameBoxed(), getMethodName)
                         .beginControlFlow("if(values == null)")
                         .addStatement("values = new $T<>()", ArrayList.class)
@@ -176,7 +176,7 @@ public class ProxyGenerator {
                 typeBuilder.addMethod(listEditor.build());
             }
             /*
-             IStudent target = getTarget();
+             IStudent target = _getTarget();
              List<String> tags = target.getTags();
              if(tags == null){
              tags = new ArrayList<>();

@@ -25,14 +25,16 @@ import java.util.ArrayList;
 
 /**
  * the base module mediator service. note the property of sub class.
+ * all proxy class should extend this class.
  * Created by heaven7 on 2017/9/11 0011.
  */
 public class BaseMediator<T> {
 
-    private final ArrayList<DataMediatorCallback<? super T>> mCallbacks;
-    private final T mTarget;
-    private EqualsComparator mEqualsComparator = DefaultEqualsComparator.getInstance();
-    private DataConsumer<? super T> mConsumer;
+    private final ArrayList<DataMediatorCallback<? super T>> _mCallbacks;
+    private final T _mTarget;
+    private EqualsComparator _mEqualsComparator = DefaultEqualsComparator.getInstance();
+    private DataConsumer<? super T> _mConsumer;
+    private PropertyInterceptor _mInterceptor = PropertyInterceptor.NULL;
 
     /**
      * create a base mediator by target object. called often by framework.
@@ -43,8 +45,8 @@ public class BaseMediator<T> {
         if (target == null) {
             throw new NullPointerException();
         }
-        this.mTarget = target;
-        this.mCallbacks = new ArrayList<>();
+        this._mTarget = target;
+        this._mCallbacks = new ArrayList<>();
     }
 
     /**
@@ -52,8 +54,8 @@ public class BaseMediator<T> {
      *
      * @return the target object
      */
-    /*public*/ T _getTarget() { //make _ to avoid property conflict
-        return mTarget;
+    protected T _getTarget() { //make _ to avoid property conflict
+        return _mTarget;
     }
 
     /**
@@ -61,8 +63,8 @@ public class BaseMediator<T> {
      * @return the data consumer
      * @since 1.1.2
      */
-    /*public*/ DataConsumer<? super T> _getDataConsumer() {
-        return mConsumer;
+    protected DataConsumer<? super T> _getDataConsumer() {
+        return _mConsumer;
     }
 
     /**
@@ -70,8 +72,8 @@ public class BaseMediator<T> {
      * @param mConsumer the data consumer
      * @since 1.1.2
      */
-    /*public*/ void _setDataConsumer(DataConsumer<? super T> mConsumer) {
-        this.mConsumer = mConsumer;
+    protected void _setDataConsumer(DataConsumer<? super T> mConsumer) {
+        this._mConsumer = mConsumer;
     }
 
     /**
@@ -80,8 +82,8 @@ public class BaseMediator<T> {
      * @return the equals comparator.
      * @since 1.0.2
      */
-    /*public*/ EqualsComparator _getEqualsComparator() {
-        return mEqualsComparator;
+    protected EqualsComparator _getEqualsComparator() {
+        return _mEqualsComparator;
     }
 
     /**
@@ -90,11 +92,28 @@ public class BaseMediator<T> {
      * @param comparator the equals comparator
      * @since 1.0.2
      */
-    /*public*/ void _setEqualsComparator(EqualsComparator comparator) {
-        if (comparator == null) {
-            throw new NullPointerException();
-        }
-        this.mEqualsComparator = comparator;
+    protected void _setEqualsComparator(EqualsComparator comparator) {
+        Throwables.checkNull(comparator);
+        this._mEqualsComparator = comparator;
+    }
+
+    /**
+     * get the property interceptor , default is {@linkplain PropertyInterceptor#NULL}
+     * @return the property interceptor.
+     * @since 1.1.3
+     */
+    protected PropertyInterceptor _getPropertyInterceptor() {
+        return _mInterceptor;
+    }
+
+    /**
+     * set the property interceptor . default is {@linkplain PropertyInterceptor#NULL}
+     * @param interceptor the target property interceptor.
+     * @since 1.1.3
+     */
+    protected void _setPropertyInterceptor(PropertyInterceptor interceptor) {
+        Throwables.checkNull(interceptor);
+        this._mInterceptor = interceptor;
     }
 
     /**
@@ -105,8 +124,8 @@ public class BaseMediator<T> {
     public synchronized void addCallback(DataMediatorCallback<? super T> o) {
         if (o == null)
             throw new NullPointerException();
-        if (!mCallbacks.contains(o)) {
-            mCallbacks.add(o);
+        if (!_mCallbacks.contains(o)) {
+            _mCallbacks.add(o);
         }
     }
 
@@ -116,14 +135,14 @@ public class BaseMediator<T> {
      * @param o the data mediator callback
      */
     public synchronized void removeCallback(DataMediatorCallback<? super T> o) {
-        mCallbacks.remove(o);
+        _mCallbacks.remove(o);
     }
 
     /**
      * remove all  data mediator callbacks
      */
     public synchronized void removeCallbacks() {
-        mCallbacks.clear();
+        _mCallbacks.clear();
     }
 
     /**
@@ -132,17 +151,17 @@ public class BaseMediator<T> {
      * @return the count of the data mediator callbacks.
      */
     public synchronized int countCallbacks() {
-        return mCallbacks.size();
+        return _mCallbacks.size();
     }
 
     /**
-     * apply all current properties with default property interceptor.
-     * that means notify all property value changed except empty(null or no element).
+     * apply all current properties with current property interceptor.
+     * And the default interceptor is {@linkplain PropertyInterceptor#NULL}
      *
      * @since 1.0.8
      */
     public final void applyProperties() {
-        applyProperties(PropertyInterceptor.NULL);
+        applyProperties(_mInterceptor);
     }
 
     /**
@@ -170,7 +189,7 @@ public class BaseMediator<T> {
      * @since 1.1.2
      */
     public void applyTo(){
-        applyTo(mConsumer);
+        applyTo(_mConsumer);
     }
 
 //=========================================================================
@@ -197,9 +216,9 @@ public class BaseMediator<T> {
      * @since 1.0.8
      */
     public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyValueChanged(mTarget, prop, oldValue, newValue);
+            arrLocal[i].onPropertyValueChanged(_mTarget, prop, oldValue, newValue);
         }
     }
 
@@ -211,9 +230,9 @@ public class BaseMediator<T> {
      * @since 1.0.8
      */
     public void dispatchValueApplied(Property prop, Object value) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyApplied(mTarget, prop, value);
+            arrLocal[i].onPropertyApplied(_mTarget, prop, value);
         }
     }
 
@@ -226,9 +245,9 @@ public class BaseMediator<T> {
      * @since 1.0.8
      */
     public void dispatchAddValues(Property prop, Object newValue, Object addedValue) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onAddPropertyValues(mTarget, prop, newValue, addedValue);
+            arrLocal[i].onAddPropertyValues(_mTarget, prop, newValue, addedValue);
         }
     }
 
@@ -242,9 +261,9 @@ public class BaseMediator<T> {
      * @since 1.0.8
      */
     public void dispatchAddValuesWithIndex(Property prop, Object newValue, Object addValue, int index) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onAddPropertyValuesWithIndex(mTarget, prop,
+            arrLocal[i].onAddPropertyValuesWithIndex(_mTarget, prop,
                     newValue, addValue, index);
         }
     }
@@ -258,9 +277,9 @@ public class BaseMediator<T> {
      * @since 1.0.8
      */
     public void dispatchRemoveValues(Property prop, Object newValue, Object removeValues) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onRemovePropertyValues(mTarget, prop, newValue, removeValues);
+            arrLocal[i].onRemovePropertyValues(_mTarget, prop, newValue, removeValues);
         }
     }
 
@@ -273,9 +292,9 @@ public class BaseMediator<T> {
      * @since 1.1.2
      */
     public void dispatchItemChanged(Property prop, Object oldItem, Object newItem , int index) {
-        final DataMediatorCallback[] arrLocal = getCallbacks();
+        final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyItemChanged(mTarget, prop, oldItem, newItem, index);
+            arrLocal[i].onPropertyItemChanged(_mTarget, prop, oldItem, newItem, index);
         }
     }
 
@@ -284,7 +303,7 @@ public class BaseMediator<T> {
      *
      * @return the callbacks.
      */
-    protected DataMediatorCallback[] getCallbacks() {
+    private DataMediatorCallback[] _getCallbacks() {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -292,7 +311,7 @@ public class BaseMediator<T> {
         DataMediatorCallback[] arrLocal;
 
         synchronized (this) {
-            arrLocal = mCallbacks.toArray(new DataMediatorCallback[mCallbacks.size()]);
+            arrLocal = _mCallbacks.toArray(new DataMediatorCallback[_mCallbacks.size()]);
         }
         return arrLocal;
     }
@@ -343,7 +362,7 @@ public class BaseMediator<T> {
          */
         public void apply() {
             final T data = mMediator._getTarget();
-            final DataMediatorCallback[] arrLocal = mMediator.getCallbacks();
+            final DataMediatorCallback[] arrLocal = mMediator._getCallbacks();
             final int size = mProps.size();
 
             DataMediatorCallback callback;

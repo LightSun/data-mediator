@@ -44,6 +44,6 @@ public class TypeResetableFiller extends TypeInterfaceFiller {
 
     @Override
     public void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface) {
-        builder.addStatement("getTarget().reset()");
+        builder.addStatement("_getTarget().reset()");
     }
 }

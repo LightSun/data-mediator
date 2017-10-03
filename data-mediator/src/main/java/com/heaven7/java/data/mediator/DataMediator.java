@@ -46,22 +46,12 @@ public final class DataMediator<T> {
     }
 
     /**
-     * get the equals comparator.
-     *
-     * @return the equals comparator.
-     * @since 1.1.2
-     */
-    public EqualsComparator getEqualsComparator() {
-        return mediator._getEqualsComparator();
-    }
-    /**
      * get the exact module data.
      * @return the module data.
      */
     public final T getData(){
         return getBaseMediator()._getTarget();
     }
-
     /**
      * get the data proxy which support additional features, such as: property change callback.
      * @return the data proxy.
@@ -92,26 +82,31 @@ public final class DataMediator<T> {
     }
 
     /**
-     * add a data mediator callback
-     * @param callback  the data mediator callback
+     * get the property interceptor , default is {@linkplain PropertyInterceptor#NULL}
+     * @return the property interceptor.
+     * @since 1.1.3
      */
-    public void addDataMediatorCallback(DataMediatorCallback<? super T> callback){
-        mediator.addCallback(callback);
+    public PropertyInterceptor getPropertyInterceptor() {
+        return mediator._getPropertyInterceptor();
     }
 
     /**
-     * remove data mediator callback
-     * @param callback the data mediator callback
+     * set the property interceptor . default is {@linkplain PropertyInterceptor#NULL}
+     * @param interceptor the target property interceptor.
+     * @since 1.1.3
      */
-    public void removeDataMediatorCallback(DataMediatorCallback<? super T> callback) {
-        mediator.removeCallback(callback);
+    public void setPropertyInterceptor(PropertyInterceptor interceptor) {
+        mediator._setPropertyInterceptor(interceptor);
     }
 
     /**
-     * remove the all data mediator callbacks.
+     * get the equals comparator.
+     *
+     * @return the equals comparator.
+     * @since 1.1.2
      */
-    public void removeDataMediatorCallbacks() {
-        mediator.removeCallbacks();
+    public EqualsComparator getEqualsComparator() {
+        return mediator._getEqualsComparator();
     }
 
     /**
@@ -150,12 +145,37 @@ public final class DataMediator<T> {
     public void applyTo(DataConsumer<T> consumer){
         mediator.applyTo(consumer);
     }
+
     /**
      * apply the data to current consumer.so you should calla {@linkplain #setDataConsumer(DataConsumer)} first.
      * @since 1.1.2
      */
     public void applyTo(){
         mediator.applyTo();
+    }
+
+    //=======================================================
+    /**
+     * add a data mediator callback
+     * @param callback  the data mediator callback
+     */
+    public void addDataMediatorCallback(DataMediatorCallback<? super T> callback){
+        mediator.addCallback(callback);
+    }
+
+    /**
+     * remove data mediator callback
+     * @param callback the data mediator callback
+     */
+    public void removeDataMediatorCallback(DataMediatorCallback<? super T> callback) {
+        mediator.removeCallback(callback);
+    }
+
+    /**
+     * remove the all data mediator callbacks.
+     */
+    public void removeDataMediatorCallbacks() {
+        mediator.removeCallbacks();
     }
 
 }

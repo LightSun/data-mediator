@@ -48,6 +48,24 @@ public abstract class Binder<T> {
     }
 
     /**
+     * get the property interceptor , default is {@linkplain PropertyInterceptor#NULL}
+     * @return the property interceptor.
+     * @since 1.1.3
+     */
+    public PropertyInterceptor getPropertyInterceptor() {
+        return mMediator.getPropertyInterceptor();
+    }
+
+    /**
+     * set the property interceptor . default is {@linkplain PropertyInterceptor#NULL}
+     * @param interceptor the target property interceptor.
+     * @since 1.1.3
+     */
+    public void setPropertyInterceptor(PropertyInterceptor interceptor) {
+        mMediator.setPropertyInterceptor(interceptor);
+    }
+
+    /**
      * get the target data mediator.
      * @return  the data mediator.
      */

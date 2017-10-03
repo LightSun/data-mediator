@@ -43,7 +43,7 @@ public class TypeShareableFiller extends TypeInterfaceFiller {
 
     @Override
     public void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface) {
-          builder.addStatement("getTarget().clearShare()");
+          builder.addStatement("_getTarget().clearShare()");
     }
 
 }

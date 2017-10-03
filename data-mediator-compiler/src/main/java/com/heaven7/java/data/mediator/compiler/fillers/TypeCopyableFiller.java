@@ -95,11 +95,11 @@ public class TypeCopyableFiller extends TypeInterfaceFiller {
     public void buildProxyMethod(MethodSpec.Builder  builder, ExecutableElement ee, ClassName cn_interface) {
         switch (ee.getSimpleName().toString()){
             case NAME_COPY:
-                builder.addStatement("return ($T) getTarget().copy()", cn_interface);
+                builder.addStatement("return ($T) _getTarget().copy()", cn_interface);
                 break;
 
             case NAME_COPY_TO:
-                builder.addStatement("getTarget().copyTo(out)");
+                builder.addStatement("_getTarget().copyTo(out)");
                 break;
 
             default:

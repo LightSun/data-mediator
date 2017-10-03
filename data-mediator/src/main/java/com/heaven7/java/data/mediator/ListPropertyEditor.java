@@ -25,9 +25,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * the mQueue property editor.
+ * the list property editor.
  * @param <D> the type module data.
- * @param <T> the parameter type of mQueue property.
+ * @param <T> the parameter type of list property.
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
  */
@@ -40,9 +40,9 @@ public class ListPropertyEditor<D, T> {
     private final D mData;
     private final BaseMediator<D> mMediator;
     /**
-     * create mQueue property editor.
+     * create list property editor.
      * @param data the module data
-     * @param currentValues the current mQueue property values. can't be null(may be used by callback).
+     * @param currentValues the current list property values. can't be null(may be used by callback).
      * @param property the property to edit, can be nul
      * @param mediator the mediator of module. can be null.
      */

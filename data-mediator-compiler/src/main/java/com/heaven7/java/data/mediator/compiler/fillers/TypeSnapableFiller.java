@@ -42,7 +42,7 @@ public class TypeSnapableFiller extends TypeResetableFiller {
 
     @Override
     public void buildProxyMethod(MethodSpec.Builder builder, ExecutableElement ee, ClassName cn_interface) {
-        builder.addStatement("getTarget().clearSnap()");
+        builder.addStatement("_getTarget().clearSnap()");
     }
 
 }
