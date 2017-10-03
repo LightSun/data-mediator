@@ -20,12 +20,11 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.util.DefaultEqualsComparator;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
-import sun.security.provider.MD2;
 
 import java.util.ArrayList;
 
 /**
- * the base module mediator service.
+ * the base module mediator service. note the property of sub class.
  * Created by heaven7 on 2017/9/11 0011.
  */
 public class BaseMediator<T> {
@@ -33,10 +32,10 @@ public class BaseMediator<T> {
     private final ArrayList<DataMediatorCallback<? super T>> mCallbacks;
     private final T mTarget;
     private EqualsComparator mEqualsComparator = DefaultEqualsComparator.getInstance();
-    private DataConsumer<T> mConsumer;
+    private DataConsumer<? super T> mConsumer;
 
     /**
-     * create a base mediator by target object.
+     * create a base mediator by target object. called often by framework.
      *
      * @param target the target object which is ready to been act as agent by this.
      */
@@ -53,7 +52,7 @@ public class BaseMediator<T> {
      *
      * @return the target object
      */
-    public T getTarget() {
+    /*public*/ T _getTarget() { //make _ to avoid property conflict
         return mTarget;
     }
 
@@ -62,7 +61,7 @@ public class BaseMediator<T> {
      * @return the data consumer
      * @since 1.1.2
      */
-    public DataConsumer<T> getDataConsumer() {
+    /*public*/ DataConsumer<? super T> _getDataConsumer() {
         return mConsumer;
     }
 
@@ -71,7 +70,7 @@ public class BaseMediator<T> {
      * @param mConsumer the data consumer
      * @since 1.1.2
      */
-    public void setDataConsumer(DataConsumer<T> mConsumer) {
+    /*public*/ void _setDataConsumer(DataConsumer<? super T> mConsumer) {
         this.mConsumer = mConsumer;
     }
 
@@ -81,7 +80,7 @@ public class BaseMediator<T> {
      * @return the equals comparator.
      * @since 1.0.2
      */
-    public EqualsComparator getEqualsComparator() {
+    /*public*/ EqualsComparator _getEqualsComparator() {
         return mEqualsComparator;
     }
 
@@ -91,7 +90,7 @@ public class BaseMediator<T> {
      * @param comparator the equals comparator
      * @since 1.0.2
      */
-    public void setEqualsComparator(EqualsComparator comparator) {
+    /*public*/ void _setEqualsComparator(EqualsComparator comparator) {
         if (comparator == null) {
             throw new NullPointerException();
         }
@@ -162,12 +161,12 @@ public class BaseMediator<T> {
      * @param consumer the data consumer
      * @since 1.1.2
      */
-    public void applyTo(DataConsumer<T> consumer){
+    public void applyTo(DataConsumer<? super T> consumer){
         Throwables.checkNull(consumer);
-        consumer.accept(getTarget());
+        consumer.accept(_getTarget());
     }
     /**
-     * apply the data to current consumer. so you should calla {@linkplain #setDataConsumer(DataConsumer)} first.
+     * apply the data to current consumer. so you should calla {@linkplain #_setDataConsumer(DataConsumer)} first.
      * @since 1.1.2
      */
     public void applyTo(){
@@ -332,7 +331,7 @@ public class BaseMediator<T> {
          */
         public BatchApplier addProperty(Property prop, Object value) {
             Throwables.checkNull(prop);
-            if(!mInterceptor.shouldIntercept(mMediator.getTarget(), prop, value)) {
+            if(!mInterceptor.shouldIntercept(mMediator._getTarget(), prop, value)) {
                 this.mProps.add(prop);
                 this.mValue.add(value);
             }
@@ -343,7 +342,7 @@ public class BaseMediator<T> {
          * batch apply the properties with theirs' value.
          */
         public void apply() {
-            final T data = mMediator.getTarget();
+            final T data = mMediator._getTarget();
             final DataMediatorCallback[] arrLocal = mMediator.getCallbacks();
             final int size = mProps.size();
 

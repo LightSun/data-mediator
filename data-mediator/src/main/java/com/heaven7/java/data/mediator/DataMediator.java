@@ -46,11 +46,20 @@ public final class DataMediator<T> {
     }
 
     /**
+     * get the equals comparator.
+     *
+     * @return the equals comparator.
+     * @since 1.1.2
+     */
+    public EqualsComparator getEqualsComparator() {
+        return mediator._getEqualsComparator();
+    }
+    /**
      * get the exact module data.
      * @return the module data.
      */
     public final T getData(){
-        return getBaseMediator().getTarget();
+        return getBaseMediator()._getTarget();
     }
 
     /**
@@ -69,16 +78,17 @@ public final class DataMediator<T> {
      * @return the data consumer
      * @since 1.1.2
      */
-    public DataConsumer<T> getDataConsumer() {
-        return mediator.getDataConsumer();
+    public DataConsumer<? super T> getDataConsumer() {
+        return mediator._getDataConsumer();
     }
+
     /**
      * set the data consumer
      * @param mConsumer the data consumer
      * @since 1.1.2
      */
-    public void setDataConsumer(DataConsumer<T> mConsumer) {
-        mediator.setDataConsumer(mConsumer);
+    public void setDataConsumer(DataConsumer<? super T> mConsumer) {
+        mediator._setDataConsumer(mConsumer);
     }
 
     /**
@@ -110,7 +120,7 @@ public final class DataMediator<T> {
      * @param comparator the equals comparator
      */
     public void setEqualsComparator(EqualsComparator comparator) {
-        mediator.setEqualsComparator(comparator);
+        mediator._setEqualsComparator(comparator);
     }
 
     /**
