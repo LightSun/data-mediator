@@ -13,7 +13,7 @@ import com.heaven7.java.data.mediator.Fields;
         @Field(propName = "name", seriaName = "heaven7", type = String.class),
         @Field(propName = "data", seriaName = "result", type = ResultData.class),
         @Field(propName = "cityData", type = ResultData.class, complexType = FieldFlags.COMPLEX_SPARSE_ARRAY),
-        @Field(propName = "cityData2", type = ResultData.class, complexType = FieldFlags.COMPLEX_SPARSE_ARRAY),
+        @Field(propName = "cityData2", type = Student.class, complexType = FieldFlags.COMPLEX_SPARSE_ARRAY),
 }, maxPoolCount = 100)
 public interface TestBind extends Parcelable{
 }

@@ -142,7 +142,7 @@ public final class DataMediator<T> {
      * @param consumer the data consumer
      * @since 1.1.2
      */
-    public void applyTo(DataConsumer<T> consumer){
+    public void applyTo(DataConsumer<? super T> consumer){
         mediator.applyTo(consumer);
     }
 

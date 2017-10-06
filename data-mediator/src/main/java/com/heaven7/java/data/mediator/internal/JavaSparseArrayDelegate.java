@@ -33,15 +33,44 @@ import com.heaven7.java.base.util.SparseArray;
     }
 
     @Override
-    public V put(int key, V value) {
+    public int put(int key, V value) {
         final V old = mMap.get(key);
-        mMap.put(key, value);
-        return old;
+        if(value == null){
+            if(old == null){
+                return STATE_NO_CHANGE;
+            }else{
+                mMap.put(key, null);
+                return STATE_CHANGED;
+            }
+        }else{
+            if(old == null){
+                //new not null, old is null.
+                mMap.put(key, value);
+                return STATE_NEW;
+            }else if (value.equals( old )){
+                //new not null, old is not null. but equals.
+                return STATE_NO_CHANGE;
+            }else{
+                mMap.put(key, value);
+                return STATE_CHANGED;
+            }
+        }
     }
 
     @Override
     public V remove(int key) {
         return mMap.getAndRemove(key);
+    }
+
+    @Override
+    public int removeByValue(V value) {
+        final int index = mMap.indexOfValue(value, false);
+        if(index < 0){
+            return -1;
+        }
+        final int key = mMap.keyAt(index);
+        mMap.removeAt(index);
+        return key;
     }
 
     @Override
@@ -70,12 +99,27 @@ import com.heaven7.java.base.util.SparseArray;
     }
 
     @Override
-    public void clear() {
+    public boolean clearTo(SparseArrayDelegate<V> out) {
+        final int size = mMap.size();
+        if(size == 0){
+            return false;
+        }
+        if(out != null) {
+            for (int i = size -1 ; i>=0 ; i--){
+                out.put(mMap.keyAt(i), mMap.valueAt(i));
+            }
+        }
         mMap.clear();
+        return true;
     }
 
     @Override
     public int indexOfValue(V value) {
         return mMap.indexOfValue(value ,false);
+    }
+
+    @Override
+    public V get(int key) {
+        return mMap.get(key);
     }
 }

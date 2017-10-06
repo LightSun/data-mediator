@@ -20,6 +20,7 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.base.util.Throwables;
+import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 import com.heaven7.java.data.mediator.internal.SparseArrayDelegate;
 
 /**
@@ -61,14 +62,23 @@ public final class SparseArrayPropertyEditor<D, V> {
      * @return this.
      */
     public SparseArrayPropertyEditor<D, V> put(int key, V value){
-        final V old = mMap.put(key, value);
-        if(mMediator != null){
-            final BaseMediator<D>.SparseArrayDispatcher dispatcher = mMediator._getSparseArrayDispatcher();
-            if(old == null){
-                dispatcher.dispatchAddEntry(mProperty, key ,value);
-            }else{
-                dispatcher.dispatchChangeEntryValue(mProperty, key ,old, value);
-            }
+        final V old = mMap.get(key);
+        switch (mMap.put(key, value)){
+            case SparseArrayDelegate.STATE_CHANGED:
+                if(mMediator != null){
+                    mMediator._getSparseArrayDispatcher().dispatchChangeEntryValue(mProperty, key ,old, value);
+                }
+                break;
+            case SparseArrayDelegate.STATE_NEW:
+                if(mMediator != null){
+                    mMediator._getSparseArrayDispatcher().dispatchAddEntry(mProperty, key ,value);
+                }
+                break;
+
+            case SparseArrayDelegate.STATE_NO_CHANGE:
+            default:
+                //nothing
+                break;
         }
         return this;
     }
@@ -92,14 +102,10 @@ public final class SparseArrayPropertyEditor<D, V> {
      * @return this.
      */
     public SparseArrayPropertyEditor<D, V> removeByValue(V value){
-        final int index = mMap.indexOfValue(value);
-        if(index >= 0 ) {
+        final int key = mMap.removeByValue(value);
+        if(key >= 0){
             if (mMediator != null) {
-                final int key = mMap.keyAt(index);
-                mMap.removeAt(index);
                 mMediator._getSparseArrayDispatcher().dispatchRemoveEntry(mProperty, key, value);
-            }else{
-                mMap.removeAt(index);
             }
         }
         return this;
@@ -114,15 +120,10 @@ public final class SparseArrayPropertyEditor<D, V> {
         if(size == 0){
             return this;
         }
+        SparseArray<V> newMap = new SparseArray<>(size * 4 /3 + 1);
+        mMap.clearTo(DataMediatorDelegate.getDefault().getSparseArrayDelegate(newMap));
         if(mMediator != null){
-            SparseArray<V> newMap = new SparseArray<>(mMap.size() * 4 /3 + 1);
-            for (int i = size -1 ; i>=0 ; i--){
-                newMap.put(mMap.keyAt(i), mMap.valueAt(i));
-            }
-            mMap.clear();
             mMediator._getSparseArrayDispatcher().dispatchClearEntries(mProperty, newMap);
-        }else{
-            mMap.clear();
         }
         return this;
     }

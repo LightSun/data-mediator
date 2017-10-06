@@ -25,12 +25,25 @@ package com.heaven7.java.data.mediator.internal;
 public interface SparseArrayDelegate<V> {
 
     /**
+     * indicate that the entry is no-change.
+     */
+    int STATE_NO_CHANGE = 0;
+    /**
+     * indicate that the entry is changed.
+     */
+    int STATE_CHANGED   = 1;
+    /**
+     * indicate that the entry is a new item. that means previous has no mapping.
+     */
+    int STATE_NEW       = 2;
+
+    /**
      * put the key-value to the sparse array
      * @param key the key of type.
      * @param value the value
-     * @return the old value of key
+     * @return the state of put result.
      */
-    V put(int key, V value);
+    int put(int key, V value);
 
     /**
      * remove the key-value by target key.
@@ -38,6 +51,13 @@ public interface SparseArrayDelegate<V> {
      * @return the value of the key
      */
     V remove(int key);
+
+    /**
+     * remove by value and return the old key
+     * @param value the value
+     * @return the key of target value
+     */
+    int removeByValue(V value);
 
     /**
      * get the size of sparse array
@@ -72,9 +92,11 @@ public interface SparseArrayDelegate<V> {
     void setValueAt(int index, V value);
 
     /**
-     * clear the sparse array
+     * drain to target and clear.
+     * @param out can be null.
+     * @return  true if changed.
      */
-    void clear();
+    boolean clearTo(SparseArrayDelegate<V> out);
 
     /**
      * get the index of target value
@@ -82,4 +104,11 @@ public interface SparseArrayDelegate<V> {
      * @return the index
      */
     int indexOfValue(V value);
+
+    /**
+     * get the value by key
+     * @param key the key
+     * @return the value.
+     */
+    V get(int key);
 }

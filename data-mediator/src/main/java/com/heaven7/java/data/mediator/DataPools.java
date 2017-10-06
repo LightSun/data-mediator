@@ -142,8 +142,7 @@ public final class DataPools {
             }
             if (!mQueue.contains(data)) {
                 ((Poolable) data).clearProperties();
-                mQueue.offer(data);
-                return true;
+                return mQueue.offer(data);
             }
             return false;
         }

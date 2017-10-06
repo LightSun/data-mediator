@@ -27,6 +27,7 @@
         <activity android:name=".activity.TestTextViewBindActivity" android:label="TestTextViewBind"/>
         <activity android:name=".activity.TestRecyclerListBindActivity" android:label="TestRecyclerListBind"/>
         <activity android:name=".activity.TestRecyclerListBind2Activity" android:label="TestRecyclerListBind2"/>
+        <activity android:name=".activity.TestSparseArrayActivity" android:label="TestSparseArray"/>
 
 
     </application>

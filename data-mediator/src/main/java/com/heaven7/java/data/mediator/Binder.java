@@ -48,7 +48,8 @@ public abstract class Binder<T> {
     }
 
     /**
-     * get the property interceptor , default is {@linkplain PropertyInterceptor#NULL}
+     * get the property interceptor which is used by calling {@linkplain #applyProperties()} and all bind method,
+     * default is {@linkplain PropertyInterceptor#NULL}
      * @return the property interceptor.
      * @since 1.1.3
      */
@@ -57,7 +58,8 @@ public abstract class Binder<T> {
     }
 
     /**
-     * set the property interceptor . default is {@linkplain PropertyInterceptor#NULL}
+     * set the property interceptor which is used by calling {@linkplain #applyProperties()} and all bind method.
+     * default is {@linkplain PropertyInterceptor#NULL}
      * @param interceptor the target property interceptor.
      * @since 1.1.3
      */
@@ -126,9 +128,9 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.3
      */
-    public Binder<T> bindAsSparse(String property, BinderCallback<? super T> callback){
+    public Binder<T> bindAsSparseArray(String property, BinderCallback<? super T> callback){
         if(!(callback instanceof SparseArrayPropertyCallback)){
-            throw new IllegalArgumentException("call bindAsSparse() method must " +
+            throw new IllegalArgumentException("call bindAsSparseArray() method must " +
                     "make BinderCallback impl SparseArrayPropertyCallback");
         }
         DataMediatorCallback<T> temp = DataMediatorCallback.createForSparse(property,

@@ -38,7 +38,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator'
     artifactId = 'data-mediator'
-    publishVersion = '1.1.3-beta6'
+    publishVersion = '1.1.3-beta7'
     desc = 'this is a java lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }
