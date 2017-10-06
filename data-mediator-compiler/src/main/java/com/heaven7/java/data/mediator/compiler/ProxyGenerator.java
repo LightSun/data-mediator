@@ -93,7 +93,10 @@ public class ProxyGenerator {
         final TypeName returnType = normalJavaBean ? TypeName.VOID : cn_inter;
         //for list prop
         final ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
-
+        //sparseArray
+        final ClassName cn_sa_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_SPARSE_ARRAY_EDITOR);
+       // DataMediatorDelegate
+        final ClassName cn_dm_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_DM_DELEGATE);
         /*
     @Override
     public void applyProperties(PropertyInterceptor interceptor) {
@@ -162,7 +165,16 @@ public class ProxyGenerator {
 
             //like :  ListPropertyEditor<IStudent,String> newTagsEditor();
             if(field.isList()){
-                final MethodSpec.Builder listEditor = ListPropertyBuildUtils.buildListEditorWithoutModifier(
+                  /*
+             IStudent target = _getTarget();
+             List<String> tags = target.getTags();
+             if(tags == null){
+             tags = new ArrayList<>();
+             target.setTags(tags);
+             }
+             return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
+             */
+                final MethodSpec.Builder listEditor = PropertyEditorBuildUtils.buildListEditorWithoutModifier(
                               field, nameForMethod, info, cn_inter)
                         .addModifiers(Modifier.PUBLIC)
                         .addStatement("$T target = _getTarget()",cn_inter)
@@ -174,16 +186,38 @@ public class ProxyGenerator {
                         .addStatement("return new $T<$T,$T>(target, values, $N, this)",
                                 cn_editor, cn_inter, info.getSimpleTypeNameBoxed(), fieldName);
                 typeBuilder.addMethod(listEditor.build());
+            }else if(field.getComplexType() == FieldData.COMPLEXT_SPARSE_ARRAY){
+                /*
+                @Override
+                public SparseArrayPropertyEditor<IStudent, String> beginCityDataEditor() {
+                    IStudent target = _getTarget();
+                    SparseArray<String> cityData = target.getCityData();
+                    if(cityData == null){
+                    cityData = new SparseArray<>();
+                    target.setCityData(cityData);
+                    }
+                    return new SparseArrayPropertyEditor<IStudent, String>(this,
+                    DataMediatorDelegate.getDefault().getSparseArrayDelegate(cityData),
+                    PROP_cityData, this);
+                }
+                 */
+                ClassName cn_sa = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_SPARSE_ARRAY);
+
+                final MethodSpec.Builder listEditor = PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(
+                        field, nameForMethod, info, cn_inter)
+                        .addModifiers(Modifier.PUBLIC)
+                        .addStatement("$T target = _getTarget()",cn_inter)
+                        .addStatement("$T<$T> values = target.$N()", cn_sa, info.getSimpleTypeNameBoxed(), getMethodName)
+                            .beginControlFlow("if(values == null)")
+                            .addStatement("values = new $T<>()", cn_sa)
+                            .addStatement("target.$N(values)", setMethodName)
+                            .endControlFlow()
+                        .addStatement("return new $T<$T,$T>(this, " +
+                                        "$T.getDefault().getSparseArrayDelegate(values), $N, this)",
+                                cn_sa_editor, cn_inter, info.getSimpleTypeNameBoxed(),
+                                cn_dm_delegate, fieldName);
+                typeBuilder.addMethod(listEditor.build());
             }
-            /*
-             IStudent target = _getTarget();
-             List<String> tags = target.getTags();
-             if(tags == null){
-             tags = new ArrayList<>();
-             target.setTags(tags);
-             }
-             return new ListPropertyEditor<IStudent, String>(target, tags, PROP_TAGS, this);
-             */
         }
         applyBuilder.addCode(".apply();\n");
         typeBuilder.addMethod(applyBuilder.build());

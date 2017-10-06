@@ -5,8 +5,7 @@ import com.squareup.javapoet.*;
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_PROP;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_LIST_PROP_EDITOR;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 import static com.heaven7.java.data.mediator.compiler.Util.getFieldModifier;
 import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 
@@ -25,10 +24,31 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     }
 
     @Override
+    protected MethodSpec.Builder onBuildSparseArrayEditor(FieldData field,
+                     String nameForMethod, TypeInfo info, TypeName curModule) {
+        ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_SPARSE_ARRAY_EDITOR);
+        ClassName cn_dm_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_DM_DELEGATE);
+        ClassName cn_sa = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_SPARSE_ARRAY);
+
+        return PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(
+                field, nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC)
+                    .beginControlFlow("if ($N == null)", field.getPropertyName())
+                    .addStatement("$N = new $T<>()", field.getPropertyName(), cn_sa)
+                    .endControlFlow()
+                .addStatement("return new $T<$T,$T>(this, " +
+                        "$T.getDefault().getSparseArrayDelegate($N)," +
+                        " null, null)",
+                        cn_editor, curModule, info.getSimpleTypeNameBoxed(),
+                        cn_dm_delegate, field.getPropertyName())
+                ;
+    }
+
+    @Override
     protected MethodSpec.Builder onBuildListEditor(FieldData field, String nameForMethod,
                                                    TypeInfo info, TypeName curModule) {
         ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
-        return ListPropertyBuildUtils.buildListEditorWithoutModifier(
+        return PropertyEditorBuildUtils.buildListEditorWithoutModifier(
                      field, nameForMethod, info, curModule)
                 .addModifiers(Modifier.PUBLIC)
                     .beginControlFlow("if ($N == null)", field.getPropertyName())

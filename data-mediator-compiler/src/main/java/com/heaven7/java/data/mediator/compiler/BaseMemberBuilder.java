@@ -43,9 +43,21 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
             builder.addMethod(get.build())
                     .addMethod(set.build());
             // for add/remove Callbacks .
-            if(field.isList()){
-                MethodSpec.Builder listEditor = onBuildListEditor(field, nameForMethod, info, curModule);
-                builder.addMethod(listEditor.build());
+
+            // add editor
+            switch (field.getComplexType()){
+                case FieldData.COMPLEXT_LIST:
+                    MethodSpec.Builder listEditor = onBuildListEditor(field, nameForMethod, info, curModule);
+                    builder.addMethod(listEditor.build());
+                    break;
+
+                case FieldData.COMPLEXT_SPARSE_ARRAY:
+                    MethodSpec.Builder saEditor = onBuildSparseArrayEditor(field, nameForMethod, info, curModule);
+                    builder.addMethod(saEditor.build());
+                    break;
+
+                default:
+                    //not need
             }
         }
         //change method for super. if use chain mode. chain mode means set method not return void. just return bean interface.
@@ -64,9 +76,16 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
         }
     }
 
+    protected MethodSpec.Builder onBuildSparseArrayEditor(FieldData field, String nameForMethod,
+                                                        TypeInfo info, TypeName curModule) {
+        return PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(
+                field, nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
+    }
+
     protected MethodSpec.Builder onBuildListEditor(FieldData field, String nameForMethod,
                                                  TypeInfo info, TypeName curModule) {
-        return ListPropertyBuildUtils.buildListEditorWithoutModifier(
+        return PropertyEditorBuildUtils.buildListEditorWithoutModifier(
                          field, nameForMethod, info, curModule)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT);
     }

@@ -84,14 +84,22 @@ public final class Util {
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
         TypeName rawTypeName = typeCompat.getInterfaceTypeName();
         info.setSimpleTypeName(rawTypeName);
+        info.setParamName(field.getPropertyName() + "1");
+
         switch (field.getComplexType()) {
+            case FieldData.COMPLEXT_SPARSE_ARRAY: {
+                TypeName typeName = ParameterizedTypeName.get(
+                        ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_SPARSE_ARRAY),
+                        rawTypeName.box());
+                info.setTypeName(typeName);
+            }
+                break;
+
             case FieldData.COMPLEXT_ARRAY:
                 info.setTypeName(ArrayTypeName.of(rawTypeName));
-                info.setParamName(field.getPropertyName() + "1");
                 break;
 
             case FieldData.COMPLEXT_LIST:
-                info.setParamName(field.getPropertyName() + "1");
                 TypeName typeName = ParameterizedTypeName.get(ClassName.get(List.class),
                         rawTypeName.box());
                 info.setTypeName(typeName);
@@ -99,7 +107,6 @@ public final class Util {
 
             default:
                 info.setTypeName(rawTypeName);
-                info.setParamName(field.getPropertyName() + "1");
                 break;
         }
     }
@@ -291,6 +298,7 @@ public final class Util {
         switch (fd.getComplexType()) {
             case COMPLEXT_ARRAY:
             case COMPLEXT_LIST:
+            case COMPLEXT_SPARSE_ARRAY:
                 builder.addStatement("this.$N = null", fd.getPropertyName());
                 break;
 
@@ -316,6 +324,7 @@ public final class Util {
         switch (fd.getComplexType()) {
             case COMPLEXT_ARRAY:
             case COMPLEXT_LIST:
+            case COMPLEXT_SPARSE_ARRAY:
                 return null;
         }
         if(fd == DataMediatorConstants.FD_SELECTABLE){

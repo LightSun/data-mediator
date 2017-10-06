@@ -29,6 +29,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
             "Parcel");
     //int[] arr = in.createIntArray();  . arr = in.createIntArray();
     private boolean mShortDefined ;
+    private boolean mParcelDelegateDefined ;
 
     @Override
     public String getInterfaceName() {
@@ -72,6 +73,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
                 addReadParcelStatement(builder, fieldData, "in");
             }
             mShortDefined = false;
+            mParcelDelegateDefined = false;
         }
         return new MethodSpec.Builder[]{ builder };
     }
@@ -95,6 +97,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
                        addWriteParcelStatement(builder, fieldData);
                    }
                    mShortDefined = false;
+                   mParcelDelegateDefined = false;
                }
                break;
        }
@@ -143,7 +146,23 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
         final String dest = "dest";
         final String flags = "flags";
 
+        final ClassName cn_dm_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_DM_DELEGATE);
+        final ClassName cn_parcel_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_PARCEL_DELEGATE);
+
         switch (fieldData.getComplexType()) {
+            case FieldData.COMPLEXT_SPARSE_ARRAY:
+                /*
+                 ParcelDelegate parcelDelegate = DataMediatorDelegate.getDefault().getParcelDelegate(dest);
+                 parcelDelegate.writeSparseArray(this.xxx);
+                 */
+                if(!mParcelDelegateDefined){
+                    builder.addStatement("$T _parcelDelegate = $T.getDefault()" +
+                            ".getParcelDelegate($N)", cn_parcel_delegate, cn_dm_delegate, dest);
+                    mParcelDelegateDefined = true;
+                }
+                builder.addStatement("_parcelDelegate.writeSparseArray(this.$N)", prop);
+                break;
+
             case FieldData.COMPLEXT_ARRAY: {
                 switch (tm.toString().trim()){
                     case NAME_short:
@@ -327,7 +346,24 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
         final TypeName typeName = isReplaced ? typeCompat.getSuperClassTypeName() : TypeName.get(tm);
         final TypeName typeName_raw = typeCompat.getInterfaceTypeName();
 
+        final ClassName cn_dm_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_DM_DELEGATE);
+        final ClassName cn_parcel_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_PARCEL_DELEGATE);
+
         switch (fieldData.getComplexType()) {
+            case FieldData.COMPLEXT_SPARSE_ARRAY:
+                /*
+                 ParcelDelegate parcelDelegate = DataMediatorDelegate.getDefault().getParcelDelegate(in);
+                 this.xxx = parcelDelegate.readSparseArray(StudentModule_Impl.class.getClassLoader());
+                 */
+                if(!mParcelDelegateDefined){
+                    builder.addStatement("$T _parcelDelegate = $T.getDefault()" +
+                            ".getParcelDelegate($N)", cn_parcel_delegate, cn_dm_delegate, in);
+                    mParcelDelegateDefined = true;
+                }
+                builder.addStatement("this.$N = _parcelDelegate.readSparseArray(" +
+                        "$T.class.getClassLoader())", prop, typeName);
+                break;
+
             case FieldData.COMPLEXT_ARRAY: {
                 switch (tm.getKind()) {
                     case INT:

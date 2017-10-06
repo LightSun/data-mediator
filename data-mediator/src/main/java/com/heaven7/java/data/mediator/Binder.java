@@ -118,7 +118,27 @@ public abstract class Binder<T> {
         mMediator.addDataMediatorCallback(temp);
         return this;
     }
-   // public abstract Binder<T> unbind(String property);
+    /**
+     * bind the property callback as Sparse({@linkplain com.heaven7.java.base.util.SparseArray})
+     * for target property.
+     * @param property the property. like 'name' of student.
+     * @param callback the property callback of binder
+     * @return this.
+     * @since 1.1.3
+     */
+    public Binder<T> bindAsSparse(String property, BinderCallback<? super T> callback){
+        if(!(callback instanceof SparseArrayPropertyCallback)){
+            throw new IllegalArgumentException("call bindAsSparse() method must " +
+                    "make BinderCallback impl SparseArrayPropertyCallback");
+        }
+        DataMediatorCallback<T> temp = DataMediatorCallback.createForSparse(property,
+                (SparseArrayPropertyCallback<? super T>) callback);
+        if(callback.getTag() != null){
+            mMap.put(callback.getTag(), temp);
+        }
+        mMediator.addDataMediatorCallback(temp);
+        return this;
+    }
 
     /**
      * unbind the property callback for target view object.
@@ -222,7 +242,7 @@ public abstract class Binder<T> {
      * @since 1.1.2
      */
     public Binder<T> bindBackgroundRes(Property property, Object view){
-        return bindBackground(property.getName(), view);
+        return bindBackgroundRes(property.getName(), view);
     }
 
     /**
@@ -563,7 +583,8 @@ public abstract class Binder<T> {
      * @param <T> the module data type
      * @since 1.0.8
      */
-    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
+    public static class SimpleBinderCallback<T> implements BinderCallback<T>,
+            SparseArrayPropertyCallback<T>{
 
         @Override
         public Object getTag() {
@@ -595,6 +616,23 @@ public abstract class Binder<T> {
         @Override
         public void onPropertyApplied(T data, Property prop, Object value) {
             onPropertyValueChanged(data, prop, null, value);
+        }
+
+        @Override
+        public void onEntryValueChanged(T data, Property prop, Integer key, Object oldValue, Object newValue) {
+
+        }
+        @Override
+        public void onAddEntry(T data, Property prop, Integer key, Object value) {
+
+        }
+        @Override
+        public void onRemoveEntry(T data, Property prop, Integer key, Object value) {
+
+        }
+        @Override
+        public void onClearEntries(T data, Property prop, Object entries) {
+
         }
     }
 

@@ -67,7 +67,11 @@ public class TestParcelableDataActivity extends BaseActivity {
         ClassBindModule module = mClassMediator.getData()
                 .setName(6)
                 .setData(new ResultData())
-                .setStudent(DataMediatorFactory.createData(TestBindModule.class))
+                .setStudent(DataMediatorFactory.createData(TestBindModule.class)
+                        //添加 sparseArray 数据
+                        .beginCityDataEditor()
+                        .put(1, new ResultData())
+                        .end())
                 .setStudent2(list)
                 .setStudent3(array);
 

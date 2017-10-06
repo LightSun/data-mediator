@@ -35,6 +35,8 @@ public class BaseMediator<T> {
     private EqualsComparator _mEqualsComparator = DefaultEqualsComparator.getInstance();
     private DataConsumer<? super T> _mConsumer;
     private PropertyInterceptor _mInterceptor = PropertyInterceptor.NULL;
+    //temps
+    private SparseArrayDispatcher _mSparseArrayDispatcher;
 
     /**
      * create a base mediator by target object. called often by framework.
@@ -323,6 +325,94 @@ public class BaseMediator<T> {
      */
     protected BatchApplier<T> startBatchApply(PropertyInterceptor interceptor) {
         return new BatchApplier<>(this, interceptor);
+    }
+
+    /**
+     * get the callback dispatcher of SparseArray
+     * @return the callback dispatcher of SparseArray
+     * @see com.heaven7.java.base.util.SparseArray
+     * @since 1.1.3
+     */
+    /*protected*/ SparseArrayDispatcher _getSparseArrayDispatcher(){
+        if(_mSparseArrayDispatcher == null){
+            _mSparseArrayDispatcher = new SparseArrayDispatcher();
+        }
+        return _mSparseArrayDispatcher;
+    }
+
+    /**
+     * dispatch callback of SparseArray.
+     * @since 1.1.3
+     * @see com.heaven7.java.base.util.SparseArray
+     */
+    public class SparseArrayDispatcher{
+
+        private SparseArrayDispatcher(){}
+        /**
+         * dispatch add entry event.
+         * @param prop the property
+         * @param key the key of entry
+         * @param value the value of entry
+         */
+        public void dispatchAddEntry(Property prop, int key, Object value){
+            final DataMediatorCallback[] callbacks = _getCallbacks();
+            final T target = _getTarget();
+            for (int i = callbacks.length - 1; i >= 0; i--) {
+                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
+                if(callback != null) {
+                    callback.onAddEntry(target, prop, key, value);
+                }
+            }
+        }
+        /**
+         * dispatch change entry value.
+         * @param prop the property
+         * @param key the key of entry
+         * @param oldValue the old value of entry
+         * @param newValue the new value of entry
+         */
+        public void dispatchChangeEntryValue(Property prop, int key, Object oldValue, Object newValue){
+            final DataMediatorCallback[] callbacks = _getCallbacks();
+            final T target = _getTarget();
+            for (int i = callbacks.length - 1; i >= 0; i--) {
+                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
+                if(callback != null) {
+                    callback.onEntryValueChanged(target, prop, key, oldValue, newValue);
+                }
+            }
+        }
+        /**
+         * dispatch remove entry event.
+         * @param prop the property
+         * @param key the key of entry
+         * @param value the value of entry
+         */
+        public void dispatchRemoveEntry(Property prop, int key, Object value){
+            final DataMediatorCallback[] callbacks = _getCallbacks();
+            final T target = _getTarget();
+            for (int i = callbacks.length - 1; i >= 0; i--) {
+                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
+                if(callback != null) {
+                    callback.onRemoveEntry(target, prop, key, value);
+                }
+            }
+        }
+        /**
+         * dispatch clear all entries.
+         * @param prop the property
+         * @param entries the all entries which were  removed.
+         *                type is {@linkplain com.heaven7.java.base.util.SparseArray}.
+         */
+        public void dispatchClearEntries(Property prop, Object entries){
+            final DataMediatorCallback[] callbacks = _getCallbacks();
+            final T target = _getTarget();
+            for (int i = callbacks.length - 1; i >= 0; i--) {
+                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
+                if(callback != null) {
+                    callback.onClearEntries(target, prop, entries);
+                }
+            }
+        }
     }
     /**
      * the batch applier.

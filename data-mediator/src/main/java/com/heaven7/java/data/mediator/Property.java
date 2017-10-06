@@ -17,6 +17,8 @@
  */
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.util.SparseArray;
+
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -61,8 +63,9 @@ public class Property{
       */
      public boolean isPrimitive(){
           switch (complexType){
-               case FieldFlags.COMPLEXT_ARRAY:
-               case FieldFlags.COMPLEXT_LIST:
+               case FieldFlags.COMPLEX_ARRAY:
+               case FieldFlags.COMPLEX_LIST:
+               case FieldFlags.COMPLEX_SPARSE_ARRAY:
                     return false;
           }
           switch (type){
@@ -124,11 +127,14 @@ public class Property{
       */
      public Class<?> getActualType(){
           switch (getComplexType()){
-               case FieldFlags.COMPLEXT_ARRAY:
+               case FieldFlags.COMPLEX_ARRAY:
                     return Array.newInstance(getType(), 0).getClass();
 
-               case FieldFlags.COMPLEXT_LIST:
+               case FieldFlags.COMPLEX_LIST:
                     return List.class;
+
+               case FieldFlags.COMPLEX_SPARSE_ARRAY:
+                    return SparseArray.class;
 
                default:
                    return getType();
@@ -182,5 +188,14 @@ public class Property{
           result = 31 * result + name.hashCode();
           result = 31 * result + complexType;
           return result;
+     }
+
+     @Override
+     public String toString() {
+          return "Property{" +
+                  "type='" + type + '\'' +
+                  ", name='" + name + '\'' +
+                  ", complexType=" + complexType +
+                  '}';
      }
 }

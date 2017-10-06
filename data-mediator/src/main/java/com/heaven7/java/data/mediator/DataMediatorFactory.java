@@ -17,7 +17,7 @@
  */
 package com.heaven7.java.data.mediator;
 
-import com.heaven7.java.data.mediator.util.PlatformDependent;
+import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 
 import java.lang.reflect.Constructor;
 
@@ -121,16 +121,7 @@ public final class DataMediatorFactory {
      * @since 1.0.8
      */
     public static <T> Binder<T> createBinder(DataMediator<T> mediator) {
-        if (PlatformDependent.isAndroid()) {
-            try {
-                final Class<?> clazz = Class.forName("com.heaven7.android.data.mediator.BinderSupplierImpl");
-                IBinderSupplier<T> supplier = (IBinderSupplier<T>) clazz.newInstance();
-                return supplier.create(mediator);
-            } catch (Exception e) {
-                throw new RuntimeException("create binder failed.", e);
-            }
-        }
-        throw new UnsupportedOperationException("caused by currently only support android platform.");
+         return DataMediatorDelegate.getDefault().createBinder(mediator);
     }
     /**
      * create binder for target module class..

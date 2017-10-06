@@ -24,14 +24,25 @@ package com.heaven7.java.data.mediator;
 public final class FieldFlags {
 
     /**
+     * use {@linkplain #COMPLEX_ARRAY} instead.
+     */
+    @Deprecated
+    public static final int COMPLEXT_ARRAY = 1;
+    /**
      * a complex type that indicate the field is a array.
      *  eg:
      *  <code><pre>
      *  {@literal @}Field(propName = "test_Integer_array", type = Integer.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_ARRAY),
      *  </pre></code>
      *  this means the real type is 'Integer[] '.
+     *  @since 1.1.3
      */
-    public static final int COMPLEXT_ARRAY = 1;
+    public static final int COMPLEX_ARRAY = 1;
+    /**
+     * use {@linkplain #COMPLEX_LIST} instead.
+     */
+    @Deprecated
+    public static final int COMPLEXT_LIST = 2;
     /**
      * a complex type that indicate the field is a list.
      *  eg:
@@ -39,8 +50,19 @@ public final class FieldFlags {
      *  {@literal @}Field(propName = "test_Integer_array", type = Integer.class, flags = FLAG_PARCEABLE, complexType = COMPLEXT_LIST),
      *  </pre></code>
      *  this means the real type is 'List{@literal <}Integer>'.
+     *  @since 1.1.3
      */
-    public static final int COMPLEXT_LIST = 2;
+    public static final int COMPLEX_LIST = 2;
+
+    /**
+     * a complex type that indicate the field is a sparse array..
+     *  eg:
+     *  <code><pre>
+     *  {@literal @}Field(propName = "test_Integer_array", type = String.class, flags = FLAG_PARCEABLE, complexType = COMPLEX_SPARSE_ARRAY),
+     *  </pre></code>
+     *  this means the real type is 'SparseArray{@literal <}String>'.
+     */
+    public static final int COMPLEX_SPARSE_ARRAY  =  3;
 
     /**
      * a field flag that indicate 'transient' . this flag often used by {@linkplain java.io.Serializable}.

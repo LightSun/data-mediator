@@ -76,8 +76,8 @@ public class TestViewBindActivity extends BaseActivity {
                          // 创建一个只接收固定属性的 拦截器。(1.1.2支持的)
                          PropertyInterceptor.createFilter(ViewBindModule.PROP_background,
                                  ViewBindModule.PROP_backgroundRes,
-                                 ViewBindModule.PROP_backgroundColor
-                 ));
+                                 ViewBindModule.PROP_backgroundColor)
+                 );
     }
 
     @OnClick(R.id.bt_change_bg)

@@ -15,20 +15,27 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.heaven7.android.data.mediator;
+package com.heaven7.java.data.mediator.internal;
 
-import com.heaven7.java.data.mediator.Binder;
-import com.heaven7.java.data.mediator.DataMediator;
-import com.heaven7.java.data.mediator.IBinderSupplier;
+import com.heaven7.java.base.util.SparseArray;
+
 /**
- * <p> will be remove in future</p>
- * the binder supplier. this call is called by reflect. must not change package name and class name.
- * Created by heaven7 on 2017/9/24.
+ * the parcel delegate on android.
+ * Created by heaven7 on 2017/10/4.
+ * @since 1.1.3
  */
-@Deprecated
-public class BinderSupplierImpl<T> implements IBinderSupplier<T> {
-    @Override
-    public Binder<T> create(DataMediator<T> mediator) {
-        return new AndroidBinder<T>(mediator);
-    }
+public interface ParcelDelegate {
+
+    /**
+     * write sparse array to the parcel
+     * @param val the sparse array
+     */
+    void writeSparseArray(SparseArray val);
+
+    /**
+     * read the sparse array.
+     * @param loader the class loader
+     * @return the sparse array
+     */
+    SparseArray readSparseArray(ClassLoader loader);
 }

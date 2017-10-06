@@ -78,6 +78,9 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
         @Field(propName = "test_ResultData", type = ResultData.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "test_ResultData_list", type = ResultData.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
         @Field(propName = "test_ResultData_array", type = ResultData.class, flags = FLAGS_MAIN_SCOPES, complexType = COMPLEXT_ARRAY),
+// sparseArray
+        @Field(propName = "test_SparseArray", type = ResultData.class,
+                complexType = COMPLEX_SPARSE_ARRAY, flags = FLAGS_ALL_SCOPES),
 }, maxPoolCount = 100)
 public interface TestParcelableData extends Parcelable, Serializable, IResetable{
 }

@@ -24,6 +24,7 @@ public class FieldData {
 
     public static final int COMPLEXT_ARRAY = 1;
     public static final int COMPLEXT_LIST = 2;
+    public static final int COMPLEXT_SPARSE_ARRAY = 3;
 
     public static final int FLAG_TRANSIENT = 0x00000001;
     public static final int FLAG_VOLATILE = 0x00000002;

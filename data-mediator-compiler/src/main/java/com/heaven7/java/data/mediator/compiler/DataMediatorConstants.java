@@ -24,9 +24,11 @@ public final class DataMediatorConstants {
     public static final String PKG_PROP                      = "com.heaven7.java.data.mediator";
     public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.factory";
     public static final String PKG_JAVA_BASE_UTIL            = "com.heaven7.java.base.util";
+    public static final String PKG_DM_INTERNAL               = "com.heaven7.java.data.mediator.internal";
 
     public static final String SIMPLE_NAME_THROWABLES        = "Throwables";
     public static final String SIMPLE_NAME_ObJECTS           = "Objects";
+    public static final String SIMPLE_NAME_SPARSE_ARRAY      = "SparseArray";
 
     public static final String SIMPLE_NAME_SHARED_PROP       = "SharedProperties";
     public static final String SIMPLE_NAME_BASE_MEDIATOR     = "BaseMediator";
@@ -34,6 +36,10 @@ public final class DataMediatorConstants {
     public static final String SIMPLE_NAME_PROP_INTERCEPTOR  = "PropertyInterceptor";
     public static final String SIMPLE_NAME_DATA_POOL         = "DataPools";
     public static final String SIMPLE_NAME_POOLABLE          = "Poolable";
+
+    public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
+    public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";
+    public static final String SIMPLE_NAME_SPARSE_ARRAY_EDITOR = "SparseArrayPropertyEditor";
 
     //field name of anno
     public static final String STR_PROP_NAME = "propName";

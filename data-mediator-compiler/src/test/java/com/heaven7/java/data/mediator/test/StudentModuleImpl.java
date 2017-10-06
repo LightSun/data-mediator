@@ -1,6 +1,9 @@
 package com.heaven7.java.data.mediator.test;
 
+import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.SparseArrayPropertyEditor;
+import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,7 @@ public class StudentModuleImpl implements IStudent {
     private String name;
     private String id;
     private List<String> mTags;
+    private SparseArray<String> cityData;
 
     @Override
     public int getAge() {
@@ -56,7 +60,27 @@ public class StudentModuleImpl implements IStudent {
     }
 
     @Override
-    public ListPropertyEditor<IStudent, String> newTagsEditor() {
+    public void setCityData(SparseArray<String> sa) {
+         this.cityData = sa;
+    }
+
+    @Override
+    public SparseArray<String> getCityData() {
+        return cityData;
+    }
+
+    @Override
+    public SparseArrayPropertyEditor<IStudent, String> beginCityDataEditor() {
+        if(cityData == null){
+            cityData = new SparseArray<>();
+        }
+        return new SparseArrayPropertyEditor<IStudent, String>(this,
+                DataMediatorDelegate.getDefault().getSparseArrayDelegate(cityData),
+                null, null);
+    }
+
+    @Override
+    public ListPropertyEditor<IStudent, String> beginTagsEditor() {
         if(mTags == null){
             mTags = new ArrayList<>();
         }

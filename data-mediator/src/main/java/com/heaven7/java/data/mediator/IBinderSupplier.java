@@ -19,9 +19,11 @@ package com.heaven7.java.data.mediator;
 
 /**
  * the binder supplier
+ * <p> moved to {@linkplain com.heaven7.java.data.mediator.internal.DataMediatorDelegate#createBinder(DataMediator)}</p>
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
  */
+@Deprecated
 public interface IBinderSupplier<T> {
 
     /**
