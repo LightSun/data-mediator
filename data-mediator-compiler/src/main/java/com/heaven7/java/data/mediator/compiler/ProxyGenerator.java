@@ -203,7 +203,7 @@ public class ProxyGenerator {
                  */
                 ClassName cn_sa = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_SPARSE_ARRAY);
 
-                final MethodSpec.Builder listEditor = PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(
+                final MethodSpec.Builder sparseEditor = PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(
                         field, nameForMethod, info, cn_inter)
                         .addModifiers(Modifier.PUBLIC)
                         .addStatement("$T target = _getTarget()",cn_inter)
@@ -212,11 +212,11 @@ public class ProxyGenerator {
                             .addStatement("values = new $T<>()", cn_sa)
                             .addStatement("target.$N(values)", setMethodName)
                             .endControlFlow()
-                        .addStatement("return new $T<$T,$T>(this, " +
+                        .addStatement("return new $T<$T,$T>(target, " +
                                         "$T.getDefault().getSparseArrayDelegate(values), $N, this)",
                                 cn_sa_editor, cn_inter, info.getSimpleTypeNameBoxed(),
                                 cn_dm_delegate, fieldName);
-                typeBuilder.addMethod(listEditor.build());
+                typeBuilder.addMethod(sparseEditor.build());
             }
         }
         applyBuilder.addCode(".apply();\n");

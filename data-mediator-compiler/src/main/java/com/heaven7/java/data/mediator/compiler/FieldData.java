@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.compiler.util.MockTypeMirror;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -13,6 +14,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
 import java.util.List;
 
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_STRING;
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_boolean;
 
 /**
@@ -64,11 +66,13 @@ public class FieldData {
     /** only used in compile lib */
     public static final int FLAG_SELECTABLE = 0x08000000;
 
+    private static final TypeCompat sTC_STRING = new StringTypeCompat();
+
     private String propertyName;
     private String serializeName;
     private int flags = FLAGS_MAIN;  //default to main flags
     private int complexType;
-    private TypeCompat mTypeCompat;
+    private TypeCompat mTypeCompat = sTC_STRING; //default to string
 
     public String getPropertyName() {
         return propertyName;
@@ -251,4 +255,18 @@ public class FieldData {
         }
     }
 
+    //mock String.
+    public static class StringTypeCompat extends FieldData.TypeCompat{
+        public StringTypeCompat() {
+            super(null, new MockTypeMirror(NAME_STRING));
+        }
+        @Override
+        public String toString() {
+            return NAME_STRING;
+        }
+        @Override
+        public TypeName getInterfaceTypeName() {
+            return ClassName.get("java.lang", "String");
+        }
+    }
 }
