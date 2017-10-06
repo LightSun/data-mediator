@@ -17,6 +17,8 @@
  */
 package com.heaven7.java.data.mediator.internal;
 
+import java.util.List;
+
 /**
  * the sparse array delegate .
  * @param <V> the value type
@@ -41,9 +43,10 @@ public interface SparseArrayDelegate<V> {
      * put the key-value to the sparse array
      * @param key the key of type.
      * @param value the value
+     * @param old the old value will put to, can be null.
      * @return the state of put result.
      */
-    int put(int key, V value);
+    int put(int key, V value, List<V> old);
 
     /**
      * remove the key-value by target key.
@@ -55,9 +58,10 @@ public interface SparseArrayDelegate<V> {
     /**
      * remove by value and return the old key
      * @param value the value
-     * @return the key of target value
+     * @param keyArr the key of value will put to. can be null if don't need.
+     * @return true if remove success. false otherwise.
      */
-    int removeByValue(V value);
+    boolean removeByValue(V value, int[] keyArr);
 
     /**
      * get the size of sparse array

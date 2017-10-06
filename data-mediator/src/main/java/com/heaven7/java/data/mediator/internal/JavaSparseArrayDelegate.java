@@ -19,6 +19,8 @@ package com.heaven7.java.data.mediator.internal;
 
 import com.heaven7.java.base.util.SparseArray;
 
+import java.util.List;
+
 /**
  * the sparse array on java .
  * @param <V> the value type.
@@ -33,8 +35,11 @@ import com.heaven7.java.base.util.SparseArray;
     }
 
     @Override
-    public int put(int key, V value) {
+    public int put(int key, V value, List<V> oldList) {
         final V old = mMap.get(key);
+        if(oldList != null){
+            oldList.add(old);
+        }
         if(value == null){
             if(old == null){
                 return STATE_NO_CHANGE;
@@ -61,16 +66,17 @@ import com.heaven7.java.base.util.SparseArray;
     public V remove(int key) {
         return mMap.getAndRemove(key);
     }
-
     @Override
-    public int removeByValue(V value) {
+    public boolean removeByValue(V value, int[] keyArr){
         final int index = mMap.indexOfValue(value, false);
         if(index < 0){
-            return -1;
+            return false;
         }
-        final int key = mMap.keyAt(index);
+        if(keyArr != null) {
+            keyArr[0] = mMap.keyAt(index);
+        }
         mMap.removeAt(index);
-        return key;
+        return true;
     }
 
     @Override
@@ -106,7 +112,7 @@ import com.heaven7.java.base.util.SparseArray;
         }
         if(out != null) {
             for (int i = size -1 ; i>=0 ; i--){
-                out.put(mMap.keyAt(i), mMap.valueAt(i));
+                out.put(mMap.keyAt(i), mMap.valueAt(i), null);
             }
         }
         mMap.clear();

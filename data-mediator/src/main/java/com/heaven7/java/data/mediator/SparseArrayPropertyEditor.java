@@ -23,6 +23,9 @@ import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 import com.heaven7.java.data.mediator.internal.SparseArrayDelegate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * the sparse array editor
  * Created by heaven7 on 2017/10/3.
@@ -62,11 +65,12 @@ public final class SparseArrayPropertyEditor<D, V> {
      * @return this.
      */
     public SparseArrayPropertyEditor<D, V> put(int key, V value){
-        final V old = mMap.get(key);
-        switch (mMap.put(key, value)){
+        final List<V> oldList = new ArrayList<>(2);
+        switch (mMap.put(key, value, oldList)){
             case SparseArrayDelegate.STATE_CHANGED:
                 if(mMediator != null){
-                    mMediator._getSparseArrayDispatcher().dispatchChangeEntryValue(mProperty, key ,old, value);
+                    mMediator._getSparseArrayDispatcher().dispatchChangeEntryValue(
+                            mProperty, key ,oldList.get(0), value);
                 }
                 break;
             case SparseArrayDelegate.STATE_NEW:
@@ -102,10 +106,10 @@ public final class SparseArrayPropertyEditor<D, V> {
      * @return this.
      */
     public SparseArrayPropertyEditor<D, V> removeByValue(V value){
-        final int key = mMap.removeByValue(value);
-        if(key >= 0){
+        int[] keyArr = new int[1];
+        if(mMap.removeByValue(value, keyArr)){
             if (mMediator != null) {
-                mMediator._getSparseArrayDispatcher().dispatchRemoveEntry(mProperty, key, value);
+                mMediator._getSparseArrayDispatcher().dispatchRemoveEntry(mProperty, keyArr[0], value);
             }
         }
         return this;

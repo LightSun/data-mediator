@@ -48,6 +48,7 @@ public class TestSparseArrayActivity extends BaseActivity {
                 TestBindModule.PROP_cityData2.getName(), new CallbackImpl()));
     }
 
+    // put 操作
     @OnClick(R.id.bt_put)
     public void onClickPut(View v){
         final StudentModule stu = createStu(-1);
@@ -56,6 +57,7 @@ public class TestSparseArrayActivity extends BaseActivity {
                 .end();
     }
 
+    // 移除操作(通过key)
     @OnClick(R.id.bt_remove_key)
     public void onClickRemoveByKey(View v){
         if(!mIndexes.isEmpty()){
@@ -69,6 +71,7 @@ public class TestSparseArrayActivity extends BaseActivity {
         }
     }
 
+    // 移除操作(通过value)
     @OnClick(R.id.bt_remove_value)
     public void onClickRemoveByValue(View v){
         if(!mIndexes.isEmpty()){
@@ -81,6 +84,8 @@ public class TestSparseArrayActivity extends BaseActivity {
             Logger.w(TAG , "onClickRemoveByValue", "already empty");
         }
     }
+
+    //清空操作
     @OnClick(R.id.bt_clear)
     public void onClickClear(View v){
         if(!mIndexes.isEmpty()){
