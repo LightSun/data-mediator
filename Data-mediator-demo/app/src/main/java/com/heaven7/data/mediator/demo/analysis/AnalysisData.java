@@ -11,7 +11,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
  * 数据分析实体
  * Created by heaven7 on 2017/10/6.
  */
-@Fields({
+@Fields(value = {
         @Field(propName = "occurTime", type = long.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "enterTime", type = long.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "exitTime", type = long.class, flags = FLAGS_ALL_SCOPES),
@@ -23,6 +23,6 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
 
         @Field(propName = "apiVersion", flags = FLAGS_ALL_SCOPES & ~FLAG_RESET),
         @Field(propName = "net", flags = FLAGS_ALL_SCOPES & ~FLAG_RESET),
-})
+},maxPoolCount = 5)
 public interface AnalysisData extends ICopyable<AnalysisData>, IResetable{
 }

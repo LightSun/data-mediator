@@ -75,13 +75,26 @@ public final class DataMediatorFactory {
     }
 
     /**
+     * <p><h2>use {@linkplain #createDataMediator(Object)} instead.</h2></p>
      * wrap the module data to data mediator.
      * @param t  the module data.
      * @param <T> the module data type
      * @return the data mediator .
      * @see DataMediator
      */
+    @Deprecated
     public static <T> DataMediator<T> wrapToDataMediator(T t){
+        return createDataMediator(t);
+    }
+
+    /**
+     * create date mediator by target module.
+     * @param t the module data
+     * @param <T> the module data type
+     * @return the data mediator.
+     * @since 1.1.3
+     */
+    public static <T> DataMediator<T> createDataMediator(T t){
         if(t instanceof BaseMediator){
             return new DataMediator<T>((BaseMediator<T>) t);
         }

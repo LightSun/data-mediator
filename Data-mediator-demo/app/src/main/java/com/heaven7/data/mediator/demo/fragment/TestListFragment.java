@@ -9,10 +9,8 @@ import android.view.View;
 import com.heaven7.adapter.QuickRecycleViewAdapter;
 import com.heaven7.core.util.ViewHelper;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
 import com.heaven7.data.mediator.demo.module.FlowItemModule;
-import com.heaven7.java.data.mediator.DataMediator;
 
 import java.util.ArrayList;
 
@@ -29,7 +27,6 @@ public class TestListFragment extends BaseFragment {
     @BindView(R.id.rv)
     RecyclerView mRv;
 
-    private  DataMediator<AnalysisDataModule> mDm;
     @Override
     protected int getLayoutId() {
         return R.layout.frag_list1;
@@ -37,7 +34,6 @@ public class TestListFragment extends BaseFragment {
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
         mRv.setLayoutManager(new LinearLayoutManager(context));
-        mDm = AnalysisManager.getInstance().getDataMediator();
 
         final ArrayList<FlowItemModule>  datas = getArguments().getParcelableArrayList(KEY_LIST);
         mRv.setAdapter(new QuickRecycleViewAdapter<FlowItemModule>(
@@ -50,8 +46,9 @@ public class TestListFragment extends BaseFragment {
                         .setRootOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                mDm.getData().setOccurTime(System.currentTimeMillis())
-                                    .setEventType("click")
+                                AnalysisManager.getInstance().getAnalyseData()
+                                        .setOccurTime(System.currentTimeMillis())
+                                        .setEventType("click")
                                         .setItem(item)
                                         .setItemIndex(position);
                                 AnalysisManager.getInstance().handleAnalyseData();

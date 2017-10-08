@@ -9,12 +9,10 @@ import com.heaven7.adapter.BaseFragmentPagerAdapter;
 import com.heaven7.core.util.BundleHelper;
 import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
 import com.heaven7.data.mediator.demo.fragment.TestListFragment;
 import com.heaven7.data.mediator.demo.module.FlowItemModule;
 import com.heaven7.data.mediator.demo.util.InternalViewUtil;
-import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 
 import org.heaven7.core.view.SlidingTabLayout;
@@ -38,7 +36,6 @@ public class TestAnalyseActivity extends BaseActivity {
     @BindView(R.id.vg)
     ViewPager mVg;
 
-    private DataMediator<AnalysisDataModule> mDm;
     @Override
     protected int getLayoutId() {
         return R.layout.ac_test_analyse;
@@ -46,14 +43,13 @@ public class TestAnalyseActivity extends BaseActivity {
 
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
-        mDm = AnalysisManager.getInstance().getDataMediator();
-        mDm.getData().setEnterTime(System.currentTimeMillis());
+        AnalysisManager.getInstance().getAnalyseData().setEnterTime(System.currentTimeMillis());
 
         InternalViewUtil.initSlidingTablayout(mSlidingTabLayout,
                 mVg, true, new ViewPager.SimpleOnPageChangeListener(){
                     @Override
                     public void onPageSelected(int position) {
-                        mDm.getData()
+                        AnalysisManager.getInstance().getAnalyseData()
                                 .setTabIndex(position);
                     }
                 });
@@ -61,7 +57,10 @@ public class TestAnalyseActivity extends BaseActivity {
     }
     @Override
     protected void onDestroy() {
-        mDm.getData().setExitTime(System.currentTimeMillis());
+        AnalysisManager.getInstance().getAnalyseData()
+                .setExitTime(System.currentTimeMillis())
+                .setEventType("normal_exit")
+        ;
         AnalysisManager.getInstance().handleAnalyseData();
         super.onDestroy();
     }
