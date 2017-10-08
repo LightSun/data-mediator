@@ -22,7 +22,7 @@ public class MockTypeMirror implements TypeMirror {
 
     @Override
     public <R, P> R accept(TypeVisitor<R, P> v, P p) {
-        return v.visit(this, p);
+        return null;
     }
 
     public List<? extends AnnotationMirror> getAnnotationMirrors() {

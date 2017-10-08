@@ -25,6 +25,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_IMPL;
 import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_INTERFACE;
+import static com.heaven7.java.data.mediator.DataMediatorFactory.getImplClassName;
 /**
  * this class just called by framework internal.(include compiler.)
  * Created by heaven7 on 2017/9/27 0027.
@@ -98,16 +99,16 @@ public final class DataPools {
         if(!name.endsWith(SUFFIX_INTERFACE)){
             throw new IllegalArgumentException();
         }
-        Entry entry = sMap.get(name);
+        Entry entry = sMap.get(clazz.getName());
         final Class<?> impl;
         try {
-            impl = Class.forName(name + SUFFIX_IMPL);
             if(entry != null ){
-                T result =  (T) entry.obtain(impl);
+                T result =  (T) entry.obtain();
                 if(result != null){
                     return result;
                 }
             }
+            impl = Class.forName(getImplClassName(clazz));
             return (T) sFactory.create(impl);
         }catch (Exception e){
             throw new UnsupportedOperationException("can't find impl class ("+ (name + SUFFIX_IMPL) +")" ,e);
@@ -146,7 +147,7 @@ public final class DataPools {
             }
             return false;
         }
-        Object obtain(Class<?> clazz) throws Exception {
+        Object obtain(){
             return mQueue.poll();
         }
     }

@@ -35,12 +35,13 @@ public final class DataMediatorFactory {
      * obtain the data for target class type.
      * @param clazz the data interface module
      * @param <T> the data module type
-     * @return the data.
+     * @return the data. never null.
      * @since 1.1.0
      */
     public static <T> T obtainData(Class<T> clazz){
         return DataPools.obtain(clazz);
     }
+
     /**
      * create module data for target interface class.
      * @param clazz the interface class.
@@ -48,12 +49,8 @@ public final class DataMediatorFactory {
      * @return the module data.
      */
     public static <T> T createData(Class<T> clazz){
-        String name = clazz.getName();
-        if(name.endsWith(SUFFIX_INTERFACE)){
-            name = name + SUFFIX_IMPL;
-        }
         try {
-            return (T) Class.forName(name).newInstance();
+            return (T) Class.forName(getImplClassName(clazz)).newInstance();
         } catch (Exception e) {
             throw new IllegalArgumentException("can't create module for class("+ clazz.getName()
                     + ")! have you make project or rebuild ? ", e);
@@ -67,13 +64,9 @@ public final class DataMediatorFactory {
      * @return the proxy helper for target module type.
      */
     public static <T> DataMediator<T> createDataMediator(Class<T> clazz){
-        String name = clazz.getName();
-        if(name.endsWith(SUFFIX_INTERFACE)){
-            name = name + SUFFIX_PROXY;
-        }
         T t = createData(clazz);
         try {
-            Class<?> proxyClazz = Class.forName(name);
+            Class<?> proxyClazz = Class.forName(getProxyClassName(clazz));
             return new DataMediator<T>((BaseMediator<T>) proxyClazz.getConstructor(clazz).newInstance(t));
         } catch (Exception e) {
             throw new IllegalArgumentException("can't create module proxy for class("+ clazz.getName()
@@ -89,9 +82,6 @@ public final class DataMediatorFactory {
      * @see DataMediator
      */
     public static <T> DataMediator<T> wrapToDataMediator(T t){
-        if(t instanceof DataMediator){
-            return (DataMediator<T>) t;
-        }
         if(t instanceof BaseMediator){
             return new DataMediator<T>((BaseMediator<T>) t);
         }
@@ -134,5 +124,36 @@ public final class DataMediatorFactory {
         return createBinder(createDataMediator(moduleClass));
     }
 
+    /**
+     * get the impl class name of interface which is generate by data-mediator.
+     * @param interClazz the interface class.
+     * @param <T> the data module type
+     * @return the impl class name.
+     * @since 1.1.3
+     */
+    public static <T> String getImplClassName(Class<T> interClazz){
+        return  checkAndGetName(interClazz) + SUFFIX_IMPL;
+    }
+    /**
+     * get the impl class name of interface which is generate by data-mediator.
+     * @param interClazz the interface class.
+     * @param <T> the data module type
+     * @return the impl class name.
+     * @since 1.1.3
+     */
+    public static <T> String getProxyClassName(Class<T> interClazz){
+        return  checkAndGetName(interClazz) + SUFFIX_PROXY;
+    }
+
+    private static <T> String checkAndGetName(Class<T> interClazz) {
+        if(!interClazz.isInterface()){
+            throw new IllegalArgumentException();
+        }
+        String name = interClazz.getName();
+        if(!name.endsWith(SUFFIX_INTERFACE)){
+            throw new IllegalArgumentException("interface class must end with " + SUFFIX_INTERFACE);
+        }
+        return name;
+    }
 
 }
