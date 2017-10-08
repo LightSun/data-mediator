@@ -1,6 +1,6 @@
 package com.heaven7.data.mediator.demo.analysis;
 
-import com.heaven7.java.data.mediator.DataConsumer;
+import com.heaven7.core.util.Logger;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 
@@ -8,7 +8,7 @@ import com.heaven7.java.data.mediator.DataMediatorFactory;
  * 一个统计的例子。
  * Created by heaven7 on 2017/10/6.
  */
-public class AnalysisManager implements DataConsumer<AnalysisDataModule>{
+public class AnalysisManager{
 
     private DataMediator<AnalysisDataModule> mDM;
 
@@ -28,10 +28,11 @@ public class AnalysisManager implements DataConsumer<AnalysisDataModule>{
     public DataMediator<AnalysisDataModule> getDataMediator(){
         return mDM;
     }
-    @Override
-    public void accept(AnalysisDataModule data) {
+    public void handleAnalyseData(){
+        //copy data
         final AnalysisDataModule temp = DataMediatorFactory.createData(AnalysisDataModule.class);
-        data.copyTo(temp);
+        mDM.getData().copyTo(temp);
         //TODO doSomething with  'temp'.比如发送数据到服务器 或者 保存到数据库
+        Logger.i("AnalysisManager", "handleAnalyseData", "start send server , data = " + temp.toString());
     }
 }

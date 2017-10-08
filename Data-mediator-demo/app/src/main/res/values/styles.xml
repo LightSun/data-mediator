@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tv_common">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">heaven7</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="tv_home_tab" parent="tv_common">
+        <item name="android:textColor">@color/c_8c8c93</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
 </resources>
