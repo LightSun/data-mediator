@@ -123,47 +123,57 @@ public interface Student extends Serializable, Parcelable{
    ![make project](res/as_make_project.png)
 
   即可自动生成代码（数据定义没变化，不会重新生成）。
+ <br> 会自动生成 xxxModule 模型接口, xxxxModule_Impl 模型实现 。
 
-
-6, 调用示例 （来自data-mediator-demo下的[TestDoubleBindActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestDoubleBindActivity.java)）
+6, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
- * 双向绑定示例程序.
+ * 属性改变demo
+ * Created by heaven7 on 2017/9/18 0018.
  */
-public class TestDoubleBindActivity extends AppCompatActivity {
+public class TestPropertyChangeActivity extends BaseActivity {
 
     @BindView(R.id.tv_desc)
     TextView mTv_desc;
 
+    @BindView(R.id.bt_set_text_on_TextView)
+    Button mBt_changeProperty;
+    @BindView(R.id.bt_set_text_on_mediator)
+    Button mBt_temp;
+
     DataMediator<StudentModule> mMediator;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    protected int getLayoutId() {
+        return R.layout.ac_test_double_bind;
+    }
+
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        mBt_changeProperty.setText("click this to change property");
+        mBt_temp.setVisibility(View.GONE);
 
         //为数据模型创建  中介者。
         mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
-        //双向绑定
-        DoubleBindUtil.bindDouble(mMediator, mTv_desc, "name");
-
+        //添加属性callback
+        mMediator.addDataMediatorCallback(new DataMediatorCallback<StudentModule>() {
+            @Override
+            public void onPropertyValueChanged(StudentModule data, Property prop, Object oldValue, Object newValue) {
+                Logger.w("TestPropertyChangeActivity","onPropertyValueChanged","prop = "
+                        + prop.getName() + " ,oldValue = " + oldValue + " ,newValue = " + newValue);
+                mTv_desc.setText(String.valueOf(newValue));
+            }
+        });
         mMediator.getDataProxy().setName("heaven7");
     }
 
-    //从TextView 设置文本, 同事改变数据的属性.
     @OnClick(R.id.bt_set_text_on_TextView)
     public void onClickSetTextOnTextView(View v){
-        mTv_desc.setText("set by set_text_on_TextView");
+        mMediator.getDataProxy().setName("time: " + System.currentTimeMillis());
     }
-
-    //从数据代理去设置 数据属性，同时更改绑定的TextView属性
-    @OnClick(R.id.bt_set_text_on_mediator)
-    public void onClickSetTextOnMediator(View v){
-        mMediator.getDataProxy().setName("set_text_on_mediator");
-    }
-
 }
+
 ```
 * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
 * 更多sample 代码 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
@@ -187,6 +197,8 @@ public class TestDoubleBindActivity extends AppCompatActivity {
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
 -keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
+# 1.1.3 新增
+-keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 ```
 
 # refer libs
