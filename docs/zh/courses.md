@@ -118,7 +118,7 @@ public interface StudentBind extends IDataMediator, ISelectable{
  仅仅，属性改变的时候改变一下文本。很简单吧。  
  
 # <h2 id="4">List属性编辑器</h2>
- * 当一个属性是List类型时，会自动 生成beginXXXEditor. 的 方法返回该编辑器。 数据模型和代理均有。其中XXX是属性的名称
+ * 当一个属性是List类型时，会自动 生成beginXXXEditor的方法返回该编辑器, 它可以方便的操作list数据。 数据模型和代理均有。其中XXX是属性的名称
  * 一般用于绑定列表控件，比如android RecyclerView. 下面是一个demo:
 ```java
   public class TestRecyclerListBindActivity extends BaseActivity {
