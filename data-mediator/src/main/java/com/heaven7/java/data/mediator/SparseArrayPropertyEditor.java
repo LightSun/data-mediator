@@ -65,12 +65,13 @@ public final class SparseArrayPropertyEditor<D, V> {
      * @return this.
      */
     public SparseArrayPropertyEditor<D, V> put(int key, V value){
-        final List<V> oldList = new ArrayList<>(2);
-        switch (mMap.put(key, value, oldList)){
+        int[] result = new int[1];
+        final V oldVal = mMap.put(key, value, result);
+        switch (result[0]){
             case SparseArrayDelegate.STATE_CHANGED:
                 if(mMediator != null){
                     mMediator._getSparseArrayDispatcher().dispatchChangeEntryValue(
-                            mProperty, key ,oldList.get(0), value);
+                            mProperty, key ,oldVal, value);
                 }
                 break;
             case SparseArrayDelegate.STATE_NEW:

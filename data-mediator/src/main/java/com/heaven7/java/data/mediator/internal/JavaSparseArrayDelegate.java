@@ -35,31 +35,33 @@ import java.util.List;
     }
 
     @Override
-    public int put(int key, V value, List<V> oldList) {
+    public V put(int key, V value, int[] resultStateArr) {
         final V old = mMap.get(key);
-        if(oldList != null){
-            oldList.add(old);
-        }
+        final int resultState;
         if(value == null){
             if(old == null){
-                return STATE_NO_CHANGE;
+                resultState = STATE_NO_CHANGE;
             }else{
                 mMap.put(key, null);
-                return STATE_CHANGED;
+                resultState = STATE_CHANGED;
             }
         }else{
             if(old == null){
                 //new not null, old is null.
                 mMap.put(key, value);
-                return STATE_NEW;
+                resultState = STATE_NEW;
             }else if (value.equals( old )){
                 //new not null, old is not null. but equals.
-                return STATE_NO_CHANGE;
+                resultState = STATE_NO_CHANGE;
             }else{
                 mMap.put(key, value);
-                return STATE_CHANGED;
+                resultState= STATE_CHANGED;
             }
         }
+        if(resultStateArr != null){
+            resultStateArr[0] = resultState;
+        }
+        return old;
     }
 
     @Override

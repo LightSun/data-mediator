@@ -43,10 +43,10 @@ public interface SparseArrayDelegate<V> {
      * put the key-value to the sparse array
      * @param key the key of type.
      * @param value the value
-     * @param old the old value will put to, can be null.
-     * @return the state of put result.
+     * @param resultStateArr the result state arr.
+     * @return the old value.
      */
-    int put(int key, V value, List<V> old);
+    V put(int key, V value, int[] resultStateArr);
 
     /**
      * remove the key-value by target key.
