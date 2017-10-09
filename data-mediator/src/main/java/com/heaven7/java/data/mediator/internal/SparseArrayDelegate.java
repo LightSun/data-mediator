@@ -17,8 +17,6 @@
  */
 package com.heaven7.java.data.mediator.internal;
 
-import java.util.List;
-
 /**
  * the sparse array delegate .
  * @param <V> the value type

@@ -81,9 +81,11 @@ public final class SparseArrayPropertyEditor<D, V> {
                 break;
 
             case SparseArrayDelegate.STATE_NO_CHANGE:
-            default:
                 //nothing
                 break;
+
+            default:
+                throw new UnsupportedOperationException();
         }
         return this;
     }
