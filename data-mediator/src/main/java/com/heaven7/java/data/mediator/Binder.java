@@ -124,7 +124,8 @@ public abstract class Binder<T> {
      * bind the property callback as Sparse({@linkplain com.heaven7.java.base.util.SparseArray})
      * for target property.
      * @param property the property. like 'name' of student.
-     * @param callback the property callback of binder
+     * @param callback the property callback of binder. this callback must impl {@linkplain SparseArrayPropertyCallback}.
+     *                 or else cause {@linkplain IllegalArgumentException}.
      * @return this.
      * @since 1.1.3
      */

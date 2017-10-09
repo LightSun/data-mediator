@@ -138,7 +138,20 @@ public final class DataMediator<T> {
     }
 
     /**
-     * start action mode with target callback.
+     * start action mode with target callback. here is a simple demo.
+     * <code><pre>
+     AnalysisManager.getInstance()
+         .getDataMediator()
+         .startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+            {@literal }@Override
+            public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+                mode.getData().setOccurTime(System.currentTimeMillis())
+                .setEventType("click")
+                .setItem(item)
+                .setItemIndex(position);
+            }
+        }).applyTo();
+     * </pre></></code>
      * @param callback the callback of action mode
      * @return the action mode
      * @since 1.1.3

@@ -54,6 +54,9 @@ public class TestViewBindActivity extends BaseActivity {
     protected void onInit(Context context, Bundle savedInstanceState) {
 
         initResource(context);
+        mUserDrawable1 = true;
+        mUserRes1 = true;
+        mUserColor1 = true;
 
          binder = DataMediatorFactory.createBinder(ViewBindModule.class);
         //初始化属性。
@@ -62,9 +65,7 @@ public class TestViewBindActivity extends BaseActivity {
                  .setBackgroundColor(mColor1)
                  .setBackgroundRes(mResId1)
                  .setEnable(true);
-        mUserDrawable1 = true;
-        mUserRes1 = true;
-        mUserColor1 = true;
+
 
         // 设置属性拦截器，用于应用绑定的时候过滤一些不需要的属性值。
         binder.setPropertyInterceptor(PropertyInterceptor.NULL_AND_ZERO);
