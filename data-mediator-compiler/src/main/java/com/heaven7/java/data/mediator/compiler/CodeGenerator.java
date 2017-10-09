@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.ProxyGenerator;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 

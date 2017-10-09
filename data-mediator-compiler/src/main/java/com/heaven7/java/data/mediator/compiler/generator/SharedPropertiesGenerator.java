@@ -1,5 +1,8 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.generator;
 
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.ProcessorPrinter;
+import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;

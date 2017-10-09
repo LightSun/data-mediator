@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesGenerator;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

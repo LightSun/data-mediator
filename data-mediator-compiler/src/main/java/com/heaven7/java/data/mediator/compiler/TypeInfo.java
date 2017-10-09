@@ -5,7 +5,7 @@ import com.squareup.javapoet.TypeName;
 /**
  * Created by heaven7 on 2017/8/30.
  */
-/*public*/ class TypeInfo {
+public class TypeInfo {
     TypeName typeName; //type name. may be list .array
     String paramName;  //parameter name
     TypeName simpleTypeName;
