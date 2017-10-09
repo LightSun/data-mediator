@@ -108,6 +108,16 @@ public abstract class Binder<T> {
 
     /**
      * bind the property callback for target property.
+     * @param property the property. it often auto generate by 'data-mediator-compiler' lib.
+     * @param callback the property callback of binder
+     * @return this.
+     * @since 1.1.3
+     */
+    public Binder<T> bind(Property property, BinderCallback<? super T> callback){
+        return bind(property.getName(), callback);
+    }
+    /**
+     * bind the property callback for target property.
      * @param property the property. like 'name' of student.
      * @param callback the property callback of binder
      * @return this.
@@ -123,21 +133,32 @@ public abstract class Binder<T> {
     /**
      * bind the property callback as Sparse({@linkplain com.heaven7.java.base.util.SparseArray})
      * for target property.
-     * @param property the property. like 'name' of student.
-     * @param callback the property callback of binder. this callback must impl {@linkplain SparseArrayPropertyCallback}.
-     *                 or else cause {@linkplain IllegalArgumentException}.
+     * @param property the property.
+     * @param callback the property callback of sparse array.
      * @return this.
+     * @see com.heaven7.java.base.util.SparseArray
      * @since 1.1.3
      */
-    public Binder<T> bindAsSparseArray(String property, BinderCallback<? super T> callback){
-        if(!(callback instanceof SparseArrayPropertyCallback)){
-            throw new IllegalArgumentException("call bindAsSparseArray() method must " +
-                    "make BinderCallback impl SparseArrayPropertyCallback");
-        }
+    public Binder<T> bind(Property property, SparseArrayPropertyCallback<? super T> callback){
+        return bind(property.getName(), callback);
+    }
+    /**
+     * bind the property callback as Sparse({@linkplain com.heaven7.java.base.util.SparseArray})
+     * for target property.
+     * @param property the property. like 'name' of student.
+     * @param callback the property callback of sparse array.
+     * @return this.
+     * @see com.heaven7.java.base.util.SparseArray
+     * @since 1.1.3
+     */
+    public Binder<T> bind(String property, SparseArrayPropertyCallback<? super T> callback){
         DataMediatorCallback<T> temp = DataMediatorCallback.createForSparse(property,
-                (SparseArrayPropertyCallback<? super T>) callback);
-        if(callback.getTag() != null){
-            mMap.put(callback.getTag(), temp);
+                callback);
+        if(callback instanceof Tagable){
+            Object tag = ((Tagable) callback).getTag();
+            if(tag != null){
+                mMap.put(tag, temp);
+            }
         }
         mMediator.addDataMediatorCallback(temp);
         return this;
@@ -567,11 +588,22 @@ public abstract class Binder<T> {
     public abstract Binder<T> bindList(String property, Object listView);
 
     /**
+     * represent the object can be tagged or not.
+     * @since 1.1.3
+     */
+    public interface Tagable{
+        /**
+         * get the tag
+         * @return the tag
+         */
+        Object getTag();
+    }
+    /**
      * the callback of binder.
      * @param <T> the module data type.
      * @since 1.0.8
      */
-    public interface BinderCallback<T> extends ListPropertyCallback<T>{
+    public interface BinderCallback<T> extends ListPropertyCallback<T>, Tagable{
 
         /**
          * get the tag of this callback. if not null. it can be unbind as the key by call
@@ -582,12 +614,47 @@ public abstract class Binder<T> {
     }
 
     /**
+     * a adapter class that adapt the {@linkplain SparseArrayPropertyCallback} and {@linkplain Tagable}
+     *  @param <T> the module data type
+     *  @since 1.1.3
+     */
+    public static class SimpleSparseArrayPropertyCallback<T> implements SparseArrayPropertyCallback<T>, Tagable{
+
+        @Override
+        public void onEntryValueChanged(T data, Property prop, Integer key, Object oldValue, Object newValue) {
+
+        }
+        @Override
+        public void onAddEntry(T data, Property prop, Integer key, Object value) {
+
+        }
+        @Override
+        public void onRemoveEntry(T data, Property prop, Integer key, Object value) {
+
+        }
+        @Override
+        public void onClearEntries(T data, Property prop, Object entries) {
+
+        }
+        @Override
+        public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
+
+        }
+        @Override
+        public void onPropertyApplied(T data, Property prop, Object value) {
+
+        }
+        @Override
+        public Object getTag() {
+            return null;
+        }
+    }
+    /**
      * simple binder callback
      * @param <T> the module data type
      * @since 1.0.8
      */
-    public static class SimpleBinderCallback<T> implements BinderCallback<T>,
-            SparseArrayPropertyCallback<T>{
+    public static class SimpleBinderCallback<T> implements BinderCallback<T>{
 
         @Override
         public Object getTag() {
@@ -619,23 +686,6 @@ public abstract class Binder<T> {
         @Override
         public void onPropertyApplied(T data, Property prop, Object value) {
             onPropertyValueChanged(data, prop, null, value);
-        }
-
-        @Override
-        public void onEntryValueChanged(T data, Property prop, Integer key, Object oldValue, Object newValue) {
-
-        }
-        @Override
-        public void onAddEntry(T data, Property prop, Integer key, Object value) {
-
-        }
-        @Override
-        public void onRemoveEntry(T data, Property prop, Integer key, Object value) {
-
-        }
-        @Override
-        public void onClearEntries(T data, Property prop, Object entries) {
-
         }
     }
 

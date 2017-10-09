@@ -44,8 +44,10 @@ public class TestSparseArrayActivity extends BaseActivity {
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
         mDm = DataMediatorFactory.createDataMediator(TestBindModule.class);
+        // 这里直接用属性回调。也可以用binder.bind(String property, SparseArrayPropertyCallback<? super T> callback)方法
         mDm.addDataMediatorCallback(DataMediatorCallback.createForSparse(
                 TestBindModule.PROP_cityData2.getName(), new CallbackImpl()));
+
     }
 
     // put 操作
