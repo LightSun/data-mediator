@@ -125,45 +125,120 @@ public interface Student extends Serializable, Parcelable{
   即可自动生成代码（数据定义没变化，不会重新生成）。
 
 
-6, 调用示例 （来自data-mediator-demo下的[TestDoubleBindActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestDoubleBindActivity.java)）
+6, 调用示例 （来自data-mediator-demo下的[TestViewBindActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestViewBindActivity.java)）
 ```java
 /**
- * 双向绑定示例程序.
+ * 测试 绑定view控件的基本属性: setBackground, setBackgroundColor,setBackgroundResource.setEnable等
+ * Created by heaven7 on 2017/9/24.
  */
-public class TestDoubleBindActivity extends AppCompatActivity {
+public class TestViewBindActivity extends BaseActivity {
 
-    @BindView(R.id.tv_desc)
-    TextView mTv_desc;
+    @BindView(R.id.v_enable)
+    View mV_enable;
+    @BindView(R.id.v_bg)
+    View mV_bg;
+    @BindView(R.id.v_bg_color)
+    View mV_bg_color;
+    @BindView(R.id.v_bg_res)
+    View mV_bg_res;
 
-    DataMediator<StudentModule> mMediator;
+    private Binder<ViewBindModule> binder;
+
+    private Drawable mDrawable1;
+    private Drawable mDrawable2;
+    private int mResId1;
+    private int mResId2;
+    private int mColor1;
+    private int mColor2;
+
+    private boolean mUserDrawable1;
+    private boolean mUserRes1;
+    private boolean mUserColor1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        //为数据模型创建  中介者。
-        mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
-        //双向绑定
-        DoubleBindUtil.bindDouble(mMediator, mTv_desc, "name");
-
-        mMediator.getDataProxy().setName("heaven7");
+    protected int getLayoutId() {
+        return R.layout.ac_test_view_bind;
     }
 
-    //从TextView 设置文本, 同事改变数据的属性.
-    @OnClick(R.id.bt_set_text_on_TextView)
-    public void onClickSetTextOnTextView(View v){
-        mTv_desc.setText("set by set_text_on_TextView");
+    //com.heaven7.android.data.mediator.
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+
+        initResource(context);
+        mUserDrawable1 = true;
+        mUserRes1 = true;
+        mUserColor1 = true;
+
+         binder = DataMediatorFactory.createBinder(ViewBindModule.class);
+        //初始化属性。
+         binder.getDataProxy()
+                 .setBackground(mDrawable1)
+                 .setBackgroundColor(mColor1)
+                 .setBackgroundRes(mResId1)
+                 .setEnable(true);
+
+
+        // 设置属性拦截器，用于应用绑定的时候过滤一些不需要的属性值。
+        binder.setPropertyInterceptor(PropertyInterceptor.NULL_AND_ZERO);
+        //绑定并 首次应用属性(绑定只需要1次)
+         binder.bindBackground(ViewBindModule.PROP_background, mV_bg)
+                         //使用生成的property对象。有助于模型变化后用的地方知晓改变。
+                 .bindBackgroundRes(ViewBindModule.PROP_backgroundRes, mV_bg_res)
+                 .bindBackgroundColor(ViewBindModule.PROP_backgroundColor, mV_bg_color)
+                 .bindEnable("enable", mV_enable)
+                 .applyProperties(
+                         // 创建一个只接收固定属性的 拦截器。(1.1.2支持的). 只是用于本次apply.
+                         PropertyInterceptor.createFilter(ViewBindModule.PROP_background,
+                                 ViewBindModule.PROP_backgroundRes,
+                                 ViewBindModule.PROP_backgroundColor)
+                 );
     }
 
-    //从数据代理去设置 数据属性，同时更改绑定的TextView属性
-    @OnClick(R.id.bt_set_text_on_mediator)
-    public void onClickSetTextOnMediator(View v){
-        mMediator.getDataProxy().setName("set_text_on_mediator");
+    @OnClick(R.id.bt_change_bg)
+    public void onClickChangeBg(View v){
+        //改变背景（drawable）
+        binder.getDataProxy().setBackground(mUserDrawable1 ? mDrawable2 : mDrawable1);
+        mUserDrawable1 = !mUserDrawable1;
+    }
+
+    @OnClick(R.id.bt_change_bg_color)
+    public void onClickChangeBgColor(View v){
+        //改变背景（color）
+        binder.getDataProxy().setBackgroundColor(mUserColor1 ? mColor2 : mColor1);
+        mUserColor1 = !mUserColor1;
+    }
+
+    @OnClick(R.id.bt_change_bg_res)
+    public void onClickChangeBgRes(View v){
+        //改变背景（resource id）
+        binder.getDataProxy().setBackgroundRes(mUserRes1 ? mResId2 : mResId1);
+        mUserRes1 = !mUserRes1;
+    }
+
+    @OnClick(R.id.bt_change_enable)
+    public void onClickChangeEnable(View v){
+        //改变enable 状态
+        binder.getDataProxy().setEnable(!binder.getData().isEnable());
+    }
+
+    private void initResource(Context context) {
+        Resources res = context.getResources();
+        mDrawable1 = res.getDrawable(R.mipmap.ic_launcher);
+        mDrawable2 = res.getDrawable(R.mipmap.ic_launcher_round);
+        mResId1 = R.mipmap.ic_launcher;
+        mResId2 = R.mipmap.ic_launcher_round;
+        mColor1 = Color.RED;
+        mColor2 = Color.GREEN;
+    }
+
+    @Override
+    protected void onDestroy() {
+        binder.unbindAll();
+        super.onDestroy();
     }
 
 }
+
 ```
 * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
 * 更多sample 代码 见 [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
