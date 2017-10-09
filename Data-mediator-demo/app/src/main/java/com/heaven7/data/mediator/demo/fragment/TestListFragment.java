@@ -50,19 +50,23 @@ public class TestListFragment extends BaseFragment {
                         .setRootOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                AnalysisManager.getInstance()
-                                        .getDataMediator().startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
-                                    @Override
-                                    public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
-                                         mode.getData().setOccurTime(System.currentTimeMillis())
-                                                 .setEventType("click")
-                                                 .setItem(item)
-                                                 .setItemIndex(position);
-                                    }
-                                }).applyTo();
+                                doWithAnalyse(item, position);
                             }
                         });
             }
         });
+    }
+
+    private void doWithAnalyse(final FlowItemModule item, final int position) {
+        AnalysisManager.getInstance()
+                .getDataMediator().startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+            @Override
+            public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+                 mode.getData().setOccurTime(System.currentTimeMillis())
+                         .setEventType("click")
+                         .setItem(item)
+                         .setItemIndex(position);
+            }
+        }).applyTo();
     }
 }

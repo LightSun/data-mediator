@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator;
 
 /**
  * Represents a contextual mode of the user interface. this is used for 'data-module'.
- * often return by {@linkplain DataMediator}
+ * often return by {@linkplain DataMediator#startActionMode(Callback)}
  * @param <T> the module type
  * @since 1.1.3
  */
