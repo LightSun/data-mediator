@@ -123,7 +123,7 @@ public interface Student extends Serializable, Parcelable{
    ![make project](res/as_make_project.png)
 
   即可自动生成代码（数据定义没变化，不会重新生成）。
-
+ <br> 会自动生成 xxxModule 模型接口, xxxxModule_Impl 模型实现 。
 
 6, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
