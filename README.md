@@ -7,12 +7,13 @@ data-mediator
   方便数据层的使用。支持gson. 通过操作binder和代理 实现绝大部分开发属性设置。（setText, setTextColor 等等）
  <br>支持数据统计(即将上线)
 
-# 文档导航
+# 导航
  * [问题及目标](#问题及目标) 
  * [设计思想](#设计思想)
  * [特点](#特点)
  * [快速入门](#快速入门)
  * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
+ * [data-mediator-demo说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/demo_readme.md)
  * [进阶指南](#进阶指南)
  * [混淆配置](#混淆配置)
  
