@@ -9,8 +9,11 @@ import android.view.View;
 import com.heaven7.adapter.QuickRecycleViewAdapter;
 import com.heaven7.core.util.ViewHelper;
 import com.heaven7.data.mediator.demo.R;
+import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
 import com.heaven7.data.mediator.demo.module.FlowItemModule;
+import com.heaven7.java.data.mediator.ActionMode;
+import com.heaven7.java.data.mediator.DataConsumer;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,7 @@ public class TestListFragment extends BaseFragment {
     protected int getLayoutId() {
         return R.layout.frag_list1;
     }
+
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
         mRv.setLayoutManager(new LinearLayoutManager(context));
@@ -46,12 +50,16 @@ public class TestListFragment extends BaseFragment {
                         .setRootOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                AnalysisManager.getInstance().getAnalyseData()
-                                        .setOccurTime(System.currentTimeMillis())
-                                        .setEventType("click")
-                                        .setItem(item)
-                                        .setItemIndex(position);
-                                AnalysisManager.getInstance().handleAnalyseData();
+                                AnalysisManager.getInstance()
+                                        .getDataMediator().startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+                                    @Override
+                                    public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+                                         mode.getData().setOccurTime(System.currentTimeMillis())
+                                                 .setEventType("click")
+                                                 .setItem(item)
+                                                 .setItemIndex(position);
+                                    }
+                                }).applyTo();
                             }
                         });
             }

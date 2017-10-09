@@ -9,10 +9,12 @@ import com.heaven7.adapter.BaseFragmentPagerAdapter;
 import com.heaven7.core.util.BundleHelper;
 import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
+import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
 import com.heaven7.data.mediator.demo.fragment.TestListFragment;
 import com.heaven7.data.mediator.demo.module.FlowItemModule;
 import com.heaven7.data.mediator.demo.util.InternalViewUtil;
+import com.heaven7.java.data.mediator.ActionMode;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 
 import org.heaven7.core.view.SlidingTabLayout;
@@ -57,11 +59,14 @@ public class TestAnalyseActivity extends BaseActivity {
     }
     @Override
     protected void onDestroy() {
-        AnalysisManager.getInstance().getAnalyseData()
-                .setExitTime(System.currentTimeMillis())
-                .setEventType("normal_exit")
-        ;
-        AnalysisManager.getInstance().handleAnalyseData();
+        AnalysisManager.getInstance().getDataMediator()
+                .startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+            @Override
+            public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+                mode.getData().setExitTime(System.currentTimeMillis())
+                        .setEventType("normal_exit");
+            }
+        }).applyTo();
         super.onDestroy();
     }
 

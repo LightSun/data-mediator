@@ -138,22 +138,16 @@ public final class DataMediator<T> {
     }
 
     /**
-     * apply the data to target consumer.
-     * @param consumer the data consumer
-     * @since 1.1.2
+     * start action mode with target callback.
+     * @param callback the callback of action mode
+     * @return the action mode
+     * @since 1.1.3
      */
-    public void applyTo(DataConsumer<? super T> consumer){
-        mediator.applyTo(consumer);
+    public ActionMode<T> startActionMode(ActionMode.Callback<T> callback){
+        ActionMode<T> mode = new ActionMode<T>(this);
+        callback.onPrepareActionMode(mode);
+        return mode;
     }
-
-    /**
-     * apply the data to current consumer.so you should calla {@linkplain #setDataConsumer(DataConsumer)} first.
-     * @since 1.1.2
-     */
-    public void applyTo(){
-        mediator.applyTo();
-    }
-
     //=======================================================
     /**
      * add a data mediator callback
