@@ -4,8 +4,8 @@ data-mediator
 
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
-  方便数据层的使用。支持gson. 通过操作binder和代理 实现绝大部分开发属性设置。（setText, setTextColor 等等）
- <br>支持数据统计(即将上线)
+  方便数据层的使用。支持属性回调，支持gson. 通过操作binder和代理 实现绝大部分开发属性设置。（setText, setTextColor 等等）
+ <br>支持数据统计
 [demo下载](https://github.com/LightSun/data-mediator/tree/master/output/app-debug.apk)
 
 # 导航
@@ -50,7 +50,7 @@ data-mediator
   <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
   <br>     比如 toString. 可选择某些字段参加或者不参加toString方法. hashCode和equals同理
   
-- 支持List属性编辑器。 （相当于对list的增删改增加了便捷操作）
+- 支持List/SparseArray属性编辑器. （相当于对list/SparseArray的增删改增加了便捷操作）
       
 - 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
    * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
