@@ -23,9 +23,6 @@ import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 import com.heaven7.java.data.mediator.internal.SparseArrayDelegate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * the sparse array editor
  * Created by heaven7 on 2017/10/3.

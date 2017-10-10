@@ -98,6 +98,9 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         final String interfaceName = mElement.getSimpleName() + DataMediatorConstants.INTERFACE_SUFFIX;
         TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
                 .addModifiers(Modifier.PUBLIC);
+        //doc
+        interfaceBuilder.addJavadoc(CodeBlock.of(DataMediatorConstants.DOC));
+
         final TypeName selfParamType = TypeVariableName.get(interfaceName);
 
         //set target class info
@@ -158,6 +161,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         final String className = mElement.getSimpleName() + DataMediatorConstants.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
+        //doc
+        implBuilder.addJavadoc(CodeBlock.of(DataMediatorConstants.DOC));
 
         //set target class info
         mClassInfo.setCurrentClassname(className);

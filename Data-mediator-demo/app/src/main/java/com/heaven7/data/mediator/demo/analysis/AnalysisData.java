@@ -24,5 +24,5 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
         @Field(propName = "apiVersion", flags = FLAGS_ALL_SCOPES & ~FLAG_RESET),
         @Field(propName = "net", flags = FLAGS_ALL_SCOPES & ~FLAG_RESET),
 },maxPoolCount = 5)
-public interface AnalysisData extends ICopyable<AnalysisData>, IResetable{
+public interface AnalysisData extends ICopyable, IResetable{
 }

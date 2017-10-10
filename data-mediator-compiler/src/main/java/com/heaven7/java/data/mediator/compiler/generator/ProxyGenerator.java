@@ -37,10 +37,13 @@ public class ProxyGenerator {
         ParameterizedTypeName superTypeName = ParameterizedTypeName.get(
                 ClassName.get(PKG_PROP, SIMPLE_NAME_BASE_MEDIATOR), cn_inter);
 
+        //proxy
         TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(interfaceName + PROXY_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(superTypeName)
                 .addSuperinterface(cn_inter);
+        //doc
+        typeBuilder.addJavadoc(CodeBlock.of(DataMediatorConstants.DOC));
 
         //constructor
         typeBuilder.addMethod(MethodSpec.constructorBuilder().addParameter(cn_inter, "base")
