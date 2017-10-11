@@ -2,6 +2,7 @@ package com.heaven7.data.mediator.demo;
 
 
 import com.heaven7.data.mediator.demo.activity.*;
+import com.heaven7.data.mediator.demo.util.ShortCutIconDelegate;
 
 import java.util.List;
 
@@ -24,6 +25,5 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestRecyclerListBind2Activity.class, "Test binder recycler list2"));
         list.add(new ActivityInfo(TestSparseArrayActivity.class, "Test sparse array callback"));
         list.add(new ActivityInfo(TestAnalyseActivity.class, "Test analyse"));
-
     }
 }

@@ -57,6 +57,15 @@ public class Property{
      }
 
      /**
+      * get the type as String.
+      * @return the type as String.
+      * @since 1.2.0
+      */
+     public String getTypeString(){
+          return type;
+     }
+
+     /**
       * indicate the type of property is primitive or not.
       * @return true if is primitive
       * @since 1.0.8
