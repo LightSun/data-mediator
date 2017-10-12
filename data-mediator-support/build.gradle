@@ -1,13 +1,30 @@
-group 'com.heaven7.java.data.mediator.support'
-version '1.0-SNAPSHOT'
+//group 'com.heaven7.java.data.mediator.support'
+//version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
-sourceCompatibility = 1.8
+//sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.4.0'
+    }
+}
 
 repositories {
     jcenter()
-    mavenCentral()
+}
+allprojects {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
 }
 
 dependencies {
@@ -17,3 +34,14 @@ dependencies {
     compile 'com.heaven7.java.base:Java-base:1.0.9'
     compile 'com.google.code.gson:gson:2.8.2'
 }
+
+publish {
+    userOrg = 'lightsun' //bintray user name
+    groupId = 'com.heaven7.java.data.mediator.support.gson'
+    artifactId = 'data-mediator-support'
+    publishVersion = '1.0'
+    desc = 'this is a java gson-support lib of data mediator. '
+    website = 'https://github.com/LightSun/data-mediator'
+}
+//cmd: gradle bintrayUpload -PbintrayUser=lightsun -PbintrayKey=xxx -PdryRun=false
+// need jdk1.8  gradle 3.0+
