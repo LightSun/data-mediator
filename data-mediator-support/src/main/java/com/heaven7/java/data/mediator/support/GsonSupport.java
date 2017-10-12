@@ -38,9 +38,10 @@ public class GsonSupport {
     private static final String SUFFIX_IMPL = "_Impl";
 
     /**
-     * convert the target object to json. currently support simple object, array , list.
+     * convert the target object to json. currently support simple object, array , list. SparseArray
      * @param t the object. must have annotation {@linkplain JsonAdapter}
      * @return the json string.
+     * @see SparseArray
      */
     public static String toJson(Object t) {
         String ImplName = t.getClass().getName();
