@@ -4,6 +4,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
 
 //@Fields(serializeName="", propertyNmae="",flags, type=A.class)
 
@@ -96,4 +98,205 @@ public @interface Field {
 	 * @return the flags.
 	 */
 	int flags() default 0;
+
+	/**
+	 * define the {@literal @}Since annotation for gson.
+	 * <p>Here is a demo :
+	 * <code><pre>
+	 //data module
+	 public class Car3 {
+
+		 {@literal @}Since(2.0)
+		private String mark;
+
+		 {@literal @}Since(2.1)
+		private int model;
+
+		 {@literal @}Until(1.9)
+		private String type;
+
+		 {@literal @}Until(2.1)
+		private String maker;
+
+		private double cost;
+
+		private List<String> colors = new ArrayList<String>();
+
+		public String getMark() {
+		return mark;
+		}
+		public void setMark(String mark) {
+		this.mark = mark;
+		}
+
+		public int getModel() {
+		return model;
+		}
+		public void setModel(int model) {
+		this.model = model;
+		}
+
+		public String getType() {
+		return type;
+		}
+		public void setType(String type) {
+		this.type = type;
+		}
+
+		public String getMaker() {
+		return maker;
+		}
+		public void setMaker(String maker) {
+		this.maker = maker;
+		}
+
+		public double getCost() {
+		return cost;
+		}
+		public void setCost(double cost) {
+		this.cost = cost;
+		}
+
+		public List<String> getColors() {
+		return colors;
+		}
+		public void setColors(List<String> colors) {
+		this.colors = colors;
+		}
+
+		 {@literal @}Override
+		public String toString() {
+		return "Car3 [mark=" + mark + ", model=" + model + ", type=" + type
+		+ ", maker=" + maker + ", cost=" + cost + ", colors=" + colors
+		+ "]";
+		}
+	}
+	 //calling demo
+	 Gson gson = new GsonBuilder().setVersion(2.0).create();
+	 Car3 car = new Car3();
+	 car.setMark("AUDI");
+	 car.setModel(2014); //2,1
+	 car.setType("DIESEL");
+	 car.setMaker("AUDI GERMANY");
+	 car.setCost(55000);
+
+	 car.getColors().add("GREY");
+	 car.getColors().add("BLACK");
+	 car.getColors().add("WHITE");
+
+	 // Serialize
+	String jsonString = gson.toJson(car);
+        System.out.println("Serialized jsonString : " + jsonString);
+
+	// Deserialize
+	String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\",\"cost\":55000,\"colors\":[\"GRAY\",\"BLACK\",\"WHITE\"]}";
+	car = gson.fromJson(inputJson, Car3.class);
+        System.out.println("Deserialized Car : " + car);
+	 </pre></code>
+	 * </p>
+	 * @return the since version .must >= 1.0
+	 * @see Field#until()
+	 * @since 1.0.5
+	 */
+	double since() default 1.0;
+	/**
+	 * define the {@literal @}Until annotation for gson.
+	 * <p>Here is a demo :
+	 * <code><pre>
+	 //data module
+	 public class Car3 {
+
+		 {@literal @}Since(2.0)
+		 private String mark;
+
+		 {@literal @}Since(2.1)
+		 private int model;
+
+		 {@literal @}Until(1.9)
+		 private String type;
+
+		 {@literal @}Until(2.1)
+		 private String maker;
+
+		 private double cost;
+
+		 private List<String> colors = new ArrayList<String>();
+
+		 public String getMark() {
+		 return mark;
+		 }
+		 public void setMark(String mark) {
+		 this.mark = mark;
+		 }
+
+		 public int getModel() {
+		 return model;
+		 }
+		 public void setModel(int model) {
+		 this.model = model;
+		 }
+
+		 public String getType() {
+		 return type;
+		 }
+		 public void setType(String type) {
+		 this.type = type;
+		 }
+
+		 public String getMaker() {
+		 return maker;
+		 }
+		 public void setMaker(String maker) {
+		 this.maker = maker;
+		 }
+
+		 public double getCost() {
+		 return cost;
+		 }
+		 public void setCost(double cost) {
+		 this.cost = cost;
+		 }
+
+		 public List<String> getColors() {
+		 return colors;
+		 }
+		 public void setColors(List<String> colors) {
+		 this.colors = colors;
+		 }
+
+		 {@literal @}Override
+		 public String toString() {
+		 return "Car3 [mark=" + mark + ", model=" + model + ", type=" + type
+		 + ", maker=" + maker + ", cost=" + cost + ", colors=" + colors
+		 + "]";
+		 }
+	 }
+	 //calling demo
+	 Gson gson = new GsonBuilder().setVersion(2.0).create();
+	 Car3 car = new Car3();
+	 car.setMark("AUDI");
+	 car.setModel(2014); //2,1
+	 car.setType("DIESEL");
+	 car.setMaker("AUDI GERMANY");
+	 car.setCost(55000);
+
+	 car.getColors().add("GREY");
+	 car.getColors().add("BLACK");
+	 car.getColors().add("WHITE");
+
+	 // Serialize
+	 String jsonString = gson.toJson(car);
+	 System.out.println("Serialized jsonString : " + jsonString);
+
+	 // Deserialize
+	 String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\",\"cost\":55000,\"colors\":[\"GRAY\",\"BLACK\",\"WHITE\"]}";
+	 car = gson.fromJson(inputJson, Car3.class);
+	 System.out.println("Deserialized Car : " + car);
+	 </pre></code>
+	 * </p>
+	 * @return the until version .
+	 * @see Field#since()
+	 * @since 1.0.5
+	 */
+	double until() default Integer.MAX_VALUE;
 }

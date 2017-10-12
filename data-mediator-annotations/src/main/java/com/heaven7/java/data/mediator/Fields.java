@@ -40,7 +40,7 @@ public @interface Fields {
 	Field[] value();
 
 	/**
-	 * enable generate code of the chain call style or not（normal java bean）. here is a chain call demo :
+	 * enable generate code of the chain call style or not(normal java bean). here is a chain call demo :
 	 * <code><pre>
 	 *     Person p = new Person().setName(xxx).setAge(xxx).setId(xxx);
 	 * </pre></code>
