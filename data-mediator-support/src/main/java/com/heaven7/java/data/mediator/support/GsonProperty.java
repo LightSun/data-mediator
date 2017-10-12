@@ -26,6 +26,8 @@ import com.heaven7.java.data.mediator.Property;
 public class GsonProperty extends Property {
 
     private String seriaName;
+    private double since;
+    private double until;
     /**
      * create a property instance by type , name  and complex type
      *
@@ -36,24 +38,54 @@ public class GsonProperty extends Property {
      *                     {@linkplain com.heaven7.java.data.mediator.FieldFlags#COMPLEXT_LIST},
      *                     {@linkplain com.heaven7.java.data.mediator.FieldFlags#COMPLEX_SPARSE_ARRAY},
      */
-    public GsonProperty(String type, String name, int complexType) {
+    private GsonProperty(String type, String name, int complexType) {
         super(type, name, complexType);
     }
-
-    public String getSerializeName() {
+    public String getRealSerializeName() {
         return seriaName == null || seriaName.length()==0 ? getName() : seriaName;
     }
     public void setSerializeName(String serializableName) {
         this.seriaName = serializableName;
     }
+    public String getSerializeName() {
+        return seriaName;
+    }
+    public double getUntil() {
+        return until;
+    }
+    public void setUntil(double until) {
+        this.until = until;
+    }
 
+    public double getSince() {
+        return since;
+    }
+    public void setSince(double since) {
+        this.since = since;
+    }
+
+    /**
+     * create gson property from target parameters.
+     * @param prop the base property
+     * @param serializeName the serialize name of gson
+     * @param since the since of gson
+     * @param util the until of gson
+     * @return the gson property
+     */
+    public static GsonProperty of(Property prop, String serializeName, double since, double util){
+        GsonProperty gp = new GsonProperty(prop.getType().getName(), prop.getName(),prop.getComplexType());
+        gp.setSerializeName(serializeName);
+        gp.setSince(since);
+        gp.setUntil(util);
+        return gp;
+    }
     /**
      * wrap the normal property to {@linkplain GsonProperty}
      * @param prop the normal property
      * @param serializeName the serialize name
      * @return the gson property.
      */
-    public static GsonProperty wrap(Property prop, String serializeName){
+    public static GsonProperty of(Property prop, String serializeName){
         GsonProperty gp = new GsonProperty(prop.getType().getName(), prop.getName(),prop.getComplexType());
         gp.setSerializeName(serializeName);
         return gp;
@@ -63,7 +95,7 @@ public class GsonProperty extends Property {
      * @param prop the normal property
      * @return the gson property.
      */
-    public static GsonProperty wrap(Property prop){
-        return wrap(prop, "");
+    public static GsonProperty of(Property prop){
+        return of(prop, "");
     }
 }

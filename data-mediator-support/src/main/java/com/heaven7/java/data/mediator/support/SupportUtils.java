@@ -25,7 +25,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
- *
+ * a util of support gson for data-mediator
+ *@author heaven7
  */
 public class SupportUtils {
 

@@ -8,7 +8,9 @@ targetCompatibility = JavaVersion.VERSION_1_7
 
 buildscript {
     repositories {
-        jcenter()
+        jcenter{
+            url "http://jcenter.bintray.com/"
+        }
     }
     dependencies {
         classpath 'com.novoda:bintray-release:0.4.0'
@@ -16,7 +18,9 @@ buildscript {
 }
 
 repositories {
-    jcenter()
+    jcenter{
+        url "http://jcenter.bintray.com/"
+    }
 }
 allprojects {
     tasks.withType(Javadoc) {

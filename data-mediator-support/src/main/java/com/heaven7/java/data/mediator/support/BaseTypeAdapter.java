@@ -52,7 +52,7 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
                 continue;
             }
             //gson name
-            out.name(prop.getSerializeName());
+            out.name(prop.getRealSerializeName());
 
           //  log("simpleType = " + simpleType.getName());
             getTypeHandler(prop).write(out, prop, val);
@@ -80,7 +80,7 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
 
     private GsonProperty getProperty(String name){
         for (GsonProperty prop : mProps) {
-            if(name.equals(prop.getSerializeName())){
+            if(name.equals(prop.getRealSerializeName())){
                 return prop;
             }
         }

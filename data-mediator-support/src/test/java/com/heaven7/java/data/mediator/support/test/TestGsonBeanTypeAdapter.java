@@ -14,15 +14,15 @@ public class TestGsonBeanTypeAdapter extends BaseTypeAdapter<TestGsonBean> {
 
     public TestGsonBeanTypeAdapter() {
         super(Arrays.asList(
-                GsonProperty.wrap(TestGsonBean.PROP_car),
-                GsonProperty.wrap(TestGsonBean.PROP_mList),
-                GsonProperty.wrap(TestGsonBean.PROP_carsArr),
-                GsonProperty.wrap(TestGsonBean.PROP_carMap),
+                GsonProperty.of(TestGsonBean.PROP_car),
+                GsonProperty.of(TestGsonBean.PROP_mList),
+                GsonProperty.of(TestGsonBean.PROP_carsArr),
+                GsonProperty.of(TestGsonBean.PROP_carMap),
 
-                GsonProperty.wrap(TestGsonBean.PROP_f_val),
-                GsonProperty.wrap(TestGsonBean.PROP_doubles),
-                GsonProperty.wrap(TestGsonBean.PROP_doubleList),
-                GsonProperty.wrap(TestGsonBean.PROP_doubelSparse))
+                GsonProperty.of(TestGsonBean.PROP_f_val),
+                GsonProperty.of(TestGsonBean.PROP_doubles),
+                GsonProperty.of(TestGsonBean.PROP_doubleList),
+                GsonProperty.of(TestGsonBean.PROP_doubelSparse))
         );
     }
 
