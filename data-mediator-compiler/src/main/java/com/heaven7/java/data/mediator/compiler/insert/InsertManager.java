@@ -12,16 +12,23 @@ import java.util.Collection;
  */
 public final class InsertManager {
 
-    private static final ArrayList<IInterfaceInsertDelegate> sInserts;
+    private static final ArrayList<TypeInsertDelegate> sInserts;
 
     static {
         sInserts = new ArrayList<>(4);
         sInserts.add(new PoolableInsertDelegate());
+        sInserts.add(new TypeAdapterInsertDelegate());
     }
 
     public static void setClassInfo(TargetClassInfo info){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.setClassInfo(info);
+        }
+    }
+
+    public static void addClassAnnotation(TypeSpec.Builder typeBuilder){
+        for (TypeInsertDelegate delegate : sInserts){
+            delegate.addClassAnnotation(typeBuilder);
         }
     }
 
@@ -31,7 +38,7 @@ public final class InsertManager {
      * @param param the extra param
      */
     public static void addStaticCode(TypeSpec.Builder typeBuilder, Object param){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.addStaticCode(typeBuilder, param);
         }
     }
@@ -42,7 +49,7 @@ public final class InsertManager {
      * @param fields the all fields use in constructor
      */
     public static void addConstructor(TypeSpec.Builder typeBuilder, Collection<FieldData> fields){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.addConstructor(typeBuilder, fields);
         }
     }
@@ -52,7 +59,7 @@ public final class InsertManager {
      * @param typeBuilder the type builder
      */
     public static void addSuperInterface(TypeSpec.Builder typeBuilder){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.addSuperInterface(typeBuilder);
         }
     }
@@ -62,7 +69,7 @@ public final class InsertManager {
      * @param fields the fields
      */
     public static void overrideMethodsForProxy(TypeSpec.Builder typeBuilder, Collection<FieldData> fields){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.overrideMethodsForProxy(typeBuilder, fields);
         }
     }
@@ -72,7 +79,7 @@ public final class InsertManager {
      * @param fields the fields
      */
     public static void overrideMethodsForImpl(TypeSpec.Builder typeBuilder, Collection<FieldData> fields){
-        for (IInterfaceInsertDelegate delegate : sInserts){
+        for (TypeInsertDelegate delegate : sInserts){
             delegate.overrideMethodsForImpl(typeBuilder, fields);
         }
     }

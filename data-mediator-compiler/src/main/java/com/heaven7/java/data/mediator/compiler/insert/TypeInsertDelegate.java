@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Created by heaven7 on 2017/9/28 0028.
  */
-public abstract class IInterfaceInsertDelegate {
+public abstract class TypeInsertDelegate {
 
     private TargetClassInfo mClassInfo;
 
@@ -20,6 +20,13 @@ public abstract class IInterfaceInsertDelegate {
         this.mClassInfo = mClassInfo;
     }
 
+    /**
+     * add annotation for current class.
+     * @param typeBuilder the builder
+     */
+    public void addClassAnnotation(TypeSpec.Builder typeBuilder){
+
+    }
     /**
      * add static code
      * @param typeBuilder the class builder

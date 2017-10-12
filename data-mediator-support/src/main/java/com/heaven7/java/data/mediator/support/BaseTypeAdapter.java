@@ -21,8 +21,10 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.heaven7.java.base.util.Throwables;
+import com.heaven7.java.data.mediator.GlobalSetting;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.support.SupportUtils.getValue;
@@ -41,12 +43,26 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
         Throwables.checkNull(props);
         this.mProps = props;
     }
+    public BaseTypeAdapter(){
+        this(new ArrayList<GsonProperty>());
+    }
+
+    public void addGsonProperty(GsonProperty gp){
+        mProps.add(gp);
+    }
 
     @Override
     public void write(JsonWriter out, T obj) throws IOException {
         //log("BaseTypeAdapter_write");
         out.beginObject();
         for (GsonProperty prop : mProps) {
+            //check version
+            //current 1.5 < since 2, . no
+            //current 2.1 > until 2, . no
+            if(prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
+                    || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()){
+                 continue;
+            }
             Object val = getValue(prop, obj);
             if (val == null) {
                 continue;
@@ -66,16 +82,23 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
         in.beginObject();
         final T t = create() ;
         while (in.hasNext()) {
-            GsonProperty property = getProperty(in.nextName());
-            if(property == null){
+            GsonProperty prop = getProperty(in.nextName());
+            //check null and version
+            if(prop == null || prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
+                    || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()){
                 in.skipValue();
             }else {
-                getTypeHandler(property).read(in, property, t);
+                getTypeHandler(prop).read(in, prop, t);
             }
         }
         in.endObject();
         return t;
     }
+
+    /**
+     * create instance for read.
+     * @return the instance
+     */
     protected abstract T create();
 
     private GsonProperty getProperty(String name){

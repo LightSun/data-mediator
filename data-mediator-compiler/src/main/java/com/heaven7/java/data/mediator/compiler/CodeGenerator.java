@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.ProxyGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.TypeAdapterGenerator;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
@@ -170,8 +171,14 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
-        // DataPools.preparePool("", 5);
+        //type adapter.
+        if(!TypeAdapterGenerator.generate(mClassInfo, mFields, filer)){
+            return false;
+        }
+
+        //all insert: like:  DataPools.preparePool("", 5); / TypeHandler.registerTypeAdapter(Car3.class, new Car3TypeAdapter());
         setClassInfo(mClassInfo);
+        addClassAnnotation(implBuilder);
         addStaticCode(implBuilder,  mMaxPoolCount);
 
         final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
@@ -307,7 +314,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
     }
 
     private void insertOverrideMethods(TypeSpec.Builder implBuilder, boolean usedSuperClass, boolean hasSelectable) {
-        List<FieldData> list = new ArrayList<>(mFields);
+        Set<FieldData> list = new HashSet<>(mFields);
         //super will handle it. sub class should not handle it.
         if(!usedSuperClass && hasSelectable){
             list.add(FD_SELECTABLE);

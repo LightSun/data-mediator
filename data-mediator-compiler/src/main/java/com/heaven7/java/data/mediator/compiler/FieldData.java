@@ -74,6 +74,28 @@ public class FieldData {
     private int complexType;
     private TypeCompat mTypeCompat = sTC_STRING; //default to string
 
+    private double since = -1;
+    private double until = -1;
+
+    public boolean isSinceEnabled(){
+        return since >= 1.0;
+    }
+    public boolean isUntilEnabled(){
+        return until >= 1.0;
+    }
+    public double getSince() {
+        return since;
+    }
+    public void setSince(double since) {
+        this.since = since;
+    }
+    public double getUntil() {
+        return until;
+    }
+    public void setUntil(double until) {
+        this.until = until;
+    }
+
     public String getPropertyName() {
         return propertyName;
     }

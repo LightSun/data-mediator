@@ -16,7 +16,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMP
  * DataPools.Poolable
  * Created by heaven7 on 2017/9/28 0028.
  */
-/*public*/ class PoolableInsertDelegate extends IInterfaceInsertDelegate{
+/*public*/ class PoolableInsertDelegate extends TypeInsertDelegate {
 
     @Override
     public void addStaticCode(TypeSpec.Builder typeBuilder, Object maxCount){

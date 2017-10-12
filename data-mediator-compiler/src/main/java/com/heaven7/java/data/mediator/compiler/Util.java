@@ -229,6 +229,10 @@ public final class Util {
         return methodBuilder;
     }
 
+    public static String getTypeAdapterName(String type){
+       return TYPE_ADAPTER_PREFIX + type + TYPE_ADAPTER_PREFIX + "TypeAdapter";
+    }
+
     //serializeable.
     static Modifier[] getFieldModifier(FieldData fieldData) {
         final int flags = fieldData.getFlags();

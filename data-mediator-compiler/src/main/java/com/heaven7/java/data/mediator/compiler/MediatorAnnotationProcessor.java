@@ -19,9 +19,9 @@ import static javax.lang.model.element.Modifier.STATIC;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-@SupportedAnnotationTypes({
+/*@SupportedAnnotationTypes({
         "com.heaven7.java.data.mediator.Fields"
-})//可以用"*"表示支持所有Annotations
+})*///可以用"*"表示支持所有Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor {
 
@@ -57,7 +57,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     public Set<String> getSupportedOptions() {
         Set<String> types = new LinkedHashSet<>();
         types.add(Fields.class.getName());
-        // types.add(OnClick.class.getName());
+         //TODO add global setting
+        //types.add("com.heaven7.java.data.mediator.GlobalConfig");
         return types;
     }
 
@@ -71,7 +72,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if(annotations.isEmpty()){
             return false;
         }
-
+        //TODO add global setting
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
             note(":process" ,"@Fields >>> element = " + element);

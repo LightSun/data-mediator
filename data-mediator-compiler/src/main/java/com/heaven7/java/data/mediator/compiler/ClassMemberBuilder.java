@@ -115,6 +115,20 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
                     .build()
             );
         }
+        //@since
+        if(field.isSinceEnabled()){
+            ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_SINCE);
+            builder.addAnnotation(AnnotationSpec.builder(cn_since)
+                    .addMember("value", "$L", field.getSince())
+                    .build());
+        }
+        //@until
+        if(field.isUntilEnabled()){
+            ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_UTIL);
+            builder.addAnnotation(AnnotationSpec.builder(cn_since)
+                    .addMember("value", "$L", field.getUntil())
+                    .build());
+        }
         return builder;
     }
 }

@@ -116,6 +116,14 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         typeCompat.replaceIfNeed(pp);
                         break;
 
+                    case STR_SINCE:
+                        data.setSince(Double.valueOf(av.getValue().toString()));
+                        break;
+
+                    case STR_UNTIL:
+                        data.setUntil(Double.valueOf(av.getValue().toString()));
+                        break;
+
                     default:
                         pp.note(TAG, methodName, "unsupport name = " + key.getSimpleName().toString());
                 }
