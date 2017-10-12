@@ -26,8 +26,8 @@ import com.heaven7.java.data.mediator.Property;
 public class GsonProperty extends Property {
 
     private String seriaName;
-    private double since;
-    private double until;
+    private double since = 1.0;
+    private double until = Integer.MAX_VALUE;
     /**
      * create a property instance by type , name  and complex type
      *

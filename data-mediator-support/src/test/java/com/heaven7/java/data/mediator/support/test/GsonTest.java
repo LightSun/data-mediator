@@ -36,7 +36,7 @@ public class GsonTest {
          */
         String json = gson.toJson(module, StudentModuleImpl.class);
         log(json);
-        IStudent stu = gson.fromJson(json, StudentModuleImpl.class);
+        IStudent stu = gson.fromJson(json, IStudent.class);
         log(stu);
     }
 

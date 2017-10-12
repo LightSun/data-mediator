@@ -89,8 +89,8 @@ public abstract class TypeHandler {
         return getTypeHandlerInternal(prop.getComplexType());
     }
 
-    public static  TypeAdapter getTypeAdapter(Class<?> type){
-        return sTypeAdapterMap.get(type);
+    public static TypeAdapter getTypeAdapter(Class<?> type){
+        return  sTypeAdapterMap.get(type);
     }
     private static TypeHandler getTypeHandlerInternal(int complexType) {
         TypeHandler handler = sHandlers.get(complexType);

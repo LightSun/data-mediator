@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * a util of support gson for data-mediator
  *@author heaven7
  */
-public class SupportUtils {
+/*public*/ class SupportUtils {
 
     public static Object getValue(Property p, Object obj) {
         String name = p.getName();
@@ -119,7 +119,7 @@ public class SupportUtils {
         }
         return false;
     }
-    /*public static void log(Object obj){
+    public static void log(Object obj){
         System.out.println(obj);
-    }*/
+    }
 }
