@@ -73,7 +73,7 @@ public class GsonProperty extends Property {
      * @return the gson property
      */
     public static GsonProperty of(Property prop, String serializeName, double since, double util){
-        GsonProperty gp = new GsonProperty(prop.getType().getName(), prop.getName(),prop.getComplexType());
+        GsonProperty gp = new GsonProperty(prop.getTypeString(), prop.getName(),prop.getComplexType());
         gp.setSerializeName(serializeName);
         gp.setSince(since);
         gp.setUntil(util);

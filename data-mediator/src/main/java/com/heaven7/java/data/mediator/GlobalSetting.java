@@ -1,13 +1,14 @@
 package com.heaven7.java.data.mediator;
 
 /**
- * the global setting
+ * the global setting of 'data-mediator'.
  * @author heaven7
  * @since 1.2.0
  */
 public final class GlobalSetting {
 
     private double currentVersion = 1.0; //default
+    private boolean generateJsonAdapter = true;
 
     private static class Creator{
        static final GlobalSetting INSTANCE = new GlobalSetting();
@@ -17,11 +18,16 @@ public final class GlobalSetting {
     public static GlobalSetting getDefault(){
         return Creator.INSTANCE;
     }
-
     public double getCurrentVersion() {
         return currentVersion;
     }
     public void setCurrentVersion(double currentVersion) {
         this.currentVersion = currentVersion;
+    }
+    public boolean isGenerateJsonAdapter() {
+        return generateJsonAdapter;
+    }
+    public void setGenerateJsonAdapter(boolean generateJsonAdapter) {
+        this.generateJsonAdapter = generateJsonAdapter;
     }
 }

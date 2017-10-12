@@ -45,7 +45,9 @@ public class Property{
       * create a property instance by type , name  and complex type
       * @param type the type string. eg: 'int', 'java.lang.Integer'
       * @param name the property name
-      * @param complexType the complex type. see {@linkplain FieldFlags#COMPLEXT_ARRAY} and {@linkplain FieldFlags#COMPLEXT_LIST}
+      * @param complexType the complex type. see {@linkplain FieldFlags#COMPLEXT_ARRAY} ,
+      *                      {@linkplain FieldFlags#COMPLEXT_LIST},
+      *                      {@linkplain FieldFlags#COMPLEX_SPARSE_ARRAY},
       */
      public Property(String type, String name, int complexType) {
           if(type == null || name == null){

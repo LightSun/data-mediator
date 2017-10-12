@@ -53,7 +53,7 @@ public class GsonSupport {
         if(t instanceof SparseArray){
             SparseArray sa = (SparseArray) t;
             if(sa.size() == 0){
-                return "";
+                return "{}";
             }
             Class<?> clazz = sa.valueAt(0).getClass();
           /*  builder.registerTypeAdapter(
