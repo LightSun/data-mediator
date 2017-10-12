@@ -4,6 +4,7 @@
  * [binder简单应用](#2)
  * [属性回调](#3)
  * [List属性编辑器](#4)
+ * [SparseArray属性编辑器](#5)
  
 # <h2 id="1">gson注解生成</h2>
  * 最开始的时候想到的就是和gson搭配。sample:
@@ -245,7 +246,139 @@ public interface StudentBind extends IDataMediator, ISelectable{
 ```
  复杂么？ 不复杂，第一步绑定了列表。然后改变数据的时候回调到了ListBinderCallback.IItemManager
   
- 
+ # <h2 id="5">SparseArray属性编辑器</h2>
+  - 当属性类型是SparseArray时，会自动生成SparseArray属性编辑器: beginXXXEdiator, XXX是属性名称.
+  - 下面是一个示例程序:
+  ```java
+  public class TestSparseArrayActivity extends BaseActivity {
+
+    private static final String TAG = "TestSparseArray";
+    @BindView(R.id.tv_sa)
+    TextView mTv_sa;
+
+    private DataMediator<TestBindModule> mDm;
+    private Set<Integer> mIndexes = new HashSet<>();
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.ac_test_sparse_array;
+    }
+
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        mDm = DataMediatorFactory.createDataMediator(TestBindModule.class);
+        // 这里直接用属性回调。也可以用binder.bind(String property, SparseArrayPropertyCallback<? super T> callback)方法
+        mDm.addDataMediatorCallback(DataMediatorCallback.createForSparse(
+                TestBindModule.PROP_cityData2.getName(), new CallbackImpl()));
+
+    }
+
+    // put 操作
+    @OnClick(R.id.bt_put)
+    public void onClickPut(View v){
+        final StudentModule stu = createStu(-1);
+        mDm.getDataProxy().beginCityData2Editor()
+                .put((int)stu.getId(), stu)
+                .end();
+    }
+
+    // 移除操作(通过key)
+    @OnClick(R.id.bt_remove_key)
+    public void onClickRemoveByKey(View v){
+        if(!mIndexes.isEmpty()){
+            final Integer index = mIndexes.iterator().next();
+            mDm.getDataProxy().beginCityData2Editor()
+                    .remove(index);
+            mIndexes.remove(index);
+        }else{
+            mTv_sa.setText("");
+            Logger.w(TAG , "onClickRemoveByKey", "already empty");
+        }
+    }
+
+    // 移除操作(通过value)
+    @OnClick(R.id.bt_remove_value)
+    public void onClickRemoveByValue(View v){
+        if(!mIndexes.isEmpty()){
+            final Integer index = mIndexes.iterator().next();
+            mDm.getDataProxy().beginCityData2Editor()
+                    .removeByValue(createStu(index));
+            mIndexes.remove(index);
+        }else{
+            mTv_sa.setText("");
+            Logger.w(TAG , "onClickRemoveByValue", "already empty");
+        }
+    }
+
+    //清空操作
+    @OnClick(R.id.bt_clear)
+    public void onClickClear(View v){
+        if(!mIndexes.isEmpty()){
+            mDm.getDataProxy().beginCityData2Editor().clear();
+            mIndexes.clear();
+        }else{
+            mTv_sa.setText("");
+            Logger.w(TAG , "onClickClear", "already empty");
+        }
+    }
+    private StudentModule createStu(int index) {
+        if(index < 0){
+            index = new Random().nextInt(5);
+        }
+        mIndexes.add(index);
+        return DataMediatorFactory.createData(StudentModule.class)
+                .setId(index).setName("google_" + index).setAge(index);
+    }
+
+    private void setLogText(String method, String msg){
+        mTv_sa.setText(method + ": \n  " + msg + "\n\n now is: \n"
+                + mDm.getData().getCityData2().toString());
+    }
+
+    private class CallbackImpl implements SparseArrayPropertyCallback<TestBindModule>{
+
+        @Override
+        public void onEntryValueChanged(TestBindModule data, Property prop, Integer key,
+                                        Object oldValue, Object newValue) {
+            final String msg = "oldValue = " + oldValue + " ,newValue = " + newValue;
+            Logger.i(TAG , "onEntryValueChanged", msg);
+            setLogText("onEntryValueChanged", msg);
+        }
+        @Override
+        public void onAddEntry(TestBindModule data, Property prop, Integer key, Object value) {
+            final String msg = "key = " + key + " ,value = " + value;
+            Logger.i(TAG , "onAddEntry", msg);
+            setLogText("onAddEntry", msg);
+        }
+        @Override
+        public void onRemoveEntry(TestBindModule data, Property prop, Integer key, Object value) {
+            final String msg = "key = " + key + " ,value = " + value;
+            Logger.i(TAG , "onRemoveEntry", msg);
+            setLogText("onRemoveEntry", msg);
+        }
+        @Override
+        public void onClearEntries(TestBindModule data, Property prop, Object entries) {
+            final String msg = entries.toString(); //here entries is SparseArray
+            Logger.i(TAG , "onClearEntries", msg);
+            setLogText("onClearEntries", msg);
+        }
+        @Override
+        public void onPropertyValueChanged(TestBindModule data, Property prop,
+                                           Object oldValue, Object newValue) {
+            final String msg = "oldValue = " + oldValue + " ,newValue = " + newValue;
+            Logger.i(TAG , "onPropertyValueChanged", msg);
+            setLogText("onPropertyValueChanged", msg);
+        }
+        @Override
+        public void onPropertyApplied(TestBindModule data, Property prop, Object value) {
+            final String msg = "value = " + value;
+            Logger.i(TAG , "onPropertyApplied", msg);
+            setLogText("onPropertyApplied", msg);
+        }
+    }
+}
+
+  ```
  
  
  
