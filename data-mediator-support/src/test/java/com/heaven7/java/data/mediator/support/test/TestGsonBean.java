@@ -47,7 +47,7 @@ public class TestGsonBean {
     @SerializedName("carsArr")
     private Car3[] carsArr; // no need JsonAdapter.
 
-    @JsonAdapter(Car3SparseArrayTypeAdapter.class)
+   // @JsonAdapter(Car3SparseArrayTypeAdapter.class)
     private SparseArray<Car3> carMap;
 
     private int age;
@@ -123,7 +123,12 @@ public class TestGsonBean {
     @Override
     public String toString() {
         return "TestGsonBean{" +
-                "list=" + list +
+                "car=" + car +
+                ",\n f_val=" + f_val +
+                ",\n doubles=" + Arrays.toString(doubles) +
+                ",\n doubleList=" + doubleList +
+                ",\n doubelSparse=" + doubelSparse +
+                ",\n list=" + list +
                 ",\n carsArr=" + Arrays.toString(carsArr) +
                 ",\n carMap=" + carMap +
                 ",\n age=" + age +

@@ -1,6 +1,6 @@
 package com.heaven7.java.data.mediator.support;
 
-import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.heaven7.java.data.mediator.Property;
 
@@ -8,16 +8,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class SupportUtils {
-
-    public static  TypeAdapter getTypeAdapter(Class<?> itemType){
-        return null;
-    }
-
-    public static   TypeAdapter getSparseArrayTypeAdapter(Class<?> itemType){
-        //TODO
-
-        return null;
-    }
 
     public static Object getValue(Property p, Object obj) {
         String name = p.getName();
@@ -29,6 +19,43 @@ public class SupportUtils {
             return getXXX.invoke(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void setValue(Property p, Object obj, Object val){
+        String name = p.getName();
+        String setMethodName = "set" + name.substring(0, 1)
+                .toUpperCase()
+                .concat(name.substring(1));
+        try {
+            Method setXXX = obj.getClass().getMethod(setMethodName, p.getActualType());
+            setXXX.invoke(obj, val);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Object readPrimitiveOrItsBox(JsonReader reader, Property p) throws IOException {
+        Class<?> type = p.getType();
+        if (type == void.class || type == Void.class) {
+            return null;
+        } else if (type == boolean.class || type == Boolean.class) {
+            return reader.nextBoolean();
+        } else if (type == byte.class || type == Byte.class) {
+            return (byte)reader.nextInt();
+        } else if (type == short.class || type == Short.class) {
+            return (short)reader.nextInt();
+        } else if (type == int.class || type == Integer.class) {
+            return reader.nextInt();
+        } else if (type == long.class || type == Long.class) {
+            return reader.nextLong();
+        } else if (type == char.class || type == Character.class) {
+            return (char)reader.nextLong();
+        } else if (type == float.class || type == Float.class) {
+            return (float)reader.nextDouble();
+        } else if (type == double.class || type == Double.class) {
+            return reader.nextDouble();
+        } else {
+            throw new IllegalStateException();
         }
     }
 
@@ -51,8 +78,27 @@ public class SupportUtils {
             writer.value(((Float) value).floatValue());
         } else if (type == double.class || type == Double.class) {
             writer.value(((Double) value).doubleValue());
-        }else{
+        } else {
             throw new IllegalStateException();
         }
     }
+
+    public static boolean isBoxedClass(Class<?> clazz) {
+        if (clazz == Boolean.class
+                || clazz == Void.class
+                || clazz == Byte.class
+                || clazz == Short.class
+                || clazz == Integer.class
+                || clazz == Long.class
+                || clazz == Character.class
+                || clazz == Float.class
+                || clazz == Double.class
+                ) {
+            return true;
+        }
+        return false;
+    }
+    /*public static void log(Object obj){
+        System.out.println(obj);
+    }*/
 }

@@ -22,6 +22,9 @@ public class GsonSinceUntilAnnotationsExample {
         Gson gson = new Gson();
         String json = gson.toJson(newTestGsonBean());
         log(json);
+
+        TestGsonBean bean = gson.fromJson(json, TestGsonBean.class);
+        log(bean);
     }
 
     //test List and SparseArray
