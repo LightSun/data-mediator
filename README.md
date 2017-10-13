@@ -31,6 +31,159 @@ data-mediator
 * 它的目标:
 <br>当然它还会支持很多强大的功能. 未来还会完成更加复杂业务任务.
 
+# 魅力
+ - 假设我想定义的数据实体是下面这个。
+```java
+@JsonAdapter($FlowItemModule$TypeAdapter.class)
+public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelectable {
+  public static final Parcelable.Creator<FlowItemModule_Impl> CREATOR = new Parcelable.Creator<FlowItemModule_Impl>() {
+    @Override
+    public FlowItemModule_Impl createFromParcel(Parcel in) {
+      return new FlowItemModule_Impl(in);
+    }
+
+    @Override
+    public FlowItemModule_Impl[] newArray(int size) {
+      return new FlowItemModule_Impl[size];
+    }
+  };
+
+  static {
+    TypeHandler.registerTypeAdapter(FlowItemModule_Impl.class, new $FlowItemModule$TypeAdapter());
+  }
+
+  private boolean selected;
+
+  @Since(1.2)
+  @Until(2.0)
+  private int id;
+
+  private String name;
+
+  private String desc;
+
+  protected FlowItemModule_Impl(Parcel in) {
+    this.id = in.readInt();
+    this.name = in.readString();
+    this.desc = in.readString();
+  }
+
+  public FlowItemModule_Impl() {
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(this.id);
+    dest.writeString(this.name);
+    dest.writeString(this.desc);
+  }
+
+  @Override
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+  }
+
+  @Override
+  public boolean isSelected() {
+    return this.selected;
+  }
+
+  @Override
+  public void recycle() {
+    DataPools.recycle(this);
+  }
+
+  @Override
+  public void clearProperties() {
+    this.desc = null;
+    this.id = 0;
+    this.selected = false;
+    this.name = null;
+  }
+
+  @Override
+  public String toString() {
+    Objects.ToStringHelper helper = Objects.toStringHelper(this)
+        .add("id", String.valueOf(this.id))
+        .add("name", String.valueOf(this.name))
+        .add("desc", String.valueOf(this.desc));
+    return helper.toString();
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public FlowItemModule setId(int id1) {
+    this.id = id1;
+    return this;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public FlowItemModule setName(String name1) {
+    this.name = name1;
+    return this;
+  }
+
+  public String getDesc() {
+    return desc;
+  }
+
+  public FlowItemModule setDesc(String desc1) {
+    this.desc = desc1;
+    return this;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 0;
+    result = 31 * result + getId();
+    result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+    result = 31 * result + (getDesc() != null ? getDesc().hashCode() : 0);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof FlowItemModule_Impl)) {
+      return false;
+    }
+     FlowItemModule_Impl that = (FlowItemModule_Impl) o;
+    if (getId() != that.getId()) {
+      return false;
+    }
+    if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
+      return false;
+    }
+    if (getDesc() != null ? !getDesc().equals(that.getDesc()) : that.getDesc() != null) {
+      return false;
+    }
+    return true;
+  }
+}
+```
+- 那么只要下面简短几行代码即可搞定.
+````java
+@Fields({
+        @Field(propName = "id", type = int.class,  since = 1.2, until = 2.0),
+        @Field(propName = "name" ),
+        @Field(propName = "desc" ),
+})
+public interface FlowItem extends Parcelable, ISelectable{
+}
+`````
+
 # 设计思想
 - 整个设计分3层： 模型层，代理层，调用层
 
@@ -45,7 +198,7 @@ data-mediator
 - 字段:
   * 1, 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 
    <br> 和其他类型 .数组和list结构同样支持。（map暂不支持parcelable）
-  * 2, 支持生成字段的gson注解 for 'Google-Gson'.
+  * 2, 支持所有的gson注解 for 'Google-Gson'.
   * 3, 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
   <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
   <br>     比如 toString. 可选择某些字段参加或者不参加toString方法. hashCode和equals同理
