@@ -14,7 +14,7 @@ public class TestGsonBeanTypeAdapter extends BaseTypeAdapter<TestGsonBean> {
     }
 
     public TestGsonBeanTypeAdapter() {
-        super(Arrays.asList(
+        super(new GsonProperty[]{
                 GsonProperty.of(TestGsonBean.PROP_car),
                 GsonProperty.of(TestGsonBean.PROP_mList),
                 GsonProperty.of(TestGsonBean.PROP_carsArr),
@@ -23,7 +23,7 @@ public class TestGsonBeanTypeAdapter extends BaseTypeAdapter<TestGsonBean> {
                 GsonProperty.of(TestGsonBean.PROP_f_val),
                 GsonProperty.of(TestGsonBean.PROP_doubles),
                 GsonProperty.of(TestGsonBean.PROP_doubleList),
-                GsonProperty.of(TestGsonBean.PROP_doubelSparse))
+                GsonProperty.of(TestGsonBean.PROP_doubelSparse)}
         );
     }
 

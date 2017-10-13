@@ -31,6 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.heaven7.java.data.mediator.support.gson.SupportUtils.isBoxedClass;
+import static com.heaven7.java.data.mediator.support.gson.SupportUtils.setValue;
+import static com.heaven7.java.data.mediator.support.gson.SupportUtils.writePrimitiveOrItsBox;
+
 /**
  * the type handler help us read and write object for gson.
  * @author heaven7
@@ -80,7 +84,7 @@ public abstract class TypeHandler {
 
     public static TypeHandler getTypeHandler(Property prop){
         if(prop.getComplexType() == 0){
-            if(prop.getType().isPrimitive() || SupportUtils.isBoxedClass(prop.getType())){
+            if(prop.getType().isPrimitive() || isBoxedClass(prop.getType())){
                 return PRIMITVE;
             }
         }
@@ -126,19 +130,19 @@ public abstract class TypeHandler {
         @Override
         public void read(JsonReader in, GsonProperty property, Object t) throws IOException {
             Object val = getTypeAdapter(property.getType()).read(in);
-            SupportUtils.setValue(property, t, val);
+            setValue(property, t, val);
         }
     }
 
     private static class PrimitiveTypeHandler extends TypeHandler {
         @Override
         public void write(JsonWriter writer, GsonProperty property, Object value) throws IOException {
-            SupportUtils.writePrimitiveOrItsBox(writer, property.getType(), value);
+            writePrimitiveOrItsBox(writer, property.getType(), value);
         }
         @Override
         public void read(JsonReader in, GsonProperty property, Object t) throws IOException {
             Object val = SupportUtils.readPrimitiveOrItsBox(in, property);
-            SupportUtils.setValue(property, t, val);
+            setValue(property, t, val);
         }
     }
     private static class SparseArrayTypeHandler extends TypeHandler {
@@ -148,10 +152,10 @@ public abstract class TypeHandler {
             out.beginObject();
             if(value != null) {
                 final SparseArray sa = (SparseArray) value;
-                if(simpleType.isPrimitive() || SupportUtils.isBoxedClass(simpleType)){
+                if(simpleType.isPrimitive() || isBoxedClass(simpleType)){
                     for (int size = sa.size(), i = size - 1; i >= 0; i--) {
                         out.name(sa.keyAt(i) + "");
-                        SupportUtils.writePrimitiveOrItsBox(out, simpleType, sa.valueAt(i));
+                        writePrimitiveOrItsBox(out, simpleType, sa.valueAt(i));
                     }
                 }else {
                     TypeAdapter adapter = getTypeAdapter(simpleType);
@@ -170,7 +174,7 @@ public abstract class TypeHandler {
             final SparseArray sa = new SparseArray();
 
             in.beginObject();
-            if (simpleType.isPrimitive() || SupportUtils.isBoxedClass(simpleType)) {
+            if (simpleType.isPrimitive() || isBoxedClass(simpleType)) {
                 while (in.hasNext()) {
                     int key = Integer.parseInt(in.nextName());
                     sa.put(key, SupportUtils.readPrimitiveOrItsBox(in, property));
@@ -185,7 +189,7 @@ public abstract class TypeHandler {
                     }
                 }
             }
-            SupportUtils.setValue(property, t, sa);
+            setValue(property, t, sa);
             in.endObject();
         }
     }
@@ -197,9 +201,9 @@ public abstract class TypeHandler {
             out.beginArray();
             int length = Array.getLength(value);
             if(length > 0) {
-                if (simpleType.isPrimitive() || SupportUtils.isBoxedClass(simpleType)) {
+                if (simpleType.isPrimitive() || isBoxedClass(simpleType)) {
                     for (int i = 0; i < length; i++) {
-                        SupportUtils.writePrimitiveOrItsBox(out, simpleType, Array.get(value, i));
+                        writePrimitiveOrItsBox(out, simpleType, Array.get(value, i));
                     }
                 } else {
                     TypeAdapter adapter = getTypeAdapter(simpleType);
@@ -217,7 +221,7 @@ public abstract class TypeHandler {
 
             List list = new ArrayList();
             in.beginArray();
-            if (simpleType.isPrimitive() || SupportUtils.isBoxedClass(simpleType)) {
+            if (simpleType.isPrimitive() || isBoxedClass(simpleType)) {
                 while (in.hasNext()){
                     list.add(SupportUtils.readPrimitiveOrItsBox(in, property));
                 }
@@ -232,7 +236,7 @@ public abstract class TypeHandler {
             for(int i = 0, size = list.size() ; i < size ; i ++){
                 Array.set(array, i, list.get(i));
             }
-            SupportUtils.setValue(property, t, array);
+            setValue(property, t, array);
             in.endArray();
         }
     }
@@ -244,9 +248,9 @@ public abstract class TypeHandler {
             out.beginArray();
             List list = (List) value;
             if (!list.isEmpty()) {
-                if (simpleType.isPrimitive()|| SupportUtils.isBoxedClass(simpleType)) {
+                if (simpleType.isPrimitive()|| isBoxedClass(simpleType)) {
                     for (Object item : list) {
-                        SupportUtils.writePrimitiveOrItsBox(out, simpleType, item);
+                        writePrimitiveOrItsBox(out, simpleType, item);
                     }
                 } else {
                     TypeAdapter adapter = getTypeAdapter(simpleType);
@@ -264,7 +268,7 @@ public abstract class TypeHandler {
 
             List list = new ArrayList();
             in.beginArray();
-            if (simpleType.isPrimitive() || SupportUtils.isBoxedClass(simpleType)) {
+            if (simpleType.isPrimitive() || isBoxedClass(simpleType)) {
                 while (in.hasNext()){
                     list.add(SupportUtils.readPrimitiveOrItsBox(in, property));
                 }
@@ -274,7 +278,7 @@ public abstract class TypeHandler {
                     list.add(adapter.read(in));
                 }
             }
-            SupportUtils.setValue(property, t, list);
+            setValue(property, t, list);
             in.endArray();
         }
     }

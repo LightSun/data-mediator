@@ -36,16 +36,31 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
 
     private final List<GsonProperty> mProps;
 
-    public BaseTypeAdapter(List<GsonProperty> props) {
-        Throwables.checkNull(props);
-        this.mProps = props;
-    }
     public BaseTypeAdapter(){
-        this(new ArrayList<GsonProperty>());
+        this.mProps = new ArrayList<>();
+    }
+    public BaseTypeAdapter(GsonProperty[] props){
+        Throwables.checkNull(props);
+        this.mProps = new ArrayList<>();
+        for (GsonProperty prop : props){
+            addGsonProperty(prop);
+        }
     }
 
-    public void addGsonProperty(GsonProperty gp){
-        mProps.add(gp);
+    /**
+     * add a gson property. if property's since or until not match {@linkplain GlobalSetting#getCurrentVersion()}. this will have nothing effect.
+     * @param prop the gson property
+     * @see GlobalSetting#getCurrentVersion()
+     */
+    public void addGsonProperty(GsonProperty prop){
+        //check version
+        //current 1.5 < since 2, . no
+        //current 2.1 > until 2, . no
+        if(prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
+                || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()) {
+            return;
+        }
+        mProps.add(prop);
     }
 
     @Override
@@ -53,13 +68,6 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
         //log("BaseTypeAdapter_write");
         out.beginObject();
         for (GsonProperty prop : mProps) {
-            //check version
-            //current 1.5 < since 2, . no
-            //current 2.1 > until 2, . no
-            if(prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
-                    || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()){
-                 continue;
-            }
             Object val = SupportUtils.getValue(prop, obj);
             if (val == null) {
                 continue;
@@ -81,8 +89,7 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
         while (in.hasNext()) {
             GsonProperty prop = getProperty(in.nextName());
             //check null and version
-            if(prop == null || prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
-                    || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()){
+            if(prop == null){
                 in.skipValue();
             }else {
                 TypeHandler.getTypeHandler(prop).read(in, prop, t);
