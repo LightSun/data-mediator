@@ -20,7 +20,8 @@ import static javax.lang.model.element.Modifier.STATIC;
  * Created by heaven7 on 2017/8/28 0028.
  */
 @SupportedAnnotationTypes({
-        "com.heaven7.java.data.mediator.Fields"
+        "com.heaven7.java.data.mediator.Fields",
+        "com.heaven7.java.data.mediator.GlobalConfig"
 })                       //可以用"*"表示支持所有Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor {
@@ -57,8 +58,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     public Set<String> getSupportedOptions() {
         Set<String> types = new LinkedHashSet<>();
         types.add(Fields.class.getName());
-         //TODO add global setting
-        //types.add("com.heaven7.java.data.mediator.GlobalConfig");
+        types.add("com.heaven7.java.data.mediator.GlobalConfig");
         return types;
     }
 

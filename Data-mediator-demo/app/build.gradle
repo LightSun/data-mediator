@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.2'
 
     //compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.3'
     compile 'com.heaven7.java.data.mediator:data-mediator:1.2.0-beta'
