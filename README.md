@@ -244,7 +244,7 @@ public interface FlowItem extends Parcelable, ISelectable{
 3, 添加dependencies
 ```java
 dependencies {
-     // 1.2.0 版本新增
+    // gson支持库( 1.2.0 版本新增)
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
     // (1.2.0版本后 data-mediator-support-gson自带) 
     compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
