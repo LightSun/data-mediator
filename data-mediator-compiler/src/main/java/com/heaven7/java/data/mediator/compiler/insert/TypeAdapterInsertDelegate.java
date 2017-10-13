@@ -18,7 +18,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         ClassName cn_type_adapter = ClassName.get(getClassInfo().getPackageName(),
                 Util.getTypeAdapterName(getClassInfo().getDirectParentInterfaceName()));
 
-        typeBuilder.addStaticBlock(CodeBlock.of("$T.registerTypeAdapter($T.class, new $T())\n",
+        typeBuilder.addStaticBlock(CodeBlock.of("$T.registerTypeAdapter($T.class, new $T());\n",
                 cn_type_handler, cn_impl, cn_type_adapter));
     }
 

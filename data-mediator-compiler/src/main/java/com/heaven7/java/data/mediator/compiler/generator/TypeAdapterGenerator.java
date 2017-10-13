@@ -25,15 +25,17 @@ public class TypeAdapterGenerator {
                 ClassName.get(PKG_GSON_SUPPORT, SN_BASE_TYPE_ADAPTER), cn_inter);
 
         TypeSpec.Builder builder = TypeSpec.classBuilder(Util.getTypeAdapterName(info.getDirectParentInterfaceName()))
+                .addModifiers(Modifier.PUBLIC)
                .superclass(superTypeName);
 
         MethodSpec.Builder constructor = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.of(" super();\n"));
 
         ClassName cn_gson_prop = ClassName.get(PKG_GSON_SUPPORT, SN_GSON_PROPERTY);
         for(FieldData fd : fields){
-            constructor.addStatement(" this.add($T.of($T.$N, $N, $N, $N))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
-                    fd.getSerializeName(), getSinceValue(fd), getUntilValue(fd));
+            constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
+                    getSerializeName(fd), getSinceValue(fd), getUntilValue(fd));
         }
         builder.addMethod(constructor.build());
         builder.addMethod(MethodSpec.methodBuilder("create")
@@ -51,7 +53,9 @@ public class TypeAdapterGenerator {
         }
         return true;
     }
-
+    private static String getSerializeName(FieldData fd){
+        return fd.getSerializeName() == null ? "" : fd.getSerializeName();
+    }
     private static double getSinceValue(FieldData fd){
         if(fd.isSinceEnabled()){
             return fd.getSince();

@@ -13,7 +13,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
  */
 
 @Fields({
-        @Field(propName = "id", type = int.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "id", type = int.class, flags = FLAGS_ALL_SCOPES, since = 1.2, until = 2.0),
         @Field(propName = "name" , flags = FLAGS_ALL_SCOPES),
         @Field(propName = "desc" , flags = FLAGS_ALL_SCOPES),
 })

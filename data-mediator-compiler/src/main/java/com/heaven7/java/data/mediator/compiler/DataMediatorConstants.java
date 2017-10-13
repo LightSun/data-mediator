@@ -27,7 +27,7 @@ public final class DataMediatorConstants {
     public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.factory";
     public static final String PKG_JAVA_BASE_UTIL            = "com.heaven7.java.base.util";
     public static final String PKG_DM_INTERNAL               = "com.heaven7.java.data.mediator.internal";
-    public static final String PKG_GSON_SUPPORT              = "com.heaven7.java.data.mediator.support";
+    public static final String PKG_GSON_SUPPORT              = "com.heaven7.java.data.mediator.support.gson";
 
     //public static final String PKG_GSON                      = "com.google.gson";
     public static final String PKG_GSON_ANNO                 = "com.google.gson.annotations";

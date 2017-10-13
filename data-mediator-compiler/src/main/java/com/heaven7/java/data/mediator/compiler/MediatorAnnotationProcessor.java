@@ -19,9 +19,9 @@ import static javax.lang.model.element.Modifier.STATIC;
 /**
  * Created by heaven7 on 2017/8/28 0028.
  */
-/*@SupportedAnnotationTypes({
+@SupportedAnnotationTypes({
         "com.heaven7.java.data.mediator.Fields"
-})*///可以用"*"表示支持所有Annotations
+})                       //可以用"*"表示支持所有Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor {
 
