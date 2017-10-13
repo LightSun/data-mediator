@@ -244,16 +244,20 @@ public interface FlowItem extends Parcelable, ISelectable{
 3, 添加dependencies
 ```java
 dependencies {
-    //......
-    compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+     // 1.2.0 版本新增
+    compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
+    // (1.2.0版本后 data-mediator-support-gson自带) 
+    compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+    
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
     apt 'com.squareup:javapoet:1.9.0'
     
-    // 如果需要生成对应的gson注解。请加入gson依赖。比如
-    compile "com.google.code.gson:gson:2.7"
+    // 如果需要生成对应的gson注解。请加入gson依赖。(1.2.0版本后 data-mediator-support-gson自带)
+    compile "com.google.code.gson:gson:2.8.2"
     // 如果要支持android平台的数据绑定. 请添加依赖
     compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
+   
 }
 ```
 
