@@ -10,7 +10,7 @@ data-mediator
 
 # 导航
  * [问题及目标](#问题及目标) 
- * 此框架的魅力(#基本魅力)
+ * [此框架的魅力](#基本魅力)
  * [设计思想](#设计思想)
  * [特点](#特点)
  * [快速入门](#快速入门)
@@ -179,6 +179,7 @@ public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelecta
 public interface FlowItem extends Parcelable, ISelectable{
 }
 `````
+框架这么简单？ no, 更多惊喜等你来！
 
 # 设计思想
 - 整个设计分3层： 模型层，代理层，调用层
