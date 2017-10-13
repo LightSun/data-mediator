@@ -17,10 +17,19 @@ public final class GlobalSetting {
     public static GlobalSetting getDefault(){
         return Creator.INSTANCE;
     }
-    public double getCurrentVersion() {
+
+    /**
+     * get the gson version which is used to serialize/deserialize json data.
+     * @return the gson version.
+     */
+    public double getGsonVersion() {
         return currentVersion;
     }
-    public void setCurrentVersion(double currentVersion) {
+    /**
+     * set the gson version which is used to serialize/deserialize json data.
+     * @param currentVersion the current gson version
+     */
+    public void setGsonVersion(double currentVersion) {
         this.currentVersion = currentVersion;
     }
 }

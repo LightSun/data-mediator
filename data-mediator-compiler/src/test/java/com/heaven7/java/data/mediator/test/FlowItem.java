@@ -1,8 +1,5 @@
-package com.heaven7.data.mediator.demo.module;
+package com.heaven7.java.data.mediator.test;
 
-import android.os.Parcelable;
-
-import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 /**
@@ -15,5 +12,5 @@ import com.heaven7.java.data.mediator.Fields;
         @Field(propName = "name" ),
         @Field(propName = "desc" ),
 })
-public interface FlowItem extends Parcelable, ISelectable{
+public interface FlowItem{
 }

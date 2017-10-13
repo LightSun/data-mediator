@@ -27,7 +27,6 @@ public class LogForParcelableActivity extends BaseActivity {
     @BindView(R.id.tv_desc)
     TextView mTv_desc;
 
-
     private ClassBindModule mModule;
 
     @Override

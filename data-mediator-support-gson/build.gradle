@@ -5,7 +5,8 @@
 apply plugin: 'java'
 apply plugin: 'com.novoda.bintray-release'
 
-//sourceCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 buildscript {
     repositories {
@@ -34,19 +35,37 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.2.0-beta'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.2.0'
     compile 'com.heaven7.java.base:Java-base:1.0.9'
     compile 'com.google.code.gson:gson:2.8.2'
-
 }
 
 publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.support.gson'
     artifactId = 'data-mediator-support-gson'
-    publishVersion = '1.0'
+    publishVersion = '1.0.2'
     desc = 'this is a java gson-support lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }
 //cmd: gradle bintrayUpload -PbintrayUser=lightsun -PbintrayKey=xxx -PdryRun=false
 // need jdk1.8  gradle 3.0+
+/*task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}*/

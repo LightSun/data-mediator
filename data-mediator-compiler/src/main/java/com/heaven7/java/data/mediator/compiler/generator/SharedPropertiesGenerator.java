@@ -24,7 +24,8 @@ public class SharedPropertiesGenerator {
     public static boolean generateSharedProperties(Set<FieldData> fields, Filer filer, ProcessorPrinter pp){
         ClassName propertyCN = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         TypeName stringTN = TypeName.get(String.class);
-        ParameterizedTypeName pt_cache = ParameterizedTypeName.get(ClassName.get(HashMap.class), stringTN, propertyCN);
+        ParameterizedTypeName pt_cache = ParameterizedTypeName.get(ClassName.get(HashMap.class),
+                stringTN, propertyCN);
 
         FieldSpec fieldSpec = FieldSpec.builder(pt_cache,"sCache", Modifier.FINAL, Modifier.PRIVATE, Modifier.STATIC)
                 .build();
@@ -58,8 +59,8 @@ public class SharedPropertiesGenerator {
                 .build();
 
         CodeBlock.Builder staticBuilder = CodeBlock.builder()
-                //GlobalSetting.getgetDefault().setCurrentVersion(xxx)
-                .add("$T.getDefault().setCurrentVersion($L);\n", ClassName.get(PKG_PROP, SN_GLOBAL_SETTING),
+                //GlobalSetting.getgetDefault().setGsonVersion(xxx)
+                .add("$T.getDefault().setGsonVersion($L);\n", ClassName.get(PKG_PROP, SN_GLOBAL_SETTING),
                         GlobalConfig.getInstance().getVersion())
                 .add("sCache = new HashMap<>();\n");
 

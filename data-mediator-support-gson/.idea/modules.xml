@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/data-mediator-support-gson.iml" filepath="$PROJECT_DIR$/data-mediator-support-gson.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator-support-gson_main.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator-support-gson_main.iml" group="data-mediator-support-gson" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator-support-gson_test.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator-support-gson_test.iml" group="data-mediator-support-gson" />
     </modules>
   </component>
 </project>

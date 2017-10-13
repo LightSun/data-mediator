@@ -11,13 +11,9 @@ import android.widget.ListView;
 import com.heaven7.adapter.ISelectable;
 import com.heaven7.adapter.QuickAdapter;
 import com.heaven7.core.util.ViewHelper;
-import com.heaven7.java.data.mediator.GlobalConfig;
-import com.heaven7.java.data.mediator.GsonConfig;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public abstract class AbsMainActivity extends ListActivity {
 

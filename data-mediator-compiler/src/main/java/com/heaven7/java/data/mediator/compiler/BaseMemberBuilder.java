@@ -60,6 +60,7 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
                     //not need
             }
         }
+
         //change method for super. if use chain mode. chain mode means set method not return void. just return bean interface.
         if(typeOfReturn != TypeName.VOID && superFields != null){
             for (FieldData field : superFields){

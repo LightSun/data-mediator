@@ -49,7 +49,7 @@ public class GsonSupport {
             throw new IllegalArgumentException("target object(" + ImplName + ") can't convert to json!");
         }
         GsonBuilder builder = new GsonBuilder()
-                .setVersion(GlobalSetting.getDefault().getCurrentVersion());
+                .setVersion(GlobalSetting.getDefault().getGsonVersion());
 
         if(t instanceof SparseArray){
             SparseArray sa = (SparseArray) t;
@@ -111,7 +111,7 @@ public class GsonSupport {
 
     private static Object fromJson(String json, Class<?> clazz, int complexType) {
         GsonBuilder builder = new GsonBuilder()
-                .setVersion(GlobalSetting.getDefault().getCurrentVersion());
+                .setVersion(GlobalSetting.getDefault().getGsonVersion());
 
         if(clazz.isInterface()){
             try {

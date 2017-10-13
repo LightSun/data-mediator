@@ -16,8 +16,6 @@ import com.heaven7.java.data.mediator.GsonConfig;
 
 import java.util.List;
 
-import static android.R.id.list;
-
 /**
  * Created by heaven7 on 2017/7/12 0012.
  */

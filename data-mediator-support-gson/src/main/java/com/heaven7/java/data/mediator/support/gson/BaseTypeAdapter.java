@@ -36,28 +36,37 @@ public abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
 
     private final List<GsonProperty> mProps;
 
+    /**
+     * create base type adapter for empty properties.
+     * you can call {@linkplain #addGsonProperty(GsonProperty)} to add.
+     */
     public BaseTypeAdapter(){
-        this.mProps = new ArrayList<>();
+        this.mProps = new ArrayList<GsonProperty>();
     }
+
+    /**
+     * create base type adapter for target properties.
+     * @param props the properties. can't be null.
+     */
     public BaseTypeAdapter(GsonProperty[] props){
         Throwables.checkNull(props);
-        this.mProps = new ArrayList<>();
+        this.mProps = new ArrayList<GsonProperty>();
         for (GsonProperty prop : props){
             addGsonProperty(prop);
         }
     }
 
     /**
-     * add a gson property. if property's since or until not match {@linkplain GlobalSetting#getCurrentVersion()}. this will have nothing effect.
+     * add a gson property. if property's since or until not match {@linkplain GlobalSetting#getGsonVersion()}. this will have nothing effect.
      * @param prop the gson property
-     * @see GlobalSetting#getCurrentVersion()
+     * @see GlobalSetting#getGsonVersion()
      */
     public void addGsonProperty(GsonProperty prop){
         //check version
         //current 1.5 < since 2, . no
         //current 2.1 > until 2, . no
-        if(prop.getSince() > GlobalSetting.getDefault().getCurrentVersion()
-                || prop.getUntil() < GlobalSetting.getDefault().getCurrentVersion()) {
+        if(prop.getSince() > GlobalSetting.getDefault().getGsonVersion()
+                || prop.getUntil() < GlobalSetting.getDefault().getGsonVersion()) {
             return;
         }
         mProps.add(prop);

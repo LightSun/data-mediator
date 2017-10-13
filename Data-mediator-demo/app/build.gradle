@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,11 +34,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.8.2'
 
-    //compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.3'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.2.0-beta'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.5'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.2.0'
     apt 'com.squareup:javapoet:1.9.0'
 
-    //apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.2.0-beta'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.2.0'
+    compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
     compile 'com.heaven7.android.data.mediator:data-mediator-android:1.0.5'
     //compile project(':data-mediator-android')
     //helper util
@@ -49,8 +50,4 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.2.0'
     //other depend
     compile 'org.heaven7.core.view:common-view:1.2.3'
-
-    compile files('libs/data-mediator-support-gson.jar')
-    apt files('libs/data-mediator-compiler.jar')
-    compile files('libs/data-mediator-annotations.jar')
 }
