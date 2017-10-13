@@ -8,7 +8,6 @@ package com.heaven7.java.data.mediator;
 public final class GlobalSetting {
 
     private double currentVersion = 1.0; //default
-    private boolean generateJsonAdapter = true;
 
     private static class Creator{
        static final GlobalSetting INSTANCE = new GlobalSetting();
@@ -23,11 +22,5 @@ public final class GlobalSetting {
     }
     public void setCurrentVersion(double currentVersion) {
         this.currentVersion = currentVersion;
-    }
-    public boolean isGenerateJsonAdapter() {
-        return generateJsonAdapter;
-    }
-    public void setGenerateJsonAdapter(boolean generateJsonAdapter) {
-        this.generateJsonAdapter = generateJsonAdapter;
     }
 }

@@ -19,16 +19,17 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMP
 /*public*/ class PoolableInsertDelegate extends TypeInsertDelegate {
 
     @Override
-    public void addStaticCode(TypeSpec.Builder typeBuilder, Object maxCount){
+    public boolean addStaticCode(CodeBlock.Builder staticBuilder, Object maxCount){
         final int maxPoolCount = (int) maxCount;
         String packageName = getClassInfo().getPackageName();
         String className = getClassInfo().getCurrentClassname();
         if(maxPoolCount > 0 ) {
-            typeBuilder.addStaticBlock(CodeBlock.of("$T.preparePool($S, $L);\n",
+            staticBuilder.add("$T.preparePool($S, $L);\n",
                     ClassName.get(PKG_PROP, SIMPLE_NAME_DATA_POOL),
-                    packageName + "." + className, maxPoolCount
-            ));
+                    packageName + "." + className, maxPoolCount);
+            return true;
         }
+        return false;
     }
     @Override
     public void addSuperInterface(TypeSpec.Builder typeBuilder){

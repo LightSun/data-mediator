@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler.generator;
 
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.Util;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
@@ -19,6 +20,10 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 public class TypeAdapterGenerator {
 
     public static boolean generate(TargetClassInfo info, Collection<FieldData> fields, Filer filer){
+        if(!GlobalConfig.getInstance().isJsonAdapterEnabled()){
+            //normal ok
+            return true;
+        }
         ClassName cn_impl = ClassName.get(info.getPackageName(), info.getCurrentClassname());
         ClassName cn_inter = ClassName.get(info.getPackageName(), info.getDirectParentInterfaceName());
         ParameterizedTypeName superTypeName = ParameterizedTypeName.get(

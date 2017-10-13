@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesGenerator;
 
 import javax.annotation.processing.*;
@@ -58,7 +59,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     public Set<String> getSupportedOptions() {
         Set<String> types = new LinkedHashSet<>();
         types.add(Fields.class.getName());
-        types.add("com.heaven7.java.data.mediator.GlobalConfig");
+        types.add(GlobalConfig.class.getName());
         return types;
     }
 
@@ -72,7 +73,19 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if(annotations.isEmpty()){
             return false;
         }
-        //TODO add global setting
+        //========== start @GlobalConfig ==============
+        Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(GlobalConfig.class);
+        if(set.size() >= 2){
+            mPrinter.error(TAG, "process", "@GlobalConfig can only have one.");
+            return true;
+        }
+        if(set.size() == 1){
+            if(!ElementHelper.processGlobalSetting(mTypeUtils, set.iterator().next().getAnnotationMirrors(), mPrinter)){
+                return true;
+            }
+        }
+        //========== end GlobalConfig ===================
+
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
             note(":process" ,"@Fields >>> element = " + element);

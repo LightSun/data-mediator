@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler.insert;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.ArrayList;
@@ -34,13 +35,15 @@ public final class InsertManager {
 
     /**
      * add static code
-     * @param typeBuilder the class builder
+     * @param builder the static builder
      * @param param the extra param
      */
-    public static void addStaticCode(TypeSpec.Builder typeBuilder, Object param){
+    public static boolean addStaticCode(CodeBlock.Builder builder, Object param){
+        boolean result = false;
         for (TypeInsertDelegate delegate : sInserts){
-            delegate.addStaticCode(typeBuilder, param);
+            result |= delegate.addStaticCode(builder, param);
         }
+        return result;
     }
 
     /**

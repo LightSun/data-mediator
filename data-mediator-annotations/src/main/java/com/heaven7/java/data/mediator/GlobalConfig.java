@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * @since 1.0.5
  * @author heaven7
  */
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
 public @interface GlobalConfig {
 

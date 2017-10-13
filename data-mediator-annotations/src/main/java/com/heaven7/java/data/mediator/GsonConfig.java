@@ -30,4 +30,10 @@ public @interface GsonConfig {
      * @return true if enable json adapter or not. you can see more in 'Google/Gson'.
      */
     boolean generateJsonAdapter() default true;
+
+    /**
+     * force disable generate gson annotation. this is a global config for gson to enable or not.
+     * @return true if you don't want gson annotation.
+     */
+    boolean forceDisable() default false;
 }

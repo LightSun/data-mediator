@@ -13,11 +13,68 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
  */
 /*public*/ class ElementHelper {
 
-    private static final String TAG = "ElementHelper";
-    private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
-    private static final String KEY_FIELDS_ANNO = "value";
-    private static final String KEY_ENABLE_CHAIN = "enableChain";
+    private static final String TAG                = "ElementHelper";
+    private static final String TARGET_PACKAGE     = "com.heaven7.java.data.mediator";
+    private static final String KEY_FIELDS_ANNO    = "value";
+    private static final String KEY_ENABLE_CHAIN   = "enableChain";
     private static final String KEY_MAX_POOL_COUNT = "maxPoolCount";
+
+    private static final String KEY_GSON_CONFIG                  = "gsonConfig";
+    private static final String KEY_GSON_GENERATE_JSON_ADAPTER   = "generateJsonAdapter";
+    private static final String KEY_GSON_VERSION                 = "version";
+    private static final String KEY_GSON_FORCE_DISABLE           = "forceDisable";
+
+
+    //process @GlobalSetting
+    public static boolean processGlobalSetting(Types mTypes, List<? extends AnnotationMirror> annoMirrors, ProcessorPrinter pp){
+        for (AnnotationMirror am : annoMirrors) {
+            //if not my want. ignore
+            if (!isValidAnnotation(am, pp)) {
+                continue;
+            }
+            Map<? extends ExecutableElement, ? extends AnnotationValue> methodMap = am.getElementValues();
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : methodMap.entrySet()) {
+                ExecutableElement key = en.getKey();//the method of annotation
+                switch (key.getSimpleName().toString()) {
+                    case KEY_GSON_CONFIG: {
+                         Object value = en.getValue().getValue(); //@GsonConfig
+                         AnnotationMirror am2 = (AnnotationMirror) value;
+                         handleGsonConfig(am2, pp);
+                    }
+
+                    default:
+                        //next to do
+                        break;
+                }
+            }
+        }
+        return true;
+    }
+
+    private static void handleGsonConfig(AnnotationMirror am, ProcessorPrinter pp) {
+        Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
+            ExecutableElement key = en.getKey();//the method of annotation
+
+            AnnotationValue av = en.getValue();
+            switch (key.getSimpleName().toString()) {
+                case KEY_GSON_VERSION:
+                    double version = Double.parseDouble(av.getValue().toString());
+                    if(version >= 1.0){
+                        GlobalConfig.getInstance().setVersion(version);
+                    }
+                    break;
+
+                case KEY_GSON_GENERATE_JSON_ADAPTER:
+                    GlobalConfig.getInstance().setGenerateJsonAdapter(Boolean.valueOf(av.getValue().toString()));
+                    break;
+
+                case KEY_GSON_FORCE_DISABLE:
+                    GlobalConfig.getInstance().setDisableGson(Boolean.valueOf(av.getValue().toString()));
+                    break;
+            }
+        }
+    }
 
     //process @Fields
     public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,

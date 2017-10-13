@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.ProcessorPrinter;
 import com.heaven7.java.data.mediator.compiler.Util;
 import com.squareup.javapoet.*;
@@ -57,7 +58,11 @@ public class SharedPropertiesGenerator {
                 .build();
 
         CodeBlock.Builder staticBuilder = CodeBlock.builder()
+                //GlobalSetting.getgetDefault().setCurrentVersion(xxx)
+                .add("$T.getDefault().setCurrentVersion($L);\n", ClassName.get(PKG_PROP, SN_GLOBAL_SETTING),
+                        GlobalConfig.getInstance().getVersion())
                 .add("sCache = new HashMap<>();\n");
+
         //add selected ( for ISelectable)
         staticBuilder.add("putToCache($S, $S, $L);\n", FD_SELECTABLE.getTypeCompat().toString(),
                 FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType());

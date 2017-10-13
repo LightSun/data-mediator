@@ -49,6 +49,7 @@ public final class DataMediatorConstants {
     public static final String SIMPLE_NAME_PROP_INTERCEPTOR  = "PropertyInterceptor";
     public static final String SIMPLE_NAME_DATA_POOL         = "DataPools";
     public static final String SIMPLE_NAME_POOLABLE          = "Poolable";
+    public static final String SN_GLOBAL_SETTING              = "GlobalSetting";
 
     public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
     public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";

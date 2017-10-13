@@ -97,37 +97,41 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     protected FieldSpec.Builder onBuildField(FieldData field, TypeInfo info) {
         final FieldSpec.Builder builder   = FieldSpec.builder(info.typeName,
                 field.getPropertyName(), getFieldModifier(field));
-        //check serializeName , that support serialize and deserialize for GSON
-        final String serializeName = field.getSerializeName();
-        if (serializeName != null && !serializeName.equals("")) {
-            builder.addAnnotation(AnnotationSpec.builder(
-                    ClassName.get(GOOGLE_GSON_ANNO_PACKAGE, "SerializedName"))
-                    .addMember("value","$S", serializeName)
-                    .build());
-        }
-        if(hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_DEFAULT)){
-            //if have FLAG_EXPOSE_SERIALIZE_FALSE, serialize = false. same as FLAG_EXPOSE_DESERIALIZE_FALSE.
-            boolean falseSerialize =  hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_SERIALIZE_FALSE);
-            boolean falseDeserialize = hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_DESERIALIZE_FALSE);
-            builder.addAnnotation(AnnotationSpec.builder(ClassName.get(GOOGLE_GSON_ANNO_PACKAGE, "Expose"))
-                    .addMember("serialize", "$L", !falseSerialize)
-                    .addMember("deserialize", "$L", !falseDeserialize)
-                    .build()
-            );
-        }
-        //@since
-        if(field.isSinceEnabled()){
-            ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_SINCE);
-            builder.addAnnotation(AnnotationSpec.builder(cn_since)
-                    .addMember("value", "$L", field.getSince())
-                    .build());
-        }
-        //@until
-        if(field.isUntilEnabled()){
-            ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_UTIL);
-            builder.addAnnotation(AnnotationSpec.builder(cn_since)
-                    .addMember("value", "$L", field.getUntil())
-                    .build());
+
+        //if not disable gson.
+        if(!GlobalConfig.getInstance().isDisableGson()) {
+            //check serializeName , that support serialize and deserialize for GSON
+            final String serializeName = field.getSerializeName();
+            if (serializeName != null && !serializeName.equals("")) {
+                builder.addAnnotation(AnnotationSpec.builder(
+                        ClassName.get(GOOGLE_GSON_ANNO_PACKAGE, "SerializedName"))
+                        .addMember("value", "$S", serializeName)
+                        .build());
+            }
+            if (hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_DEFAULT)) {
+                //if have FLAG_EXPOSE_SERIALIZE_FALSE, serialize = false. same as FLAG_EXPOSE_DESERIALIZE_FALSE.
+                boolean falseSerialize = hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_SERIALIZE_FALSE);
+                boolean falseDeserialize = hasFlag(field.getFlags(), FieldData.FLAG_EXPOSE_DESERIALIZE_FALSE);
+                builder.addAnnotation(AnnotationSpec.builder(ClassName.get(GOOGLE_GSON_ANNO_PACKAGE, "Expose"))
+                        .addMember("serialize", "$L", !falseSerialize)
+                        .addMember("deserialize", "$L", !falseDeserialize)
+                        .build()
+                );
+            }
+            //@since
+            if (field.isSinceEnabled()) {
+                ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_SINCE);
+                builder.addAnnotation(AnnotationSpec.builder(cn_since)
+                        .addMember("value", "$L", field.getSince())
+                        .build());
+            }
+            //@until
+            if (field.isUntilEnabled()) {
+                ClassName cn_since = ClassName.get(PKG_GSON_ANNO, SN_GSON_UTIL);
+                builder.addAnnotation(AnnotationSpec.builder(cn_since)
+                        .addMember("value", "$L", field.getUntil())
+                        .build());
+            }
         }
         return builder;
     }

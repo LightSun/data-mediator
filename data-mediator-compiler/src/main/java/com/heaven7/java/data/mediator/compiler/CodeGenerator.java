@@ -179,7 +179,10 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         //all insert: like:  DataPools.preparePool("", 5); / TypeHandler.registerTypeAdapter(Car3.class, new Car3TypeAdapter());
         setClassInfo(mClassInfo);
         addClassAnnotation(implBuilder);
-        addStaticCode(implBuilder,  mMaxPoolCount);
+        CodeBlock.Builder staticCodeBuilder = CodeBlock.builder();
+        if(addStaticCode(staticCodeBuilder,  mMaxPoolCount)){
+            implBuilder.addStaticBlock(staticCodeBuilder.build());
+        }
 
         final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
         // implBuilder.superclass()

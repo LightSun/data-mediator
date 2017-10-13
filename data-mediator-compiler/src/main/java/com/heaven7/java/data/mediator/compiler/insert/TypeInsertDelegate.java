@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler.insert;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.Collection;
@@ -29,11 +30,12 @@ public abstract class TypeInsertDelegate {
     }
     /**
      * add static code
-     * @param typeBuilder the class builder
+     * @param staticBuilder the static code builder
      * @param param the extra param
+     * @return true if added.
      */
-    public void addStaticCode(TypeSpec.Builder typeBuilder, Object param){
-
+    public boolean addStaticCode(CodeBlock.Builder staticBuilder, Object param){
+        return false;
     }
 
     /**
