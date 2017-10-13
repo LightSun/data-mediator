@@ -65,7 +65,8 @@ public class FieldData {
     public static final int FLAG_GSON_PERSISTENCE         = 0x00001000;
 
     /** the common flags */
-    public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE;
+    public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE | FLAG_GSON_PERSISTENCE;
+    public static final int FLAGS_MAIN_2 = FLAGS_MAIN | FLAG_HASH_EQUALS;
 
 
     //========================================================================================
@@ -76,7 +77,7 @@ public class FieldData {
 
     private String propertyName;
     private String serializeName;
-    private int flags = FLAGS_MAIN;  //default to main flags
+    private int flags = FLAGS_MAIN_2;  //default to main flags
     private int complexType;
     private TypeCompat mTypeCompat = sTC_STRING; //default to string
 

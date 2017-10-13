@@ -26,6 +26,7 @@ import com.heaven7.java.data.mediator.Property;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public abstract class TypeHandler {
 
     private static final TypeHandler PRIMITVE = new PrimitiveTypeHandler();
     private static final SparseArray<TypeHandler> sHandlers;
-    private static final Map<Class<?>, TypeAdapter<?>> sTypeAdapterMap;
+    private static final Map<Type, TypeAdapter<?>> sTypeAdapterMap;
 
     static {
         sHandlers = new SparseArray<>();
@@ -74,12 +75,12 @@ public abstract class TypeHandler {
 
     /**
      * register the type adapter
-     * @param clazz the class.
+     * @param type the type.
      * @param adapter the type adapter
      * @param <T> the object type.
      */
-    public static <T> void registerTypeAdapter(Class<T> clazz, TypeAdapter<? super T> adapter){
-        sTypeAdapterMap.put(clazz, adapter);
+    public static <T> void registerTypeAdapter(Type type, TypeAdapter<? super T> adapter){
+        sTypeAdapterMap.put(type, adapter);
     }
 
     public static TypeHandler getTypeHandler(Property prop){
@@ -91,7 +92,7 @@ public abstract class TypeHandler {
         return getTypeHandlerInternal(prop.getComplexType());
     }
 
-    public static TypeAdapter getTypeAdapter(Class<?> type){
+    public static TypeAdapter getTypeAdapter(Type type){
         return  sTypeAdapterMap.get(type);
     }
     private static TypeHandler getTypeHandlerInternal(int complexType) {
