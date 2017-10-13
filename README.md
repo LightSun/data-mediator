@@ -10,6 +10,7 @@ data-mediator
 
 # 导航
  * [问题及目标](#问题及目标) 
+ * 此框架的魅力(#基本魅力)
  * [设计思想](#设计思想)
  * [特点](#特点)
  * [快速入门](#快速入门)
@@ -31,10 +32,9 @@ data-mediator
 * 它的目标:
 <br>当然它还会支持很多强大的功能. 未来还会完成更加复杂业务任务.
 
-# 魅力
+# 基本魅力
  - 假设我想定义的数据实体是下面这个。
 ```java
-@JsonAdapter($FlowItemModule$TypeAdapter.class)
 public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelectable {
   public static final Parcelable.Creator<FlowItemModule_Impl> CREATOR = new Parcelable.Creator<FlowItemModule_Impl>() {
     @Override
@@ -47,10 +47,6 @@ public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelecta
       return new FlowItemModule_Impl[size];
     }
   };
-
-  static {
-    TypeHandler.registerTypeAdapter(FlowItemModule_Impl.class, new $FlowItemModule$TypeAdapter());
-  }
 
   private boolean selected;
 
