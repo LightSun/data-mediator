@@ -150,6 +150,13 @@ public final class FieldFlags {
      * @since 1.1.1
      */
     public static final int FLAG_HASH_EQUALS              = 0x00000800; //2048
+    /**
+     * a scope flag of gson serialize/deserialize json for field.
+     * <p><h3>Note this only effect the auto generate TypeAdapter.</h3></p>
+     * <p><h3>Note if this has effect on json, in priority, this is better than the Gson.setVersion(xxx). </h3></p>
+     * @since 1.2.0
+     */
+    public static final int FLAG_GSON_PERSISTENCE         = 0x00001000;
 
     /**
      * a complex flags. which have multi flags. .
@@ -160,18 +167,20 @@ public final class FieldFlags {
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
      * @see #FLAG_HASH_EQUALS
+     * @see #FLAG_GSON_PERSISTENCE
      */
     public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
-            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_HASH_EQUALS;
+            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_HASH_EQUALS | FLAG_GSON_PERSISTENCE;
 
     /**
      * a main complex flags . which have multi flags
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
+     * @see #FLAG_GSON_PERSISTENCE
      * @since 1.0.7
      */
-    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING ;
+    public static final int FLAGS_MAIN_SCOPES = FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_GSON_PERSISTENCE;
     /**
      * a complex flags . which means gson no expose
      * <pre>{@literal @}Expose(serialize = false,
@@ -184,10 +193,11 @@ public final class FieldFlags {
     public static final int FLAGS_NO_EXPOSE = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE | FLAG_EXPOSE_DESERIALIZE_FALSE;
 
     /**
-     * a complex flags. which have multi flags
+     * a complex flags. which have multi flags. relative to {@linkplain #FLAGS_MAIN_SCOPES} add {@linkplain #FLAG_HASH_EQUALS}.
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
+     * @see #FLAG_GSON_PERSISTENCE
      * @see #FLAG_HASH_EQUALS
      * @since 1.1.1
      */

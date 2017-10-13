@@ -39,8 +39,11 @@ public class TypeAdapterGenerator {
 
         ClassName cn_gson_prop = ClassName.get(PKG_GSON_SUPPORT, SN_GSON_PROPERTY);
         for(FieldData fd : fields){
-            constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
-                    getSerializeName(fd), getSinceValue(fd), getUntilValue(fd));
+            //gson persistence json.
+            if(Util.hasFlag(fd.getFlags(), FieldData.FLAG_GSON_PERSISTENCE)) {
+                constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
+                        getSerializeName(fd), getSinceValue(fd), getUntilValue(fd));
+            }
         }
         builder.addMethod(constructor.build());
         builder.addMethod(MethodSpec.methodBuilder("create")

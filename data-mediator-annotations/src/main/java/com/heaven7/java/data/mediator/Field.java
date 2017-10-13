@@ -95,9 +95,10 @@ public @interface Field {
 
 	/**
 	 * define the flags for the field. more to see in wiki or demo.
+	 * default is  FieldFlags.FLAGS_MAIN_SCOPES_2
 	 * @return the flags.
 	 */
-	int flags() default 0;
+	int flags() default 6352;
 
 	/**
 	 * define the {@literal @}Since annotation for gson.

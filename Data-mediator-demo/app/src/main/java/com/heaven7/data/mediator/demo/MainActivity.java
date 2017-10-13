@@ -26,7 +26,7 @@ import static android.R.id.list;
         gsonConfig = @GsonConfig(
                 version = 2.0,
                 forceDisable = false,
-                generateJsonAdapter = false
+                generateJsonAdapter = true
         )
 )
 public class MainActivity extends AbsMainActivity {

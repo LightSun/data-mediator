@@ -57,9 +57,15 @@ public class FieldData {
      */
     public static final int FLAG_HASH_EQUALS             = 0x00000800; //2048
 
+    /**
+     * a scope flag of gson serialize/deserialize json for field.
+     * Note this only effect the auto generate TypeAdapter.
+     * @since 1.2.0
+     */
+    public static final int FLAG_GSON_PERSISTENCE         = 0x00001000;
+
     /** the common flags */
     public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE;
-
 
 
     //========================================================================================
