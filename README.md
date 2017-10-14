@@ -35,7 +35,7 @@ data-mediator
 # 基本魅力
  - 假设我想定义的数据实体是下面这个。
 ```java
-public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelectable {
+public class FlowItemModule_Impl implements Parcelable {
   public static final Parcelable.Creator<FlowItemModule_Impl> CREATOR = new Parcelable.Creator<FlowItemModule_Impl>() {
     @Override
     public FlowItemModule_Impl createFromParcel(Parcel in) {
@@ -77,29 +77,6 @@ public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelecta
     dest.writeInt(this.id);
     dest.writeString(this.name);
     dest.writeString(this.desc);
-  }
-
-  @Override
-  public void setSelected(boolean selected) {
-    this.selected = selected;
-  }
-
-  @Override
-  public boolean isSelected() {
-    return this.selected;
-  }
-
-  @Override
-  public void recycle() {
-    DataPools.recycle(this);
-  }
-
-  @Override
-  public void clearProperties() {
-    this.desc = null;
-    this.id = 0;
-    this.selected = false;
-    this.name = null;
   }
 
   @Override
@@ -176,7 +153,7 @@ public class FlowItemModule_Impl implements FlowItemModule, Parcelable, ISelecta
         @Field(propName = "name" ),
         @Field(propName = "desc" ),
 })
-public interface FlowItem extends Parcelable, ISelectable{
+public interface FlowItem extends Parcelable{
 }
 `````
 框架这么简单？ no, 更多惊喜等你来！
