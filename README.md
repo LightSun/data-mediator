@@ -196,14 +196,9 @@ public interface FlowItem extends Parcelable{
   
 - 支持List/SparseArray属性编辑器. （相当于对list/SparseArray的增删改增加了便捷操作）
       
-- 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个。
-   * 平常我们写 BaseEntity(内有代表http/https响应的code, message, data字段）, 通常业务接口的数据会继承这个BaseEntity。
-     <br> 所以这里规定 继承@Field注解的接口（代表数据实体) 只能一个。否则error.
+- 支持依赖或继承 @Field注解的接口（代表数据实体). 继承只能继承一个, 否则error.
     
 - 支持链式调用. data-mediator-compiler 1.0.9 之后默认链式。
-   <br>1), 如果需要回到普通的java bean. 则需要将注解 @fields的方法 boolean enableChain()。 返回false. 
-   <br>2), 需要注意的是，如果模型之间有继承关系。则需要将父module定义的enableChain 和 child的 enableChain 值相同, 否则编译错误。
-   <br>3), 下面是示例：
  ```java
   DataMediator<StudentModule> mediator = DataMediatorFactory.createDataMediator(StudentModule.class);
         //数据代理层
