@@ -203,7 +203,7 @@ public interface FlowItem extends Parcelable{
  - 支持数据缓存 (使用请参考下面[进阶指南](#进阶指南))
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
- - 即将上线： 完美搭配gson（支持所有Gson注解）。
+ - 完美搭配gson（支持所有Gson注解）。
 
 
 # 快速入门
