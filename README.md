@@ -19,7 +19,7 @@ data-mediator
  * [simple魅力](#基本魅力)
  * [设计思想](#设计思想)
  * [特点](#特点)
- * [平台配置](#平台配置)
+ * [gralde配置](#gradle配置)
  * [快速入门](#快速入门)
  * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
  * [data-mediator-demo说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/demo_readme.md)
@@ -224,7 +224,7 @@ public interface FlowItem extends Parcelable{
  <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
  - 完美搭配gson（支持所有Gson注解）。
 
-# 平台配置
+# gradle配置
  * java平台.
     * 1, gradle配置
     ```java
