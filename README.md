@@ -1,5 +1,11 @@
 data-mediator
 =======================================
+| Platform        | compiler   | gson-support  |  binder |  SparseArray |
+| ------------- | ------------- | ----- | ------- | ------- |
+| java      | ok  | ok | need manual impl |  ok |
+| android   | ok  | ok |  ok | ok |
+
+
  <img src="res/data_mediator_binder_main.gif" alt="base binder demo" width="340px"/>
 
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
@@ -217,40 +223,99 @@ public interface FlowItem extends Parcelable{
  <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
  - 完美搭配gson（支持所有Gson注解）。
 
+# 平台配置
+ * java平台.
+    * 1, gradle配置
+    ```java
+   apply plugin: "net.ltgt.apt-idea"
+   apply plugin: 'java'
+
+   buildscript {
+       repositories {
+           jcenter()
+           maven {
+               url "https://plugins.gradle.org/m2/"
+           }
+       }
+       dependencies {
+           classpath "net.ltgt.gradle:gradle-apt-plugin:0.12"
+       }
+   }
+
+   repositories {
+       jcenter()
+       maven {
+           url "https://plugins.gradle.org/m2/"
+       }
+   }
+   idea {
+       project {
+           // experimental: whether annotation processing will be configured in the IDE; only actually used with the 'idea' task.
+           configureAnnotationProcessing = true
+       }
+       module {
+           apt {
+               // whether generated sources dirs are added as generated sources root
+               addGeneratedSourcesDirs = true
+               // whether the apt and testApt dependencies are added as module dependencies
+               addAptDependencies = true
+
+               // The following are mostly internal details; you shouldn't ever need to configure them.
+               // whether the compileOnly and testCompileOnly dependencies are added as module dependencies
+               addCompileOnlyDependencies = false // defaults to true in Gradle < 2.12
+               // the dependency scope used for apt and/or compileOnly dependencies (when enabled above)
+               //PROVIDED
+               mainDependenciesScope = "COMPILE" // defaults to "COMPILE" in Gradle < 3.4, or when using the Gradle integration in                                IntelliJ IDEA
+           }
+       }
+   }
+   ```
+   * 2, idea设置 <br>
+   
+     * (1), setting -> compiler -> annotation Processor -> ![勾选](https://www.jetbrains.com/help/img/idea/2017.2/annotation_profile_move.png)  更多请参见 [idea](https://www.jetbrains.com/help/idea/configuring-annotation-processing.html)<br>
+     * (2), 将生成代码的目录设置为source目录/test source 目录.
+   * 3, 添加依赖.
+   ```java
+   dependencies {
+
+     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
+     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+     apt 'com.squareup:javapoet:1.9.0'
+   }
+   ```
+ * android平台.
+   * 1, 在项目根目录添加apt依赖。
+   ```java 
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+   ```
+   * 2, 在使用的app module中加入。apt plugin
+   ```java
+      apply plugin: 'com.neenbedankt.android-apt'
+   ```
+   * 3, 添加dependencies
+   ```java
+   dependencies {
+       // gson支持库( 1.2.0 版本新增)
+       compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
+       // (1.2.0版本后 data-mediator-support-gson自带) 
+       compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+
+       compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+       apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+       apt 'com.squareup:javapoet:1.9.0'
+
+       // 如果需要生成对应的gson注解。请加入gson依赖。(1.2.0版本后 data-mediator-support-gson自带)
+       compile "com.google.code.gson:gson:2.8.2"
+       // 如果要支持android平台的数据绑定. 请添加依赖
+       compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
+
+   }
+   ```     
 
 # 快速入门
 
-1, 在项目根目录添加apt依赖。
-```java
- classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-```
-
-2, 在使用的app module中加入。apt plugin
-```java
-   apply plugin: 'com.neenbedankt.android-apt'
-```
-
-3, 添加dependencies
-```java
-dependencies {
-    // gson支持库( 1.2.0 版本新增)
-    compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
-    // (1.2.0版本后 data-mediator-support-gson自带) 
-    compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
-    
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
-    apt 'com.squareup:javapoet:1.9.0'
-    
-    // 如果需要生成对应的gson注解。请加入gson依赖。(1.2.0版本后 data-mediator-support-gson自带)
-    compile "com.google.code.gson:gson:2.8.2"
-    // 如果要支持android平台的数据绑定. 请添加依赖
-    compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
-   
-}
-```
-
-4, 开始定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
+1, 定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
 假如学生有。年龄，名称, id属性。
 那么简单的数据定义为:
 ```java
@@ -264,14 +329,14 @@ public interface Student extends Serializable, Parcelable{
 }
 ```
 
-5, 点击android studio 工具栏上的图标
-
+2, 编译项目生成代码.
+  * java: module上鼠标右键. compile module XXX.
+  *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
-
   即可自动生成代码（数据定义没变化，不会重新生成）。
- <br> 会自动生成 xxxModule 模型接口, xxxxModule_Impl 模型实现 。
+  * 会自动生成  模型接口, 模型实现以及代理 。
 
-6, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+3, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * 属性改变demo
