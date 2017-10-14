@@ -278,13 +278,11 @@ public interface FlowItem extends Parcelable{
    * 3, 添加依赖.
    ```java
    dependencies {
-     //核心注解
-     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
-     //gson支持（内涵data-mediator调用库）
-     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
-     //注解编译层
-     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
-     apt 'com.squareup:javapoet:1.9.0'
+     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
+
+     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+     apt 'com.squareup:javapoet:1.9.0'
    }
    ```
  * android平台.
