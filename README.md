@@ -35,7 +35,8 @@ data-mediator
 # 基本魅力
  - 假设我想定义的数据实体是下面这个。
 ```java
-public class FlowItemModule_Impl implements Parcelable {
+@JsonAdapter($FlowItemModule$TypeAdapter.class)
+public class FlowItemModule_Impl implement Parcelable {
   public static final Parcelable.Creator<FlowItemModule_Impl> CREATOR = new Parcelable.Creator<FlowItemModule_Impl>() {
     @Override
     public FlowItemModule_Impl createFromParcel(Parcel in) {
@@ -54,8 +55,13 @@ public class FlowItemModule_Impl implements Parcelable {
   @Until(2.0)
   private int id;
 
+  @SerializedName("stu_name")
   private String name;
 
+  @Expose(
+      serialize = false,
+      deserialize = false
+  )
   private String desc;
 
   protected FlowItemModule_Impl(Parcel in) {
@@ -77,6 +83,16 @@ public class FlowItemModule_Impl implements Parcelable {
     dest.writeInt(this.id);
     dest.writeString(this.name);
     dest.writeString(this.desc);
+  }
+
+  @Override
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+  }
+
+  @Override
+  public boolean isSelected() {
+    return this.selected;
   }
 
   @Override
@@ -145,13 +161,14 @@ public class FlowItemModule_Impl implements Parcelable {
     return true;
   }
 }
+
 ```
 - 那么只要下面简短几行代码即可搞定.
 ````java
 @Fields({
         @Field(propName = "id", type = int.class,  since = 1.2, until = 2.0),
-        @Field(propName = "name" ),
-        @Field(propName = "desc" ),
+        @Field(propName = "name" ,seriaName = "stu_name"),
+        @Field(propName = "desc" , flags = FLAGS_MAIN_SCOPES_2 | FLAGS_NO_EXPOSE),
 })
 public interface FlowItem extends Parcelable{
 }
