@@ -29,7 +29,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.code.gson:gson:2.8.2'
-    testCompile 'com.heaven7.java.data.mediator:data-mediator:1.2.0-beta2'
+    testCompile 'com.heaven7.java.data.mediator:data-mediator:1.2.0'
     testCompile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.1'
 
     compile 'com.heaven7.java.base:Java-base:1.0.9'
@@ -42,26 +42,8 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.compiler'
     artifactId = 'data-mediator-compiler'
-    publishVersion = '1.2.0'
+    publishVersion = '1.2.1'
     desc = 'this is a java compiler lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }
-/*compileJava {
-    dependsOn generateQueryDSL
-    source generateQueryDSL.destinationDir
-}
 
-compileGeneratedJava {
-    dependsOn generateQueryDSL
-    options.warnings = false
-    classpath += sourceSets.main.runtimeClasspath
-}
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
-    source = sourceSets.main.java
-    classpath = configurations.compile //+ configurations.querydslapt
-    options.compilerArgs = [
-            "-proc:only",
-            "-processor", "com.heaven7.java.data.mediator.compiler.MediatorAnnotationProcessor"
-    ]
-    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
-}*/

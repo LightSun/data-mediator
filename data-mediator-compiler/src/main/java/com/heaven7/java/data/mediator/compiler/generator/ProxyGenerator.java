@@ -155,14 +155,14 @@ public class ProxyGenerator {
                         .addCode("return this;\n")
                         .endControlFlow()
                         .addStatement("target.$N($N)", setMethodName, paramName)
-                        .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName)
+                        .addStatement("dispatchValueChanged($N, oldValue, $N)", fieldName, paramName)
                         .addCode("return this;\n");
             }else{
                 setBuilder.beginControlFlow("if(_getEqualsComparator().isEquals(oldValue, $N))", paramName)
                         .addCode("return ;\n")
                         .endControlFlow()
                         .addStatement("target.$N($N)", setMethodName, paramName)
-                        .addStatement("dispatchCallbacks($N, oldValue, $N)", fieldName, paramName);
+                        .addStatement("dispatchValueChanged($N, oldValue, $N)", fieldName, paramName);
             }
             typeBuilder.addMethod(setBuilder.build());
             //add apply statement.

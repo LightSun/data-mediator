@@ -3,6 +3,7 @@ package com.heaven7.java.data.mediator.compiler;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesNGenerator;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -52,6 +53,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         mElementUtils = processingEnv.getElementUtils();
         mPrinter = new ProcessorPrinter(processingEnv.getMessager());
         mTypeUtils = processingEnv.getTypeUtils();
+
         mPrinter.note(TAG, "init", processingEnv.getOptions());
     }
 
@@ -98,15 +100,24 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             }
         }
         //generate SharedProperties.
+        TypeElement te_sp = mElementUtils.getTypeElement(
+                "com.heaven7.java.data.mediator.factory.SharedProperties");
+        if(te_sp == null) {
+            if (!SharedPropertiesGenerator.generateSharedProperties(mFiler, mPrinter)) {
+                return true;
+            }
+        }
+        //generate SharedProperties_N
         final Set<FieldData> fields = new HashSet<>();
         for (CodeGenerator generator : mProxyClassMap.values()) {
             fields.addAll(generator.getFieldDatas());
         }
-        if(!SharedPropertiesGenerator.generateSharedProperties(fields, mFiler, mPrinter)){
+        if(!SharedPropertiesNGenerator.generateSharedProperties(
+                fields, mElementUtils, mFiler, mPrinter)){
             return true;
         }
 
-       //generate module interface and impl code
+       //generate module interface / impl /proxy
        for (CodeGenerator generator : mProxyClassMap.values()) {
            if(!generator.generateJavaFile(mSuperDelegate ,mFiler, mPrinter)){
                return true;
@@ -137,7 +148,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         //被注解的类的全名
         String qualifiedName = enclosingElement.getQualifiedName().toString();
         // anno = com.heaven7.java.data.mediator.Fields ,parent element is: com.heaven7.data.mediator.demo.Student
-        note(TAG, "isValid","anno = " + annotationClass.getName() + " ,full name is: " + qualifiedName);
+        note("isValid","anno = " + annotationClass.getName() + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
         // 所在的类不能是private或static修饰

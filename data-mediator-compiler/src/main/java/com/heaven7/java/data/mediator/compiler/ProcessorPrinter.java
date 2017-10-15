@@ -11,7 +11,8 @@ import java.util.List;
 public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
-            "Util"
+            "Util",
+            "MediatorAnnotationProcessor"
     );
     //only debug show info log
     private static final boolean sDebug = false;

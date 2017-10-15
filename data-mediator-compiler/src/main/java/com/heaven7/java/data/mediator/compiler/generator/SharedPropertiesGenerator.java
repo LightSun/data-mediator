@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
-import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.ProcessorPrinter;
 import com.heaven7.java.data.mediator.compiler.Util;
@@ -10,7 +9,6 @@ import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Set;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
@@ -21,7 +19,7 @@ public class SharedPropertiesGenerator {
 
     private static final String TAG  =  "SharedPropertiesGenerator";
 
-    public static boolean generateSharedProperties(Set<FieldData> fields, Filer filer, ProcessorPrinter pp){
+    public static boolean generateSharedProperties(Filer filer, ProcessorPrinter pp){
         ClassName propertyCN = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         TypeName stringTN = TypeName.get(String.class);
         ParameterizedTypeName pt_cache = ParameterizedTypeName.get(ClassName.get(HashMap.class),
@@ -40,7 +38,7 @@ public class SharedPropertiesGenerator {
                 .build();
 
         MethodSpec putToCache = MethodSpec.methodBuilder("putToCache")
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+                .addModifiers(Modifier.PROTECTED, Modifier.STATIC)
                 .addParameter(stringTN, "typeName")
                 .addParameter(stringTN, "propName")
                 .addParameter(int.class, "complexFlag")
@@ -66,11 +64,19 @@ public class SharedPropertiesGenerator {
 
         //add selected ( for ISelectable)
         staticBuilder.add("putToCache($S, $S, $L);\n", FD_SELECTABLE.getTypeCompat().toString(),
-                FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType());
-        for(FieldData fd : fields){
+                       FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType())
+                .beginControlFlow("try")
+                    .beginControlFlow(" for(int i = 1; i < 100 ; i ++)")
+                    .addStatement("$T.forName($S + $S +i)", Class.class,
+                            "com.heaven7.java.data.mediator.factory.SharedProperties", "_")
+                .endControlFlow()
+                .nextControlFlow("catch (Exception e)")
+                .add("//ignore \n")
+                .endControlFlow();
+       /* for(FieldData fd : fields){
             staticBuilder.add("putToCache($S, $S, $L);\n", fd.getTypeCompat().toString(),
                     fd.getPropertyName(), fd.getComplexType());
-        }
+        }*/
 
         TypeSpec typeSpec = TypeSpec.classBuilder(SIMPLE_NAME_SHARED_PROP)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)

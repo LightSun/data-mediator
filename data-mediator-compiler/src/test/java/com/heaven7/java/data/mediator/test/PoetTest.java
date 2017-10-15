@@ -2,7 +2,6 @@ package com.heaven7.java.data.mediator.test;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.Util;
-import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesGenerator;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -23,7 +22,7 @@ public class PoetTest {
 
     //test generate MediatorSharedProperties.
     public static void main(String[] args){
-        //generateSharedProperties();
+        generateSharedProperties();
         //generateSharedProperties2();
        // testGenerateProxy();
         testToStringBuilder();
@@ -150,7 +149,7 @@ public class PoetTest {
         fd.setTypeCompat(new FieldData.TypeCompat(null, new TypeMirrorImpl("java.lang.String")));
         set.add(fd);
 
-        SharedPropertiesGenerator.generateSharedProperties(set, null, null);
+       // SharedPropertiesGenerator.generateSharedProperties(set, null, null);
     }
 
     private static void generateSharedProperties() {
@@ -195,6 +194,13 @@ public class PoetTest {
                 .addStaticBlock(CodeBlock.builder()
                         .add("sCache = new HashMap<>();\n")
                         .add("putToCache($S, $S, $L);\n", "java.lang.String", "name", 0)
+                        .beginControlFlow("try")
+                           .beginControlFlow(" for(int i = 1; i < 100 ; i ++)")
+                           .addStatement("$T.forName($S + i);", Class.class, "com.heaven7.java.data.mediator.factory.SharedProperties")
+                           .endControlFlow()
+                        .nextControlFlow("catch (Exception e)")
+                        .add("//ignore \n")
+                        .endControlFlow()
                         .build())
                 .addField(fieldSpec)
                 .addMethod(get)

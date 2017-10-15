@@ -1,3 +1,25 @@
 
 idea annotation processor
 https://stackoverflow.com/questions/19351168/gradle-annotations-flavors-wont-run-annotations-processor?rq=1
+
+
+// may need
+*compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+    dependsOn generateQueryDSL
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile //+ configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor", "com.heaven7.java.data.mediator.compiler.MediatorAnnotationProcessor"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
