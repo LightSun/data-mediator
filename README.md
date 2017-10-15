@@ -281,6 +281,7 @@ public interface FlowItem extends Parcelable{
      compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
      compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
 
+     compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
      apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
      apt 'com.squareup:javapoet:1.9.0'
    }
@@ -299,8 +300,7 @@ public interface FlowItem extends Parcelable{
    dependencies {
        // gson支持库( 1.2.0 版本新增)
        compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
-       // (1.2.0版本后 data-mediator-support-gson自带) 
-       compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+       compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
 
        compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
        apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
