@@ -316,7 +316,18 @@ public interface FlowItem extends Parcelable{
 
 # 快速入门
 
-1, 定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
+1, 可选全局配置.
+```java
+@GlobalConfig(
+        gsonConfig = @GsonConfig(
+                version = 2.0,
+                forceDisable = false,
+                generateJsonAdapter = true
+        )
+)
+```
+
+2, 定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
 假如学生有。年龄，名称, id属性。
 那么简单的数据定义为:
 ```java
@@ -330,14 +341,14 @@ public interface Student extends Serializable, Parcelable{
 }
 ```
 
-2, 编译项目生成代码.
+3, 编译项目生成代码.
   * java: module上鼠标右键. compile module XXX.
   *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
   * 会自动生成  模型接口, 模型实现以及代理 。
 
-3, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+4, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * 属性改变demo
