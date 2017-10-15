@@ -9,6 +9,15 @@ public final class GlobalSetting {
 
     private double currentVersion = 1.0; //default
 
+    static {
+        //static load. like gson version of global config.
+        try {
+            Class.forName("com.heaven7.java.data.mediator.internal.$StaticLoader");
+        } catch (ClassNotFoundException e) {
+            //ignore
+        }
+    }
+
     private static class Creator{
        static final GlobalSetting INSTANCE = new GlobalSetting();
     }
@@ -30,6 +39,9 @@ public final class GlobalSetting {
      * @param currentVersion the current gson version
      */
     public void setGsonVersion(double currentVersion) {
+        if(currentVersion < 1.0){
+            throw new IllegalArgumentException();
+        }
         this.currentVersion = currentVersion;
     }
 }

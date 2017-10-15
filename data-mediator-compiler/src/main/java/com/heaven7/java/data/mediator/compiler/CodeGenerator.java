@@ -113,7 +113,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
         //add all Constant RPOP_xxx field on Interface (from proxy moved here)
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
-        ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+        ClassName cn_shared_properties = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_SHARED_PROP);
         for(FieldData field : mFields){
             interfaceBuilder.addField(FieldSpec.builder(cn_prop,
                     field.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)

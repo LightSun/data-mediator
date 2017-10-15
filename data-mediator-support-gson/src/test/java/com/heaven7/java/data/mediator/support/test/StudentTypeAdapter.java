@@ -27,8 +27,11 @@ public class StudentTypeAdapter extends TypeAdapter<IStudent> {
                     break;
 
                 case "id":
-                    module.setAge(in.nextInt());
+                    module.setId(in.nextString());
                     break;
+
+                default:
+                    in.skipValue();
             }
         }
         in.endObject();

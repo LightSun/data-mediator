@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-
+import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 /**
  * the type adapter generator for gson.
  */
@@ -40,7 +40,7 @@ public class TypeAdapterGenerator {
         ClassName cn_gson_prop = ClassName.get(PKG_GSON_SUPPORT, SN_GSON_PROPERTY);
         for(FieldData fd : fields){
             //gson persistence json.
-            if(Util.hasFlag(fd.getFlags(), FieldData.FLAG_GSON_PERSISTENCE)) {
+            if(Util.hasFlag(fd.getFlags(), FLAG_GSON_PERSISTENCE)) {
                 constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
                         getSerializeName(fd), getSinceValue(fd), getUntilValue(fd));
             }

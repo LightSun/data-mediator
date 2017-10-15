@@ -3,6 +3,7 @@ package com.heaven7.java.data.mediator.compiler;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesNGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -54,6 +55,15 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         mTypeUtils = processingEnv.getTypeUtils();
 
         mPrinter.note(TAG, "init", processingEnv.getOptions());
+       /* try {
+            final FileObject fo = mFiler.createResource(StandardLocation.CLASS_OUTPUT,
+                    "com.heaven7.xxx", "store.txt");
+            final Writer writer = fo.openWriter();
+            writer.write("key=heaven7");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override
@@ -74,6 +84,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         if(annotations.isEmpty()){
             return false;
         }
+        note("process","root eles: " + roundEnv.getRootElements());
         //========== start @GlobalConfig ==============
         Set<? extends Element> set = roundEnv.getElementsAnnotatedWith(GlobalConfig.class);
         if(set.size() >= 2){
@@ -81,8 +92,22 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             return true;
         }
         if(set.size() == 1){
-            if(!ElementHelper.processGlobalSetting(mTypeUtils, set.iterator().next().getAnnotationMirrors(), mPrinter)){
+            if(!ElementHelper.processGlobalSetting(mTypeUtils,
+                    set.iterator().next().getAnnotationMirrors(), mPrinter)){
                 return true;
+            }
+            final boolean exists = mElementUtils.getTypeElement(StaticLoaderGenerator.CNAME) != null;
+            if( com.heaven7.java.data.mediator.compiler.GlobalConfig
+                    .getInstance().getVersion() > 1.0){
+                if(exists){
+                    mPrinter.error(TAG, "process", "gson version from @GlobalConfig can only config once.");
+                    return true;
+                }else{
+                    //generate StaticCodeLoader
+                    if(!StaticLoaderGenerator.generateStaticCodeLoader(mFiler, mPrinter)){
+                        return true;
+                    }
+                }
             }
         }
         //========== end GlobalConfig ===================

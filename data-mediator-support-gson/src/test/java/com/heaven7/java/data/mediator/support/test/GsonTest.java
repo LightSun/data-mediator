@@ -17,12 +17,12 @@ public class GsonTest {
        // long i = Character.MIN_VALUE;
        // char j = (char) i;
 
-       // Gson gson = getGson(); //builder.
-        Gson gson = new Gson();
+        Gson gson = getGson(); //builder.
+       // Gson gson = new Gson();
 
         IStudent module = new StudentModuleImpl();
         module.setName("heaven7");
-        module.setAge(26);
+        module.setId("xxx");
 
         try {
             Method setTags = module.getClass().getMethod("setTags", List.class);
@@ -42,6 +42,7 @@ public class GsonTest {
 
     private static Gson getGson() {
         return new GsonBuilder() //动态注册优先于 @JsonAdapter
+                .excludeFieldsWithoutExposeAnnotation()
                     .registerTypeAdapter(IStudent.class, new TypeAdapter<IStudent>() {
                         @Override
                         public void write(JsonWriter out, IStudent value) throws IOException {

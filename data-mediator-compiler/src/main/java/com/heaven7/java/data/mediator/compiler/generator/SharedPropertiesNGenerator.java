@@ -14,7 +14,8 @@ import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.Collection;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_SHARED_PROP;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.DOC;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_DM_INTERNAL;
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_SHARED_PROP;
 
 /**
@@ -23,11 +24,11 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMP
  */
 public class SharedPropertiesNGenerator {
 
-    private static final String TAG  =  "SharedPropertiesGenerator";
+    private static final String TAG  =  "SharedPropertiesNGenerator";
 
     public static boolean generateSharedProperties(Collection<FieldData> fields,
                                                    Elements elements, Filer filer, ProcessorPrinter pp){
-        final ClassName cn_sp = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+        final ClassName cn_sp = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_SHARED_PROP);
         CodeBlock.Builder staticBuilder = CodeBlock.builder();
         for(FieldData fd : fields){
             staticBuilder.add("$T.putToCache($S, $S, $L);\n", cn_sp, fd.getTypeCompat().toString(),
@@ -37,10 +38,11 @@ public class SharedPropertiesNGenerator {
         TypeSpec typeSpec = TypeSpec.classBuilder(classSimpleName)
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addStaticBlock(staticBuilder.build())
+                .addJavadoc(CodeBlock.of(DOC))
                 .build();
 
         try {
-            JavaFile javaFile = JavaFile.builder(PKG_SHARED_PROP, typeSpec)
+            JavaFile javaFile = JavaFile.builder(PKG_DM_INTERNAL, typeSpec)
                     .build();
            // System.out.println(javaFile.toString());
             javaFile.writeTo(filer);
@@ -58,7 +60,7 @@ public class SharedPropertiesNGenerator {
         return index;
     }
     private static String getClassName(int index){
-        return PKG_SHARED_PROP + "." + SIMPLE_NAME_SHARED_PROP + "_" + index;
+        return PKG_DM_INTERNAL + "." + SIMPLE_NAME_SHARED_PROP + "_" + index;
     }
 
 }

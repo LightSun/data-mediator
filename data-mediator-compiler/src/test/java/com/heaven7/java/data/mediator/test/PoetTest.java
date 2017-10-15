@@ -102,7 +102,7 @@ public class PoetTest {
 
     private static void buildFieldsAndMethods(Set<FieldData> set, ClassName cn_inter, TypeSpec.Builder typeBuilder) {
         ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
-        ClassName cn_shared_properties = ClassName.get(PKG_SHARED_PROP, SIMPLE_NAME_SHARED_PROP);
+        ClassName cn_shared_properties = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_SHARED_PROP);
         //fields and methods.
         for(FieldData field : set){
             final String fieldName = "PROP_" + field.getPropertyName().toUpperCase();

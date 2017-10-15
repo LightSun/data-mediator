@@ -30,6 +30,12 @@ import java.lang.reflect.Method;
  */
 /*public*/ class SupportUtils {
 
+    /*public static boolean hasFlags(int flags, int require) {
+        if (flags == 0 || require == 0) {
+            return false;
+        }
+        return (flags & require) == require;
+    }*/
     public static Object getValue(Property p, Object obj) {
         String name = p.getName();
         String getMethodName = "get" + name.substring(0, 1)

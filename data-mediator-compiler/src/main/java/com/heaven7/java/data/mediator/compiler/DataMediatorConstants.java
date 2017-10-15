@@ -24,7 +24,7 @@ public final class DataMediatorConstants {
     // some cs of MediatorSharedProperties
     public static final String SIMPLE_NAME_PROPERTY          = "Property";
     public static final String PKG_PROP                      = "com.heaven7.java.data.mediator";
-    public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.internal";
+    //public static final String PKG_SHARED_PROP               = "com.heaven7.java.data.mediator.internal";
     public static final String PKG_JAVA_BASE_UTIL            = "com.heaven7.java.base.util";
     public static final String PKG_DM_INTERNAL               = "com.heaven7.java.data.mediator.internal";
     public static final String PKG_GSON_SUPPORT              = "com.heaven7.java.data.mediator.support.gson";
@@ -38,6 +38,7 @@ public final class DataMediatorConstants {
     public static final String SN_BASE_TYPE_ADAPTER          = "BaseTypeAdapter";
     public static final String SN_GSON_PROPERTY              = "GsonProperty";
     public static final String SN_TYPE_HANDLER               = "TypeHandler";
+    public static final String SN_STATIC_LOADER              = "$StaticLoader";
 
     public static final String SIMPLE_NAME_THROWABLES        = "Throwables";
     public static final String SIMPLE_NAME_ObJECTS           = "Objects";
