@@ -2,7 +2,6 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
-import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesNGenerator;
 
 import javax.annotation.processing.*;
@@ -96,14 +95,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             }
             CodeGenerator generator = getProxyClass(element);
             if(!ElementHelper.processAnnotation(mTypeUtils, mPrinter, element.getAnnotationMirrors(), generator)){
-                return true;
-            }
-        }
-        //generate SharedProperties.
-        TypeElement te_sp = mElementUtils.getTypeElement(
-                "com.heaven7.java.data.mediator.factory.SharedProperties");
-        if(te_sp == null) {
-            if (!SharedPropertiesGenerator.generateSharedProperties(mFiler, mPrinter)) {
                 return true;
             }
         }

@@ -1,2 +1,2 @@
-include ':app', ":data-mediator-android"
+include ':app', ':test_compiler', ":data-mediator-android"
 

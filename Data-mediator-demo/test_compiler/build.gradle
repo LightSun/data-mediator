@@ -1,38 +1,34 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
+
     defaultConfig {
-        applicationId "com.heaven7.data.mediator.demo"
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.0.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.code.gson:gson:2.8.2'
 
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.5'
     compile 'com.heaven7.java.data.mediator:data-mediator:1.2.1'
@@ -40,17 +36,4 @@ dependencies {
 
     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.2.2-beta'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
-    compile 'com.heaven7.android.data.mediator:data-mediator-android:1.0.5'
-    //compile project(':data-mediator-android')
-    //helper util
-    compile 'com.heaven7.core.util:util-v1:1.1.2'
-    compile 'com.heaven7.android.util2:android-util2:1.1.4'
-    //butterknife
-    apt "com.jakewharton:butterknife-compiler:8.2.0"
-    compile 'com.jakewharton:butterknife:8.2.0'
-    //other depend
-    compile 'org.heaven7.core.view:common-view:1.2.3'
-
-    //test multi module
-    compile project(':test_compiler')
 }

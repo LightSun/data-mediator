@@ -11,10 +11,13 @@ import com.heaven7.data.mediator.demo.activity.TestRecyclerListBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestSparseArrayActivity;
 import com.heaven7.data.mediator.demo.activity.TestTextViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestViewBindActivity;
+import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.GsonConfig;
 
 import java.util.List;
+
+import heaven7.test_compiler.TestItemModule;
 
 /**
  * Created by heaven7 on 2017/7/12 0012.
@@ -31,6 +34,9 @@ public class MainActivity extends AbsMainActivity {
 
     @Override
     protected void addDemos(List<ActivityInfo> list) {
+        DataMediatorFactory.createDataMediator(TestItemModule.class)
+                .getDataProxy()
+                .setTestItem_test("sdfsfsf");
         list.add(new ActivityInfo(TestPropertyChangeActivity.class, "Test Property Change"));
         list.add(new ActivityInfo(TestDoubleBindActivity.class, "test double bind"));
         list.add(new ActivityInfo(TestChainCallActivity.class, "test chain call"));

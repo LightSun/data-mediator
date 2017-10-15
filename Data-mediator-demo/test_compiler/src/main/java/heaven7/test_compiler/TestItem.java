@@ -1,8 +1,5 @@
-package com.heaven7.data.mediator.demo.module;
+package heaven7.test_compiler;
 
-import android.os.Parcelable;
-
-import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 
@@ -18,6 +15,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_NO_EXPOSE;
         @Field(propName = "id", type = int.class,  since = 1.2, until = 2.0),
         @Field(propName = "name" ,seriaName = "stu_name"),
         @Field(propName = "desc" , flags = FLAGS_MAIN_SCOPES_2 | FLAGS_NO_EXPOSE),
+        @Field(propName = "testItem_test" , flags = FLAGS_MAIN_SCOPES_2 | FLAGS_NO_EXPOSE),
 })
-public interface FlowItem extends Parcelable, ISelectable{
+public interface TestItem {
 }
