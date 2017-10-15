@@ -23,6 +23,7 @@ import heaven7.test_compiler.TestItemModule;
  * Created by heaven7 on 2017/7/12 0012.
  */
 
+//全局设置
 @GlobalConfig(
         gsonConfig = @GsonConfig(
                 version = 2.0,
@@ -34,9 +35,11 @@ public class MainActivity extends AbsMainActivity {
 
     @Override
     protected void addDemos(List<ActivityInfo> list) {
+        //just for test multi module
         DataMediatorFactory.createDataMediator(TestItemModule.class)
                 .getDataProxy()
                 .setTestItem_test("sdfsfsf");
+
         list.add(new ActivityInfo(TestPropertyChangeActivity.class, "Test Property Change"));
         list.add(new ActivityInfo(TestDoubleBindActivity.class, "test double bind"));
         list.add(new ActivityInfo(TestChainCallActivity.class, "test chain call"));
