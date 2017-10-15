@@ -281,6 +281,7 @@ public interface FlowItem extends Parcelable{
      compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
      compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
 
+     compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
      apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
      apt 'com.squareup:javapoet:1.9.0'
    }
@@ -298,8 +299,7 @@ public interface FlowItem extends Parcelable{
    ```java
    dependencies {
        // gson支持库( 1.2.0 版本新增)
-       compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.2'
-       // (1.2.0版本后 data-mediator-support-gson自带) 
+       compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
        compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
 
        compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
@@ -312,11 +312,22 @@ public interface FlowItem extends Parcelable{
        compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
 
    }
-   ```     
+   ```
 
 # 快速入门
 
-1, 定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
+1, 可选全局配置.
+```java
+@GlobalConfig(
+        gsonConfig = @GsonConfig(
+                version = 2.0,
+                forceDisable = false,
+                generateJsonAdapter = true
+        )
+)
+```
+
+2, 定义你的数据实体。比如我要定义关于学生的数据模型, 需要实现Serializable, Parcelable. 
 假如学生有。年龄，名称, id属性。
 那么简单的数据定义为:
 ```java
@@ -330,14 +341,14 @@ public interface Student extends Serializable, Parcelable{
 }
 ```
 
-2, 编译项目生成代码.
+3, 编译项目生成代码.
   * java: module上鼠标右键. compile module XXX.
   *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
   * 会自动生成  模型接口, 模型实现以及代理 。
 
-3, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+4, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * 属性改变demo
@@ -408,9 +419,14 @@ public class TestPropertyChangeActivity extends BaseActivity {
    *;
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
--keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 # 1.1.3 新增
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
+# 1.2.2新增
+-keep class com.heaven7.java.data.mediator.internal.SharedProperties_**
+-keep class com.heaven7.java.data.mediator.internal.$StaticLoader
+
+//已过时，可直接忽略  
+-keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 ```
 
 # refer libs
