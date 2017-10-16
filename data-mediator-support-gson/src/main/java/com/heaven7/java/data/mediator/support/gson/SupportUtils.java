@@ -38,7 +38,8 @@ import java.lang.reflect.Method;
     }*/
     public static Object getValue(Property p, Object obj) {
         String name = p.getName();
-        String getMethodName = "get" + name.substring(0, 1)
+        final String prefix = p.getType() != boolean.class ? "get" : "is";
+        String getMethodName = prefix + name.substring(0, 1)
                 .toUpperCase()
                 .concat(name.substring(1));
         try {
