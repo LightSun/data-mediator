@@ -342,7 +342,7 @@ public interface Student extends Serializable, Parcelable{
 ```
 
 3, 编译项目生成代码.
-  * java: module上鼠标右键. compile module XXX.
+  * java: module/.java文件上上鼠标右键. compile (module) XXX.
   *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
