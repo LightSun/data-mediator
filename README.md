@@ -25,6 +25,7 @@ data-mediator
  * [data-mediator-demo说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/demo_readme.md)
  * [进阶指南](#进阶指南)
  * [混淆配置](#混淆配置)
+ * [Gson注解详细说明](https://juejin.im/post/59e5663f51882546b15b92f0)
  
 # 问题及目标
 * 现有问题：
