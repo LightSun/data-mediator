@@ -196,7 +196,7 @@ public interface FlowItem extends Parcelable{
   <br>自动生成代理层 以便监听数据变化。
 - 字段:
   * 1, 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 
-   <br> 和其他类型 .数组和list结构同样支持。（map暂不支持parcelable）.<br>
+   <br> 和其他类型 .数组和list/SparseArray结构同样支持。（map暂不支持parcelable）.<br>
   * 2, 支持所有的gson注解 for 'Google-Gson'.
   * 3, 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
   <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
