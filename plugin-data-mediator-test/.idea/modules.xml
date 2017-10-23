@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/plugin-data-mediator-test.iml" filepath="$PROJECT_DIR$/plugin-data-mediator-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin-data-mediator-test_main.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin-data-mediator-test_main.iml" group="plugin-data-mediator-test" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/plugin-data-mediator-test_test.iml" filepath="$PROJECT_DIR$/.idea/modules/plugin-data-mediator-test_test.iml" group="plugin-data-mediator-test" />
+    </modules>
+  </component>
+</project>

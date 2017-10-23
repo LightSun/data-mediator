@@ -1,0 +1,17 @@
+group 'com.heaven7.plugin.idea.data_mediator.test'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.0.5'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.2.2'
+}
