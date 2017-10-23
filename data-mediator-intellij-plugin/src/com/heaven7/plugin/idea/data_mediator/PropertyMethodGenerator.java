@@ -1,7 +1,9 @@
 package com.heaven7.plugin.idea.data_mediator;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
+import com.intellij.psi.search.GlobalSearchScope;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +29,19 @@ public class PropertyMethodGenerator {
         }
     }
 
+    public void addProperty(Property property) {
+        this.mProps.add(property);
+    }
+
     public void generate(){
       /*  PsiJavaFile javaFile = (PsiJavaFile) mPsiClass.getContainingFile();
         PsiPackage pkg = JavaPsiFacade.getInstance(mPsiClass.getProject())
                 .findPackage(javaFile.getPackageName());*/
+        final Project project = mPsiClass.getProject();
         //TODO delete exist
         removeExistingParcelableImplementation(mPsiClass);
 
-        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(mPsiClass.getProject());
+        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 
         List<PsiMethod> methods = new ArrayList<>();
         PsiImportStatement import_list  = null;
@@ -43,13 +50,19 @@ public class PropertyMethodGenerator {
             switch (prop.getComplexType()){
                 case FieldFlags.COMPLEX_LIST:
                     if(import_list == null) {
-                        import_list = elementFactory.createImportStatement(elementFactory.createClass("java.util.List"));
+                        final PsiClass aClass = JavaPsiFacade.getInstance(project)
+                                .findClass("java.util.List",
+                                GlobalSearchScope.allScope(project));
+                        import_list = elementFactory.createImportStatement(aClass);
                     }
                     break;
 
                 case FieldFlags.COMPLEX_SPARSE_ARRAY:
                     if(import_sa == null) {
-                        import_sa = elementFactory.createImportStatement(elementFactory.createClass("com.heaven7.java.base.util.SparseArray"));
+                        final PsiClass aClass = JavaPsiFacade.getInstance(project)
+                                .findClass("com.heaven7.java.base.util.SparseArray",
+                                GlobalSearchScope.allScope(project));
+                        import_sa = elementFactory.createImportStatement(aClass);
                     }
                     break;
             }
@@ -57,7 +70,7 @@ public class PropertyMethodGenerator {
             methods.add(elementFactory.createMethodFromText(generateGet(name, prop), mPsiClass));
             methods.add(elementFactory.createMethodFromText(generateSet(name, prop), mPsiClass));
         }
-        JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(mPsiClass.getProject());
+        JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
         if(import_list != null){
             styleManager.shortenClassReferences(mPsiClass.addBefore(import_list, mPsiClass.getLastChild()));
         }
@@ -77,7 +90,14 @@ public class PropertyMethodGenerator {
     }
     private String generateGet(String name, Property prop) {
         String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
-        return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
+        StringBuilder sb = new StringBuilder()
+                .append(prop.getRealTypeString())
+                .append(" ")
+                .append(prefix)
+                .append(name)
+                .append("();");
+        return sb.toString();
+        //return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
     }
 
     private void removeExistingParcelableImplementation(PsiClass psiClass) {
@@ -139,7 +159,4 @@ public class PropertyMethodGenerator {
         }
     }
 
-    public void addProperty(Property property) {
-        this.mProps.add(property);
-    }
 }

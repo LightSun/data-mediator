@@ -2,3 +2,9 @@ allScope(project);
  PsiClass[] psiClass = PsiShortNamesCache.getInstance(project).getClassesByName("className",searchScope);
  PsiImportStatement importStatement = factory.createImportStatement(psiClass[0]);
  JavaCodeStyleManager.getInstance(project).shortenClassReferences(importStatement.getQualifiedName());
+
+http://blog.csdn.net/hawkdowen/article/details/41213001
+
+//无法配置插件config时
+ java module to plugin module
+ https://stackoverflow.com/questions/18278440/how-to-import-and-run-existing-plugins-from-intellij-community-edition-repo

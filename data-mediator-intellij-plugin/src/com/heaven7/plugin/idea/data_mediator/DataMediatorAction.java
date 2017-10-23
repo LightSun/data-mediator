@@ -15,13 +15,6 @@
  */
 package com.heaven7.plugin.idea.data_mediator;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
-import com.intellij.execution.process.DefaultJavaProcessHandler;
-import com.intellij.execution.process.ProcessHandlerFactory;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -29,17 +22,8 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiClassReferenceType;
-import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.terminal.TerminalExecutionConsole;
-import groovyjarjarantlr.CodeGenerator;
-
-import java.nio.charset.Charset;
-import java.util.List;
 
 public class DataMediatorAction extends AnAction {
 
@@ -71,14 +55,16 @@ public class DataMediatorAction extends AnAction {
         PsiAnnotationMemberValue pam_chain = annotation.findAttributeValue("enableChain");
         Util.log("enableChain = " + pam_chain.getText());
         logAnnoValue(pam_chain);
-        final  PropertyMethodGenerator pmGenerator = new PropertyMethodGenerator(psiClass, Util.getBooleanValue(pam_chain));
+        final  PropertyMethodGenerator pmGenerator = new PropertyMethodGenerator(
+                psiClass, Util.getBooleanValue(pam_chain));
 
         Util.log("anno of fields = " + annotation);
         PsiAnnotationMemberValue value = annotation.findAttributeValue("value");
         if(value == null){
             return;
         }
-        PsiConstantEvaluationHelper evaluationHelper = JavaPsiFacade.getInstance(project).getConstantEvaluationHelper();
+        PsiConstantEvaluationHelper evaluationHelper = JavaPsiFacade.getInstance(project)
+                .getConstantEvaluationHelper();
 
         PsiElement[] children = value.getChildren();
         Util.log("anno of all field.size = " + children.length);
@@ -109,7 +95,7 @@ public class DataMediatorAction extends AnAction {
                 logAnnoValue(typeVal);
 
                 PsiAnnotationMemberValue complexType = expect.findAttributeValue("complexType");
-                int val = (int) evaluationHelper.computeConstantExpression(complexType);
+                int val = (Integer) evaluationHelper.computeConstantExpression(complexType);
 
                 Util.log("val = " + val);
                 if(complexType != null){
@@ -117,9 +103,9 @@ public class DataMediatorAction extends AnAction {
                     logAnnoValue(complexType);
                 }
                 pmGenerator.addProperty(new Property(expectType, pName, val));
-                //TODO how to get value from expression
             }
         }
+        generateDataMediator(psiClass, pmGenerator);
     }
 
     private void logAnnoValue(PsiAnnotationMemberValue complexType) {
@@ -143,11 +129,12 @@ public class DataMediatorAction extends AnAction {
         }
     }
 
-    private void generateDataMediator(final PsiClass psiClass, final List<PsiField> fields) {
+    private void generateDataMediator(final PsiClass psiClass,
+                                      final PropertyMethodGenerator generator) {
         new WriteCommandAction.Simple(psiClass.getProject(), psiClass.getContainingFile()) {
             @Override
             protected void run() throws Throwable {
-               //TODO new CodeGenerator(psiClass, fields).generate();
+                generator.generate();
             }
         }.execute();
     }

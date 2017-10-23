@@ -2,14 +2,14 @@ package com.heaven7.plugin.idea.data_mediator;
 
 public class Property {
 
-    static final String TYPE_int = "int";
-    static final String TYPE_long = "long";
-    static final String TYPE_short = "short";
-    static final String TYPE_byte = "byte";
-    static final String TYPE_boolean = "boolean";
-    static final String TYPE_float = "float";
-    static final String TYPE_double = "double";
-    static final String TYPE_char = "char";
+    private static final String TYPE_int = "int";
+    private static final String TYPE_long = "long";
+    private static final String TYPE_short = "short";
+    private static final String TYPE_byte = "byte";
+    private static final String TYPE_boolean = "boolean";
+    private static final String TYPE_float = "float";
+    private static final String TYPE_double = "double";
+    private static final String TYPE_char = "char";
 
     private final String type;
     private final String name;
