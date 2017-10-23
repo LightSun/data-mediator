@@ -25,6 +25,7 @@ data-mediator
  * [data-mediator-demo说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/demo_readme.md)
  * [进阶指南](#进阶指南)
  * [混淆配置](#混淆配置)
+ * [Gson注解详细说明](https://juejin.im/post/59e5663f51882546b15b92f0)
  
 # 问题及目标
 * 现有问题：
@@ -195,7 +196,7 @@ public interface FlowItem extends Parcelable{
   <br>自动生成代理层 以便监听数据变化。
 - 字段:
   * 1, 支持多种类型 , 8大基本类型(int,long,short,byte,float,double,boolean ,char)及其包装类型， String类型, 
-   <br> 和其他类型 .数组和list结构同样支持。（map暂不支持parcelable）.<br>
+   <br> 和其他类型 .数组和list/SparseArray结构同样支持。（map暂不支持parcelable）.<br>
   * 2, 支持所有的gson注解 for 'Google-Gson'.
   * 3, 支持多域， 比如： 重置(IResetable接口), 拷贝（ICopyable接口), 共享（Shareable), 快照（ISnapable)接口。toString.
   <br>     作用: 比如重置： 很多时候我们调用了数据的一些方法，改变了一些属性。然后想重置以便重新使用。
@@ -342,7 +343,7 @@ public interface Student extends Serializable, Parcelable{
 ```
 
 3, 编译项目生成代码.
-  * java: module上鼠标右键. compile module XXX.
+  * java: module/.java文件上上鼠标右键. compile (module) XXX.
   *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
