@@ -78,38 +78,52 @@ public class DataMediatorAction extends AnAction {
         if(value == null){
             return;
         }
+        PsiConstantEvaluationHelper evaluationHelper = JavaPsiFacade.getInstance(project).getConstantEvaluationHelper();
+
         PsiElement[] children = value.getChildren();
         Util.log("anno of all field.size = " + children.length);
         for (PsiElement child : children){
             if(child instanceof PsiAnnotation){
                 PsiAnnotation expect = (PsiAnnotation) child;
                 PsiAnnotationMemberValue propName = expect.findAttributeValue("propName");
-                String text = propName.getText();
-                Util.log("propName = " + text);
+                String pName = propName.getText();
+                Util.log("propName = " + pName);
                 logAnnoValue(propName);
 
                 String expectType = null;
                 PsiAnnotationMemberValue typeVal = expect.findAttributeValue("type");
                 String text_type = typeVal.getText();
-                if(typeVal instanceof PsiPrimitiveType){
-                    expectType = text_type.substring(0, text_type.lastIndexOf("."));
-                }else if(typeVal instanceof PsiClassType){
-                    expectType = ((PsiClassType) typeVal).resolve().getQualifiedName();
+                if(typeVal instanceof PsiExpression){
+                    PsiType psiType = ((PsiExpression) typeVal).getType();
+                    if(psiType instanceof PsiPrimitiveType){
+                        expectType = text_type.substring(0, text_type.lastIndexOf("."));
+                    }else if(psiType instanceof PsiClassType){
+                        expectType = ((PsiClassType) psiType).resolve().getQualifiedName();
+                    }else {
+                        //uncatch here
+                        throw new UnsupportedOperationException("type is not PsiPrimitiveType and PsiClassType.");
+                    }
                 }
-                if(typeVal != null){
-                    Util.log("type = " + text_type);
-                    logAnnoValue(typeVal);
-                }
+
+                Util.log("type = " + text_type);
+                logAnnoValue(typeVal);
+
                 PsiAnnotationMemberValue complexType = expect.findAttributeValue("complexType");
+                int val = (int) evaluationHelper.computeConstantExpression(complexType);
+
+                Util.log("val = " + val);
                 if(complexType != null){
                     Util.log("complexType = " + complexType.getText());
                     logAnnoValue(complexType);
                 }
+                pmGenerator.addProperty(new Property(expectType, pName, val));
+                //TODO how to get value from expression
             }
         }
     }
 
     private void logAnnoValue(PsiAnnotationMemberValue complexType) {
+        Util.log("PsiAnnotationMemberValue class =  " + complexType.getClass().getName());
         if(complexType instanceof PsiExpression){
             PsiType type = ((PsiExpression) complexType).getType();
             Util.log("PsiExpression = " + type.getClass().getName());

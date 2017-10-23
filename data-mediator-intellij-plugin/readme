@@ -1,0 +1,4 @@
+allScope(project);
+ PsiClass[] psiClass = PsiShortNamesCache.getInstance(project).getClassesByName("className",searchScope);
+ PsiImportStatement importStatement = factory.createImportStatement(psiClass[0]);
+ JavaCodeStyleManager.getInstance(project).shortenClassReferences(importStatement.getQualifiedName());

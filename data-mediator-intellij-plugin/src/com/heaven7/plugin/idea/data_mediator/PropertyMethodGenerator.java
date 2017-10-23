@@ -139,4 +139,7 @@ public class PropertyMethodGenerator {
         }
     }
 
+    public void addProperty(Property property) {
+        this.mProps.add(property);
+    }
 }
