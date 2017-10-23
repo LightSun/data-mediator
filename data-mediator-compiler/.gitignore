@@ -3,7 +3,7 @@
 *.log
 *.ctxt
 .mtj.tmp/
-*.jar
+# *.jar
 *.war
 *.ear
 *.zip
@@ -19,3 +19,4 @@ hs_err_pid*
 .idea/workspace.xml
 classes/artifacts/data_mediator/
 src/test/resources/
+out/*

@@ -1,0 +1,38 @@
+<idea-plugin>
+  <id>com.heaven7.plugin.idea.data_mediator</id>
+  <name>Data-Mediator</name>
+  <version>1.0</version>
+  <vendor email="donshine723@gmail.com" url="https://github.com/LightSun/data-mediator">heaven7</vendor>
+
+  <description><![CDATA[
+      Plugin which generates Data-mediator code for you.
+    ]]></description>
+
+  <change-notes><![CDATA[
+     support self any method for data-mediator<br>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="generateParcelableNew" class="com.heaven7.plugin.idea.data_mediator.DataMediatorAction"
+            text="data-mediator"
+            description="Generates code for class which used data-mediator">
+      <add-to-group group-id="GenerateGroup" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>
