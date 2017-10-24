@@ -5,6 +5,17 @@
   <vendor email="donshine723@gmail.com" url="https://github.com/LightSun/data-mediator">heaven7</vendor>
 
   <description><![CDATA[
+      Data-mediator is a framework of data.<br>
+      It can hele we do much work. <br>
+      Features:<br>
+      1, like listen property change, <br>
+      2, generate get/is/set method. <br>
+      3, chain call. <br>
+      4, auto impl Serializable and parcelable. or others.<br>
+      5, full support for Google/Gson.<br>
+      6, support data-bind for android platform.<br>
+      7, support self method. (doing).<br>
+      8. ...... the more to see in github. <br>
       Plugin which generates Data-mediator code for you.
     ]]></description>
 
@@ -30,7 +41,7 @@
     <!-- Add your actions here -->
     <action id="generateDataMediatorNew" class="com.heaven7.plugin.idea.data_mediator.DataMediatorAction"
             text="data-mediator"
-            description="Generates code for class which used data-mediator">
+            description="Generates code for interface which used data-mediator">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>
   </actions>
