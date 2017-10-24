@@ -22,10 +22,13 @@ public class Util {
             }
         }
         if (error) {
-            System.err.println(sb.toString());
+            System.err.print(sb.toString());
         } else {
-            System.out.println(sb.toString());
+            System.out.print(sb.toString());
         }
+    }
+    public static void logNewLine(){
+        System.out.println("================================================\r\n");
     }
 
     /** make sure the value is boolean. */

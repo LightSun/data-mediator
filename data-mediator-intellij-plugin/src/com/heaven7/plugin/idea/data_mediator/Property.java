@@ -2,14 +2,14 @@ package com.heaven7.plugin.idea.data_mediator;
 
 public class Property {
 
-    private static final String TYPE_int = "int";
-    private static final String TYPE_long = "long";
-    private static final String TYPE_short = "short";
-    private static final String TYPE_byte = "byte";
-    private static final String TYPE_boolean = "boolean";
-    private static final String TYPE_float = "float";
-    private static final String TYPE_double = "double";
-    private static final String TYPE_char = "char";
+     static final String TYPE_int = "int";
+     static final String TYPE_long = "long";
+     static final String TYPE_short = "short";
+     static final String TYPE_byte = "byte";
+     static final String TYPE_boolean = "boolean";
+     static final String TYPE_float = "float";
+     static final String TYPE_double = "double";
+     static final String TYPE_char = "char";
 
     private final String type;
     private final String name;
@@ -42,41 +42,17 @@ public class Property {
 
     public String getRealTypeString() {
         String tempType = this.type;
-        if(complexType == FieldFlags.COMPLEX_LIST || complexType == FieldFlags.COMPLEX_SPARSE_ARRAY) {
-            switch (type) {
-                case TYPE_int:
-                    tempType = Integer.class.getName();
-                    break;
-                case TYPE_long:
-                    tempType = Long.class.getName();
-                    break;
-                case TYPE_short:
-                    tempType = Short.class.getName();
-                    break;
-                case TYPE_byte:
-                    tempType = Byte.class.getName();
-                    break;
-                case TYPE_boolean:
-                    tempType = Boolean.class.getName();
-                    break;
-                case TYPE_float:
-                    tempType = Float.class.getName();
-                    break;
-                case TYPE_double:
-                    tempType = Double.class.getName();
-                    break;
-                case TYPE_char:
-                    tempType = Character.class.getName();
-                    break;
-            }
+        if(complexType == FieldFlags.COMPLEX_LIST
+                || complexType == FieldFlags.COMPLEX_SPARSE_ARRAY) {
+            tempType = getBoxTypeString();
         }
         switch (complexType){
             case FieldFlags.COMPLEX_ARRAY:
                 return tempType + "[]";
             case FieldFlags.COMPLEX_LIST:
-                return "List<" + tempType + ">";
+                return "java.util.List<" + tempType + ">";
             case FieldFlags.COMPLEX_SPARSE_ARRAY:
-                return "SparseArray<"+ tempType + ">";
+                return "com.heaven7.java.base.util.SparseArray<"+ tempType + ">";
         }
         return tempType;
     }
@@ -106,6 +82,37 @@ public class Property {
                 return true;
         }
         return false;
+    }
+
+    public String getBoxTypeString(){
+        String tempType = type;
+        switch (type) {
+            case TYPE_int:
+                tempType = Integer.class.getName();
+                break;
+            case TYPE_long:
+                tempType = Long.class.getName();
+                break;
+            case TYPE_short:
+                tempType = Short.class.getName();
+                break;
+            case TYPE_byte:
+                tempType = Byte.class.getName();
+                break;
+            case TYPE_boolean:
+                tempType = Boolean.class.getName();
+                break;
+            case TYPE_float:
+                tempType = Float.class.getName();
+                break;
+            case TYPE_double:
+                tempType = Double.class.getName();
+                break;
+            case TYPE_char:
+                tempType = Character.class.getName();
+                break;
+        }
+        return tempType;
     }
 
     /**

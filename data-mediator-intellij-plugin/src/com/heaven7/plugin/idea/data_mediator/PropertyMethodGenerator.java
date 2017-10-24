@@ -1,5 +1,6 @@
 package com.heaven7.plugin.idea.data_mediator;
 
+import com.heaven7.plugin.idea.data_mediator.typeInterface.TypeInterfaceExtend__Poolable;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
@@ -13,9 +14,11 @@ public class PropertyMethodGenerator {
     private final List<Property> mProps = new ArrayList<>();
     private final PsiClass mPsiClass;
     private final String mSetReturn;
+    private final String mCurrentModule;
 
     public PropertyMethodGenerator(PsiClass mPsiClass, boolean chain) {
         this.mPsiClass = mPsiClass;
+        this.mCurrentModule = mPsiClass.getQualifiedName();
         if( !chain){
             mSetReturn = "void";
         }else {
@@ -38,50 +41,62 @@ public class PropertyMethodGenerator {
         PsiPackage pkg = JavaPsiFacade.getInstance(mPsiClass.getProject())
                 .findPackage(javaFile.getPackageName());*/
         final Project project = mPsiClass.getProject();
-        //TODO delete exist
+        //remove exist method
         removeExistingParcelableImplementation(mPsiClass);
 
         PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 
         List<PsiMethod> methods = new ArrayList<>();
-        PsiImportStatement import_list  = null;
-        PsiImportStatement import_sa  = null;
         for(Property prop: mProps) {
+            //get and set.
+            String name = Util.getPropNameForMethod(prop.getName());
+            String getMethod = generateGet(name, prop);
+            String setMethod = generateSet(name, prop);
+            Util.log("getMethod = " + getMethod);
+            Util.log("setMethod = " + setMethod);
+            Util.logNewLine();
+            methods.add(elementFactory.createMethodFromText(getMethod, mPsiClass));
+            methods.add(elementFactory.createMethodFromText(setMethod, mPsiClass));
+
+            //editor
             switch (prop.getComplexType()){
                 case FieldFlags.COMPLEX_LIST:
-                    if(import_list == null) {
-                        final PsiClass aClass = JavaPsiFacade.getInstance(project)
-                                .findClass("java.util.List",
-                                GlobalSearchScope.allScope(project));
-                        import_list = elementFactory.createImportStatement(aClass);
-                    }
+                    methods.add(elementFactory.createMethodFromText(generateListEditor(name, prop), mPsiClass));
                     break;
-
                 case FieldFlags.COMPLEX_SPARSE_ARRAY:
-                    if(import_sa == null) {
-                        final PsiClass aClass = JavaPsiFacade.getInstance(project)
-                                .findClass("com.heaven7.java.base.util.SparseArray",
-                                GlobalSearchScope.allScope(project));
-                        import_sa = elementFactory.createImportStatement(aClass);
-                    }
+                    methods.add(elementFactory.createMethodFromText(generateSparseArrayEditor(name, prop), mPsiClass));
                     break;
             }
-            String name = Util.getPropNameForMethod(prop.getName());
-            methods.add(elementFactory.createMethodFromText(generateGet(name, prop), mPsiClass));
-            methods.add(elementFactory.createMethodFromText(generateSet(name, prop), mPsiClass));
         }
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
-        if(import_list != null){
-            styleManager.shortenClassReferences(mPsiClass.addBefore(import_list, mPsiClass.getLastChild()));
-        }
-        if(import_sa != null){
-            styleManager.shortenClassReferences(mPsiClass.addBefore(import_sa, mPsiClass.getLastChild()));
-        }
         for(PsiMethod psi : methods) {
             styleManager.shortenClassReferences(mPsiClass.addBefore(psi, mPsiClass.getLastChild()));
         }
-        makeClassImplementParcelable(elementFactory);
+        //extend Poolable.
+        TypeInterfaceExtend__Poolable poolable = new TypeInterfaceExtend__Poolable();
+        if(!poolable.isSuperClassHas(mPsiClass)){
+            poolable.makeInterfaceExtend(mPsiClass, elementFactory, styleManager);
+        }
     }
+
+    private String generateSparseArrayEditor(String name, Property prop) {
+        //SparseArrayPropertyEditor<? extends TestParcelableDataModule, ResultData> beginTest_SparseArrayEditor()
+        return String.format("%s<? extends %s, %s> begin%sEditor();",
+                "com.heaven7.java.data.mediator.SparseArrayPropertyEditor" ,
+                mCurrentModule,
+                prop.getBoxTypeString(),
+                name);
+    }
+
+    private String generateListEditor(String name, Property prop) {
+        //ListPropertyEditor<? extends TestParcelableDataModule, Integer> beginTest_int_listEditor()
+        return String.format("%s<? extends %s, %s> begin%sEditor();",
+                "com.heaven7.java.data.mediator.ListPropertyEditor" ,
+                mCurrentModule,
+                prop.getBoxTypeString(),
+                name);
+    }
+
     private String generateSet(String name, Property prop) {
         return String.format("%s set%s(%s %s);", mSetReturn ,
                 name,
@@ -90,14 +105,7 @@ public class PropertyMethodGenerator {
     }
     private String generateGet(String name, Property prop) {
         String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
-        StringBuilder sb = new StringBuilder()
-                .append(prop.getRealTypeString())
-                .append(" ")
-                .append(prefix)
-                .append(name)
-                .append("();");
-        return sb.toString();
-        //return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
+        return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
     }
 
     private void removeExistingParcelableImplementation(PsiClass psiClass) {
@@ -105,36 +113,23 @@ public class PropertyMethodGenerator {
             String name = Util.getPropNameForMethod(prop.getName());
             String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
             String getMethodName = prefix + name;
-            String setMethod = "set" + name;
+            String setMethodName = "set" + name;
             findAndRemoveMethod(psiClass, getMethodName);
-            findAndRemoveMethod(psiClass, setMethod, prop.getRealTypeString());
+            findAndRemoveMethod(psiClass, setMethodName, prop.getRealTypeString());
+            //remove editor.
+            switch (prop.getComplexType()){
+                case FieldFlags.COMPLEX_LIST:
+                case FieldFlags.COMPLEX_SPARSE_ARRAY:
+                    findAndRemoveMethod(psiClass, "begin" + name + "Editor");
+                    break;
+            }
         }
        /* findAndRemoveMethod(psiClass, psiClass.getName(), TYPE_PARCEL);
         findAndRemoveMethod(psiClass, "describeContents");
         findAndRemoveMethod(psiClass, "writeToParcel", TYPE_PARCEL, "int");*/
     }
 
-    private void makeClassImplementParcelable(PsiElementFactory elementFactory) {
-
-        final PsiClassType[] implementsListTypes = mPsiClass.getImplementsListTypes();
-        final String implementsType = "android.os.Parcelable";
-
-        for (PsiClassType implementsListType : implementsListTypes) {
-            PsiClass resolved = implementsListType.resolve();
-
-            // Already implements Parcelable, no need to add it
-            if (resolved != null && implementsType.equals(resolved.getQualifiedName())) {
-                return;
-            }
-        }
-
-        PsiJavaCodeReferenceElement implementsReference = elementFactory.createReferenceFromText(implementsType, mPsiClass);
-        PsiReferenceList implementsList = mPsiClass.getImplementsList();
-
-        if (implementsList != null) {
-            implementsList.add(implementsReference);
-        }
-    }
+    //arguments is full name.
     private static void findAndRemoveMethod(PsiClass clazz, String methodName, String... arguments) {
         // Maybe there's an easier way to do this with mClass.findMethodBySignature(), but I'm not an expert on Psi*
         PsiMethod[] methods = clazz.findMethodsByName(methodName, false);
@@ -148,6 +143,8 @@ public class PropertyMethodGenerator {
                 PsiParameter[] parameters = parameterList.getParameters();
 
                 for (int i = 0; i < arguments.length; i++) {
+                    Util.log("read param type: " + parameters[i].getType().getCanonicalText());
+                    Util.log("expect param type: " + arguments[i]);
                     if (!parameters[i].getType().getCanonicalText().equals(arguments[i])) {
                         shouldDelete = false;
                     }

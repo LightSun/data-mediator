@@ -24,6 +24,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.psi.util.PsiUtil;
+import com.intellij.psi.util.PsiUtilCore;
 
 public class DataMediatorAction extends AnAction {
 
@@ -72,24 +74,34 @@ public class DataMediatorAction extends AnAction {
             if(child instanceof PsiAnnotation){
                 PsiAnnotation expect = (PsiAnnotation) child;
                 PsiAnnotationMemberValue propName = expect.findAttributeValue("propName");
-                String pName = propName.getText();
+              //  String pName = propName.getText();
+                String pName = (String) evaluationHelper.computeConstantExpression(propName);
                 Util.log("propName = " + pName);
                 logAnnoValue(propName);
 
-                String expectType = null;
+                String expectType;
                 PsiAnnotationMemberValue typeVal = expect.findAttributeValue("type");
                 String text_type = typeVal.getText();
-                if(typeVal instanceof PsiExpression){
-                    PsiType psiType = ((PsiExpression) typeVal).getType();
-                    if(psiType instanceof PsiPrimitiveType){
-                        expectType = text_type.substring(0, text_type.lastIndexOf("."));
-                    }else if(psiType instanceof PsiClassType){
-                        expectType = ((PsiClassType) psiType).resolve().getQualifiedName();
-                    }else {
+                if(PsiUtils.isPrimitive(text_type)){
+                    expectType = text_type.substring(0, text_type.lastIndexOf("."));
+                }else {
+                    if (typeVal instanceof PsiExpression) {
+                        PsiType psiType = ((PsiExpression) typeVal).getType();
+                        if (psiType instanceof PsiClassType) {
+                            //class
+                            String className = psiType.getCanonicalText();
+                            expectType = className.substring(className.indexOf("<") + 1, className.lastIndexOf(">"));
+                            // expectType = ((PsiClassType) psiType).resolve().getQualifiedName(); //java.lang.Class , not want.
+                        } else {
+                            //uncatch here
+                            throw new UnsupportedOperationException("type is not  PsiClassType.");
+                        }
+                    }else{
                         //uncatch here
-                        throw new UnsupportedOperationException("type is not PsiPrimitiveType and PsiClassType.");
+                        throw new UnsupportedOperationException("type is not PsiExpression.");
                     }
                 }
+                Util.log("expectType = " + expectType);
 
                 Util.log("type = " + text_type);
                 logAnnoValue(typeVal);
@@ -102,6 +114,9 @@ public class DataMediatorAction extends AnAction {
                     Util.log("complexType = " + complexType.getText());
                     logAnnoValue(complexType);
                 }
+                Util.logNewLine();
+                Util.log(new Property(expectType, pName, val).toString());
+                Util.logNewLine();
                 pmGenerator.addProperty(new Property(expectType, pName, val));
             }
         }
@@ -120,6 +135,8 @@ public class DataMediatorAction extends AnAction {
             }else if(type instanceof PsiClassType){
                 //PsiClassReferenceType and PsiImmediateClassType
                 Util.log("PsiClassType:  name = " + ((PsiClassType) type).getClassName() );
+                PsiClassType rawType = ((PsiClassType) type).rawType();
+                Util.log( "" + rawType.getCanonicalText());
             }
             if(PsiUtils.isOfType(type, "int")){
                 Util.log("psi type is:   int" );

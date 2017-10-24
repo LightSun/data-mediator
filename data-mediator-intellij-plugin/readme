@@ -3,6 +3,10 @@ allScope(project);
  PsiImportStatement importStatement = factory.createImportStatement(psiClass[0]);
  JavaCodeStyleManager.getInstance(project).shortenClassReferences(importStatement.getQualifiedName());
 
+   final PsiClass aClass = JavaPsiFacade.getInstance(project)
+                                 .findClass("java.util.List",
+                                 GlobalSearchScope.allScope(project));
+
 http://blog.csdn.net/hawkdowen/article/details/41213001
 
 //无法配置插件config时

@@ -90,4 +90,24 @@ final public class PsiUtils {
 
         return type.getCanonicalText();
     }
+
+    //like int.class, Integer.class, Student.class
+    public static boolean isPrimitive(String text_type) {
+        String str = text_type.substring(0, text_type.lastIndexOf("."));
+        if(str.contains(".")){
+            return false;
+        }
+        switch (str){
+            case Property.TYPE_boolean:
+            case Property.TYPE_byte:
+            case Property.TYPE_char:
+            case Property.TYPE_double:
+            case Property.TYPE_float:
+            case Property.TYPE_int:
+            case Property.TYPE_long:
+            case Property.TYPE_short:
+                return true;
+        }
+        return false;
+    }
 }
