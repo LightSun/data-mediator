@@ -24,8 +24,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtil;
-import com.intellij.psi.util.PsiUtilCore;
 
 public class DataMediatorAction extends AnAction {
 
@@ -55,7 +53,7 @@ public class DataMediatorAction extends AnAction {
             return;
         }
         PsiAnnotationMemberValue pam_chain = annotation.findAttributeValue("enableChain");
-        final  PropertyMethodGenerator pmGenerator = new PropertyMethodGenerator(
+        final PropertyGenerator pmGenerator = new PropertyGenerator(
                 psiClass, Util.getBooleanValue(pam_chain));
 
         PsiAnnotationMemberValue value = annotation.findAttributeValue("value");
@@ -142,7 +140,7 @@ public class DataMediatorAction extends AnAction {
     }
 
     private void generateDataMediator(final PsiClass psiClass,
-                                      final PropertyMethodGenerator generator) {
+                                      final PropertyGenerator generator) {
         new WriteCommandAction.Simple(psiClass.getProject(), psiClass.getContainingFile()) {
             @Override
             protected void run() throws Throwable {

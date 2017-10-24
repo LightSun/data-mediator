@@ -10,14 +10,14 @@ import com.intellij.psi.search.GlobalSearchScope;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyMethodGenerator {
+public class PropertyGenerator {
 
     private final List<Property> mProps = new ArrayList<>();
     private final PsiClass mPsiClass;
     private final String mSetReturn;
     private final String mCurrentModule;
 
-    public PropertyMethodGenerator(PsiClass mPsiClass, boolean chain) {
+    public PropertyGenerator(PsiClass mPsiClass, boolean chain) {
         this.mPsiClass = mPsiClass;
         this.mCurrentModule = mPsiClass.getQualifiedName();
         if( !chain){
