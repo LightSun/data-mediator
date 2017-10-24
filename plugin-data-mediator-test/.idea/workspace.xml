@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="007a44c1-7193-4dea-a6dc-b5d49bbca04a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/ITypeInterfaceExtend.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/typeInterface/TypeInterfaceExtend__Poolable.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/libraries/Gradle__com_heaven7_java_data_mediator_data_mediator_1_2_0.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/readme" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/readme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/Property.java" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/Property.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/PropertyMethodGenerator.java" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/PropertyMethodGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/Util.java" afterPath="$PROJECT_DIR$/../data-mediator-intellij-plugin/src/com/heaven7/plugin/idea/data_mediator/Util.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/compiler.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/misc.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/modules.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" afterPath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" />
-    </list>
+    <list default="true" id="2c8500fa-e44b-4522-b618-92b4ab0f7f02" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -35,37 +19,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="FlowItem.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FlowItem.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="19" column="90" lean-forward="false" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="90" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestItem1.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestItem1.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="6" column="2" lean-forward="true" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
-              <folding />
+            <state relative-caret-position="528">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
@@ -419,11 +385,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestItem1.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -439,6 +403,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -476,9 +441,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -581,11 +545,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="007a44c1-7193-4dea-a6dc-b5d49bbca04a" name="Default" comment="" />
-      <created>1508821212198</created>
+      <changelist id="2c8500fa-e44b-4522-b618-92b4ab0f7f02" name="Default" comment="" />
+      <created>1508829194796</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1508821212198</updated>
+      <updated>1508829194796</updated>
     </task>
     <servers />
   </component>
@@ -601,7 +565,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -631,17 +595,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="19" column="90" lean-forward="false" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestItem1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="2" lean-forward="true" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
-          <folding />
+        <state relative-caret-position="528">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -55,12 +55,9 @@ public class DataMediatorAction extends AnAction {
             return;
         }
         PsiAnnotationMemberValue pam_chain = annotation.findAttributeValue("enableChain");
-        Util.log("enableChain = " + pam_chain.getText());
-        logAnnoValue(pam_chain);
         final  PropertyMethodGenerator pmGenerator = new PropertyMethodGenerator(
                 psiClass, Util.getBooleanValue(pam_chain));
 
-        Util.log("anno of fields = " + annotation);
         PsiAnnotationMemberValue value = annotation.findAttributeValue("value");
         if(value == null){
             return;
@@ -69,7 +66,6 @@ public class DataMediatorAction extends AnAction {
                 .getConstantEvaluationHelper();
 
         PsiElement[] children = value.getChildren();
-        Util.log("anno of all field.size = " + children.length);
         for (PsiElement child : children){
             if(child instanceof PsiAnnotation){
                 PsiAnnotation expect = (PsiAnnotation) child;
@@ -77,7 +73,7 @@ public class DataMediatorAction extends AnAction {
               //  String pName = propName.getText();
                 String pName = (String) evaluationHelper.computeConstantExpression(propName);
                 Util.log("propName = " + pName);
-                logAnnoValue(propName);
+                //logAnnoValue(propName);
 
                 String expectType;
                 PsiAnnotationMemberValue typeVal = expect.findAttributeValue("type");
@@ -101,22 +97,21 @@ public class DataMediatorAction extends AnAction {
                         throw new UnsupportedOperationException("type is not PsiExpression.");
                     }
                 }
-                Util.log("expectType = " + expectType);
-
+              /*  Util.log("expectType = " + expectType);
                 Util.log("type = " + text_type);
-                logAnnoValue(typeVal);
+                logAnnoValue(typeVal);*/
 
                 PsiAnnotationMemberValue complexType = expect.findAttributeValue("complexType");
                 int val = (Integer) evaluationHelper.computeConstantExpression(complexType);
 
-                Util.log("val = " + val);
+               /* Util.log("val = " + val);
                 if(complexType != null){
                     Util.log("complexType = " + complexType.getText());
                     logAnnoValue(complexType);
                 }
                 Util.logNewLine();
                 Util.log(new Property(expectType, pName, val).toString());
-                Util.logNewLine();
+                Util.logNewLine();*/
                 pmGenerator.addProperty(new Property(expectType, pName, val));
             }
         }

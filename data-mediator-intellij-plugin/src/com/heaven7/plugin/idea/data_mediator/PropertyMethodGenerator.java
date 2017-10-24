@@ -1,6 +1,7 @@
 package com.heaven7.plugin.idea.data_mediator;
 
 import com.heaven7.plugin.idea.data_mediator.typeInterface.TypeInterfaceExtend__Poolable;
+import com.intellij.codeInsight.daemon.impl.quickfix.CreateConstantFieldFromUsageFix;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
@@ -42,19 +43,20 @@ public class PropertyMethodGenerator {
                 .findPackage(javaFile.getPackageName());*/
         final Project project = mPsiClass.getProject();
         //remove exist method
-        removeExistingParcelableImplementation(mPsiClass);
+        removeExistingImpl(mPsiClass);
 
         PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 
         List<PsiMethod> methods = new ArrayList<>();
+        List<PsiField> fields = new ArrayList<>();
         for(Property prop: mProps) {
+            //property cons , like : PROP_student
+            fields.add(createConstantField(mPsiClass, elementFactory, prop));
+
             //get and set.
             String name = Util.getPropNameForMethod(prop.getName());
             String getMethod = generateGet(name, prop);
             String setMethod = generateSet(name, prop);
-            Util.log("getMethod = " + getMethod);
-            Util.log("setMethod = " + setMethod);
-            Util.logNewLine();
             methods.add(elementFactory.createMethodFromText(getMethod, mPsiClass));
             methods.add(elementFactory.createMethodFromText(setMethod, mPsiClass));
 
@@ -69,6 +71,10 @@ public class PropertyMethodGenerator {
             }
         }
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
+        for(PsiField pf : fields){
+            styleManager.shortenClassReferences(pf);
+            mPsiClass.add(pf);
+        }
         for(PsiMethod psi : methods) {
             styleManager.shortenClassReferences(mPsiClass.addBefore(psi, mPsiClass.getLastChild()));
         }
@@ -79,6 +85,23 @@ public class PropertyMethodGenerator {
         }
     }
 
+    private PsiField createConstantField(PsiClass mPsiClass, PsiElementFactory elementFactory, Property prop) {
+        // Property PROP_student = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student", 0);
+        PsiType psiType = PsiType.getTypeByName("com.heaven7.java.data.mediator.Property",
+                mPsiClass.getProject(), GlobalSearchScope.allScope(mPsiClass.getProject()));
+        PsiField psiField = elementFactory.createField("PROP_" + prop.getName(), psiType);
+        PsiExpression psiInitializer = elementFactory.createExpressionFromText(
+                String.format("%s.get(\"%s\", \"%s\" ,%d)",
+                        "com.heaven7.java.data.mediator.internal.SharedProperties" ,
+                        prop.getTypeString(), prop.getName(), prop.getComplexType()),
+                psiField);
+        psiField.setInitializer(psiInitializer);
+        PsiModifierList modifierList = psiField.getModifierList();
+        if (modifierList != null) {
+            modifierList.setModifierProperty( PsiModifier.PUBLIC + " " + PsiModifier.STATIC, true);
+        }
+        return psiField;
+    }
     private String generateSparseArrayEditor(String name, Property prop) {
         //SparseArrayPropertyEditor<? extends TestParcelableDataModule, ResultData> beginTest_SparseArrayEditor()
         return String.format("%s<? extends %s, %s> begin%sEditor();",
@@ -108,8 +131,11 @@ public class PropertyMethodGenerator {
         return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
     }
 
-    private void removeExistingParcelableImplementation(PsiClass psiClass) {
+    private void removeExistingImpl(PsiClass psiClass) {
         for(Property prop : mProps){
+            //remove field
+            findAndRemoveField(psiClass, prop.getName());
+            //remove get and set.
             String name = Util.getPropNameForMethod(prop.getName());
             String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
             String getMethodName = prefix + name;
@@ -129,6 +155,13 @@ public class PropertyMethodGenerator {
         findAndRemoveMethod(psiClass, "writeToParcel", TYPE_PARCEL, "int");*/
     }
 
+    private void findAndRemoveField(PsiClass clazz, String propName) {
+        PsiField field = clazz.findFieldByName("PROP_" + propName, false);
+        if (field != null){
+            field.delete();
+        }
+    }
+
     //arguments is full name.
     private static void findAndRemoveMethod(PsiClass clazz, String methodName, String... arguments) {
         // Maybe there's an easier way to do this with mClass.findMethodBySignature(), but I'm not an expert on Psi*
@@ -143,8 +176,8 @@ public class PropertyMethodGenerator {
                 PsiParameter[] parameters = parameterList.getParameters();
 
                 for (int i = 0; i < arguments.length; i++) {
-                    Util.log("read param type: " + parameters[i].getType().getCanonicalText());
-                    Util.log("expect param type: " + arguments[i]);
+                   /* Util.log("read param type: " + parameters[i].getType().getCanonicalText());
+                    Util.log("expect param type: " + arguments[i]);*/
                     if (!parameters[i].getType().getCanonicalText().equals(arguments[i])) {
                         shouldDelete = false;
                     }
