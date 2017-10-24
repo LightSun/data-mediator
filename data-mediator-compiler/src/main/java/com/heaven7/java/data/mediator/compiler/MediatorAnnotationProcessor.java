@@ -2,6 +2,8 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
+import com.heaven7.java.data.mediator.ImplClass;
+import com.heaven7.java.data.mediator.ImplMethod;
 import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesNGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
 
@@ -68,10 +70,12 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedOptions() {
-        Set<String> types = new LinkedHashSet<>();
+        Set<String> types = new HashSet<>();
         types.add(Fields.class.getName());
         types.add(GlobalConfig.class.getName());
-        return types;
+        types.add(ImplClass.class.getName());
+        types.add(ImplMethod.class.getName());
+        return Collections.unmodifiableSet(types);
     }
 
     @Override
@@ -111,7 +115,10 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             }
         }
         //========== end GlobalConfig ===================
+        //Set<? extends Element> implClasses = roundEnv.getElementsAnnotatedWith(ImplClass.class);
+        //Set<? extends Element> implMethods = roundEnv.getElementsAnnotatedWith(ImplMethod.class);
 
+        //fields
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
             note(":process" ,"@Fields >>> element = " + element);
@@ -119,7 +126,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 return true;
             }
             CodeGenerator generator = getProxyClass(element);
-            if(!ElementHelper.processAnnotation(mTypeUtils, mPrinter, element.getAnnotationMirrors(), generator)){
+            if(!ElementHelper.processAnnotation(mTypeUtils, mPrinter,
+                    element.getAnnotationMirrors(), generator)){
                 return true;
             }
         }
@@ -164,13 +172,15 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         //被注解的类的全名
         String qualifiedName = enclosingElement.getQualifiedName().toString();
         // anno = com.heaven7.java.data.mediator.Fields ,parent element is: com.heaven7.data.mediator.demo.Student
-        note("isValid","anno = " + annotationClass.getName() + " ,full name is: " + qualifiedName);
+        note("isValid","anno = " + annotationClass.getName()
+                + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
         // 所在的类不能是private或static修饰
         Set<Modifier> modifiers = element.getModifiers();
         if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
-            String msg = String.format("@%s %s must not be private or static. (%s.%s)", annotationClass.getSimpleName(),
+            String msg = String.format("@%s %s must not be private or static. (%s.%s)",
+                    annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
             error("isValid", enclosingElement, msg);
             isValid = false;

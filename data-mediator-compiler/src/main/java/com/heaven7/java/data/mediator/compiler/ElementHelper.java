@@ -88,6 +88,10 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
             if (!isValidAnnotation(am, pp)) {
                continue;
             }
+            TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
+
+            //TODO handle implClass and ImplMethod.   if(e1.getQualifiedName().equals(Field))
+
             Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
             pp.note(TAG, methodName, "am.getElementValues() = map . is " + map);
             for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
