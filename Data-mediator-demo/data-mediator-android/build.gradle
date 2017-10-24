@@ -59,7 +59,7 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
 //gradlew clean build install bintrayUpload
 

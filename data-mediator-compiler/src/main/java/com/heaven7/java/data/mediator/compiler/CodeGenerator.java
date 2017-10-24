@@ -112,7 +112,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         mClassInfo.setSuperInterfaces(interfaces);
 
         //add all Constant RPOP_xxx field on Interface (from proxy moved here)
-        ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
+        //replaced with idea-plugin
+     /*   ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
         ClassName cn_shared_properties = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_SHARED_PROP);
         for(FieldData field : mFields){
             interfaceBuilder.addField(FieldSpec.builder(cn_prop,
@@ -121,7 +122,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                             cn_shared_properties, field.getTypeCompat().toString(),
                             field.getPropertyName(), field.getComplexType())
                     .build());
-        }
+        }*/
 
         //extends DataPools.Poolable.
         addSuperInterface(interfaceBuilder);
@@ -129,7 +130,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
         if(interfaces != null){
             for(TypeMirror tm : interfaces){
-                MethodSpec.Builder[] builders = OutInterfaceManager.getInterfaceMethodBuilders(mClassInfo,
+                //no need override method for interface
+               /* MethodSpec.Builder[] builders = OutInterfaceManager.getInterfaceMethodBuilders(mClassInfo,
                         selfParamType, tm, mPrinter);
                 if(builders != null){
                     for (MethodSpec.Builder builder : builders){
@@ -137,7 +139,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                             interfaceBuilder.addMethod(builder.build());
                         }
                     }
-                }
+                }*/
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 tc.replaceIfNeed(mPrinter);
@@ -145,13 +147,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             }
         }
         //add String toString.
-        interfaceBuilder.addMethod(MethodSpec.methodBuilder("toString")
+        //No need for interface
+        /*interfaceBuilder.addMethod(MethodSpec.methodBuilder("toString")
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .returns(String.class)
-                .build());
+                .build());*/
 
-        sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,
-                normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
+        //replaced with idea-plugin
+       /* sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,
+                normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);*/
 
         /**
          * for impl class:
@@ -217,14 +221,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             }
         }
         //====================== interface static filed for some other interface ==================
-        if(hasSelectable){
+        //replaced with idea-plugin
+        /*if(hasSelectable){
             interfaceBuilder.addField( FieldSpec.builder(cn_prop,
                     FD_SELECTABLE.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
                     .initializer("$T.get($S, $S, $L)",
                             cn_shared_properties, FD_SELECTABLE.getTypeCompat().toString(),
                             FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType())
                     .build());
-        }
+        }*/
         //build interface
         final JavaFile interfaceFile = JavaFile.builder(packageName, interfaceBuilder.build()).build();
         //======================================================================
@@ -268,7 +273,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 }
             }
         }
-        //add/override for insert interfaces.
+        //add/override for insert interfaces's methods. (impl)
         insertOverrideMethods(implBuilder, usedSuperClass, hasSelectable);
 
         //add String toString().

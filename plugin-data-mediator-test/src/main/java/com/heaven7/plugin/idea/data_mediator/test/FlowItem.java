@@ -3,6 +3,7 @@ package com.heaven7.plugin.idea.data_mediator.test;
 
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.*;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -21,6 +22,16 @@ import java.util.List;
 })
 public interface FlowItem extends DataPools.Poolable {
 
+
+    Property PROP_id = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "id", 0);
+    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
+    Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 2);
+    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
+    Property PROP_xxx1 = SharedProperties.get("int", "xxx1", 0);
+    Property PROP_xxx2 = SharedProperties.get("java.lang.Integer", "xxx2", 0);
+    Property PROP_xxx3 = SharedProperties.get("int", "xxx3", 3);
+    Property PROP_xxx4 = SharedProperties.get("int", "xxx4", 1);
+    Property PROP_xxx5 = SharedProperties.get("java.lang.Integer", "xxx5", 1);
 
     Student getId();
 
