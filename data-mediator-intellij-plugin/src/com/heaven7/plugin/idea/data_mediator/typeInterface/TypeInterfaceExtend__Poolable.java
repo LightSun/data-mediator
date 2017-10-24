@@ -33,10 +33,9 @@ public class TypeInterfaceExtend__Poolable implements ITypeInterfaceExtend {
         }
         PsiJavaCodeReferenceElement implementsReference = elementFactory.createReferenceFromText(implementsType, mClass);
         PsiReferenceList implementsList = mClass.getExtendsList();
-
         if (implementsList != null) {
+            styleManager.shortenClassReferences(implementsReference);
             implementsList.add(implementsReference);
         }
-        styleManager.shortenClassReferences(implementsReference);
     }
 }

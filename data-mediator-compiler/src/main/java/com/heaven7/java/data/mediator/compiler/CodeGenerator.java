@@ -28,7 +28,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 /*public*/ class CodeGenerator {
 
     private static final String TAG = CodeGenerator.class.getSimpleName();
-    private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
+   // replaced by idea-plugin
+   // private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 
     private final TypeElement mElement;
@@ -124,8 +125,9 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                     .build());
         }*/
 
-        //extends DataPools.Poolable.
-        addSuperInterface(interfaceBuilder);
+        //extends DataPools.Poolable. (replaced by idea-plugin)
+        //addSuperInterface(interfaceBuilder);
+
         //handle super interface with method.
         interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
         if(interfaces != null){
