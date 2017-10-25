@@ -12,3 +12,8 @@ http://blog.csdn.net/hawkdowen/article/details/41213001
 //无法配置插件config时
  java module to plugin module
  https://stackoverflow.com/questions/18278440/how-to-import-and-run-existing-plugins-from-intellij-community-edition-repo
+
+//extendsion
+http://www.blogjava.net/ideame/archive/2008/10/17/234974.html
+
+ EditorFactory.getInstance().getEventMulticaster().addCaretListener();

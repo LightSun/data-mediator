@@ -29,7 +29,6 @@ public class DataMediatorAction extends AnAction {
 
     private static final String NAME_FIELDS = "com.heaven7.java.data.mediator.Fields";
 
-
     @Override
     public void actionPerformed(AnActionEvent e) {
         Project project = getEventProject(e);
@@ -71,7 +70,6 @@ public class DataMediatorAction extends AnAction {
               //  String pName = propName.getText();
                 String pName = (String) evaluationHelper.computeConstantExpression(propName);
                 Util.log("propName = " + pName);
-                //logAnnoValue(propName);
 
                 String expectType;
                 PsiAnnotationMemberValue typeVal = expect.findAttributeValue("type");
@@ -95,21 +93,8 @@ public class DataMediatorAction extends AnAction {
                         throw new UnsupportedOperationException("type is not PsiExpression.");
                     }
                 }
-              /*  Util.log("expectType = " + expectType);
-                Util.log("type = " + text_type);
-                logAnnoValue(typeVal);*/
-
                 PsiAnnotationMemberValue complexType = expect.findAttributeValue("complexType");
                 int val = (Integer) evaluationHelper.computeConstantExpression(complexType);
-
-               /* Util.log("val = " + val);
-                if(complexType != null){
-                    Util.log("complexType = " + complexType.getText());
-                    logAnnoValue(complexType);
-                }
-                Util.logNewLine();
-                Util.log(new Property(expectType, pName, val).toString());
-                Util.logNewLine();*/
                 pmGenerator.addProperty(new Property(expectType, pName, val));
             }
         }
