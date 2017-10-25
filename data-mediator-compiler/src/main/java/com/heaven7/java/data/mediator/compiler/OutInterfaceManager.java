@@ -211,7 +211,7 @@ public class OutInterfaceManager {
         for(TypeMirror tm: interfaces) {
             // pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm);
             FieldData.TypeCompat tc = new FieldData.TypeCompat(types, tm);
-            tc.replaceIfNeed(mElements, pp, null);
+            tc.replaceIfNeed(mElements, pp);
             pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm
                     + " , hasAnnotationFields = " + tc.hasAnnotationFields());
             if(tc.hasAnnotationFields()){

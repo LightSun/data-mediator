@@ -166,7 +166,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         return proxyClass;
     }
 
-    private boolean isValid(Class<? extends Annotation> annotationClass, String targetThing, Element element) {
+    private boolean isValid(Class<? extends Annotation> annotationClass,
+                            String targetThing, Element element) {
 
         TypeElement enclosingElement = (TypeElement) element;
         //被注解的类的全名
@@ -188,7 +189,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
         // 父元素必须接口
         if (enclosingElement.getKind() != ElementKind.INTERFACE) {
-            String msg = String.format("@%s %s may only be contained in interfaces. (%s.%s)", annotationClass.getSimpleName(),
+            String msg = String.format("@%s %s may only be contained in interfaces. (%s.%s)",
+                    annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
             error("isValid",enclosingElement, msg);
             isValid = false;

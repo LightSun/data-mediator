@@ -9,7 +9,6 @@ import com.squareup.javapoet.*;
 import javax.annotation.processing.Filer;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -82,16 +81,6 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
         //super fields
         final Set<FieldData> superFields = new HashSet<>();
-        //find super fields.
-        if(interfaces != null) {
-            for (TypeMirror mirror : interfaces) {
-                final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-                Set<FieldData> dependFields = delegate.getDependFields(te);
-                if (!dependFields.isEmpty()) {
-                    superFields.addAll(dependFields);
-                }
-            }
-        }
         final String interfaceName = mElement.getSimpleName().toString();
         final TypeName selfParamType = ClassName.get(packageName, interfaceName);
         mPrinter.note(TAG, log_method,  "start element = " +
@@ -136,7 +125,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 implBuilder.addSuperinterface(tc.getInterfaceTypeName());
-                tc.replaceIfNeed(mElements, mPrinter, superFields);
+                tc.replaceIfNeed(mElements, mPrinter);
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
 

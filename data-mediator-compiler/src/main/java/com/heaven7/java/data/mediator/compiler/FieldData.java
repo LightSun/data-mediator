@@ -13,7 +13,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import java.util.Collection;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_STRING;
@@ -229,8 +228,7 @@ public class FieldData {
             return mTypeName_impl != null;
         }
 
-        public void replaceIfNeed(Elements elements, ProcessorPrinter pp,
-                                  @Nullable Collection<FieldData> out) {
+        public void replaceIfNeed(Elements elements, ProcessorPrinter pp) {
             //pp.note("TypeCompat", "replaceIfNeed", "start check element: " + tm.toString());
             Element te = getElement();
             //when TypeMirror is primitive , here te is null.

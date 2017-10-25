@@ -117,6 +117,11 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         }
     }
 
+    public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
+                                            TypeElement te, CodeGenerator cg) {
+        return false;
+    }
+
     //process @Fields
     public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
                                             List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
@@ -216,7 +221,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
                         final TypeMirror tm = (TypeMirror) av.getValue();
                         FieldData.TypeCompat typeCompat = new FieldData.TypeCompat(types, tm);
-                        typeCompat.replaceIfNeed(mElements, pp, null);
+                        typeCompat.replaceIfNeed(mElements, pp);
                         data.setTypeCompat(typeCompat);
                         break;
 
