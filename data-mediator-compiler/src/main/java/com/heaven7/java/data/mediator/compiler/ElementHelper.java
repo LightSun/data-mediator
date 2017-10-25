@@ -26,7 +26,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String KEY_GSON_VERSION = "version";
     private static final String KEY_GSON_FORCE_DISABLE = "forceDisable";
 
-
+    /** only parse fields for handle super fields */
     public static boolean parseFields(Elements mElements, Types mTypes,
                                       AnnotationMirror am, Collection<FieldData> mFieldDatas,
                                       ProcessorPrinter pp) {

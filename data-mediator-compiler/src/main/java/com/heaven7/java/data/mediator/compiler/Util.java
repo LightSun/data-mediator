@@ -4,7 +4,6 @@ import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -269,19 +268,6 @@ public final class Util {
                 .toUpperCase()
                 .concat(prop.substring(1));
     }
-
-    /**
-     * get parameter name . eg: int to int1 Object to Object1
-     *
-     * @param name the raw name of param
-     * @return the changed parameter name.
-     */
-    public static String getParamName(String name) {
-        return name.substring(0, 1).toLowerCase()
-                .concat(name.substring(1))
-                .concat("1");
-    }
-
     public static String toString(Throwable t) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -358,27 +344,5 @@ public final class Util {
             default:
                 return null;
         }
-    }
-
-    public static void test(TypeMirror mirror, ProcessorPrinter pp) {
-        final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
-        Name paramType = te.getQualifiedName();
-        pp.note(TAG, "test", "paramType = " + paramType.toString());
-
-        final List<? extends Element> list = te.getEnclosedElements();
-        for (Element e : list) {
-            ExecutableElement ee = (ExecutableElement) e;
-            pp.note(TAG, "test", "ee_getSimpleName: " + ee.getSimpleName());
-            pp.note(TAG, "test", "ee_return: " + ee.getReturnType());
-            pp.note(TAG, "test", "ee_getTypeParameters: " + ee.getTypeParameters());
-            pp.note(TAG, "test", "ee_getThrownTypes: " + ee.getThrownTypes());
-            // pp.note("ee_getReceiverType: " + ee.getReceiverType());
-        }
-        pp.note(TAG, "test", "getTypeParameters = " + te.getTypeParameters());
-        pp.note(TAG, "test", "getEnclosedElements = " + list);
-        pp.note(TAG, "test", "getEnclosedElements__2 = " + Arrays.toString(
-                list.get(0).getClass().getInterfaces()));
-        pp.note(TAG, "test", "getEnclosingElement = " + te.getEnclosingElement());
-        // pp.note("test() >>> getInterfaces = " + te.getInterfaces());
     }
 }

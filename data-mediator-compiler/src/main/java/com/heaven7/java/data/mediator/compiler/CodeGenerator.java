@@ -128,6 +128,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         boolean usedSuperClass = false ;
         boolean hasSelectable = hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE);
         implBuilder.addSuperinterface(selfParamType);
+
         if(interfaces != null){
             mPrinter.note(TAG, log_method, "implBuilder >>> start impl = " +
                       packageName + "." + className , " super interface = " + interfaces);
@@ -135,12 +136,14 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 implBuilder.addSuperinterface(tc.getInterfaceTypeName());
-                tc.replaceIfNeed( mElements, mPrinter, superFields);
+                tc.replaceIfNeed(mElements, mPrinter, superFields);
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
+
                 mPrinter.note(TAG, log_method, "tm = " + tc.toString(),
                         "curInterface = " + packageName + "."+ interfaceName,
                         "super classType = " + superclassType);
+
                 if(superclassType != null){
                     if(usedSuperClass){
                         mPrinter.error(TAG, log_method, "implBuilder >> can only have one super class.");
@@ -156,6 +159,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                    if(tc.toString().equals(NAME_SELECTABLE)){
                        hasSelectable = true;
                    }
+                }
+            }
+            //handle super fields when in multi module.
+            if(usedSuperClass && superFields.isEmpty()){
+                MultiModuleSuperFieldDelegate multiDelegate = new
+                        MultiModuleSuperFieldDelegate(mElements, mTypes, mPrinter);
+                for(TypeMirror tm : interfaces){
+                    superFields.addAll(multiDelegate.getDependFields(
+                            (TypeElement) mTypes.asElement(tm)));
                 }
             }
         }

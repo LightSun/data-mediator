@@ -231,7 +231,7 @@ public class FieldData {
 
         public void replaceIfNeed(Elements elements, ProcessorPrinter pp,
                                   @Nullable Collection<FieldData> out) {
-            pp.note("TypeCompat", "replaceIfNeed", "start check element: " + tm.toString());
+            //pp.note("TypeCompat", "replaceIfNeed", "start check element: " + tm.toString());
             Element te = getElement();
             //when TypeMirror is primitive , here te is null.
             if(te == null) {
@@ -240,17 +240,12 @@ public class FieldData {
                 boolean needReplace = false;
                 //when depend another interface(@Fields) need reply.
                 List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
-                pp.note("TypeCompat", "replaceIfNeed",
-                        "mirror.size = " + mirrors.size());
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
-                    pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
+                   // pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
                     if(type.toString().equals(Fields.class.getName())){
                         //need replace.
                         needReplace = true;
-                        if(out != null){
-                            ElementHelper.parseFields(elements, types, am, out, pp);
-                        }
                         break;
                     }
                 }
@@ -259,9 +254,9 @@ public class FieldData {
                     int lastIndexOfDot = str.lastIndexOf(".");
                     mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX );
-                    pp.note("TypeCompat", "replaceIfNeed", "find depend , interface = " + str);
+                  //  pp.note("TypeCompat", "replaceIfNeed", "find depend , interface = " + str);
                 }else{
-                    pp.note("TypeCompat", "replaceIfNeed", " [can't] find depend , interface = " + tm.toString());
+                  //  pp.note("TypeCompat", "replaceIfNeed", " [can't] find depend , interface = " + tm.toString());
                      /*
                      * here have a bug . if one module depend another.(all have annotation @Fields)
                      * To resolve it . we just judge it has 'IMPL_SUFFIX' or not.

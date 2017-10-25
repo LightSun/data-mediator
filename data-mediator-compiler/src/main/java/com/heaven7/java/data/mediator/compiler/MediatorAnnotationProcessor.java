@@ -16,6 +16,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.STATIC;
@@ -38,12 +39,11 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
     private ProcessorPrinter mPrinter; ////日志相关的处理
     private Types mTypeUtils;
 
-    private final Map<String, CodeGenerator> mProxyClassMap = new HashMap<>();
+    private final Map<String, CodeGenerator> mProxyClassMap = new ConcurrentHashMap<>();
 
     private void note(String method, Object... objs) {
         mPrinter.note(TAG, method, objs);
     }
-
     private void error(String method, Object... objs) {
         mPrinter.error(TAG ,method, objs);
     }
@@ -141,7 +141,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             return true;
         }
 
-       //generate module interface / impl /proxy
+       //generate module interface / impl /proxy (interface removed)
        for (CodeGenerator generator : mProxyClassMap.values()) {
            if(!generator.generateJavaFile(mSuperDelegate ,mFiler, mPrinter)){
                return true;
