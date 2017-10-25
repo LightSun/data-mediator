@@ -143,7 +143,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
 
        //generate module interface / impl /proxy (interface removed)
        for (CodeGenerator generator : mProxyClassMap.values()) {
-           if(!generator.generateJavaFile(mSuperDelegate ,mFiler, mPrinter)){
+           if(!generator.generateJavaFile(mFiler, mPrinter)){
                return true;
            }
         }
@@ -213,6 +213,10 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         return isValid;
     }
 
+    /**
+     * @replaced by {@linkplain MultiModuleSuperFieldDelegate}
+     */
+    @Deprecated
     private final ISuperFieldDelegate mSuperDelegate = new ISuperFieldDelegate() {
         @Override
         public Set<FieldData> getDependFields(TypeElement te) {

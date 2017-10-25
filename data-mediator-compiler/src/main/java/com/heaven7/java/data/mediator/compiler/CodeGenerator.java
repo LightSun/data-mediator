@@ -62,12 +62,11 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
     }
     /**
      * generate interface, impl and proxy .java files.
-     * @param delegate the super field delegate
      * @param filer the filer,
      * @param mPrinter the log printer
      * @return true if generate success.
      */
-    public boolean generateJavaFile(ISuperFieldDelegate delegate, Filer filer, ProcessorPrinter mPrinter) {
+    public boolean generateJavaFile(Filer filer, ProcessorPrinter mPrinter) {
 
         final boolean normalJavaBean = !mEnableChain;
         final String log_method = "generateJavaFile";
