@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.GlobalSearchScope;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,7 @@ public class PropertyGenerator {
                 prop.getName() + "1" );
     }
     private String generateGet(String name, Property prop) {
-        String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
+        String prefix = getPrefix(prop);
         return String.format("%s %s%s();",  prop.getRealTypeString(), prefix,  name);
     }
 
@@ -137,7 +138,7 @@ public class PropertyGenerator {
             findAndRemoveField(psiClass, prop.getName());
             //remove get and set.
             String name = Util.getPropNameForMethod(prop.getName());
-            String prefix = prop.getTypeString().equals("boolean") ? "is" : "get";
+            String prefix = getPrefix(prop);
             String getMethodName = prefix + name;
             String setMethodName = "set" + name;
             findAndRemoveMethod(psiClass, getMethodName);
@@ -153,6 +154,11 @@ public class PropertyGenerator {
        /* findAndRemoveMethod(psiClass, psiClass.getName(), TYPE_PARCEL);
         findAndRemoveMethod(psiClass, "describeContents");
         findAndRemoveMethod(psiClass, "writeToParcel", TYPE_PARCEL, "int");*/
+    }
+
+    @NotNull
+    private String getPrefix(Property prop) {
+        return prop.getComplexType() == 0 && prop.getTypeString().equals("boolean") ? "is" : "get";
     }
 
     private void findAndRemoveField(PsiClass clazz, String propName) {
