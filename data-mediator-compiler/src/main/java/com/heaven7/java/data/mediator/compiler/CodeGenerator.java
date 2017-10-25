@@ -93,71 +93,19 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 }
             }
         }
-        /*
-         * for interface.
-         */
-        //public interface xxxModule extends xx1,xx2{  }
-        final String interfaceName = mElement.getSimpleName() + DataMediatorConstants.INTERFACE_SUFFIX;
-        TypeSpec.Builder interfaceBuilder = TypeSpec.interfaceBuilder(interfaceName)
-                .addModifiers(Modifier.PUBLIC);
-        //doc
-        interfaceBuilder.addJavadoc(CodeBlock.of(DataMediatorConstants.DOC));
-
+        final String interfaceName = mElement.getSimpleName().toString();
         final TypeName selfParamType = TypeVariableName.get(interfaceName);
 
         //set target class info
         mClassInfo.setPackageName(packageName);
         mClassInfo.setCurrentClassname(interfaceName);
+        /*
+         * after 1.3.0 . idea-plugin will auto generate method for origin module interface. no need this interface
+         * mClassInfo.setDirectParentInterfaceName(interfaceName);
+         */
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
-
-        //add all Constant RPOP_xxx field on Interface (from proxy moved here)
-        //replaced with idea-plugin
-     /*   ClassName cn_prop = ClassName.get(PKG_PROP, SIMPLE_NAME_PROPERTY);
-        ClassName cn_shared_properties = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_SHARED_PROP);
-        for(FieldData field : mFields){
-            interfaceBuilder.addField(FieldSpec.builder(cn_prop,
-                    field.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                    .initializer("$T.get($S, $S, $L)",
-                            cn_shared_properties, field.getTypeCompat().toString(),
-                            field.getPropertyName(), field.getComplexType())
-                    .build());
-        }*/
-
-        //extends DataPools.Poolable. (replaced by idea-plugin)
-        //addSuperInterface(interfaceBuilder);
-
-        //handle super interface with method.
-        interfaceBuilder.addSuperinterface(TypeName.get(mElement.asType()));
-        if(interfaces != null){
-            for(TypeMirror tm : interfaces){
-                //no need override method for interface
-               /* MethodSpec.Builder[] builders = OutInterfaceManager.getInterfaceMethodBuilders(mClassInfo,
-                        selfParamType, tm, mPrinter);
-                if(builders != null){
-                    for (MethodSpec.Builder builder : builders){
-                        if(builder != null) {
-                            interfaceBuilder.addMethod(builder.build());
-                        }
-                    }
-                }*/
-                //replace interface if need
-                FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
-                tc.replaceIfNeed(mPrinter);
-                interfaceBuilder.addSuperinterface(tc.getInterfaceTypeName());
-            }
-        }
-        //add String toString.
-        //No need for interface
-        /*interfaceBuilder.addMethod(MethodSpec.methodBuilder("toString")
-                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-                .returns(String.class)
-                .build());*/
-
-        //replaced with idea-plugin
-       /* sInterfaceBuilder.build(interfaceBuilder, mFields, superFields,
-                normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);*/
 
         /**
          * for impl class:
@@ -173,7 +121,6 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
         //set target class info
         mClassInfo.setCurrentClassname(className);
-        mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
@@ -204,6 +151,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 implBuilder.addSuperinterface(tc.getInterfaceTypeName());
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
+                mPrinter.note(TAG, "generateJavaFile", "super classType = " + superclassType);
                 if(superclassType != null){
                     if(usedSuperClass){
                         mPrinter.error(TAG, log_method, "implBuilder >> can only have one super class.");
@@ -222,20 +170,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 }
             }
         }
-        //====================== interface static filed for some other interface ==================
-        //replaced with idea-plugin
-        /*if(hasSelectable){
-            interfaceBuilder.addField( FieldSpec.builder(cn_prop,
-                    FD_SELECTABLE.getFieldConstantName(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-                    .initializer("$T.get($S, $S, $L)",
-                            cn_shared_properties, FD_SELECTABLE.getTypeCompat().toString(),
-                            FD_SELECTABLE.getPropertyName(), FD_SELECTABLE.getComplexType())
-                    .build());
-        }*/
-        //build interface
-        final JavaFile interfaceFile = JavaFile.builder(packageName, interfaceBuilder.build()).build();
         //======================================================================
-
 
         //do something for super class/interface
         final List<? extends TypeMirror> mirrors = OutInterfaceManager.getAttentionInterfaces(mElement, mTypes, mPrinter);
@@ -293,8 +228,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         final JavaFile classFile = JavaFile.builder(packageName, implBuilder.build()).build();
 
         try {
-            //interface and impl
-            interfaceFile.writeTo(filer);
+            //impl
             classFile.writeTo(filer);
 
             //handle proxy class.

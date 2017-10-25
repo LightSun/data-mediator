@@ -11,8 +11,7 @@ import java.util.List;
 public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
-            "Util",
-            "ElementHelper"
+            "CodeGenerator"
     );
     //only debug show info log
     private static final boolean sDebug = true;

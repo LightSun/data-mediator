@@ -195,7 +195,6 @@ public class FieldData {
 
         private final TypeMirror tm;
         private final Types types;
-        private TypeName mTypeName_interface;
         private TypeName mTypeName_impl;
 
         public TypeCompat(Types types, TypeMirror tm) {
@@ -208,17 +207,7 @@ public class FieldData {
             }
             return null;
         }
-        public @Nullable TypeName getReplaceInterfaceTypeName(){
-            if(mTypeName_interface != null){
-                return mTypeName_interface;
-            }
-            return null;
-        }
-
         public TypeName getInterfaceTypeName(){
-            if(mTypeName_interface != null){
-                return mTypeName_interface;
-            }
             return TypeName.get(tm);
         }
         public TypeMirror getTypeMirror() {
@@ -230,6 +219,14 @@ public class FieldData {
         public Element getElement() {
             return types.asElement(tm);
         }
+
+        /**
+         * @since 1.3.0
+         */
+        public boolean hasAnnotationFields(){
+            return mTypeName_impl != null;
+        }
+
         public void replaceIfNeed(ProcessorPrinter pp) {
             Element te = getElement();
             //when TypeMirror is primitive , here te is null.
@@ -252,13 +249,8 @@ public class FieldData {
                 if(needReplace){
                     final String str = tm.toString();
                     int lastIndexOfDot = str.lastIndexOf(".");
-                    // no need replace .handled by idea-plugin
-                    mTypeName_interface = ClassName.get(str.substring(0, lastIndexOfDot),
-                            str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.INTERFACE_SUFFIX );
                     mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX );
-
-                   // mTypeName_interface = TypeVariableName.get(str + Util.INTERFACE_SUFFIX);
                 }
             }
         }

@@ -73,9 +73,9 @@ public final class DataMediatorConstants {
     public static final String NAME_SERIALIZABLE = "java.io.Serializable";
     public static final String NAME_SELECTABLE   = "com.heaven7.adapter.ISelectable";
 
-    public static final String INTERFACE_SUFFIX = "Module";
-    public static final String IMPL_SUFFIX      = "Module_Impl";
-    public static final String PROXY_SUFFIX     = "_Proxy";
+   // public static final String INTERFACE_SUFFIX = "Module";
+    public static final String IMPL_SUFFIX      = "_$Impl";
+    public static final String PROXY_SUFFIX     = "_$Proxy";
     public static final String TYPE_ADAPTER_PREFIX  = "$";
 
     public static final String SET_PREFIX   = "set";

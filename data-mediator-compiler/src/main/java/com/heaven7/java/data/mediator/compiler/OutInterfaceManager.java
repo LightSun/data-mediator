@@ -212,8 +212,8 @@ public class OutInterfaceManager {
             FieldData.TypeCompat tc = new FieldData.TypeCompat(types, tm);
             tc.replaceIfNeed(pp);
             pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm
-                    + " , replace_inter = " + tc.getReplaceInterfaceTypeName());
-            if(tc.getReplaceInterfaceTypeName() != null){
+                    + " , hasAnnotationFields = " + tc.hasAnnotationFields());
+            if(tc.hasAnnotationFields()){
                 //we want.
                 int sum = 0;
                 final Set<Integer> flags = getSuperInterfaceFlags(tag,
