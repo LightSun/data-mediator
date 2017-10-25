@@ -12,10 +12,10 @@ public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
             "Util",
-            "MediatorAnnotationProcessor"
+            "ElementHelper"
     );
     //only debug show info log
-    private static final boolean sDebug = false;
+    private static final boolean sDebug = true;
     private final Messager mMessager;
 
     public ProcessorPrinter(Messager mMessager) {

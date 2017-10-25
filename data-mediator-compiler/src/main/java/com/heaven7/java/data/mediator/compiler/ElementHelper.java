@@ -1,5 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.ImplClass;
+
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Types;
@@ -89,7 +91,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                continue;
             }
             TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
-
+            pp.note(TAG , "processAnnotation", "anno qName = " + e1.getQualifiedName().toString());
             //TODO handle implClass and ImplMethod.   if(e1.getQualifiedName().equals(Field))
 
             Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();

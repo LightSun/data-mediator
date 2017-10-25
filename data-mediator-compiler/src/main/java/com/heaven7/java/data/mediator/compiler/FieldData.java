@@ -252,6 +252,7 @@ public class FieldData {
                 if(needReplace){
                     final String str = tm.toString();
                     int lastIndexOfDot = str.lastIndexOf(".");
+                    // no need replace .handled by idea-plugin
                     mTypeName_interface = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.INTERFACE_SUFFIX );
                     mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),

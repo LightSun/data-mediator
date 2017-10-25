@@ -108,6 +108,13 @@ public class HashEqualsGenerator {
         final FieldData.TypeCompat typeCompat = fd.getTypeCompat();
         final TypeMirror tm = typeCompat.getTypeMirror();
         switch (fd.getComplexType()) {
+            case FieldData.COMPLEXT_SPARSE_ARRAY:
+                equalsBuilder.beginControlFlow("if ($N() != null ? !$N().equals(that.$N()) : that.$N() != null)",
+                        getName, getName , getName, getName)
+                        .addStatement("return false")
+                        .endControlFlow();
+                break;
+
             case FieldData.COMPLEXT_ARRAY: {
                 //  if (!Arrays.equals(getTest_int_array(), that.getTest_int_array())) return false;
                 equalsBuilder.beginControlFlow("  if (!$T.equals($N(), that.$N()))", Arrays.class, getName, getName)
@@ -191,6 +198,11 @@ public class HashEqualsGenerator {
         final TypeMirror tm = typeCompat.getTypeMirror();
 
         switch (fieldData.getComplexType()) {
+
+            case FieldData.COMPLEXT_SPARSE_ARRAY:
+                hashBuilder.addStatement("result = 31 * result + ($N() != null ? $N().hashCode() : 0)", getName, getName);
+                break;
+
             case FieldData.COMPLEXT_ARRAY: {
                 // result = 31 * result + Arrays.hashCode(getTest_ResultData_array());
                 hashBuilder.addStatement("result = 31 * result + $T.hashCode($N())", Arrays.class,getName);
