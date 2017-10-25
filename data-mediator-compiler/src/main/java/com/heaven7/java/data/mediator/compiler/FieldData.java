@@ -13,6 +13,7 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.Collection;
 import java.util.List;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_STRING;
@@ -228,7 +229,8 @@ public class FieldData {
             return mTypeName_impl != null;
         }
 
-        public void replaceIfNeed(Elements elements, ProcessorPrinter pp) {
+        public void replaceIfNeed(Elements elements, ProcessorPrinter pp,
+                                  @Nullable Collection<FieldData> out) {
             pp.note("TypeCompat", "replaceIfNeed", "start check element: " + tm.toString());
             Element te = getElement();
             //when TypeMirror is primitive , here te is null.
@@ -238,13 +240,17 @@ public class FieldData {
                 boolean needReplace = false;
                 //when depend another interface(@Fields) need reply.
                 List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
+                pp.note("TypeCompat", "replaceIfNeed",
+                        "mirror.size = " + mirrors.size());
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
                     pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
-                   // pp.note("TypeCompat", "replaceIfNeed", "am = " + am);
                     if(type.toString().equals(Fields.class.getName())){
                         //need replace.
                         needReplace = true;
+                        if(out != null){
+                            ElementHelper.parseFields(elements, types, am, out, pp);
+                        }
                         break;
                     }
                 }
@@ -259,13 +265,16 @@ public class FieldData {
                      /*
                      * here have a bug . if one module depend another.(all have annotation @Fields)
                      * To resolve it . we just judge it has 'IMPL_SUFFIX' or not.
+                     * or make all annotation @Retention CLASS.
                      */
                     String  name = tm.toString();
                     String expectImplName = name + DataMediatorConstants.IMPL_SUFFIX;
-                    if(elements.getTypeElement(expectImplName) != null){
+                    final TypeElement temp_te = elements.getTypeElement(expectImplName);
+                    if(temp_te != null){
                         int lastIndexOfDot = name.lastIndexOf(".");
                         mTypeName_impl = ClassName.get(name.substring(0, lastIndexOfDot),
-                                name.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX);
+                                name.substring(lastIndexOfDot + 1)
+                                        +  DataMediatorConstants.IMPL_SUFFIX);
                     }
                 }
             }

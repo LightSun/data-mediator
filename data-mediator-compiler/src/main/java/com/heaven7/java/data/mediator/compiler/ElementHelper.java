@@ -4,6 +4,7 @@ import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -14,20 +15,59 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
  */
 /*public*/ class ElementHelper {
 
-    private static final String TAG                = "ElementHelper";
-    private static final String TARGET_PACKAGE     = "com.heaven7.java.data.mediator";
-    private static final String KEY_FIELDS_ANNO    = "value";
-    private static final String KEY_ENABLE_CHAIN   = "enableChain";
+    private static final String TAG = "ElementHelper";
+    private static final String TARGET_PACKAGE = "com.heaven7.java.data.mediator";
+    private static final String KEY_FIELDS_ANNO = "value";
+    private static final String KEY_ENABLE_CHAIN = "enableChain";
     private static final String KEY_MAX_POOL_COUNT = "maxPoolCount";
 
-    private static final String KEY_GSON_CONFIG                  = "gsonConfig";
-    private static final String KEY_GSON_GENERATE_JSON_ADAPTER   = "generateJsonAdapter";
-    private static final String KEY_GSON_VERSION                 = "version";
-    private static final String KEY_GSON_FORCE_DISABLE           = "forceDisable";
+    private static final String KEY_GSON_CONFIG = "gsonConfig";
+    private static final String KEY_GSON_GENERATE_JSON_ADAPTER = "generateJsonAdapter";
+    private static final String KEY_GSON_VERSION = "version";
+    private static final String KEY_GSON_FORCE_DISABLE = "forceDisable";
 
+
+    public static boolean parseFields(Elements mElements, Types mTypes,
+                                      AnnotationMirror am, Collection<FieldData> mFieldDatas,
+                                      ProcessorPrinter pp) {
+        final String methodName = "methodName";
+        Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
+        pp.note(TAG, methodName, "am.getElementValues() = map . is " + map);
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
+            ExecutableElement key = en.getKey();
+            pp.note(TAG, methodName, "key: " + key);//the method of annotation
+            switch (key.getSimpleName().toString()) {
+                case KEY_FIELDS_ANNO: {
+                    //get all @Field(...)
+                    AnnotationValue value = en.getValue();
+                    Object target = value.getValue();
+                    if (target == null || !(target instanceof List)) {
+                        pp.error(TAG, methodName, "@Fields's value() must be a list.");
+                        return false;
+                    }
+                    List list = (List) target;
+                    if (list.isEmpty()) {
+                        pp.error(TAG, methodName, "@Fields's value() must have value list.");
+                        return false;
+                    }
+                    Object obj = list.get(0);
+                    if (!(obj instanceof AnnotationMirror)) {
+                        pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
+                        return false;
+                    }
+                    if (!iterateField(mElements, mTypes,
+                            (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
+                        return false;
+                    }
+                }
+                break;
+            }
+        }
+        return true;
+    }
 
     //process @GlobalSetting
-    public static boolean processGlobalSetting(Types mTypes, List<? extends AnnotationMirror> annoMirrors, ProcessorPrinter pp){
+    public static boolean processGlobalSetting(Types mTypes, List<? extends AnnotationMirror> annoMirrors, ProcessorPrinter pp) {
         for (AnnotationMirror am : annoMirrors) {
             //if not my want. ignore
             if (!isValidAnnotation(am, pp)) {
@@ -38,9 +78,9 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                 ExecutableElement key = en.getKey();//the method of annotation
                 switch (key.getSimpleName().toString()) {
                     case KEY_GSON_CONFIG: {
-                         Object value = en.getValue().getValue(); //@GsonConfig
-                         AnnotationMirror am2 = (AnnotationMirror) value;
-                         handleGsonConfig(am2, pp);
+                        Object value = en.getValue().getValue(); //@GsonConfig
+                        AnnotationMirror am2 = (AnnotationMirror) value;
+                        handleGsonConfig(am2, pp);
                     }
 
                     default:
@@ -61,7 +101,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
             switch (key.getSimpleName().toString()) {
                 case KEY_GSON_VERSION:
                     double version = Double.parseDouble(av.getValue().toString());
-                    if(version >= 1.0){
+                    if (version >= 1.0) {
                         GlobalConfig.getInstance().setVersion(version);
                     }
                     break;
@@ -79,7 +119,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
     //process @Fields
     public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
-                                             List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
+                                            List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
         final List<FieldData> mFieldDatas = cg.getFieldDatas();
 
         final String methodName = "processAnnotation";
@@ -87,10 +127,10 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         for (AnnotationMirror am : annoMirrors) {
             //if not my want. ignore
             if (!isValidAnnotation(am, pp)) {
-               continue;
+                continue;
             }
             TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
-            pp.note(TAG , "processAnnotation", "anno qName = " + e1.getQualifiedName().toString());
+            pp.note(TAG, "processAnnotation", "anno qName = " + e1.getQualifiedName().toString());
             //TODO handle implClass and ImplMethod.   if(e1.getQualifiedName().equals(Field))
 
             Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
@@ -99,8 +139,8 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                 ExecutableElement key = en.getKey();
                 pp.note(TAG, methodName, "key: " + key);//the method of annotation
 
-                switch (key.getSimpleName().toString()){
-                    case KEY_FIELDS_ANNO:{
+                switch (key.getSimpleName().toString()) {
+                    case KEY_FIELDS_ANNO: {
                         //get all @Field(...)
                         AnnotationValue value = en.getValue();
                         Object target = value.getValue();
@@ -118,11 +158,12 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                             pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
                             return false;
                         }
-                        if (!iterateField(mElements, mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
+                        if (!iterateField(mElements, mTypes,
+                                (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
                             return false;
                         }
                     }
-                        break;
+                    break;
 
                     case KEY_ENABLE_CHAIN:
                         cg.setEnableChain((Boolean) en.getValue().getValue());
@@ -137,7 +178,8 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         return true;
     }
 
-    public static boolean iterateField(Elements mElements, Types types , List<? extends AnnotationMirror> list, ProcessorPrinter pp, List<FieldData> datas) {
+    public static boolean iterateField(Elements mElements, Types types, List<? extends AnnotationMirror> list,
+                                       ProcessorPrinter pp, Collection<FieldData> datas) {
         final String methodName = "iterateField";
         pp.note(TAG, "iterateField", "=================== start iterate @Field() ====================");
         for (AnnotationMirror am1 : list) {
@@ -174,7 +216,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
                         final TypeMirror tm = (TypeMirror) av.getValue();
                         FieldData.TypeCompat typeCompat = new FieldData.TypeCompat(types, tm);
-                        typeCompat.replaceIfNeed(mElements, pp);
+                        typeCompat.replaceIfNeed(mElements, pp, null);
                         data.setTypeCompat(typeCompat);
                         break;
 

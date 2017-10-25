@@ -87,14 +87,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             for (TypeMirror mirror : interfaces) {
                 final TypeElement te = (TypeElement) ((DeclaredType) mirror).asElement();
                 Set<FieldData> dependFields = delegate.getDependFields(te);
-                if (dependFields != null) {
+                if (!dependFields.isEmpty()) {
                     superFields.addAll(dependFields);
                 }
             }
         }
         final String interfaceName = mElement.getSimpleName().toString();
         final TypeName selfParamType = ClassName.get(packageName, interfaceName);
-        mPrinter.note(TAG, log_method,  "start element = "+ packageName + "." + interfaceName);
+        mPrinter.note(TAG, log_method,  "start element = " +
+                packageName + "." + interfaceName, " , superFields = " + superFields);
 
         //set target class info
         mClassInfo.setPackageName(packageName);
@@ -122,21 +123,6 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         //set target class info
         mClassInfo.setCurrentClassname(className);
 
-        ArrayList<FieldData> allFields = new ArrayList<>(mFields);
-        allFields.addAll(superFields);
-        //type adapter.
-        if(!TypeAdapterGenerator.generate(mClassInfo, allFields, filer)){
-            return false;
-        }
-
-        //all insert: like:  DataPools.preparePool("", 5); / TypeHandler.registerTypeAdapter(Car3.class, new Car3TypeAdapter());
-        setClassInfo(mClassInfo);
-        addClassAnnotation(implBuilder);
-        CodeBlock.Builder staticCodeBuilder = CodeBlock.builder();
-        if(addStaticCode(staticCodeBuilder,  mMaxPoolCount)){
-            implBuilder.addStaticBlock(staticCodeBuilder.build());
-        }
-
         final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mElements, mTypes, mPrinter);
         // implBuilder.superclass()
         boolean usedSuperClass = false ;
@@ -149,7 +135,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 implBuilder.addSuperinterface(tc.getInterfaceTypeName());
-                tc.replaceIfNeed( mElements, mPrinter);
+                tc.replaceIfNeed( mElements, mPrinter, superFields);
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
                 mPrinter.note(TAG, log_method, "tm = " + tc.toString(),
@@ -172,6 +158,21 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
                    }
                 }
             }
+        }
+        //=====================================================================
+        //type adapter
+        Set<FieldData> allFields = new HashSet<>(mFields);
+        allFields.addAll(superFields);
+        //type adapter.
+        if(!TypeAdapterGenerator.generate(mClassInfo, allFields, filer)){
+            return false;
+        }
+        //annotation and static code
+        setClassInfo(mClassInfo);
+        addClassAnnotation(implBuilder);
+        CodeBlock.Builder staticCodeBuilder = CodeBlock.builder();
+        if(addStaticCode(staticCodeBuilder,  mMaxPoolCount)){
+            implBuilder.addStaticBlock(staticCodeBuilder.build());
         }
         //======================================================================
 

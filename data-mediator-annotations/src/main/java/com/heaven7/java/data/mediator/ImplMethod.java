@@ -11,13 +11,14 @@ import java.lang.annotation.Target;
  * @since 1.1.0
  */
 @Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface ImplMethod {
     /**
-     * indicate the  method name
+     * indicate the method name of impl class. default empty means use the same method name of impl Class.
      * @return the method name.
+     * @see ImplClass
      */
-    String value();
+    String value() default "";
 
     /**
      * force indicate this method from target class.

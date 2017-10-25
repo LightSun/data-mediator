@@ -4,8 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
-import java.util.List;
 
 //@Fields(serializeName="", propertyNmae="",flags, type=A.class)
 
@@ -15,7 +13,7 @@ import java.util.List;
  * @see Fields
  */
 @Target(ElementType.ANNOTATION_TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface Field {
 
 	/**

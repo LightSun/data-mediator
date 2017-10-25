@@ -216,12 +216,17 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         public Set<FieldData> getDependFields(TypeElement te) {
             Set<FieldData> list = new HashSet<>();
 
+            boolean hasDepend = false;
             List<? extends AnnotationMirror> mirrors = te.getAnnotationMirrors();
             for(AnnotationMirror am : mirrors){
                 DeclaredType type = am.getAnnotationType();
                 if(type.toString().equals(Fields.class.getName())){
-                    list.addAll(getProxyClass(te).getFieldDatas());
+                    hasDepend = true;
+                    break;
                 }
+            }
+            if(hasDepend){
+                list.addAll(getProxyClass(te).getFieldDatas());
             }
             //a depend b, b depend c ,,, etc.
             List<? extends TypeMirror> superInterfaces = te.getInterfaces();

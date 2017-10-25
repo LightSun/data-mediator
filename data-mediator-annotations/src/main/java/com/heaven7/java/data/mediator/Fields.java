@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * @author heaven7
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface Fields {
 
 	/**

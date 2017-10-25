@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4e6d3946-7519-4fbc-8e82-3b5b86c20eb4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestItem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/libraries/Gradle__com_heaven7_java_data_mediator_data_mediator_1_2_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_heaven7_java_base_Java_base_1_0_9.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_heaven7_java_data_mediator_annotation_data_mediator_annotations_1_0_5.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_heaven7_java_data_mediator_data_mediator_1_2_2.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_junit_4_12.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_core_1_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestItem1.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator/classes/artifacts/data_mediator_jar/data-mediator.jar" afterPath="$PROJECT_DIR$/../data-mediator/classes/artifacts/data_mediator_jar/data-mediator.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/build.gradle" afterPath="$PROJECT_DIR$/../data-mediator-annotations/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/Field.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/Field.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/Fields.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/Fields.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/GlobalConfig.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/GlobalConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/GsonConfig.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/GsonConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/ImplClass.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/ImplClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/ImplMethod.java" afterPath="$PROJECT_DIR$/../data-mediator-annotations/src/main/java/com/heaven7/java/data/mediator/ImplMethod.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/build.gradle" afterPath="$PROJECT_DIR$/../data-mediator-compiler/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/readme.txt" afterPath="$PROJECT_DIR$/../data-mediator-compiler/readme.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/CodeGenerator.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/CodeGenerator.java" />
@@ -19,19 +17,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/FieldData.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/FieldData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/MediatorAnnotationProcessor.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/MediatorAnnotationProcessor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/OutInterfaceManager.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/OutInterfaceManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/ProcessorPrinter.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/ProcessorPrinter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/compiler.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/misc.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/modules.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator/src/main/java/com/heaven7/java/data/mediator/DataMediatorFactory.java" afterPath="$PROJECT_DIR$/../data-mediator/src/main/java/com/heaven7/java/data/mediator/DataMediatorFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" afterPath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java" afterPath="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -58,58 +46,19 @@
       <file leaf-file-name="TestParcelableData.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="385" column="0" lean-forward="false" selection-start-line="385" selection-start-column="0" selection-end-line="385" selection-end-column="0" />
+            <state relative-caret-position="1038">
+              <caret line="393" column="0" lean-forward="false" selection-start-line="393" selection-start-column="0" selection-end-line="393" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FlowItem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="19" column="45" lean-forward="false" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="693">
-              <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+            <state relative-caret-position="128">
+              <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestItem2_$Proxy.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/test/TestItem2_$Proxy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="17" column="43" lean-forward="true" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
-              <folding>
-                <element signature="e#756#757#0" expanded="true" />
-                <element signature="e#777#778#0" expanded="true" />
-                <element signature="e#813#814#0" expanded="true" />
-                <element signature="e#859#860#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestItem2.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -302,8 +251,8 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4526496107178" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="572319505" />
+        <entry key="$PROJECT_DIR$" value="4526563627645" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2367180418" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -486,15 +435,16 @@
         <option value="$PROJECT_DIR$/generated_tests/com/heaven7/test/TestItem2_$Impl.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java" />
+        <option value="$PROJECT_DIR$/generated_tests/com/heaven7/test/TestItem2_$Proxy.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -512,8 +462,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -524,7 +473,18 @@
             <path>
               <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
               <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="generated" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="generated_tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
+              <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="generated_tests" type="462c0819:PsiDirectoryNode" />
+              <item name="heaven7" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
@@ -549,27 +509,6 @@
               <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="plugin-data-mediator-test" type="b2602c69:ProjectViewProjectNode" />
-              <item name="plugin-data-mediator-test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
@@ -581,13 +520,14 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build.gradle" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
@@ -718,35 +658,35 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924107" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48603353" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7089041" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48660713" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25799572" sideWeight="0.4955357" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25718608" sideWeight="0.4955357" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25266525" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2553305" sideWeight="0.50446427" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -757,6 +697,42 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="19" column="45" lean-forward="false" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1652">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8694">
@@ -770,7 +746,7 @@
         <state relative-caret-position="437">
           <caret line="19" column="45" lean-forward="false" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -787,10 +763,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#157#158#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -816,10 +788,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#157#158#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -852,10 +820,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#157#158#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -871,7 +835,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
           <caret line="75" column="48" lean-forward="false" selection-start-line="75" selection-start-column="48" selection-end-line="75" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -883,14 +846,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData_$Proxy.java" />
-    <entry file="jar://G:/android/jdk1.8.0_11/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="99" column="22" lean-forward="false" selection-start-line="99" selection-start-column="22" selection-end-line="99" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://G:/android/jdk1.8.0_11/src.zip!/java/lang/Object.java" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.heaven7.java.base/Java-base/1.0.9/a356448b2dfed783e05aacddcb2bdecb806d44a2/Java-base-1.0.9-sources.jar!/com/heaven7/java/base/util/SparseArray.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
@@ -898,21 +854,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Impl.java" />
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData_$Impl.java" />
-    <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Proxy.java" />
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.heaven7.java.data.mediator.support.gson/data-mediator-support-gson/1.0.3/d3d73a3c9a5768b919cb8ce5adab3c77aa9525ac/data-mediator-support-gson-1.0.3-sources.jar!/com/heaven7/java/data/mediator/support/gson/BaseTypeAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="773">
-          <caret line="63" column="16" lean-forward="false" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/$TestParcelableData$TypeAdapter.java" />
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/java/data/mediator/internal/SharedProperties_2.java" />
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/java/data/mediator/internal/SharedProperties_1.java" />
     <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/java/data/mediator/internal/SharedProperties_6.java" />
-    <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/test/$TestItem2$TypeAdapter.java" />
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/$TestItem$TypeAdapter.java" />
     <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem_$Impl.java" />
     <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/java/data/mediator/internal/SharedProperties_2.java" />
@@ -921,10 +867,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
-          <folding>
-            <element signature="e#130#131#0" expanded="true" />
-            <element signature="e#157#158#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -932,77 +874,125 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-23">
           <caret line="18" column="25" lean-forward="false" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1038">
+          <caret line="393" column="0" lean-forward="false" selection-start-line="393" selection-start-column="0" selection-end-line="393" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/FlowItem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="45" lean-forward="false" selection-start-line="19" selection-start-column="45" selection-end-line="19" selection-end-column="45" />
+        <state relative-caret-position="196">
+          <caret line="21" column="25" lean-forward="false" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData.java">
+    <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Proxy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="385" column="0" lean-forward="false" selection-start-line="385" selection-start-column="0" selection-end-line="385" selection-end-column="0" />
+        <state relative-caret-position="252">
+          <caret line="21" column="16" lean-forward="false" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="693">
-          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+        <state relative-caret-position="364">
+          <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.heaven7.java.data.mediator.support.gson/data-mediator-support-gson/1.0.3/d3d73a3c9a5768b919cb8ce5adab3c77aa9525ac/data-mediator-support-gson-1.0.3-sources.jar!/com/heaven7/java/data/mediator/support/gson/BaseTypeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="34" column="22" lean-forward="false" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/test/TestItem2_$Impl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding>
-            <marker date="1508930437919" expanded="false" signature="2146:2153" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="2172:2176" ph=" }" />
-            <marker date="1508930437919" expanded="false" signature="2327:2334" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="2353:2357" ph=" }" />
-            <marker date="1508930437919" expanded="false" signature="2513:2520" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="2539:2543" ph=" }" />
-            <marker date="1508930437919" expanded="false" signature="2948:2955" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="2974:2978" ph=" }" />
-            <marker date="1508930437919" expanded="false" signature="3126:3133" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="3152:3156" ph=" }" />
-            <marker date="1508930437919" expanded="false" signature="3315:3322" ph=" { " />
-            <marker date="1508930437919" expanded="false" signature="3341:3345" ph=" }" />
-          </folding>
+        <state relative-caret-position="224">
+          <caret line="22" column="72" lean-forward="false" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="72" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/heaven7/test/TestItem2.java">
+    <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Impl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="44">
+          <caret line="31" column="20" lean-forward="false" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem_$Proxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-840">
+          <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.heaven7.java.data.mediator.compiler/data-mediator-compiler/1.3.0-beta20/e626bd7735c1e81bf7eeb4a1d74ebac27e43416f/data-mediator-compiler-1.3.0-beta20-sources.jar!/com/heaven7/java/data/mediator/compiler/MediatorAnnotationProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2922">
+          <caret line="30" column="13" lean-forward="false" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.heaven7.java.data.mediator.compiler/data-mediator-compiler/1.3.0-beta20/e626bd7735c1e81bf7eeb4a1d74ebac27e43416f/data-mediator-compiler-1.3.0-beta20-sources.jar!/com/heaven7/java/data/mediator/compiler/FieldData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5099">
+          <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/test/$TestItem2$TypeAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="5" column="53" lean-forward="false" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="53" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generated_tests/com/heaven7/test/TestItem2_$Proxy.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="17" column="43" lean-forward="true" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
+        <state relative-caret-position="-6254">
+          <caret line="22" column="41" lean-forward="true" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
           <folding>
-            <element signature="e#756#757#0" expanded="true" />
-            <element signature="e#777#778#0" expanded="true" />
-            <element signature="e#813#814#0" expanded="true" />
-            <element signature="e#859#860#0" expanded="true" />
+            <element signature="e#963#964#0" expanded="true" />
+            <element signature="e#984#985#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

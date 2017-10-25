@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @since 1.1.0
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface ImplClass {
     /**
      * indicate the main class which hold the impl of 'self-method'.
