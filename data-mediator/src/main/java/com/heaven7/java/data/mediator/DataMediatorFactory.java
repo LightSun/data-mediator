@@ -27,9 +27,8 @@ import java.lang.reflect.Constructor;
  */
 public final class DataMediatorFactory {
 
-    /*private*/ static final String  SUFFIX_INTERFACE = "Module";
-    /*private*/ static final String  SUFFIX_IMPL   = "_Impl";
-    private static final String  SUFFIX_PROXY  = "_Proxy";
+    /*private*/ static final String  SUFFIX_IMPL   = "_$Impl";
+    private static final String  SUFFIX_PROXY  = "_$Proxy";
 
     /**
      * obtain the data for target class type.
@@ -103,9 +102,6 @@ public final class DataMediatorFactory {
             throw new IllegalArgumentException("target object(" + ImplName + ") can't wrap to DataMediator.");
         }
         final String interfaceName = ImplName.substring(0, ImplName.lastIndexOf(SUFFIX_IMPL));
-        if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
-            throw new IllegalArgumentException("the argument isn't support.");
-        }
         try {
             Class<?> proxyClazz = Class.forName(interfaceName + SUFFIX_PROXY);
             Constructor<?> constructor = proxyClazz.getConstructor(Class.forName(interfaceName));
@@ -162,11 +158,7 @@ public final class DataMediatorFactory {
         if(!interClazz.isInterface()){
             throw new IllegalArgumentException();
         }
-        String name = interClazz.getName();
-        if(!name.endsWith(SUFFIX_INTERFACE)){
-            throw new IllegalArgumentException("interface class must end with " + SUFFIX_INTERFACE);
-        }
-        return name;
+        return interClazz.getName();
     }
 
 }

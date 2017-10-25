@@ -11,7 +11,8 @@ import java.util.List;
 public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
-            "CodeGenerator"
+            "CodeGenerator",
+            "TypeCompat"
     );
     //only debug show info log
     private static final boolean sDebug = true;

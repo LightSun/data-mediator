@@ -14,6 +14,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.*;
 
@@ -204,13 +205,13 @@ public class OutInterfaceManager {
      * @return the flags.
      */
     public static int getSuperInterfaceFlagForParent(TypeElement te,
-                                                     Types types, ProcessorPrinter pp){
+                                                     Elements mElements, Types types, ProcessorPrinter pp){
         final String tag = te.getSimpleName().toString();
         List<? extends TypeMirror> interfaces = te.getInterfaces();
         for(TypeMirror tm: interfaces) {
             // pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm);
             FieldData.TypeCompat tc = new FieldData.TypeCompat(types, tm);
-            tc.replaceIfNeed(pp);
+            tc.replaceIfNeed(mElements, pp);
             pp.note(TAG, "getSuperInteraceFlagForParent_" + tag, "TypeMirror : " + tm
                     + " , hasAnnotationFields = " + tc.hasAnnotationFields());
             if(tc.hasAnnotationFields()){

@@ -6,9 +6,5 @@
         <outputRelativeToContentRoot value="true" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="plugin-data-mediator-test_main" target="1.8" />
-      <module name="plugin-data-mediator-test_test" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

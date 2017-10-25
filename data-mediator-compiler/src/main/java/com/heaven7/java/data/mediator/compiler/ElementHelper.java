@@ -1,9 +1,8 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.heaven7.java.data.mediator.ImplClass;
-
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +78,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     }
 
     //process @Fields
-    public static boolean processAnnotation(Types mTypes, ProcessorPrinter pp,
+    public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
                                              List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
         final List<FieldData> mFieldDatas = cg.getFieldDatas();
 
@@ -119,7 +118,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                             pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
                             return false;
                         }
-                        if (!iterateField(mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
+                        if (!iterateField(mElements, mTypes, (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
                             return false;
                         }
                     }
@@ -138,7 +137,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         return true;
     }
 
-    public static boolean iterateField(Types types ,List<? extends AnnotationMirror> list, ProcessorPrinter pp, List<FieldData> datas) {
+    public static boolean iterateField(Elements mElements, Types types , List<? extends AnnotationMirror> list, ProcessorPrinter pp, List<FieldData> datas) {
         final String methodName = "iterateField";
         pp.note(TAG, "iterateField", "=================== start iterate @Field() ====================");
         for (AnnotationMirror am1 : list) {
@@ -175,8 +174,8 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                         pp.note(TAG, methodName, "STR_TYPE >>> " + av.getValue().toString());
                         final TypeMirror tm = (TypeMirror) av.getValue();
                         FieldData.TypeCompat typeCompat = new FieldData.TypeCompat(types, tm);
+                        typeCompat.replaceIfNeed(mElements, pp);
                         data.setTypeCompat(typeCompat);
-                        typeCompat.replaceIfNeed(pp);
                         break;
 
                     case STR_SINCE:

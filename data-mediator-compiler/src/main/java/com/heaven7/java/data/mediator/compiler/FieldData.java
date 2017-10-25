@@ -11,6 +11,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
 
@@ -227,7 +228,8 @@ public class FieldData {
             return mTypeName_impl != null;
         }
 
-        public void replaceIfNeed(ProcessorPrinter pp) {
+        public void replaceIfNeed(Elements elements, ProcessorPrinter pp) {
+            pp.note("TypeCompat", "replaceIfNeed", "start check element: " + tm.toString());
             Element te = getElement();
             //when TypeMirror is primitive , here te is null.
             if(te == null) {
@@ -239,7 +241,7 @@ public class FieldData {
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
                     pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
-                    pp.note("TypeCompat", "replaceIfNeed", "am = " + am);
+                   // pp.note("TypeCompat", "replaceIfNeed", "am = " + am);
                     if(type.toString().equals(Fields.class.getName())){
                         //need replace.
                         needReplace = true;
@@ -251,6 +253,20 @@ public class FieldData {
                     int lastIndexOfDot = str.lastIndexOf(".");
                     mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
                             str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX );
+                    pp.note("TypeCompat", "replaceIfNeed", "find depend , interface = " + str);
+                }else{
+                    pp.note("TypeCompat", "replaceIfNeed", " [can't] find depend , interface = " + tm.toString());
+                     /*
+                     * here have a bug . if one module depend another.(all have annotation @Fields)
+                     * To resolve it . we just judge it has 'IMPL_SUFFIX' or not.
+                     */
+                    String  name = tm.toString();
+                    String expectImplName = name + DataMediatorConstants.IMPL_SUFFIX;
+                    if(elements.getTypeElement(expectImplName) != null){
+                        int lastIndexOfDot = name.lastIndexOf(".");
+                        mTypeName_impl = ClassName.get(name.substring(0, lastIndexOfDot),
+                                name.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX);
+                    }
                 }
             }
         }

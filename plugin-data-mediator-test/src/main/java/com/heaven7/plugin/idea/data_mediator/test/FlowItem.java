@@ -5,7 +5,6 @@ import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.*;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
 
-import java.io.Serializable;
 import java.lang.String;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import java.util.List;
         @Field(propName = "xxx5", type = Integer.class, complexType = FieldFlags.COMPLEX_ARRAY),
 })
 public interface FlowItem extends DataPools.Poolable {
-
 
     Property PROP_id = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "id", 0);
     Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);

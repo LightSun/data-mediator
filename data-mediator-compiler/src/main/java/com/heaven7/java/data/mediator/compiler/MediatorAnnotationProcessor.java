@@ -126,7 +126,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 return true;
             }
             CodeGenerator generator = getProxyClass(element);
-            if(!ElementHelper.processAnnotation(mTypeUtils, mPrinter,
+            if(!ElementHelper.processAnnotation(mElementUtils, mTypeUtils, mPrinter,
                     element.getAnnotationMirrors(), generator)){
                 return true;
             }

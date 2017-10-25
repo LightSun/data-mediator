@@ -74,8 +74,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         final String log_method = "generateJavaFile";
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
-        mPrinter.note(TAG, log_method,  "fields = "+mFields);
-        List<? extends TypeMirror> interfaces = mElement.getInterfaces();
+       final  List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);
 
         OutInterfaceManager.setLogPrinter(mPrinter);
@@ -94,7 +93,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             }
         }
         final String interfaceName = mElement.getSimpleName().toString();
-        final TypeName selfParamType = TypeVariableName.get(interfaceName);
+        final TypeName selfParamType = ClassName.get(packageName, interfaceName);
+        mPrinter.note(TAG, log_method,  "start element = "+ packageName + "." + interfaceName);
 
         //set target class info
         mClassInfo.setPackageName(packageName);
@@ -121,11 +121,11 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
         //set target class info
         mClassInfo.setCurrentClassname(className);
-        mClassInfo.setSuperClass(null);
-        mClassInfo.setSuperInterfaces(interfaces);
 
+        ArrayList<FieldData> allFields = new ArrayList<>(mFields);
+        allFields.addAll(superFields);
         //type adapter.
-        if(!TypeAdapterGenerator.generate(mClassInfo, mFields, filer)){
+        if(!TypeAdapterGenerator.generate(mClassInfo, allFields, filer)){
             return false;
         }
 
@@ -137,21 +137,24 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             implBuilder.addStaticBlock(staticCodeBuilder.build());
         }
 
-        final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mTypes, mPrinter);
+        final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mElements, mTypes, mPrinter);
         // implBuilder.superclass()
         boolean usedSuperClass = false ;
         boolean hasSelectable = hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE);
-        implBuilder.addSuperinterface(TypeVariableName.get(interfaceName));
+        implBuilder.addSuperinterface(selfParamType);
         if(interfaces != null){
-            //mPrinter.note("implBuilder >>> start interfaces ");
+            mPrinter.note(TAG, log_method, "implBuilder >>> start impl = " +
+                      packageName + "." + className , " super interface = " + interfaces);
             for(TypeMirror tm : interfaces){
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
-                tc.replaceIfNeed(mPrinter);
                 implBuilder.addSuperinterface(tc.getInterfaceTypeName());
+                tc.replaceIfNeed( mElements, mPrinter);
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
-                mPrinter.note(TAG, "generateJavaFile", "super classType = " + superclassType);
+                mPrinter.note(TAG, log_method, "tm = " + tc.toString(),
+                        "curInterface = " + packageName + "."+ interfaceName,
+                        "super classType = " + superclassType);
                 if(superclassType != null){
                     if(usedSuperClass){
                         mPrinter.error(TAG, log_method, "implBuilder >> can only have one super class.");

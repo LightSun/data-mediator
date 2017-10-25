@@ -2,6 +2,7 @@ package com.heaven7.plugin.idea.data_mediator.test;
 
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.*;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.io.Serializable;
 import java.util.List;
@@ -78,6 +79,64 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
                 complexType = COMPLEX_SPARSE_ARRAY, flags = FLAGS_ALL_SCOPES),
 }, maxPoolCount = 100)
 public interface TestParcelableData extends Serializable, IResetable, DataPools.Poolable {
+
+
+    Property PROP_test_int = SharedProperties.get("int", "test_int", 0);
+    Property PROP_test_long = SharedProperties.get("long", "test_long", 0);
+    Property PROP_test_byte = SharedProperties.get("byte", "test_byte", 0);
+    Property PROP_test_short = SharedProperties.get("short", "test_short", 0);
+    Property PROP_test_float = SharedProperties.get("float", "test_float", 0);
+    Property PROP_test_double = SharedProperties.get("double", "test_double", 0);
+    Property PROP_test_boolean = SharedProperties.get("boolean", "test_boolean", 0);
+    Property PROP_test_char = SharedProperties.get("char", "test_char", 0);
+    Property PROP_test_Integer = SharedProperties.get("java.lang.Integer", "test_Integer", 0);
+    Property PROP_test_Long = SharedProperties.get("java.lang.Long", "test_Long", 0);
+    Property PROP_test_Short = SharedProperties.get("java.lang.Short", "test_Short", 0);
+    Property PROP_test_Byte = SharedProperties.get("java.lang.Byte", "test_Byte", 0);
+    Property PROP_test_Float = SharedProperties.get("java.lang.Float", "test_Float", 0);
+    Property PROP_test_Double = SharedProperties.get("java.lang.Double", "test_Double", 0);
+    Property PROP_test_Boolean = SharedProperties.get("java.lang.Boolean", "test_Boolean", 0);
+    Property PROP_test_Character = SharedProperties.get("java.lang.Character", "test_Character", 0);
+    Property PROP_test_int_list = SharedProperties.get("int", "test_int_list", 2);
+    Property PROP_test_long_list = SharedProperties.get("long", "test_long_list", 2);
+    Property PROP_test_byte_list = SharedProperties.get("byte", "test_byte_list", 2);
+    Property PROP_test_short_list = SharedProperties.get("short", "test_short_list", 2);
+    Property PROP_test_float_list = SharedProperties.get("float", "test_float_list", 2);
+    Property PROP_test_double_list = SharedProperties.get("double", "test_double_list", 2);
+    Property PROP_test_boolean_list = SharedProperties.get("boolean", "test_boolean_list", 2);
+    Property PROP_test_char_list = SharedProperties.get("char", "test_char_list", 2);
+    Property PROP_test_Integer_list = SharedProperties.get("java.lang.Integer", "test_Integer_list", 2);
+    Property PROP_test_Long_list = SharedProperties.get("java.lang.Long", "test_Long_list", 2);
+    Property PROP_test_Short_list = SharedProperties.get("java.lang.Short", "test_Short_list", 2);
+    Property PROP_test_Byte_list = SharedProperties.get("java.lang.Byte", "test_Byte_list", 2);
+    Property PROP_test_Float_list = SharedProperties.get("java.lang.Float", "test_Float_list", 2);
+    Property PROP_test_Double_list = SharedProperties.get("java.lang.Double", "test_Double_list", 2);
+    Property PROP_test_Boolean_list = SharedProperties.get("java.lang.Boolean", "test_Boolean_list", 2);
+    Property PROP_test_Character_list = SharedProperties.get("java.lang.Character", "test_Character_list", 2);
+    Property PROP_test_int_array = SharedProperties.get("int", "test_int_array", 1);
+    Property PROP_test_long_array = SharedProperties.get("long", "test_long_array", 1);
+    Property PROP_test_byte_array = SharedProperties.get("byte", "test_byte_array", 1);
+    Property PROP_test_short_array = SharedProperties.get("short", "test_short_array", 1);
+    Property PROP_test_short_array2 = SharedProperties.get("short", "test_short_array2", 1);
+    Property PROP_test_float_array = SharedProperties.get("float", "test_float_array", 1);
+    Property PROP_test_double_array = SharedProperties.get("double", "test_double_array", 1);
+    Property PROP_test_boolean_array = SharedProperties.get("boolean", "test_boolean_array", 1);
+    Property PROP_test_char_array = SharedProperties.get("char", "test_char_array", 1);
+    Property PROP_test_Integer_array = SharedProperties.get("java.lang.Integer", "test_Integer_array", 1);
+    Property PROP_test_Long_array = SharedProperties.get("java.lang.Long", "test_Long_array", 1);
+    Property PROP_test_Short_array = SharedProperties.get("java.lang.Short", "test_Short_array", 1);
+    Property PROP_test_Byte_array = SharedProperties.get("java.lang.Byte", "test_Byte_array", 1);
+    Property PROP_test_Float_array = SharedProperties.get("java.lang.Float", "test_Float_array", 1);
+    Property PROP_test_Double_array = SharedProperties.get("java.lang.Double", "test_Double_array", 1);
+    Property PROP_test_Boolean_array = SharedProperties.get("java.lang.Boolean", "test_Boolean_array", 1);
+    Property PROP_test_Character_array = SharedProperties.get("java.lang.Character", "test_Character_array", 1);
+    Property PROP_test_String = SharedProperties.get("java.lang.String", "test_String", 0);
+    Property PROP_test_String_array = SharedProperties.get("java.lang.String", "test_String_array", 1);
+    Property PROP_test_String_list = SharedProperties.get("java.lang.String", "test_String_list", 2);
+    Property PROP_test_ResultData = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.FlowItem", "test_ResultData", 0);
+    Property PROP_test_ResultData_list = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.FlowItem", "test_ResultData_list", 2);
+    Property PROP_test_ResultData_array = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.FlowItem", "test_ResultData_array", 1);
+    Property PROP_test_SparseArray = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.FlowItem", "test_SparseArray", 3);
 
     int getTest_int();
 
@@ -179,7 +238,7 @@ public interface TestParcelableData extends Serializable, IResetable, DataPools.
 
     ListPropertyEditor<? extends TestParcelableData, Double> beginTest_double_listEditor();
 
-    List<Boolean> isTest_boolean_list();
+    List<Boolean> getTest_boolean_list();
 
     TestParcelableData setTest_boolean_list(List<Boolean> test_boolean_list1);
 
@@ -267,7 +326,7 @@ public interface TestParcelableData extends Serializable, IResetable, DataPools.
 
     TestParcelableData setTest_double_array(double[] test_double_array1);
 
-    boolean[] isTest_boolean_array();
+    boolean[] getTest_boolean_array();
 
     TestParcelableData setTest_boolean_array(boolean[] test_boolean_array1);
 
