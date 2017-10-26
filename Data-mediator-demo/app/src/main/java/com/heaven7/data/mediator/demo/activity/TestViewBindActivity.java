@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.module.ViewBindModule;
+import com.heaven7.data.mediator.demo.module.ViewBind;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.PropertyInterceptor;
@@ -31,7 +31,7 @@ public class TestViewBindActivity extends BaseActivity {
     @BindView(R.id.v_bg_res)
     View mV_bg_res;
 
-    private Binder<ViewBindModule> binder;
+    private Binder<ViewBind> binder;
 
     private Drawable mDrawable1;
     private Drawable mDrawable2;
@@ -58,7 +58,7 @@ public class TestViewBindActivity extends BaseActivity {
         mUserRes1 = true;
         mUserColor1 = true;
 
-         binder = DataMediatorFactory.createBinder(ViewBindModule.class);
+         binder = DataMediatorFactory.createBinder(ViewBind.class);
         //初始化属性。
          binder.getDataProxy()
                  .setBackground(mDrawable1)
@@ -70,16 +70,16 @@ public class TestViewBindActivity extends BaseActivity {
         // 设置属性拦截器，用于应用绑定的时候过滤一些不需要的属性值。
         binder.setPropertyInterceptor(PropertyInterceptor.NULL_AND_ZERO);
         //绑定并 首次应用属性(绑定只需要1次)
-         binder.bindBackground(ViewBindModule.PROP_background, mV_bg)
+         binder.bindBackground(ViewBind.PROP_background, mV_bg)
                          //使用生成的property对象。有助于模型变化后用的地方知晓改变。
-                 .bindBackgroundRes(ViewBindModule.PROP_backgroundRes, mV_bg_res)
-                 .bindBackgroundColor(ViewBindModule.PROP_backgroundColor, mV_bg_color)
+                 .bindBackgroundRes(ViewBind.PROP_backgroundRes, mV_bg_res)
+                 .bindBackgroundColor(ViewBind.PROP_backgroundColor, mV_bg_color)
                  .bindEnable("enable", mV_enable)
                  .applyProperties(
                          // 创建一个只接收固定属性的 拦截器。(1.1.2支持的). 只是用于本次apply.
-                         PropertyInterceptor.createFilter(ViewBindModule.PROP_background,
-                                 ViewBindModule.PROP_backgroundRes,
-                                 ViewBindModule.PROP_backgroundColor)
+                         PropertyInterceptor.createFilter(ViewBind.PROP_background,
+                                 ViewBind.PROP_backgroundRes,
+                                 ViewBind.PROP_backgroundColor)
                  );
     }
 

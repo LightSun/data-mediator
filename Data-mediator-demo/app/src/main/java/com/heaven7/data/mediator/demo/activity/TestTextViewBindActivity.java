@@ -6,10 +6,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.module.TextViewBindModule;
+import com.heaven7.data.mediator.demo.module.TextViewBind;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
-import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 import java.util.Random;
 
@@ -27,8 +26,8 @@ public class TestTextViewBindActivity extends BaseActivity {
     TextView mTv;
 
     private final Random mRan = new Random();
-    private Binder<TextViewBindModule> mBinder;
-    private TextViewBindModule mProxy;
+    private Binder<TextViewBind> mBinder;
+    private TextViewBind mProxy;
 
     private int[] mTextRess;
     private int[] mColorRess;
@@ -42,12 +41,12 @@ public class TestTextViewBindActivity extends BaseActivity {
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
         initResource(context);
-        mBinder = DataMediatorFactory.createBinder(TextViewBindModule.class);
+        mBinder = DataMediatorFactory.createBinder(TextViewBind.class);
         //绑定一组属性到TextView
         mBinder.beginBatchTextViewBinder(mTv)
-                .bindText(TextViewBindModule.PROP_text)
-                .bindTextRes(TextViewBindModule.PROP_textRes)
-                .bindTextColor(TextViewBindModule.PROP_textColor)
+                .bindText(TextViewBind.PROP_text)
+                .bindTextRes(TextViewBind.PROP_textRes)
+                .bindTextColor(TextViewBind.PROP_textColor)
                 .bindTextColorRes("textColorRes")
                 .bindTextSize("textSize")
                 .bindTextSizeRes("textSizeRes")

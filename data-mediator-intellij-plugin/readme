@@ -16,4 +16,10 @@ http://blog.csdn.net/hawkdowen/article/details/41213001
 //extendsion
 http://www.blogjava.net/ideame/archive/2008/10/17/234974.html
 
+PsiManager.getInstance(psiClass.getProject()).addPsiTreeChangeListener();
  EditorFactory.getInstance().getEventMulticaster().addCaretListener();
+
+ //idea官方文档翻译的不错的
+ http://blog.csdn.net/hawkdowen/article/details/41047229
+
+//TODO resolve parent fields for chain call.

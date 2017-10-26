@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.testpackage.ClassBindModule;
+import com.heaven7.data.mediator.demo.testpackage.ClassBind;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,7 +27,7 @@ public class LogForParcelableActivity extends BaseActivity {
     @BindView(R.id.tv_desc)
     TextView mTv_desc;
 
-    private ClassBindModule mModule;
+    private ClassBind mModule;
 
     @Override
     protected int getLayoutId() {

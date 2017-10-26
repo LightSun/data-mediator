@@ -9,10 +9,10 @@ import com.heaven7.adapter.BaseFragmentPagerAdapter;
 import com.heaven7.core.util.BundleHelper;
 import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
+import com.heaven7.data.mediator.demo.analysis.AnalysisData;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
 import com.heaven7.data.mediator.demo.fragment.TestListFragment;
-import com.heaven7.data.mediator.demo.module.FlowItemModule;
+import com.heaven7.data.mediator.demo.module.FlowItem;
 import com.heaven7.data.mediator.demo.util.InternalViewUtil;
 import com.heaven7.java.data.mediator.ActionMode;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
@@ -60,9 +60,9 @@ public class TestAnalyseActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         AnalysisManager.getInstance().getDataMediator()
-                .startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+                .startActionMode(new ActionMode.Callback<AnalysisData>() {
             @Override
-            public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+            public void onPrepareActionMode(ActionMode<AnalysisData> mode) {
                 mode.getData().setExitTime(System.currentTimeMillis())
                         .setEventType("normal_exit");
             }
@@ -89,9 +89,9 @@ public class TestAnalyseActivity extends BaseActivity {
     }
 
     private Bundle createItems(int tabIndex) {
-        ArrayList<FlowItemModule> list = new ArrayList<>();
+        ArrayList<FlowItem> list = new ArrayList<>();
         for(int i = 0 ; i< 20 ; i++){
-            list.add(DataMediatorFactory.createData(FlowItemModule.class)
+            list.add(DataMediatorFactory.createData(FlowItem.class)
               .setId(i).setName("name__" + i).setDesc("desc_________" + i));
         }
         return new BundleHelper()

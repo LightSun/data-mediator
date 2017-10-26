@@ -1,14 +1,19 @@
 package com.heaven7.data.mediator.demo.testpackage;
 
 import com.heaven7.adapter.ISelectable;
+import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.IDataMediator;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
+
+import java.util.List;
 
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
-import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_COPY;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_DEFAULT;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_SERIALIZE_FALSE;
@@ -33,5 +38,37 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP
         ),
 }, maxPoolCount = 10)
-public interface StudentBind extends IDataMediator, ISelectable{
+public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poolable {
+        Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
+        Property PROP_test_object = SharedProperties.get("java.lang.Object", "test_object", 0);
+        Property PROP_test_Format = SharedProperties.get("java.lang.Double", "test_Format", 0);
+        Property PROP_test_int = SharedProperties.get("int", "test_int", 0);
+        Property PROP_test_list = SharedProperties.get("long", "test_list", 2);
+        Property PROP_test_array = SharedProperties.get("java.lang.String", "test_array", 1);
+
+        String getName();
+
+        StudentBind setName(String name1);
+
+        Object getTest_object();
+
+        StudentBind setTest_object(Object test_object1);
+
+        Double getTest_Format();
+
+        StudentBind setTest_Format(Double test_Format1);
+
+        int getTest_int();
+
+        StudentBind setTest_int(int test_int1);
+
+        List<Long> getTest_list();
+
+        StudentBind setTest_list(List<Long> test_list1);
+
+        ListPropertyEditor<? extends StudentBind, Long> beginTest_listEditor();
+
+        String[] getTest_array();
+
+        StudentBind setTest_array(String[] test_array1);
 }

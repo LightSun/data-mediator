@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.testpackage.StudentModule;
+import com.heaven7.data.mediator.demo.testpackage.Student;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 
@@ -21,7 +21,7 @@ public class TestChainCallActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_test_double_bind);
 
-        DataMediator<StudentModule> mediator = DataMediatorFactory.createDataMediator(StudentModule.class);
+        DataMediator<Student> mediator = DataMediatorFactory.createDataMediator(Student.class);
         //数据代理层
         mediator.getDataProxy()
                 .setName(null)

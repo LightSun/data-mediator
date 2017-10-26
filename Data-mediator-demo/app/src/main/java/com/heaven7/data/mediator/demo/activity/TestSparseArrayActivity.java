@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.testpackage.StudentModule;
-import com.heaven7.data.mediator.demo.testpackage.TestBindModule;
+import com.heaven7.data.mediator.demo.testpackage.Student;
+import com.heaven7.data.mediator.demo.testpackage.TestBind;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorCallback;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
@@ -33,7 +33,7 @@ public class TestSparseArrayActivity extends BaseActivity {
     @BindView(R.id.tv_sa)
     TextView mTv_sa;
 
-    private DataMediator<TestBindModule> mDm;
+    private DataMediator<TestBind> mDm;
     private Set<Integer> mIndexes = new HashSet<>();
 
     @Override
@@ -43,17 +43,17 @@ public class TestSparseArrayActivity extends BaseActivity {
 
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
-        mDm = DataMediatorFactory.createDataMediator(TestBindModule.class);
+        mDm = DataMediatorFactory.createDataMediator(TestBind.class);
         // 这里直接用属性回调。也可以用binder.bind(String property, SparseArrayPropertyCallback<? super T> callback)方法
         mDm.addDataMediatorCallback(DataMediatorCallback.createForSparse(
-                TestBindModule.PROP_cityData2.getName(), new CallbackImpl()));
+                TestBind.PROP_cityData2.getName(), new CallbackImpl()));
 
     }
 
     // put 操作
     @OnClick(R.id.bt_put)
     public void onClickPut(View v){
-        final StudentModule stu = createStu(-1);
+        final Student stu = createStu(-1);
         mDm.getDataProxy().beginCityData2Editor()
                 .put((int)stu.getId(), stu)
                 .end();
@@ -98,12 +98,12 @@ public class TestSparseArrayActivity extends BaseActivity {
             Logger.w(TAG , "onClickClear", "already empty");
         }
     }
-    private StudentModule createStu(int index) {
+    private Student createStu(int index) {
         if(index < 0){
             index = new Random().nextInt(5);
         }
         mIndexes.add(index);
-        return DataMediatorFactory.createData(StudentModule.class)
+        return DataMediatorFactory.createData(Student.class)
                 .setId(index).setName("google_" + index).setAge(index);
     }
 
@@ -112,42 +112,42 @@ public class TestSparseArrayActivity extends BaseActivity {
                 + mDm.getData().getCityData2().toString());
     }
 
-    private class CallbackImpl implements SparseArrayPropertyCallback<TestBindModule>{
+    private class CallbackImpl implements SparseArrayPropertyCallback<TestBind>{
 
         @Override
-        public void onEntryValueChanged(TestBindModule data, Property prop, Integer key,
+        public void onEntryValueChanged(TestBind data, Property prop, Integer key,
                                         Object oldValue, Object newValue) {
             final String msg = "oldValue = " + oldValue + " ,newValue = " + newValue;
             Logger.i(TAG , "onEntryValueChanged", msg);
             setLogText("onEntryValueChanged", msg);
         }
         @Override
-        public void onAddEntry(TestBindModule data, Property prop, Integer key, Object value) {
+        public void onAddEntry(TestBind data, Property prop, Integer key, Object value) {
             final String msg = "key = " + key + " ,value = " + value;
             Logger.i(TAG , "onAddEntry", msg);
             setLogText("onAddEntry", msg);
         }
         @Override
-        public void onRemoveEntry(TestBindModule data, Property prop, Integer key, Object value) {
+        public void onRemoveEntry(TestBind data, Property prop, Integer key, Object value) {
             final String msg = "key = " + key + " ,value = " + value;
             Logger.i(TAG , "onRemoveEntry", msg);
             setLogText("onRemoveEntry", msg);
         }
         @Override
-        public void onClearEntries(TestBindModule data, Property prop, Object entries) {
+        public void onClearEntries(TestBind data, Property prop, Object entries) {
             final String msg = entries.toString(); //here entries is SparseArray
             Logger.i(TAG , "onClearEntries", msg);
             setLogText("onClearEntries", msg);
         }
         @Override
-        public void onPropertyValueChanged(TestBindModule data, Property prop,
+        public void onPropertyValueChanged(TestBind data, Property prop,
                                            Object oldValue, Object newValue) {
             final String msg = "oldValue = " + oldValue + " ,newValue = " + newValue;
             Logger.i(TAG , "onPropertyValueChanged", msg);
             setLogText("onPropertyValueChanged", msg);
         }
         @Override
-        public void onPropertyApplied(TestBindModule data, Property prop, Object value) {
+        public void onPropertyApplied(TestBind data, Property prop, Object value) {
             final String msg = "value = " + value;
             Logger.i(TAG , "onPropertyApplied", msg);
             setLogText("onPropertyApplied", msg);

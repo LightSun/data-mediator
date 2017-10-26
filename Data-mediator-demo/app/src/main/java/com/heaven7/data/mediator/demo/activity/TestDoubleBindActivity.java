@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.testpackage.StudentModule;
+import com.heaven7.data.mediator.demo.testpackage.Student;
 import com.heaven7.data.mediator.demo.util.DoubleBindUtil;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
@@ -23,7 +23,7 @@ public class TestDoubleBindActivity extends AppCompatActivity {
     @BindView(R.id.tv_desc)
     TextView mTv_desc;
 
-    DataMediator<StudentModule> mMediator;
+    DataMediator<Student> mMediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class TestDoubleBindActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //为数据模型创建  中介者。
-        mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
+        mMediator = DataMediatorFactory.createDataMediator(Student.class);
         //双向绑定
         DoubleBindUtil.bindDouble(mMediator, mTv_desc, "name");
 

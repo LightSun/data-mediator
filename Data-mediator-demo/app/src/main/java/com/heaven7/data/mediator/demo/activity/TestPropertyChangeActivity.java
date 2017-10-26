@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.testpackage.StudentModule;
+import com.heaven7.data.mediator.demo.testpackage.Student;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorCallback;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
@@ -32,7 +32,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
     @BindView(R.id.bt_set_text_on_mediator)
     Button mBt_temp;
 
-    DataMediator<StudentModule> mMediator;
+    DataMediator<Student> mMediator;
 
 
     @Override
@@ -46,11 +46,11 @@ public class TestPropertyChangeActivity extends BaseActivity {
         mBt_temp.setVisibility(View.GONE);
 
         //为数据模型创建  中介者。
-        mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
+        mMediator = DataMediatorFactory.createDataMediator(Student.class);
         //添加属性callback
-        mMediator.addDataMediatorCallback(new DataMediatorCallback<StudentModule>() {
+        mMediator.addDataMediatorCallback(new DataMediatorCallback<Student>() {
             @Override
-            public void onPropertyValueChanged(StudentModule data, Property prop, Object oldValue, Object newValue) {
+            public void onPropertyValueChanged(Student data, Property prop, Object oldValue, Object newValue) {
                 Logger.w("TestPropertyChangeActivity","onPropertyValueChanged","prop = "
                         + prop.getName() + " ,oldValue = " + oldValue + " ,newValue = " + newValue);
                 mTv_desc.setText(String.valueOf(newValue));

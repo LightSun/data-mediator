@@ -1,8 +1,14 @@
 package com.heaven7.data.mediator.demo.module;
 
 import com.heaven7.data.mediator.demo.testpackage.Student;
+import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
+
+import java.util.List;
 
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
 /**
@@ -12,5 +18,12 @@ import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
 @Fields({
         @Field(propName = "students", type = Student.class, complexType = COMPLEXT_LIST)
 })
-public interface RecyclerListBind {
+public interface RecyclerListBind extends DataPools.Poolable {
+    Property PROP_students = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.Student", "students", 2);
+
+    List<Student> getStudents();
+
+    RecyclerListBind setStudents(List<Student> students1);
+
+    ListPropertyEditor<? extends RecyclerListBind, Student> beginStudentsEditor();
 }

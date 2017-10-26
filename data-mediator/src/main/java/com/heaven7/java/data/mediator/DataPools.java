@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_IMPL;
-import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_INTERFACE;
 import static com.heaven7.java.data.mediator.DataMediatorFactory.getImplClassName;
 /**
  * this class just called by framework internal.(include compiler.)
@@ -59,9 +58,6 @@ public final class DataPools {
             throw new IllegalArgumentException();
         }
         final String interfaceName = name.substring(0, name.lastIndexOf(SUFFIX_IMPL));
-        if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
-            throw new IllegalArgumentException("only support data-mediator module interface.");
-        }
         Entry entry = sMap.get(interfaceName);
         if(entry != null){
             entry.recycle(moduleData);
@@ -74,17 +70,11 @@ public final class DataPools {
      * @param maxCount the max count of the type pool.
      */
     public static void preparePool(String fullClassName, int maxCount){
-        final String interfaceName;
-        if(fullClassName.endsWith(SUFFIX_INTERFACE)){
-            interfaceName = fullClassName;
-        }else {
-            if (!fullClassName.endsWith(SUFFIX_IMPL)) {
-                throw new IllegalArgumentException();
-            }
+        final String interfaceName ;
+        if (fullClassName.endsWith(SUFFIX_IMPL)) {
             interfaceName = fullClassName.substring(0, fullClassName.lastIndexOf(SUFFIX_IMPL));
-            if(!interfaceName.endsWith(SUFFIX_INTERFACE)){
-                throw new IllegalArgumentException("only support data-mediator module interface.");
-            }
+        }else{
+            interfaceName = fullClassName;
         }
         Entry entry = sMap.get(interfaceName);
         if(entry == null){
@@ -96,9 +86,6 @@ public final class DataPools {
 
     /* package */ static <T> T obtain(Class<T> clazz){
         final String name = clazz.getName();
-        if(!name.endsWith(SUFFIX_INTERFACE)){
-            throw new IllegalArgumentException();
-        }
         Entry entry = sMap.get(clazz.getName());
         final Class<?> impl;
         try {

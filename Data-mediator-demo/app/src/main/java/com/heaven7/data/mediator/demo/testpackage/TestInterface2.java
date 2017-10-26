@@ -5,6 +5,11 @@ import android.os.Parcelable;
 import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
+
+import java.util.List;
 
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
@@ -22,4 +27,26 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
         @Field(propName = "student4", seriaName = "class_4", type = TestBind.class, flags = FLAGS_ALL_SCOPES)
 })
 public interface TestInterface2 extends StudentBind, Parcelable, ISelectable {
+    Property PROP_student = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student", 0);
+    Property PROP_student2 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student2", 2);
+    Property PROP_student3 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student3", 1);
+    Property PROP_student4 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student4", 0);
+
+    TestBind getStudent();
+
+    TestInterface2 setStudent(TestBind student1);
+
+    List<TestBind> getStudent2();
+
+    TestInterface2 setStudent2(List<TestBind> student21);
+
+    ListPropertyEditor<? extends TestInterface2, TestBind> beginStudent2Editor();
+
+    TestBind[] getStudent3();
+
+    TestInterface2 setStudent3(TestBind[] student31);
+
+    TestBind getStudent4();
+
+    TestInterface2 setStudent4(TestBind student41);
 }
