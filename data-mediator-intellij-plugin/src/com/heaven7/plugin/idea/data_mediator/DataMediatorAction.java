@@ -42,6 +42,9 @@ public class DataMediatorAction extends AnAction {
             Util.logError("psiClass == null");
             return;
         }
+       // final PsiElement parent = psiClass.getParent();
+       // Util.logError("parent == " + parent.getClass().getName());
+
         PsiModifierList list = psiClass.getModifierList();
         if(list == null){
             return;
