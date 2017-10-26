@@ -208,7 +208,7 @@ public class FieldData {
             }
             return null;
         }
-        public TypeName getInterfaceTypeName(){
+        public TypeName getTypeName(){
             return TypeName.get(tm);
         }
         public TypeMirror getTypeMirror() {
@@ -305,7 +305,7 @@ public class FieldData {
             return NAME_STRING;
         }
         @Override
-        public TypeName getInterfaceTypeName() {
+        public TypeName getTypeName() {
             return ClassName.get("java.lang", "String");
         }
     }

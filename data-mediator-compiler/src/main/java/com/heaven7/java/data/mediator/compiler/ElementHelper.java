@@ -1,9 +1,18 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ImplClass;
+import com.heaven7.java.data.mediator.ImplMethod;
+import com.squareup.javapoet.TypeName;
+import com.sun.org.apache.regexp.internal.RE;
+
 import javax.lang.model.element.*;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +35,12 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String KEY_GSON_VERSION = "version";
     private static final String KEY_GSON_FORCE_DISABLE = "forceDisable";
 
-    /** only parse fields for handle super fields */
+    private static final String KEY_VALUE = "value";
+    private static final String KEY_FROM  = "from"; //@ImplMethod
+
+    /**
+     * only parse fields for handle super fields
+     */
     public static boolean parseFields(Elements mElements, Types mTypes,
                                       AnnotationMirror am, Collection<FieldData> mFieldDatas,
                                       ProcessorPrinter pp) {
@@ -92,6 +106,36 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         return true;
     }
 
+    /***process @Fields and @ImplClass /@ImplMethods */
+    public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
+                                            TypeElement element, CodeGenerator cg) {
+        final List<FieldData> mFieldDatas = cg.getFieldDatas();
+        final String methodName = "processAnnotation";
+        List<? extends AnnotationMirror> annoMirrors = element.getAnnotationMirrors();
+        //@Fields
+        for (AnnotationMirror am : annoMirrors) {
+            //if not my want. ignore
+            if (!isValidAnnotation(am, pp)) {
+                continue;
+            }
+            TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
+            final String rootAnnoName = e1.getQualifiedName().toString();
+            pp.note(TAG, methodName, "anno qName = " + rootAnnoName);
+            //here only handle @Fields
+            if (rootAnnoName.equals(Fields.class.getName())) {
+                if (!parseFieldsNormal(mElements, mTypes, pp, cg, mFieldDatas, am)) {
+                    return false;
+                }
+                break;
+            } /*else if (rootAnnoName.equals(ImplClass.class.getName())) {
+                if (!parseImplClass(mTypes, pp, cg, am)) {
+                    return false;
+                }
+            }*/
+        }
+        return true;
+    }
+
     private static void handleGsonConfig(AnnotationMirror am, ProcessorPrinter pp) {
         Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
@@ -117,67 +161,75 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         }
     }
 
-    public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
-                                            TypeElement te, CodeGenerator cg) {
-        return false;
-    }
+    /*private*/ static boolean parseImplMethodName(Types types, ProcessorPrinter pp, AnnotationMirror am, ImplInfo.MethodInfo info) {
+        Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
+        pp.note(TAG, "parseImplMethodName", "am.getElementValues() = map . is " + map);
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
+            ExecutableElement key = en.getKey();
 
-    //process @Fields
-    public static boolean processAnnotation(Elements mElements, Types mTypes, ProcessorPrinter pp,
-                                            List<? extends AnnotationMirror> annoMirrors, CodeGenerator cg) {
-        final List<FieldData> mFieldDatas = cg.getFieldDatas();
-
-        final String methodName = "processAnnotation";
-        //@Fields
-        for (AnnotationMirror am : annoMirrors) {
-            //if not my want. ignore
-            if (!isValidAnnotation(am, pp)) {
-                continue;
-            }
-            TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
-            pp.note(TAG, "processAnnotation", "anno qName = " + e1.getQualifiedName().toString());
-            //TODO handle implClass and ImplMethod.   if(e1.getQualifiedName().equals(Field))
-
-            Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
-            pp.note(TAG, methodName, "am.getElementValues() = map . is " + map);
-            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
-                ExecutableElement key = en.getKey();
-                pp.note(TAG, methodName, "key: " + key);//the method of annotation
-
-                switch (key.getSimpleName().toString()) {
-                    case KEY_FIELDS_ANNO: {
-                        //get all @Field(...)
-                        AnnotationValue value = en.getValue();
-                        Object target = value.getValue();
-                        if (target == null || !(target instanceof List)) {
-                            pp.error(TAG, methodName, "@Fields's value() must be a list.");
-                            return false;
-                        }
-                        List list = (List) target;
-                        if (list.isEmpty()) {
-                            pp.error(TAG, methodName, "@Fields's value() must have value list.");
-                            return false;
-                        }
-                        Object obj = list.get(0);
-                        if (!(obj instanceof AnnotationMirror)) {
-                            pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
-                            return false;
-                        }
-                        if (!iterateField(mElements, mTypes,
-                                (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
-                            return false;
-                        }
-                    }
+            switch (key.getSimpleName().toString()){
+                case KEY_VALUE:
+                    info.setImplMethodName(en.getValue().getValue().toString());
                     break;
 
-                    case KEY_ENABLE_CHAIN:
-                        cg.setEnableChain((Boolean) en.getValue().getValue());
-                        break;
+                case KEY_FROM:
+                    TypeMirror tm = (TypeMirror) en.getValue().getValue();
+                    if(!verifyClassName(tm, pp)){
+                        return false;
+                    }
+                    //must be
+                    if(tm.getKind() != TypeKind.DECLARED){
+                        return false;
+                    }
+                    info.setImplClass(new FieldData.TypeCompat(types, tm));
+                    break;
+            }
+        }
+        return true;
+    }
 
-                    case KEY_MAX_POOL_COUNT:
-                        cg.setMaxPoolCount(Integer.parseInt(en.getValue().getValue().toString()));
-                        break;
+    private static boolean parseFieldsNormal(Elements mElements, Types mTypes, ProcessorPrinter pp, CodeGenerator cg,
+                                             List<FieldData> mFieldDatas, AnnotationMirror am) {
+        String methodName = "parseFieldsNormal";
+        Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
+        pp.note(TAG, methodName, "am.getElementValues() = map . is " + map);
+        for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
+            ExecutableElement key = en.getKey();
+            pp.note(TAG, methodName, "key: " + key);//the method of annotation
+
+            switch (key.getSimpleName().toString()) {
+                case KEY_FIELDS_ANNO: {
+                    //get all @Field(...)
+                    AnnotationValue value = en.getValue();
+                    Object target = value.getValue();
+                    if (target == null || !(target instanceof List)) {
+                        pp.error(TAG, methodName, "@Fields's value() must be a list.");
+                        return false;
+                    }
+                    List list = (List) target;
+                    if (list.isEmpty()) {
+                        pp.error(TAG, methodName, "@Fields's value() must have value list.");
+                        return false;
+                    }
+                    Object obj = list.get(0);
+                    if (!(obj instanceof AnnotationMirror)) {
+                        pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
+                        return false;
+                    }
+                    if (!iterateField(mElements, mTypes,
+                            (List<? extends AnnotationMirror>) list, pp, mFieldDatas)) {
+                        return false;
+                    }
                 }
+                break;
+
+                case KEY_ENABLE_CHAIN:
+                    cg.setEnableChain((Boolean) en.getValue().getValue());
+                    break;
+
+                case KEY_MAX_POOL_COUNT:
+                    cg.setMaxPoolCount(Integer.parseInt(en.getValue().getValue().toString()));
+                    break;
             }
         }
         return true;
@@ -238,6 +290,32 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                 }
             }
             datas.add(data);
+        }
+        return true;
+    }
+
+    static boolean verifyClassName(TypeMirror tm, ProcessorPrinter pp) {
+        final String fullName = tm.toString();
+        if (fullName.startsWith("java.")) {
+            pp.error(TAG, "verifyClassName", "can't use any class of 'java.**'");
+            return false;
+        }
+        if (fullName.startsWith("android.")) {
+            pp.error(TAG, "verifyClassName", "can't use any class of 'android.**'");
+            return false;
+        }
+        switch (fullName) {
+            case NAME_int:
+            case NAME_long:
+            case NAME_short:
+            case NAME_byte:
+            case NAME_boolean:
+            case NAME_float:
+            case NAME_double:
+            case NAME_char:
+            case NAME_void:
+                pp.error(TAG, "verifyClassName", "can't use any primitive class");
+                return false;
         }
         return true;
     }

@@ -344,7 +344,7 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
         final TypeMirror tm = typeCompat.getTypeMirror();
         final String prop = fieldData.getPropertyName();
         final TypeName typeName = isReplaced ? typeCompat.getSuperClassTypeName() : TypeName.get(tm);
-        final TypeName typeName_raw = typeCompat.getInterfaceTypeName();
+        final TypeName typeName_raw = typeCompat.getTypeName();
 
         final ClassName cn_dm_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_DM_DELEGATE);
         final ClassName cn_parcel_delegate = ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_PARCEL_DELEGATE);

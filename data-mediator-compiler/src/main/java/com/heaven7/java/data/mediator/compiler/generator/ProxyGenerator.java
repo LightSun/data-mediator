@@ -25,8 +25,8 @@ public class ProxyGenerator {
     private static final String TAG = ProxyGenerator.class.getSimpleName();
 
     //allFields include supers'
-    public static boolean generateProxy(TargetClassInfo info, Set<FieldData> allFields, boolean normalJavaBean ,
-                                        List<MethodSpec.Builder> superMethods,
+    public static boolean generateProxy(TargetClassInfo info, Set<FieldData> allFields, List<ImplInfo> implInfoList,
+                                        boolean normalJavaBean , List<MethodSpec.Builder> superMethods,
                                         Filer filer, ProcessorPrinter pp) {
         //String interfaceName  = "IStudent";
        // String pkg  = "com.heaven7.java.data.mediator.compiler.test";
@@ -59,8 +59,13 @@ public class ProxyGenerator {
                 typeBuilder.addMethod(builder.build());
             }
         }
+        //handle @ImplMethod
+        for(ImplInfo implInfo : implInfoList){
+            implInfo.addImplMethods(cn_inter, typeBuilder);
+        }
+
         //addToString
-        /**
+        /*
          @Override
         public String toString() {
         return _getTarget().toString();

@@ -93,6 +93,7 @@ public final class DataMediatorConstants {
     public static final String NAME_float    = "float";
     public static final String NAME_double   = "double";
     public static final String NAME_char     = "char";
+    public static final String NAME_void     = "void";
 
     public static final String NAME_INTEGER    = "java.lang.Integer";
     public static final String NAME_LONG       = "java.lang.Long";

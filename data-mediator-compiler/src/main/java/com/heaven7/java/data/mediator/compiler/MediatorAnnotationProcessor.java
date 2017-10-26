@@ -29,7 +29,7 @@ import static javax.lang.model.element.Modifier.STATIC;
         "com.heaven7.java.data.mediator.GlobalConfig"
 })                       //可以用"*"表示支持所有Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-public class MediatorAnnotationProcessor extends AbstractProcessor {
+public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider{
 
     private static final String TAG = "MediatorAnnotationProcessor";
     private Filer mFiler;           //文件相关工具类
@@ -115,10 +115,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
             }
         }
         //========== end GlobalConfig ===================
-        //Set<? extends Element> implClasses = roundEnv.getElementsAnnotatedWith(ImplClass.class);
-        //Set<? extends Element> implMethods = roundEnv.getElementsAnnotatedWith(ImplMethod.class);
-
-        //fields
+        final ImplInfoDelegate implInfoDelegate = new ImplInfoDelegate(mTypeUtils, mPrinter);
+        //@fields and @ImplXXX
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Fields.class);
         for (Element element : elements) {
             note(":process" ,"@Fields >>> element = " + element);
@@ -126,11 +124,17 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
                 return true;
             }
             CodeGenerator generator = getProxyClass(element);
+            //@Fields
             if(!ElementHelper.processAnnotation(mElementUtils, mTypeUtils, mPrinter,
-                    element.getAnnotationMirrors(), generator)){
+                    (TypeElement) element, generator)){
+                return true;
+            }
+            //@ImplClass and @ImplMethods.
+            if(!implInfoDelegate.parseImplInfo((TypeElement) element, generator)){
                 return true;
             }
         }
+
         //generate SharedProperties_N
         final Set<FieldData> fields = new HashSet<>();
         for (CodeGenerator generator : mProxyClassMap.values()) {
@@ -151,9 +155,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         return false;
     }
 
-    /**
-     * 生成或获取注解元素所对应的ProxyClass类
-     */
     private CodeGenerator getProxyClass(Element element) {
         //被注解的变量所在的类
         TypeElement classElement = (TypeElement) element;
@@ -213,34 +214,8 @@ public class MediatorAnnotationProcessor extends AbstractProcessor {
         return isValid;
     }
 
-    /**
-     * @replaced by {@linkplain MultiModuleSuperFieldDelegate}
-     */
-    @Deprecated
-    private final ISuperFieldDelegate mSuperDelegate = new ISuperFieldDelegate() {
-        @Override
-        public Set<FieldData> getDependFields(TypeElement te) {
-            Set<FieldData> list = new HashSet<>();
-
-            boolean hasDepend = false;
-            List<? extends AnnotationMirror> mirrors = te.getAnnotationMirrors();
-            for(AnnotationMirror am : mirrors){
-                DeclaredType type = am.getAnnotationType();
-                if(type.toString().equals(Fields.class.getName())){
-                    hasDepend = true;
-                    break;
-                }
-            }
-            if(hasDepend){
-                list.addAll(getProxyClass(te).getFieldDatas());
-            }
-            //a depend b, b depend c ,,, etc.
-            List<? extends TypeMirror> superInterfaces = te.getInterfaces();
-            for(TypeMirror tm : superInterfaces){
-                final TypeElement newTe = (TypeElement) ((DeclaredType) tm).asElement();
-                list.addAll(getDependFields(newTe)); //recursion
-            }
-            return list;
-        }
-    };
+    @Override
+    public CodeGenerator getCodeGenerator(Element element) {
+        return getProxyClass(element);
+    }
 }

@@ -115,7 +115,7 @@ public class PoetTest {
             String nameForMethod = Util.getPropNameForMethod(field);
             final String getMethodName = GET_PREFIX + nameForMethod;
             typeBuilder.addMethod(MethodSpec.methodBuilder(getMethodName)
-                    .returns(field.getTypeCompat().getInterfaceTypeName())
+                    .returns(field.getTypeCompat().getTypeName())
                     .addModifiers(Modifier.PUBLIC)
                     .addStatement("return getTarget().$N()", getMethodName)
                     .build());
@@ -125,9 +125,9 @@ public class PoetTest {
             typeBuilder.addMethod(MethodSpec.methodBuilder(setMethodName)
                     .addModifiers(Modifier.PUBLIC)
                     .returns(TypeName.VOID)
-                    .addParameter(field.getTypeCompat().getInterfaceTypeName(), paramName)
+                    .addParameter(field.getTypeCompat().getTypeName(), paramName)
                     .addStatement("$T target = getTarget()", cn_inter)
-                    .addStatement("$T oldValue = getTarget().$N()", field.getTypeCompat().getInterfaceTypeName(), getMethodName)
+                    .addStatement("$T oldValue = getTarget().$N()", field.getTypeCompat().getTypeName(), getMethodName)
                     .beginControlFlow("if(getEqualsComparator().isEquals(oldValue, $N))", paramName)
                           .addStatement("return")
                     .endControlFlow()
@@ -255,7 +255,7 @@ public class PoetTest {
             super(types, tm);
         }
         @Override
-        public TypeName getInterfaceTypeName() {
+        public TypeName getTypeName() {
             return ClassName.get("java.lang", "String");
         }
     }

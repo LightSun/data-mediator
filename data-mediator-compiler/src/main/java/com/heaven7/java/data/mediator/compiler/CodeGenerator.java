@@ -39,15 +39,20 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
     private final TargetClassInfo mClassInfo = new TargetClassInfo();
     private int mMaxPoolCount; //max pool size
+    /** current impl info
+     * @since 1.3.0
+     * */
+    private ImplInfo mImplInfo; //@ImplClass .@ImplMethod
+    /**
+     * super impl infos
+     * @since 1.3.0
+     */
+    private List<ImplInfo> mSuperImplInfos;
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
         this.mElement = classElement;
         this.mElements = mElementUtils;
-    }
-
-    public void addFieldData(FieldData data) {
-        mFields.add(data);
     }
 
     public void setEnableChain(boolean mEnableChain) {
@@ -59,6 +64,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
     public void setMaxPoolCount(int maxPoolCount) {
         this.mMaxPoolCount = maxPoolCount;
+    }
+    /** @since 1.3.0 */
+    public void setCurrentImplInfo(ImplInfo cur_info) {
+        this.mImplInfo = cur_info;
+    }
+
+    /** @since 1.3.0 */
+    public void setSuperImplInfos(List<ImplInfo> superImplInfos) {
+        this.mSuperImplInfos = superImplInfos;
     }
     /**
      * generate interface, impl and proxy .java files.
@@ -118,19 +132,15 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         implBuilder.addSuperinterface(selfParamType);
 
         if(interfaces != null){
-            mPrinter.note(TAG, log_method, "implBuilder >>> start impl = " +
-                      packageName + "." + className , " super interface = " + interfaces);
+  /*          mPrinter.note(TAG, log_method, "implBuilder >>> start impl = " +
+                      packageName + "." + className , " super interface = " + interfaces);*/
             for(TypeMirror tm : interfaces){
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
-                implBuilder.addSuperinterface(tc.getInterfaceTypeName());
+                implBuilder.addSuperinterface(tc.getTypeName());
                 tc.replaceIfNeed(mElements, mPrinter);
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
-
-                mPrinter.note(TAG, log_method, "tm = " + tc.toString(),
-                        "curInterface = " + packageName + "."+ interfaceName,
-                        "super classType = " + superclassType);
 
                 if(superclassType != null){
                     if(usedSuperClass){
@@ -225,6 +235,11 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         sClassBuilder.build(implBuilder, mFields, superFields,
                 normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
 
+        //implements all methods of  @ImplMethods
+        if(mImplInfo != null && mImplInfo.isValid()){
+            mImplInfo.addImplMethods(selfParamType, implBuilder);
+            mSuperImplInfos.add(mImplInfo);
+        }
         // hashCode and equals.
         HashEqualsGenerator.generateForImpl(implBuilder, mFields, superFields, mClassInfo, usedSuperClass);
 
@@ -248,8 +263,10 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
             if(hasSelectable){
                 superFields.add(FD_SELECTABLE);
             }
+
             //do generate proxy
-            if(!ProxyGenerator.generateProxy(mClassInfo, superFields, normalJavaBean ,builders, filer, mPrinter)){
+            if(!ProxyGenerator.generateProxy(mClassInfo, superFields, mSuperImplInfos,
+                    normalJavaBean ,builders, filer, mPrinter)){
                 return false;
             }
         } catch (IOException e) {
@@ -269,6 +286,5 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         }
         overrideMethodsForImpl(implBuilder, list);
     }
-
 
 }

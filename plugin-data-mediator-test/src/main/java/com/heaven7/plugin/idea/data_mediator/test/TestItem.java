@@ -15,7 +15,7 @@ import java.util.List;
         @Field(propName = "testItem_5", type = int.class),
         @Field(propName = "testItem_6", type = TestParcelableData.class),
 })
-//@ImplClass(Student.class)
+@ImplClass(Student.class)
 public interface TestItem extends FlowItem{
 
     Property PROP_testItem_1 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "testItem_1", 0);
@@ -50,4 +50,9 @@ public interface TestItem extends FlowItem{
     TestParcelableData getTestItem_6();
 
     TestItem setTestItem_6(TestParcelableData testItem_61);
+
+    @ImplMethod()
+    void test();
+    @ImplMethod("test2")
+    void _test2();
 }

@@ -81,7 +81,7 @@ public final class Util {
             return;
         }
         final FieldData.TypeCompat typeCompat = field.getTypeCompat();
-        TypeName rawTypeName = typeCompat.getInterfaceTypeName();
+        TypeName rawTypeName = typeCompat.getTypeName();
         info.setSimpleTypeName(rawTypeName);
         info.setParamName(field.getPropertyName() + "1");
 

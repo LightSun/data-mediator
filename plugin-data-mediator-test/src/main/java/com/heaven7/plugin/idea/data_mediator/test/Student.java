@@ -10,4 +10,11 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static void test(TestItem item){
+
+    }
+    public static void test2(TestItem item){
+
+    }
 }
