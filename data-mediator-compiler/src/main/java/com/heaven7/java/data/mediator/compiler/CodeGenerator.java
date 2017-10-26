@@ -110,7 +110,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
-        /**
+        /*
          * for impl class:
          step1: generate all field and method(need body).
          step2: class/interface
@@ -132,8 +132,6 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         implBuilder.addSuperinterface(selfParamType);
 
         if(interfaces != null){
-  /*          mPrinter.note(TAG, log_method, "implBuilder >>> start impl = " +
-                      packageName + "." + className , " super interface = " + interfaces);*/
             for(TypeMirror tm : interfaces){
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);

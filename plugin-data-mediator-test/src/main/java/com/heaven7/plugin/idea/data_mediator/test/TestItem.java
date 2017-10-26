@@ -1,7 +1,5 @@
 package com.heaven7.plugin.idea.data_mediator.test;
 
-
-import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.*;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
 

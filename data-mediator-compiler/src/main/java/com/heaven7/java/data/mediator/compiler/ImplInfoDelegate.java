@@ -8,7 +8,6 @@ import com.squareup.javapoet.TypeName;
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,14 +72,16 @@ public class ImplInfoDelegate {
                 break;
             }
         }
+        ImplInfo info = new ImplInfo();
         if (am_impl != null) {
-            ImplInfo info = new ImplInfo();
             if(!parseImplClass(types, pp, am_impl, info)){
                 return false;
             }
-            //handle @ImplMethod.
-            List<? extends Element> elements = ElementFilter.methodsIn(te.getEnclosedElements());
-            parseImplMethods(types, pp, elements, info);
+        }
+        //handle @ImplMethod. note: may only have @ImplMethod.
+        List<? extends Element> elements = ElementFilter.methodsIn(te.getEnclosedElements());
+        parseImplMethods(types, pp, elements, info);
+        if(info.isValid()) {
             out[0] = info;
         }
         return true;
@@ -158,6 +159,11 @@ public class ImplInfoDelegate {
                     return false;
                 }
                 if(methodInfo.getImplClass() == null){
+                    if(info.getImplClass() == null){
+                        pp.note(TAG, "parseImplMethods", "you must " +
+                                "assign impl class by @ImplClass or @ImplMethod(from=xxx.class)");
+                        return false;
+                    }
                     methodInfo.setImplClass(info.getImplClass());
                 }
 

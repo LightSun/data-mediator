@@ -2,6 +2,7 @@ package com.heaven7.plugin.idea.data_mediator.test;
 
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ImplClass;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
 
@@ -11,6 +12,7 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 @Fields({
         @Field(propName = "testItem100", type = FlowItem.class)
 })
+@ImplClass(Student.class)
 public interface TestItem100 extends TestItem{
 
     Property PROP_testItem100 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.FlowItem", "testItem100", 0);
