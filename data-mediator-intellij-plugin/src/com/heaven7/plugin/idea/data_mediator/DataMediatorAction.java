@@ -25,6 +25,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 
+import java.util.List;
+
 public class DataMediatorAction extends AnAction {
 
     private static final String NAME_FIELDS = "com.heaven7.java.data.mediator.Fields";
@@ -45,22 +47,57 @@ public class DataMediatorAction extends AnAction {
        // final PsiElement parent = psiClass.getParent();
        // Util.logError("parent == " + parent.getClass().getName());
 
+        final PropertyGenerator pmGenerator = new PropertyGenerator(psiClass);
+
+        //parse current
+        if (!parseProperties(project, psiClass, pmGenerator, pmGenerator.getProperties())) {
+            return;
+        }
+        if(pmGenerator.isEnableChain()){
+            //parse super and sub fields.
+            parseSuperProperties(project, psiClass, pmGenerator);
+        }
+        generateDataMediator(psiClass, pmGenerator);
+        //change subclass's generate methods  when chainc all enabled and super property changed.
+        //but we don't manual change all sub PsiClass. Note this.
+    }
+
+    private void parseSuperProperties(Project project, PsiClass psiClass, PropertyGenerator pmGenerator) {
+        PsiClassType[] listTypes = psiClass.getExtendsListTypes();
+        for(PsiClassType type : listTypes){
+            PsiClass superPsiClass = type.resolve();
+            parseProperties(project, superPsiClass, null, pmGenerator.getSuperProperties());
+            //parse super recursively
+            parseSuperProperties(project, superPsiClass, pmGenerator);
+        }
+    }
+
+    /**
+     * parse properties of @Fields.
+     * @param project the project
+     * @param psiClass the psi class. must be interface in 'data-mediator'
+     * @param pg the property generator , can be null when parse super.
+     * @param props the out properties
+     * @return true if parse success. false otherwise
+     */
+    private boolean parseProperties(Project project, PsiClass psiClass, PropertyGenerator pg,List<Property> props) {
         PsiModifierList list = psiClass.getModifierList();
         if(list == null){
-            return;
+            return false;
         }
 
         PsiAnnotation annotation = list.findAnnotation(NAME_FIELDS);
         if(annotation == null){
-            return;
+            return false;
         }
         PsiAnnotationMemberValue pam_chain = annotation.findAttributeValue("enableChain");
-        final PropertyGenerator pmGenerator = new PropertyGenerator(
-                psiClass, Util.getBooleanValue(pam_chain));
+        if(pg != null) {
+            pg.setEnableChainCall(Util.getBooleanValue(pam_chain));
+        }
 
         PsiAnnotationMemberValue value = annotation.findAttributeValue("value");
         if(value == null){
-            return;
+            return false;
         }
         PsiConstantEvaluationHelper evaluationHelper = JavaPsiFacade.getInstance(project)
                 .getConstantEvaluationHelper();
@@ -72,7 +109,7 @@ public class DataMediatorAction extends AnAction {
                 PsiAnnotationMemberValue propName = expect.findAttributeValue("propName");
               //  String pName = propName.getText();
                 String pName = (String) evaluationHelper.computeConstantExpression(propName);
-                Util.log("propName = " + pName);
+               // Util.log("propName = " + pName);
 
                 String expectType;
                 PsiAnnotationMemberValue typeVal = expect.findAttributeValue("type");
@@ -98,10 +135,10 @@ public class DataMediatorAction extends AnAction {
                 }
                 PsiAnnotationMemberValue complexType = expect.findAttributeValue("complexType");
                 int val = (Integer) evaluationHelper.computeConstantExpression(complexType);
-                pmGenerator.addProperty(new Property(expectType, pName, val));
+                props.add(new Property(expectType, pName, val));
             }
         }
-        generateDataMediator(psiClass, pmGenerator);
+        return true;
     }
 
     private void logAnnoValue(PsiAnnotationMemberValue complexType) {

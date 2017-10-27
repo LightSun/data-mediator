@@ -7,6 +7,10 @@ allScope(project);
                                  .findClass("java.util.List",
                                  GlobalSearchScope.allScope(project));
 
+PsiJavaFile javaFile = (PsiJavaFile) mPsiClass.getContainingFile();
+        PsiPackage pkg = JavaPsiFacade.getInstance(mPsiClass.getProject())
+                .findPackage(javaFile.getPackageName());
+
 http://blog.csdn.net/hawkdowen/article/details/41213001
 
 //无法配置插件config时

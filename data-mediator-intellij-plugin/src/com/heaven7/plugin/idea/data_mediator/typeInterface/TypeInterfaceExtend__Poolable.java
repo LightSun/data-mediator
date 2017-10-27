@@ -20,6 +20,7 @@ public class TypeInterfaceExtend__Poolable implements ITypeInterfaceExtend {
 
     @Override
     public void makeInterfaceExtend(PsiClass mClass, PsiElementFactory elementFactory, JavaCodeStyleManager styleManager) {
+        // get extend interfaces.
         final PsiClassType[] implementsListTypes = mClass.getExtendsListTypes();
         final String implementsType = "com.heaven7.java.data.mediator.DataPools.Poolable";
 
