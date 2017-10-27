@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="data-mediator-intellij-plugin">
+    <output-path>$PROJECT_DIR$/out/artifacts/data_mediator_intellij_plugin</output-path>
+    <root id="archive" name="data-mediator-intellij-plugin.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+      <element id="module-output" name="data-mediator-intellij-plugin" />
+    </root>
+  </artifact>
+</component>

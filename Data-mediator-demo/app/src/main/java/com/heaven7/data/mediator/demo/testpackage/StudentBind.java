@@ -5,6 +5,7 @@ import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.IDataMediator;
+import com.heaven7.java.data.mediator.Keep;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
@@ -39,6 +40,10 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
         ),
 }, maxPoolCount = 10)
 public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poolable {
+
+        @Keep
+        Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
+
         Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
         Property PROP_test_object = SharedProperties.get("java.lang.Object", "test_object", 0);
         Property PROP_test_Format = SharedProperties.get("java.lang.Double", "test_Format", 0);
@@ -46,29 +51,30 @@ public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poola
         Property PROP_test_list = SharedProperties.get("long", "test_list", 2);
         Property PROP_test_array = SharedProperties.get("java.lang.String", "test_array", 1);
 
-        String getName();
-
         StudentBind setName(String name1);
 
-        Object getTest_object();
+        String getName();
 
         StudentBind setTest_object(Object test_object1);
 
-        Double getTest_Format();
+        Object getTest_object();
 
         StudentBind setTest_Format(Double test_Format1);
 
-        int getTest_int();
+        Double getTest_Format();
 
         StudentBind setTest_int(int test_int1);
 
-        List<Long> getTest_list();
+        int getTest_int();
 
         StudentBind setTest_list(List<Long> test_list1);
 
+        List<Long> getTest_list();
+
         ListPropertyEditor<? extends StudentBind, Long> beginTest_listEditor();
 
-        String[] getTest_array();
-
         StudentBind setTest_array(String[] test_array1);
+
+        String[] getTest_array();/*
+================== start super methods =============== */
 }

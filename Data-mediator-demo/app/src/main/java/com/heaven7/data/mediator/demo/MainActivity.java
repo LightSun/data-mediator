@@ -17,7 +17,8 @@ import com.heaven7.java.data.mediator.GsonConfig;
 
 import java.util.List;
 
-import heaven7.test_compiler.TestItemModule;
+import heaven7.test_compiler.TestItem;
+
 
 /**
  * Created by heaven7 on 2017/7/12 0012.
@@ -36,7 +37,7 @@ public class MainActivity extends AbsMainActivity {
     @Override
     protected void addDemos(List<ActivityInfo> list) {
         //just for test multi module
-        DataMediatorFactory.createDataMediator(TestItemModule.class)
+        DataMediatorFactory.createDataMediator(TestItem.class)
                 .getDataProxy()
                 .setTestItem_test("sdfsfsf");
 

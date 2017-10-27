@@ -21,28 +21,30 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
         @Field(propName = "cityData2", type = Student.class, complexType = FieldFlags.COMPLEX_SPARSE_ARRAY),
 }, maxPoolCount = 100)
 public interface TestBind extends Parcelable, DataPools.Poolable {
+
     Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
     Property PROP_data = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "data", 0);
     Property PROP_cityData = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "cityData", 3);
     Property PROP_cityData2 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.Student", "cityData2", 3);
 
-    String getName();
-
     TestBind setName(String name1);
 
-    ResultData getData();
+    String getName();
 
     TestBind setData(ResultData data1);
 
-    SparseArray<ResultData> getCityData();
+    ResultData getData();
 
     TestBind setCityData(SparseArray<ResultData> cityData1);
 
-    SparseArrayPropertyEditor<? extends TestBind, ResultData> beginCityDataEditor();
+    SparseArray<ResultData> getCityData();
 
-    SparseArray<Student> getCityData2();
+    SparseArrayPropertyEditor<? extends TestBind, ResultData> beginCityDataEditor();
 
     TestBind setCityData2(SparseArray<Student> cityData21);
 
-    SparseArrayPropertyEditor<? extends TestBind, Student> beginCityData2Editor();
+    SparseArray<Student> getCityData2();
+
+    SparseArrayPropertyEditor<? extends TestBind, Student> beginCityData2Editor();/*
+================== start super methods =============== */
 }

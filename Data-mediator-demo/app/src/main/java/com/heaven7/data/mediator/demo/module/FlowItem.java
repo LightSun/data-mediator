@@ -6,6 +6,7 @@ import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.Keep;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
 
@@ -23,6 +24,8 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_NO_EXPOSE;
         @Field(propName = "desc" , flags = FLAGS_MAIN_SCOPES_2 | FLAGS_NO_EXPOSE),
 })
 public interface FlowItem extends Parcelable, ISelectable, DataPools.Poolable {
+    @Keep
+    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
     Property PROP_id = SharedProperties.get("int", "id", 0);
     Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
     Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 0);

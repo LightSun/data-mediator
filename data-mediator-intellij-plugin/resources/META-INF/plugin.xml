@@ -14,7 +14,7 @@
       4, auto impl Serializable and parcelable. or others.<br>
       5, full support for Google/Gson.<br>
       6, support data-bind for android platform.<br>
-      7, support self method. (doing).<br>
+      7, support self method. <br>
       8. ...... the more to see in github. <br>
       Plugin which generates Data-mediator code for you.
     ]]></description>

@@ -107,15 +107,15 @@ public class PropertyGenerator {
     private void generateProperties(PsiElementFactory elementFactory, List<Property> props,
                                     List<PsiMethod> methods, List<PsiField> fields, boolean fromSuper) {
         for (Property prop : props) {
-            //property cons , like : PROP_student
-            fields.add(createConstantField(mPsiClass, elementFactory, prop));
-
             //get and set.
             String name = Util.getPropNameForMethod(prop.getName());
             //TODO wait intellij response for 'interface override interface method'
             String setMethod = generateSet(name, prop, false);
             methods.add(elementFactory.createMethodFromText(setMethod, mPsiClass));
             if(!fromSuper){
+                //property cons , like : PROP_student
+                fields.add(createConstantField(mPsiClass, elementFactory, prop));
+                //set method
                 String getMethod = generateGet(name, prop);
                 methods.add(elementFactory.createMethodFromText(getMethod, mPsiClass));
             }

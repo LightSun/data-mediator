@@ -9,11 +9,10 @@ import android.view.View;
 import com.heaven7.adapter.QuickRecycleViewAdapter;
 import com.heaven7.core.util.ViewHelper;
 import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.analysis.AnalysisDataModule;
+import com.heaven7.data.mediator.demo.analysis.AnalysisData;
 import com.heaven7.data.mediator.demo.analysis.AnalysisManager;
-import com.heaven7.data.mediator.demo.module.FlowItemModule;
+import com.heaven7.data.mediator.demo.module.FlowItem;
 import com.heaven7.java.data.mediator.ActionMode;
-import com.heaven7.java.data.mediator.DataConsumer;
 
 import java.util.ArrayList;
 
@@ -39,11 +38,11 @@ public class TestListFragment extends BaseFragment {
     protected void onInit(Context context, Bundle savedInstanceState) {
         mRv.setLayoutManager(new LinearLayoutManager(context));
 
-        final ArrayList<FlowItemModule>  datas = getArguments().getParcelableArrayList(KEY_LIST);
-        mRv.setAdapter(new QuickRecycleViewAdapter<FlowItemModule>(
+        final ArrayList<FlowItem>  datas = getArguments().getParcelableArrayList(KEY_LIST);
+        mRv.setAdapter(new QuickRecycleViewAdapter<FlowItem>(
           R.layout.item_simple1,   datas ) {
             @Override
-            protected void onBindData(Context context, final int position, final FlowItemModule item,
+            protected void onBindData(Context context, final int position, final FlowItem item,
                                       int itemLayoutId, ViewHelper helper) {
                 helper.setText(R.id.tv_title, item.getName())
                         .setText(R.id.tv_desc, item.getDesc())
@@ -57,11 +56,11 @@ public class TestListFragment extends BaseFragment {
         });
     }
 
-    private void doWithAnalyse(final FlowItemModule item, final int position) {
+    private void doWithAnalyse(final FlowItem item, final int position) {
         AnalysisManager.getInstance()
-                .getDataMediator().startActionMode(new ActionMode.Callback<AnalysisDataModule>() {
+                .getDataMediator().startActionMode(new ActionMode.Callback<AnalysisData>() {
             @Override
-            public void onPrepareActionMode(ActionMode<AnalysisDataModule> mode) {
+            public void onPrepareActionMode(ActionMode<AnalysisData> mode) {
                  mode.getData().setOccurTime(System.currentTimeMillis())
                          .setEventType("click")
                          .setItem(item)
