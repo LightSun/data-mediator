@@ -24,6 +24,35 @@ import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
     }
 
     @Override
+    protected MethodSpec.Builder onBuildSuperListEditor(FieldData field, String nameForMethod,
+                                                        TypeInfo info, TypeName curModule) {
+           /*
+         public ListPropertyEditor<? extends TestItem, String> beginDescEditor() {
+         return (ListPropertyEditor<? extends TestItem, String>) super.beginDescEditor();
+         }
+         */
+           //  cn_editor, curModule, info.getSimpleTypeNameBoxed(), field.getPropertyName())
+        String methodName = BEGIN_PREFIX + nameForMethod + EDITOR_SUFFIX;
+        ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_LIST_PROP_EDITOR);
+        return PropertyEditorBuildUtils.buildListEditorWithoutModifier(field,
+                      nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return ($T<? extends $T, $T>) super.$N()",
+                        cn_editor, curModule, info.getSimpleTypeNameBoxed(), methodName);
+    }
+    @Override
+    protected MethodSpec.Builder onBuildSuperSparseArrayEditor(FieldData field, String nameForMethod,
+                                                               TypeInfo info, TypeName curModule) {
+        String methodName = BEGIN_PREFIX + nameForMethod + EDITOR_SUFFIX;
+        ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_SPARSE_ARRAY_EDITOR);
+        return PropertyEditorBuildUtils.buildSparseArrayEditorWithoutModifier(field,
+                     nameForMethod, info, curModule)
+                .addModifiers(Modifier.PUBLIC)
+                .addStatement("return ($T<? extends $T, $T>) super.$N()",
+                        cn_editor, curModule, info.getSimpleTypeNameBoxed(), methodName);
+    }
+
+    @Override
     protected MethodSpec.Builder onBuildSparseArrayEditor(FieldData field,
                      String nameForMethod, TypeInfo info, TypeName curModule) {
         ClassName cn_editor = ClassName.get(PKG_PROP, SIMPLE_NAME_SPARSE_ARRAY_EDITOR);

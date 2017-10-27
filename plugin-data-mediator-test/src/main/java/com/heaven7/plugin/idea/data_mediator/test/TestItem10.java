@@ -13,21 +13,6 @@ import java.util.List;
 public interface TestItem10 extends TestItem{
 
     Property PROP_testItem10_1 = SharedProperties.get("java.lang.String", "testItem10_1", 0);
-    Property PROP_testItem_1 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "testItem_1", 0);
-    Property PROP_testItem_2 = SharedProperties.get("java.lang.String", "testItem_2", 0);
-    Property PROP_testItem_3 = SharedProperties.get("java.lang.String", "testItem_3", 2);
-    Property PROP_testItem_4 = SharedProperties.get("boolean", "testItem_4", 0);
-    Property PROP_testItem_5 = SharedProperties.get("int", "testItem_5", 0);
-    Property PROP_testItem_6 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.TestParcelableData", "testItem_6", 0);
-    Property PROP_id = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "id", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 2);
-    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-    Property PROP_xxx1 = SharedProperties.get("int", "xxx1", 0);
-    Property PROP_xxx2 = SharedProperties.get("java.lang.Integer", "xxx2", 0);
-    Property PROP_xxx3 = SharedProperties.get("int", "xxx3", 3);
-    Property PROP_xxx4 = SharedProperties.get("int", "xxx4", 1);
-    Property PROP_xxx5 = SharedProperties.get("java.lang.Integer", "xxx5", 1);
 
     TestItem10 setTestItem10_1(String testItem10_11);
 

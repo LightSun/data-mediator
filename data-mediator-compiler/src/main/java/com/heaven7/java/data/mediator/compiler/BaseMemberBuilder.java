@@ -61,7 +61,8 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
             }
         }
 
-        //change method for super. if use chain mode. chain mode means set method not return void. just return bean interface.
+        // impl for super method , if use chain call mode. chain mode means set method not return void.
+        // just return bean interface.
         if(typeOfReturn != TypeName.VOID && superFields != null){
             for (FieldData field : superFields){
                 String nameForMethod = getPropNameForMethod(field);
@@ -70,11 +71,42 @@ import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
                 getTypeName(field, info);
                 MethodSpec.Builder set = onBuildSuperSet(field, nameForMethod, info, typeOfReturn);
                 builder.addMethod(set.build());
+                //complex type
+                switch (field.getComplexType()){
+                    case FieldData.COMPLEXT_LIST:
+                        MethodSpec.Builder listEditor = onBuildSuperListEditor(field,
+                                nameForMethod, info, curModule);
+                        if(listEditor != null){
+                            builder.addMethod(listEditor.build());
+                        }
+                        break;
+
+                    case FieldData.COMPLEXT_SPARSE_ARRAY:
+                        MethodSpec.Builder saEditor = onBuildSuperSparseArrayEditor(field,
+                                nameForMethod, info, curModule);
+                        if(saEditor != null) {
+                            builder.addMethod(saEditor.build());
+                        }
+                        break;
+
+                    default:
+                        //not need
+                }
             }
         }
         if(constructorBuilder != null){
             builder.addMethod(constructorBuilder.build());
         }
+    }
+
+    protected MethodSpec.Builder onBuildSuperSparseArrayEditor(FieldData field, String nameForMethod,
+                                                             TypeInfo info, TypeName curModule) {
+        return null;
+    }
+
+    protected MethodSpec.Builder onBuildSuperListEditor(FieldData field, String nameForMethod,
+                                                      TypeInfo info, TypeName curModule) {
+        return null;
     }
 
     protected MethodSpec.Builder onBuildSparseArrayEditor(FieldData field, String nameForMethod,
