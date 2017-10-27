@@ -6,7 +6,7 @@ data-mediator
 | android   | ok  | ok |  ok | ok |
 
 
- <img src="res/data_mediator_binder_main.gif" alt="base binder demo" width="340px"/>
+ <img src="res/data-mediator-generator.gif" alt="base binder demo" width="340px"/>
 
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
