@@ -26,4 +26,4 @@ PsiManager.getInstance(psiClass.getProject()).addPsiTreeChangeListener();
  //idea官方文档翻译的不错的
  http://blog.csdn.net/hawkdowen/article/details/41047229
 
-//TODO resolve parent fields for chain call.
+//TODO 自动生成 PROP_selected. 注意parent

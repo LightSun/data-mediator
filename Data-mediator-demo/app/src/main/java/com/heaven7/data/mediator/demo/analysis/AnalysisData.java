@@ -29,6 +29,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_RESET;
         @Field(propName = "net", flags = FLAGS_ALL_SCOPES & ~FLAG_RESET),
 },maxPoolCount = 5)
 public interface AnalysisData extends ICopyable, IResetable, DataPools.Poolable {
+
     Property PROP_occurTime = SharedProperties.get("long", "occurTime", 0);
     Property PROP_enterTime = SharedProperties.get("long", "enterTime", 0);
     Property PROP_exitTime = SharedProperties.get("long", "exitTime", 0);
@@ -39,39 +40,40 @@ public interface AnalysisData extends ICopyable, IResetable, DataPools.Poolable 
     Property PROP_apiVersion = SharedProperties.get("java.lang.String", "apiVersion", 0);
     Property PROP_net = SharedProperties.get("java.lang.String", "net", 0);
 
-    long getOccurTime();
-
     AnalysisData setOccurTime(long occurTime1);
 
-    long getEnterTime();
+    long getOccurTime();
 
     AnalysisData setEnterTime(long enterTime1);
 
-    long getExitTime();
+    long getEnterTime();
 
     AnalysisData setExitTime(long exitTime1);
 
-    String getEventType();
+    long getExitTime();
 
     AnalysisData setEventType(String eventType1);
 
-    int getTabIndex();
+    String getEventType();
 
     AnalysisData setTabIndex(int tabIndex1);
 
-    int getItemIndex();
+    int getTabIndex();
 
     AnalysisData setItemIndex(int itemIndex1);
 
-    FlowItem getItem();
+    int getItemIndex();
 
     AnalysisData setItem(FlowItem item1);
 
-    String getApiVersion();
+    FlowItem getItem();
 
     AnalysisData setApiVersion(String apiVersion1);
 
-    String getNet();
+    String getApiVersion();
 
     AnalysisData setNet(String net1);
+
+    String getNet();/*
+================== start super methods =============== */
 }

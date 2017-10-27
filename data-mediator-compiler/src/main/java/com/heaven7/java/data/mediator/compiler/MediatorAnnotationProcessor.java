@@ -4,18 +4,21 @@ import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.ImplClass;
 import com.heaven7.java.data.mediator.ImplMethod;
-import com.heaven7.java.data.mediator.compiler.generator.SharedPropertiesNGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.*;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
@@ -136,14 +139,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
         }
 
         //generate SharedProperties_N
-        final Set<FieldData> fields = new HashSet<>();
+       /* final Set<FieldData> fields = new HashSet<>();
         for (CodeGenerator generator : mProxyClassMap.values()) {
             fields.addAll(generator.getFieldDatas());
         }
         if(!SharedPropertiesNGenerator.generateSharedProperties(
                 fields, mElementUtils, mFiler, mPrinter)){
             return true;
-        }
+        }*/
 
        //generate module interface / impl /proxy (interface removed)
        for (CodeGenerator generator : mProxyClassMap.values()) {

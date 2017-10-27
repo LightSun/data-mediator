@@ -20,8 +20,11 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMP
 
 /**
  * SharedProperties1, SharedProperties2...SharedProperties2N
+ * as generate SharedProperties_N have a bug in main/test module on java platform.
+ * it's deprecated.
  * Created by heaven7 on 2017/9/14 0014.
  */
+@Deprecated
 public class SharedPropertiesNGenerator {
 
     private static final String TAG  =  "SharedPropertiesNGenerator";
