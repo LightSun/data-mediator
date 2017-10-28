@@ -23,7 +23,8 @@ a data-mediator framework which can hele us do much work. <br>
 * 10, support depend or extend other data model.
 
 
-# Install
+# Install 
+ * first , install the plugin of 'data-mediator-intellij-plugin', see it in release.
  * java platform(for java/j2ee).
     * 1, gradle.
     ```java
