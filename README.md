@@ -143,7 +143,7 @@ public interface Student extends Serializable, Parcelable{
  (you should instanll the plugin , see release).
 
 4, compile project (optional , because it will auto generate when before running.)
- * java: mouse right click pf module. compile/build (module) XXX
+ * java: mouse right click of module. compile/build (module) XXX
  *  android: click the icon of android studio.
    ![make project](res/as_make_project.png)
 
