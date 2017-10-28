@@ -3,6 +3,8 @@ package com.heaven7.plugin.idea.data_mediator.test;
 import com.google.gson.annotations.JsonAdapter;
 import com.heaven7.java.base.util.Objects;
 import com.heaven7.java.base.util.SparseArray;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.SparseArrayPropertyEditor;
 import com.heaven7.java.data.mediator.support.gson.TypeHandler;
 import java.lang.Integer;
 import java.lang.Object;
@@ -74,6 +76,10 @@ public class TestItem100_$Impl extends TestItem_$Impl implements TestItem100, Te
     return (TestItem100)super.setDesc(desc1);
   }
 
+  public ListPropertyEditor<? extends TestItem100, String> beginDescEditor() {
+    return (ListPropertyEditor<? extends TestItem100, String>) super.beginDescEditor();
+  }
+
   public TestItem100 setXxx4(int[] xxx41) {
     return (TestItem100)super.setXxx4(xxx41);
   }
@@ -94,6 +100,10 @@ public class TestItem100_$Impl extends TestItem_$Impl implements TestItem100, Te
     return (TestItem100)super.setTestItem_3(testItem_31);
   }
 
+  public ListPropertyEditor<? extends TestItem100, String> beginTestItem_3Editor() {
+    return (ListPropertyEditor<? extends TestItem100, String>) super.beginTestItem_3Editor();
+  }
+
   public TestItem100 setXxx5(Integer[] xxx51) {
     return (TestItem100)super.setXxx5(xxx51);
   }
@@ -104,6 +114,10 @@ public class TestItem100_$Impl extends TestItem_$Impl implements TestItem100, Te
 
   public TestItem100 setXxx3(SparseArray<Integer> xxx31) {
     return (TestItem100)super.setXxx3(xxx31);
+  }
+
+  public SparseArrayPropertyEditor<? extends TestItem100, Integer> beginXxx3Editor() {
+    return (SparseArrayPropertyEditor<? extends TestItem100, Integer>) super.beginXxx3Editor();
   }
 
   @Override

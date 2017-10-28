@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/data-mediator.iml" filepath="$PROJECT_DIR$/data-mediator.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator_main.iml" group="data-mediator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator_main.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator_main.iml" group="data-mediator" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator_test.iml" group="data-mediator" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-mediator_test.iml" filepath="$PROJECT_DIR$/.idea/modules/data-mediator_test.iml" group="data-mediator" />
     </modules>
   </component>

@@ -6,6 +6,7 @@ import com.google.gson.annotations.Until;
 import com.heaven7.java.base.util.Objects;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.SparseArrayPropertyEditor;
 import com.heaven7.java.data.mediator.support.gson.TypeHandler;
 import java.lang.Integer;
 import java.lang.Object;
@@ -132,6 +133,10 @@ public class TestItem_$Impl extends FlowItem_$Impl implements TestItem, FlowItem
     return (TestItem)super.setDesc(desc1);
   }
 
+  public ListPropertyEditor<? extends TestItem, String> beginDescEditor() {
+    return (ListPropertyEditor<? extends TestItem, String>) super.beginDescEditor();
+  }
+
   public TestItem setXxx4(int[] xxx41) {
     return (TestItem)super.setXxx4(xxx41);
   }
@@ -158,6 +163,10 @@ public class TestItem_$Impl extends FlowItem_$Impl implements TestItem, FlowItem
 
   public TestItem setXxx3(SparseArray<Integer> xxx31) {
     return (TestItem)super.setXxx3(xxx31);
+  }
+
+  public SparseArrayPropertyEditor<? extends TestItem, Integer> beginXxx3Editor() {
+    return (SparseArrayPropertyEditor<? extends TestItem, Integer>) super.beginXxx3Editor();
   }
 
   public void test() {
