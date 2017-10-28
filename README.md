@@ -143,11 +143,11 @@ public interface Student extends Serializable, Parcelable{
  (you should instanll the plugin , see release).
 
 4, compile project (optional , because it will auto generate when before running.)
-  * java: mouse right click pf module. compile/build (module) XXX
-   *  android: click the icon of android studio.
+ * java: mouse right click pf module. compile/build (module) XXX
+ *  android: click the icon of android studio.
    ![make project](res/as_make_project.png)
 
-5, call sample （from data-mediator-demo [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+5, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * listen property change demo
@@ -198,7 +198,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 ```
 * more sample see [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
-# Proguard Config
+# Proguard
 ```java
 -keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
    *;
