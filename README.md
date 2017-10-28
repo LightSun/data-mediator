@@ -341,15 +341,16 @@ public interface FlowItem extends Parcelable{
 public interface Student extends Serializable, Parcelable{
 }
 ```
+3, 使用idea插件生成代码, 快捷键比如 alt + insert. (安装release里面的idea插件).
 
-3, 编译项目生成代码.
-  * java: module/.java文件上上鼠标右键. compile (module) XXX.
-  *  android: 点击android studio 工具栏上的图标
+4, 编译项目生成代码.
+  * java: module上鼠标右键. compile/build (module) XXX
+   *  android: 点击android studio 工具栏上的图标
    ![make project](res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
   * 会自动生成  模型接口, 模型实现以及代理 。
 
-4, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+5, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * 属性改变demo
@@ -423,11 +424,8 @@ public class TestPropertyChangeActivity extends BaseActivity {
 # 1.1.3 新增
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 # 1.2.2新增
--keep class com.heaven7.java.data.mediator.internal.SharedProperties_**
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
 
-//已过时，可直接忽略  
--keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 ```
 
 # refer libs
