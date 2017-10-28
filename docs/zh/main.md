@@ -324,9 +324,9 @@ public interface Student extends Serializable, Parcelable{
 3, 使用idea插件生成代码, 快捷键比如 alt + insert. (安装release里面的idea插件).
 
 4, 编译项目生成代码.
-  * java: module上鼠标右键. compile/build (module) XXX
-   *  android: 点击android studio 工具栏上的图标
-   ![make project](res/as_make_project.png)
+ * java: module上鼠标右键. compile/build (module) XXX
+ * android: 点击android studio 工具栏上的图标
+   ![make project](https://github.com/LightSun/data-mediator/blob/master/res/as_make_project.png)
   即可自动生成代码（数据定义没变化，不会重新生成).
   * 会自动生成  模型接口, 模型实现以及代理 。
 
