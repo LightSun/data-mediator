@@ -14,6 +14,10 @@ import com.heaven7.plugin.idea.data_mediator.test.util.TestUtil;
 @ImplClass(TestUtil.class)
 public interface TestSelfMethod1 extends DataPools.Poolable {
 
+    //define a constant field. add annotation @Keep for not effect by idea-plugin(Data-mediator generator)
+    @Keep
+    int STATE_OK = 1;
+
     Property PROP_test_self1 = SharedProperties.get("java.lang.String", "test_self1", 0);
     Property PROP_test_self2 = SharedProperties.get("int", "test_self2", 0);
 

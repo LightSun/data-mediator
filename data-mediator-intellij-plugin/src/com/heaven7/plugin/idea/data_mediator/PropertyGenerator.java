@@ -87,7 +87,9 @@ import java.util.List;
 
         final PsiMethod anchor = methods.get(methods.size() - 1);
         PsiComment doc = elementFactory.createCommentFromText(
-                "/* \n================== start super methods =============== */", null);
+                "/* \n================== start methods from super properties =============== \n" +
+                        "======================================================================= */",
+                null);
         //generate for super properties
         if (mSuperFields != null && !mSuperFields.isEmpty()) {
             generateProperties(elementFactory, mSuperFields, methods, fields, true);

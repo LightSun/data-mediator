@@ -1,6 +1,6 @@
 <idea-plugin>
   <id>com.heaven7.plugin.idea.data_mediator</id>
-  <name>Data-Mediator-gen</name>
+  <name>Data-Mediator generator</name>
   <version>1.0</version>
   <vendor email="donshine723@gmail.com" url="https://github.com/LightSun/data-mediator">heaven7</vendor>
 

@@ -9,17 +9,17 @@ import com.heaven7.plugin.idea.data_mediator.test.TestSelfMethod1;
 public class TestUtil {
 
     public static int getStudentId(TestSelfMethod1 tsf, Student stu, int key){
-        //do thing.
-        return  0;
-    }
-
-    public static int getStudentId2(TestSelfMethod1 tsf, Student stu,
-                                    int key, String test){
-        //do thing.
+        //do something you want.
         return  0;
     }
 
     public static void parseStudent(TestSelfMethod1 tsf, Student stu, int key){
         //do thing.
+    }
+
+    public static int getStudentId2(TestSelfMethod1 tsf, Student stu,
+                                    int key, String test){
+        //do something you want.
+        return  0;
     }
 }
