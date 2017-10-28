@@ -341,7 +341,7 @@ public interface FlowItem extends Parcelable{
 public interface Student extends Serializable, Parcelable{
 }
 ```
-3, 使用idea插件生成代码. (安装release里面的idea插件).
+3, 使用idea插件生成代码, 快捷键比如 alt + insert. (安装release里面的idea插件).
 
 4, 编译项目生成代码.
   * java: module上鼠标右键. compile/build (module) XXX
