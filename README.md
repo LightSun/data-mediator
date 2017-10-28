@@ -218,7 +218,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 ```
 
-# refer libs
+# Thanks
  - [javapoet](https://github.com/square/javapoet)
  - [Google/Gson](https://github.com/google/gson)
 
