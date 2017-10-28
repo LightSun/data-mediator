@@ -141,5 +141,4 @@
 -keep class com.heaven7.java.data.mediator.BaseMediator
 -keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
--keep class com.heaven7.java.data.mediator.internal.SharedProperties_**
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader

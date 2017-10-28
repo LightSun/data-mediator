@@ -11,6 +11,41 @@ import java.util.List;
 /**
  */
 final public class PsiUtils {
+    private static final String NAME_SELECTABLE = "com.heaven7.adapter.ISelectable";
+
+    /**
+     * find the all extend PsiClass of super's extends.
+     * @param psiClass the current psi class
+     * @return the list of extends PsiClass of super's extends.
+     */
+    static List<PsiClass> getExtendsClasses(PsiClass psiClass){
+        return getExtendsClasses(psiClass, 2, 0);
+    }
+
+    static List<PsiClass> getExtendsClasses(PsiClass psiClass, int lowDepth, int currentDepth){
+        List<PsiClass> list = new ArrayList<>();
+        for(PsiClassType type :  psiClass.getExtendsListTypes()) {
+            PsiClass superPsiClass = type.resolve();
+            if(superPsiClass != null){
+                if(currentDepth + 1 >= lowDepth) {
+                    list.add(superPsiClass);
+                }
+                list.addAll(getExtendsClasses(superPsiClass, lowDepth, currentDepth + 1));
+            }
+        }
+        return list;
+    }
+
+    static boolean hasSelectable(PsiClass psiClass){
+        PsiClassType[] listTypes = psiClass.getExtendsListTypes();
+        for(PsiClassType type : listTypes){
+            PsiClass superPsiClass = type.resolve();
+            if (superPsiClass != null && NAME_SELECTABLE.equals(superPsiClass.getQualifiedName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Checks that the given type is an implementer of the given canonicalName with the given typed parameters
      *

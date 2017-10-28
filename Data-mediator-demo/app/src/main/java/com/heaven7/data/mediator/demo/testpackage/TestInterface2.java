@@ -2,10 +2,8 @@ package com.heaven7.data.mediator.demo.testpackage;
 
 import android.os.Parcelable;
 
-import com.heaven7.adapter.ISelectable;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
-import com.heaven7.java.data.mediator.Keep;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
@@ -27,10 +25,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
                 complexType = COMPLEXT_ARRAY, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "student4", seriaName = "class_4", type = TestBind.class, flags = FLAGS_ALL_SCOPES)
 })
-public interface TestInterface2 extends StudentBind, Parcelable, ISelectable {
-
-    @Keep
-    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
+public interface TestInterface2 extends StudentBind, Parcelable {
 
     Property PROP_student = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student", 0);
     Property PROP_student2 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student2", 2);

@@ -30,6 +30,7 @@ import java.util.List;
 public class DataMediatorAction extends AnAction {
 
     private static final String NAME_FIELDS = "com.heaven7.java.data.mediator.Fields";
+    public static final String NAME_SELECTABLE = "com.heaven7.adapter.ISelectable";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
@@ -55,20 +56,32 @@ public class DataMediatorAction extends AnAction {
         }
         if(pmGenerator.isEnableChain()){
             //parse super and sub fields.
-            parseSuperProperties(project, psiClass, pmGenerator);
+            parseSuperProperties(project, psiClass, pmGenerator, true);
         }
+        //indicate if super has ISelectable or nor.
+        boolean superHasSelectable = false;
+        for(PsiClass pc : PsiUtils.getExtendsClasses(psiClass)){
+            if(NAME_SELECTABLE.equals(pc.getQualifiedName())){
+                superHasSelectable = true;
+                break;
+            }
+        }
+        pmGenerator.setHasSelectable(PsiUtils.hasSelectable(psiClass) && !superHasSelectable);
+        //do generate
         generateDataMediator(psiClass, pmGenerator);
         //change subclass's generate methods  when chainc all enabled and super property changed.
         //but we don't manual change all sub PsiClass. Note this.
     }
-
-    private void parseSuperProperties(Project project, PsiClass psiClass, PropertyGenerator pmGenerator) {
+    private void parseSuperProperties(Project project, PsiClass psiClass,
+                                      PropertyGenerator pmGenerator, boolean isCurrentPsiClass) {
         PsiClassType[] listTypes = psiClass.getExtendsListTypes();
         for(PsiClassType type : listTypes){
             PsiClass superPsiClass = type.resolve();
-            parseProperties(project, superPsiClass, null, pmGenerator.getSuperProperties());
-            //parse super recursively
-            parseSuperProperties(project, superPsiClass, pmGenerator);
+            if(superPsiClass != null){
+                parseProperties(project, superPsiClass, null, pmGenerator.getSuperProperties());
+                //parse super recursively
+                parseSuperProperties(project, superPsiClass, pmGenerator, false);
+            }
         }
     }
 

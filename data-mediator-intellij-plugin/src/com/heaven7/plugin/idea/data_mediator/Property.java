@@ -2,6 +2,8 @@ package com.heaven7.plugin.idea.data_mediator;
 
 public class Property {
 
+    static final Property PROP_selected = new Property("boolean", "selected", 0);
+
      static final String TYPE_int = "int";
      static final String TYPE_long = "long";
      static final String TYPE_short = "short";

@@ -35,7 +35,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
  */
 public class GsonSupport {
 
-    private static final String SUFFIX_IMPL = "_Impl";
+    private static final String SUFFIX_IMPL = "_$Impl";
 
     /**
      * convert the target object to json. currently support simple object, array , list. SparseArray

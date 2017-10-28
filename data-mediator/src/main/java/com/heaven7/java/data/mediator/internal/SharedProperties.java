@@ -31,15 +31,6 @@ public final class SharedProperties {
 
     static {
         sCache = new HashMap<>();
-        /* remove in 1.3.0
-        putToCache("boolean", "selected", 0);
-        try {
-            for (int i = 1; i < 100; i++) {
-                Class.forName("com.heaven7.java.data.mediator.internal.SharedProperties" + "_" + i);
-            }
-        } catch (Exception e) {
-            //ignore
-        }*/
     }
 
     /**
@@ -53,7 +44,7 @@ public final class SharedProperties {
         /*
          * problem: previously, i generate some class (SharedProperties_N) to auto register property.
          *         it has a bug. may generate some file.
-         *         ( only on java project main/test module not multi module , android project its' ok)
+         *         ( only on java project main/test module not multi module ,But android project it is ok)
          * so just lazy load .
          * since 1.3.0.
          */

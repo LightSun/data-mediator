@@ -17,7 +17,6 @@ import java.util.List;
 @ImplClass(Student.class)
 public interface TestItem extends FlowItem{
 
-
     Property PROP_testItem_1 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "testItem_1", 0);
     Property PROP_testItem_2 = SharedProperties.get("java.lang.String", "testItem_2", 0);
     Property PROP_testItem_3 = SharedProperties.get("java.lang.String", "testItem_3", 2);

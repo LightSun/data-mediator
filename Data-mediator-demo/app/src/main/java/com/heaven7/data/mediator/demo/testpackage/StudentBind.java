@@ -5,7 +5,6 @@ import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.IDataMediator;
-import com.heaven7.java.data.mediator.Keep;
 import com.heaven7.java.data.mediator.ListPropertyEditor;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
@@ -41,9 +40,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
 }, maxPoolCount = 10)
 public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poolable {
 
-        @Keep
         Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-
         Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
         Property PROP_test_object = SharedProperties.get("java.lang.Object", "test_object", 0);
         Property PROP_test_Format = SharedProperties.get("java.lang.Double", "test_Format", 0);

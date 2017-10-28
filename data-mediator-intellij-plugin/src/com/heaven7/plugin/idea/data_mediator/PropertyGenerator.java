@@ -1,37 +1,40 @@
 package com.heaven7.plugin.idea.data_mediator;
 
 import com.heaven7.plugin.idea.data_mediator.typeInterface.TypeInterfaceExtend__Poolable;
-import com.intellij.codeInsight.daemon.impl.quickfix.CreateConstantFieldFromUsageFix;
-import com.intellij.formatting.FormattingModelBuilder;
-import com.intellij.lang.java.JavaFormattingModelBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
-import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyGenerator {
+/*public*/ class PropertyGenerator {
 
     private static final String NAME_KEEP = "com.heaven7.java.data.mediator.Keep";
     private static final String NAME_IMPL_METHOD = "com.heaven7.java.data.mediator.ImplMethod";
 
     private List<Property> mSuperFields;
     private final List<Property> mProps = new ArrayList<>();
+
     private final PsiClass mPsiClass;
     private final String mCurrentModule;
     private String mSetReturn;
-    private boolean mEnableChain;
 
-    public PropertyGenerator(PsiClass mPsiClass) {
+    private boolean mEnableChain;
+    private boolean mHasSelectable;
+
+    PropertyGenerator(PsiClass mPsiClass) {
         this.mPsiClass = mPsiClass;
         this.mCurrentModule = mPsiClass.getQualifiedName();
     }
 
-    public void setEnableChainCall(boolean enable) {
+    void setHasSelectable(boolean has) {
+        mHasSelectable = has;
+    }
+
+    void setEnableChainCall(boolean enable) {
         mEnableChain = enable;
         if (!enable) {
             mSetReturn = "void";
@@ -46,18 +49,18 @@ public class PropertyGenerator {
         }
     }
 
-    public boolean isEnableChain() {
+    boolean isEnableChain() {
         return mEnableChain;
     }
 
-    public List<Property> getSuperProperties() {
+    List<Property> getSuperProperties() {
         if (mSuperFields == null) {
             mSuperFields = new ArrayList<>();
         }
         return mSuperFields;
     }
 
-    public List<Property> getProperties() {
+    List<Property> getProperties() {
         return mProps;
     }
 
@@ -66,24 +69,27 @@ public class PropertyGenerator {
      * 2, generate super.
      * 3, remove fields/methods which have no annotation of @Keep and @ImplMethod.
      */
-    public void generate() {
+    void generate() {
         final Project project = mPsiClass.getProject();
+        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
         //remove exist method
         removeExistingImpl(mPsiClass);
 
-        PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
-
         List<PsiMethod> methods = new ArrayList<>();
         List<PsiField> fields = new ArrayList<>();
+
+        //generate PROP_selected if possible.
+        if(mHasSelectable) {
+            fields.add(createConstantField(mPsiClass, elementFactory, Property.PROP_selected));
+        }
         //generate for current properties.
         generateProperties(elementFactory, mProps, methods, fields, false);
 
         final PsiMethod anchor = methods.get(methods.size() - 1);
-
         PsiComment doc = elementFactory.createCommentFromText(
                 "/* \n================== start super methods =============== */", null);
         //generate for super properties
-        if(mSuperFields != null && !mSuperFields.isEmpty()) {
+        if (mSuperFields != null && !mSuperFields.isEmpty()) {
             generateProperties(elementFactory, mSuperFields, methods, fields, true);
         }
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
@@ -93,7 +99,7 @@ public class PropertyGenerator {
         }
         for (PsiMethod psi : methods) {
             styleManager.shortenClassReferences(mPsiClass.addBefore(psi, mPsiClass.getLastChild()));
-            if(psi == anchor){
+            if (psi == anchor) {
                 mPsiClass.addBefore(doc, mPsiClass.getLastChild());
             }
         }
@@ -103,6 +109,7 @@ public class PropertyGenerator {
             poolable.makeInterfaceExtend(mPsiClass, elementFactory, styleManager);
         }
     }
+
     //override super setMethod if need..
     private void generateProperties(PsiElementFactory elementFactory, List<Property> props,
                                     List<PsiMethod> methods, List<PsiField> fields, boolean fromSuper) {
@@ -112,7 +119,7 @@ public class PropertyGenerator {
             //TODO wait intellij response for 'interface override interface method'
             String setMethod = generateSet(name, prop, false);
             methods.add(elementFactory.createMethodFromText(setMethod, mPsiClass));
-            if(!fromSuper){
+            if (!fromSuper) {
                 //property cons , like : PROP_student
                 fields.add(createConstantField(mPsiClass, elementFactory, prop));
                 //set method
@@ -187,50 +194,31 @@ public class PropertyGenerator {
     private void removeExistingImpl(PsiClass psiClass) {
         //here can't use getAllFields/getAllMethods. they contains super methods and fields.
         PsiField[] fields = psiClass.getFields();
-        for(PsiField field : fields){
+        for (PsiField field : fields) {
             PsiModifierList list = field.getModifierList();
 
             boolean delete = false;
-            if(list == null){
+            if (list == null) {
                 delete = true;
-            }else{
+            } else {
                 PsiAnnotation psiAnnotation = list.findAnnotation(NAME_KEEP);
-                if(psiAnnotation == null){
+                if (psiAnnotation == null) {
                     delete = true;
                 }
             }
-            if(delete){
+            if (delete) {
                 field.delete();
             }
         }
-        for(PsiMethod method : psiClass.getMethods()){
+        for (PsiMethod method : psiClass.getMethods()) {
             PsiModifierList list = method.getModifierList();
 
             PsiAnnotation pa_keep = list.findAnnotation(NAME_KEEP);
             PsiAnnotation pa_impl = list.findAnnotation(NAME_IMPL_METHOD);
-            if(pa_keep == null && pa_impl == null){
+            if (pa_keep == null && pa_impl == null) {
                 method.delete();
             }
         }
-
-       /* for (Property prop : mProps) {
-            //remove field
-            findAndRemoveField(psiClass, prop.getName());
-            //remove get and set.
-            String name = Util.getPropNameForMethod(prop.getName());
-            String prefix = getPrefix(prop);
-            String getMethodName = prefix + name;
-            String setMethodName = "set" + name;
-            findAndRemoveMethod(psiClass, getMethodName);
-            findAndRemoveMethod(psiClass, setMethodName, prop.getRealTypeString());
-            //remove editor.
-            switch (prop.getComplexType()) {
-                case FieldFlags.COMPLEX_LIST:
-                case FieldFlags.COMPLEX_SPARSE_ARRAY:
-                    findAndRemoveMethod(psiClass, "begin" + name + "Editor");
-                    break;
-            }
-        }*/
        /* findAndRemoveMethod(psiClass, psiClass.getName(), TYPE_PARCEL);
         findAndRemoveMethod(psiClass, "describeContents");
         findAndRemoveMethod(psiClass, "writeToParcel", TYPE_PARCEL, "int");*/
@@ -262,8 +250,6 @@ public class PropertyGenerator {
                 PsiParameter[] parameters = parameterList.getParameters();
 
                 for (int i = 0; i < arguments.length; i++) {
-                   /* Util.log("read param type: " + parameters[i].getType().getCanonicalText());
-                    Util.log("expect param type: " + arguments[i]);*/
                     if (!parameters[i].getType().getCanonicalText().equals(arguments[i])) {
                         shouldDelete = false;
                     }
@@ -274,4 +260,5 @@ public class PropertyGenerator {
             }
         }
     }
+
 }
