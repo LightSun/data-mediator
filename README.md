@@ -424,11 +424,8 @@ public class TestPropertyChangeActivity extends BaseActivity {
 # 1.1.3 新增
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 # 1.2.2新增
--keep class com.heaven7.java.data.mediator.internal.SharedProperties_**
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
 
-//已过时，可直接忽略  
--keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 ```
 
 # refer libs
