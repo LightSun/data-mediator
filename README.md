@@ -7,8 +7,8 @@ data-mediator
 
  <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
 
- 
-- a data-mediator framework which can hele us do much work. 
+a data-mediator framework which can hele us do much work. 
+[文档还是中文的好](docs/zh/main.md)
 
 # Features
 * 1, support listen property change, 
