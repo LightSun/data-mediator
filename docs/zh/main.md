@@ -1,12 +1,5 @@
 data-mediator
 =======================================
-| Platform        | compiler   | gson-support  |  binder |  SparseArray |
-| ------------- | ------------- | ----- | ------- | ------- |
-| java      | ok  | ok | need manual impl |  ok |
-| android   | ok  | ok |  ok | ok |
-
-
- <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
 
  see [English document](https://github.com/LightSun/data-mediator/wiki/Main-of-Dara-mediator) by click this.
 - 一个数据层的框架。利用编译时注解技术， 在java和android平台自动生成 数据实体及相关的代码。
@@ -15,7 +8,6 @@ data-mediator
 [demo下载](https://github.com/LightSun/data-mediator/tree/master/output/app-debug.apk)
 
 # 导航
- * [问题及目标](#问题及目标) 
  * [simple魅力](#基本魅力)
  * [设计思想](#设计思想)
  * [特点](#特点)
@@ -26,19 +18,6 @@ data-mediator
  * [进阶指南](#进阶指南)
  * [混淆配置](#混淆配置)
  * [Gson注解详细说明](https://juejin.im/post/59e5663f51882546b15b92f0)
- 
-# 问题及目标
-* 现有问题：
-<br>通常况下我们写app: 需要写很多实体,常用的就是和server交互的实体.
-<br>在版本不断迭代的情况下,数据模型可能会很很多次(CRUD 字段甚至直接删除整个module).
-<br>即使我们使用parcelable 代码生成器,也经常要ALT+insert去重新生成。toString那些更不用说了。
-<br>而且如果用gson注解映射， 就更不太方便了。
-<br>如果想链式编程....也不方便。
-<br>我想监听属性变化...也不方便。
-<br>...
-* 基于此，我设计了这个数据中介者框架。
-* 它的目标:
-<br>当然它还会支持很多强大的功能. 未来还会完成更加复杂业务任务.
 
 # 基本魅力
  - 假设我想定义的数据实体是下面这个。
@@ -224,6 +203,7 @@ public interface FlowItem extends Parcelable{
  - 支持android平台的双向绑定, 新增万能的Binder. 支持绑定任意控件的属性。(常用的已经集成)
  <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
  - 完美搭配gson（支持所有Gson注解）。
+ - 支持自定义方法，字段, 可实现任意接口.
 
 # gradle配置
  * java平台.
@@ -427,27 +407,3 @@ public class TestPropertyChangeActivity extends BaseActivity {
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
 
 ```
-
-# refer libs
- - [javapoet](https://github.com/square/javapoet)
- - [Google/Gson](https://github.com/google/gson)
-
-# License
-
-    Copyright 2017   
-                group of data-mediator
-        member: heaven7(donshine723@gmail.com)
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
-
