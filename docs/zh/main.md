@@ -345,7 +345,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
     @BindView(R.id.bt_set_text_on_mediator)
     Button mBt_temp;
 
-    DataMediator<StudentModule> mMediator;
+    DataMediator<Student> mMediator;
 
 
     @Override
@@ -359,11 +359,11 @@ public class TestPropertyChangeActivity extends BaseActivity {
         mBt_temp.setVisibility(View.GONE);
 
         //为数据模型创建  中介者。
-        mMediator = DataMediatorFactory.createDataMediator(StudentModule.class);
+        mMediator = DataMediatorFactory.createDataMediator(Student.class);
         //添加属性callback
         mMediator.addDataMediatorCallback(new DataMediatorCallback<StudentModule>() {
             @Override
-            public void onPropertyValueChanged(StudentModule data, Property prop, Object oldValue, Object newValue) {
+            public void onPropertyValueChanged(Student data, Property prop, Object oldValue, Object newValue) {
                 Logger.w("TestPropertyChangeActivity","onPropertyValueChanged","prop = "
                         + prop.getName() + " ,oldValue = " + oldValue + " ,newValue = " + newValue);
                 mTv_desc.setText(String.valueOf(newValue));
