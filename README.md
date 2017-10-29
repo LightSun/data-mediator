@@ -86,7 +86,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
    }
    ```
  * android platform ( for android project) .
-   * 1, int the root build file。
+   * 1, in the root build file。
    ```java 
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
    ```
