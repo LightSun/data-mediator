@@ -386,6 +386,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
  * [binder-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/binder.md)
  * [数据缓存-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/data_cache.md) 
  * [api 说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/api.md)
+ * [自定义方法,常量](https://github.com/LightSun/data-mediator/blob/master/docs/zh/self_method_field.md)
 
 # 混淆配置
 ```java
