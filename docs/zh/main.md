@@ -361,7 +361,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
         //为数据模型创建  中介者。
         mMediator = DataMediatorFactory.createDataMediator(Student.class);
         //添加属性callback
-        mMediator.addDataMediatorCallback(new DataMediatorCallback<StudentModule>() {
+        mMediator.addDataMediatorCallback(new DataMediatorCallback<Student>() {
             @Override
             public void onPropertyValueChanged(Student data, Property prop, Object oldValue, Object newValue) {
                 Logger.w("TestPropertyChangeActivity","onPropertyValueChanged","prop = "
