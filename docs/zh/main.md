@@ -10,7 +10,7 @@ data-mediator
  * [simple魅力](#基本魅力)
  * [设计思想](#设计思想)
  * [特点](#特点)
- * [gralde配置](#gradle配置)
+ * [安装](#安装)
  * [快速入门](#快速入门)
  * [简易教程](https://github.com/LightSun/data-mediator/blob/master/docs/zh/courses.md)
  * [data-mediator-demo说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/demo_readme.md)
@@ -204,7 +204,8 @@ public interface FlowItem extends Parcelable{
  - 完美搭配gson（支持所有Gson注解）。
  - 支持自定义方法，字段, 可实现任意接口.
 
-# gradle配置
+# 安装
+ * 安装idea插件。（see release）
  * java平台.
     * 1, gradle配置
     ```java
