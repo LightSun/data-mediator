@@ -12,15 +12,22 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 
 # Features
 * 1, support listen property change
- * [Detail](docs/en/listen_property_change)
+  * [Detail](docs/en/listen_property_change.md)
 * 2, auto generate get/is/set method.
 * 3, support chain call. 
+  * [Detail](docs/en/chain_call.md)
 * 4, support impl Serializable and parcelable(android). or others.
+  * [Detail](docs/en/parcelable.md)
 * 5, full support Annotations of Google/Gson.
+  * [Detail](docs/en/gson.md)
 * 6, support data-bind for android platform.
+  * [Detail](docs/en/data_bind.md)
 * 7, support self method. self field. extend self interface you like.
-* 8, support data cache.
+  * [Detail](docs/en/self_method_field.md)
+* 8, support data cache. 
+  * [Detail](docs/en/data_cache.md)
 * 9, support List/SparseArray Editor with their callbacks.
+  * [Detail](docs/en/listen_property_change.md)
 * 10, support depend or extend other data model.
 
 
