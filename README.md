@@ -11,7 +11,8 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 [文档还是中文的好](docs/zh/main.md)
 
 # Features
-* 1, support listen property change, 
+* 1, support listen property change
+ * [Detail](docs/en/listen_property_change)
 * 2, auto generate get/is/set method.
 * 3, support chain call. 
 * 4, support impl Serializable and parcelable(android). or others.
