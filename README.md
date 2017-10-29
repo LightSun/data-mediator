@@ -7,8 +7,8 @@ data-mediator
 
  <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
 
- 
-- a data-mediator framework which can hele us do much work. 
+a data-mediator framework which uses annotation processing to generate boilerplate code for you. <br>
+[文档还是中文的好](docs/zh/main.md)
 
 # Features
 * 1, support listen property change, 
@@ -23,7 +23,8 @@ data-mediator
 * 10, support depend or extend other data model.
 
 
-# Install
+# Install 
+ * first , install the plugin of 'data-mediator-intellij-plugin', see it in release.
  * java platform(for java/j2ee).
     * 1, gradle.
     ```java
@@ -143,11 +144,11 @@ public interface Student extends Serializable, Parcelable{
  (you should instanll the plugin , see release).
 
 4, compile project (optional , because it will auto generate when before running.)
-  * java: mouse right click pf module. compile/build (module) XXX
-   *  android: click the icon of android studio.
+ * java: mouse right click of module. compile/build (module) XXX
+ *  android: click the icon of android studio.
    ![make project](res/as_make_project.png)
 
-5, call sample （from data-mediator-demo [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+5, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * listen property change demo
@@ -198,7 +199,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 ```
 * more sample see [demos](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity)
 
-# Proguard Config
+# Proguard
 ```java
 -keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
    *;
@@ -217,7 +218,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 ```
 
-# refer libs
+# Thanks
  - [javapoet](https://github.com/square/javapoet)
  - [Google/Gson](https://github.com/google/gson)
 
