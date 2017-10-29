@@ -54,7 +54,8 @@ public interface TestItem extends FlowItem{
     TestItem setTestItem_6(TestParcelableData testItem_61);
 
     TestParcelableData getTestItem_6();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 
     TestItem setId(Student id1);
 
