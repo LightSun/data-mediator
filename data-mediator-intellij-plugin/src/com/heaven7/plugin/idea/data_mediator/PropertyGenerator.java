@@ -86,14 +86,16 @@ import java.util.List;
         generateProperties(elementFactory, mProps, methods, fields, false);
 
         final PsiMethod anchor = methods.get(methods.size() - 1);
-        PsiComment doc = elementFactory.createCommentFromText(
-                "/* \n================== start methods from super properties =============== \n" +
-                        "======================================================================= */",
-                null);
-        //generate for super properties
+        PsiComment doc = null;
         if (mSuperFields != null && !mSuperFields.isEmpty()) {
+            doc = elementFactory.createCommentFromText(
+                    "/* \n================== start methods from super properties =============== \n" +
+                            "======================================================================= */",
+                    null);
+            //generate for super properties
             generateProperties(elementFactory, mSuperFields, methods, fields, true);
         }
+
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
         for (PsiField pf : fields) {
             styleManager.shortenClassReferences(pf);
@@ -101,7 +103,7 @@ import java.util.List;
         }
         for (PsiMethod psi : methods) {
             styleManager.shortenClassReferences(mPsiClass.addBefore(psi, mPsiClass.getLastChild()));
-            if (psi == anchor) {
+            if (psi == anchor && doc != null) {
                 mPsiClass.addBefore(doc, mPsiClass.getLastChild());
             }
         }
