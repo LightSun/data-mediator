@@ -33,7 +33,7 @@ public interface TestSelfMethod extends TestSelfMethodWithImplInterface.TextDele
         //compare to  ' void changeText(String text);' , just add a module param at the first.
         public static void changeText(TestSelfMethod module, String text) {
             //just mock text change.
-            //module can be real data or data proxy, if is proxy it will auto dispatch text change= event.
+            //module can be real data or data proxy, if is proxy it will auto dispatch text change event.
             module.setText(text);
         }
 

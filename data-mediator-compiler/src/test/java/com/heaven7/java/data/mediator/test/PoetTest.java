@@ -26,6 +26,10 @@ public class PoetTest {
         //generateSharedProperties2();
        // testGenerateProxy();
         testToStringBuilder();
+
+        //com.heaven.TestOutter.TestInner
+       /* ClassName className = ClassName.get("com.heaven","TestOutter.TestInner");
+        System.out.println(className.toString());*/
     }
 
     private static void testToStringBuilder(){

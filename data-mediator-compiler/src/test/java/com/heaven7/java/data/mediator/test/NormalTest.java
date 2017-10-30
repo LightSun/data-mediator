@@ -30,6 +30,11 @@ public class NormalTest {
         log(f.getClass().getName());
         f = 0d;
         log(f.getClass().getName());
+
+        String fullName = "com.heaven7.Outter.Inner";
+        String packageName = "com.heaven7";
+        final String interfaceName = fullName.substring(packageName.length() + 1);
+        log(interfaceName);
     }
 
     private static void  log (Object obj){

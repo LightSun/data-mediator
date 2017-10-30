@@ -102,20 +102,11 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         //set target class info
         mClassInfo.setPackageName(packageName);
         mClassInfo.setCurrentClassname(interfaceName);
-        /*
-         * after 1.3.0 . idea-plugin will auto generate method for origin module interface. no need this interface
-         * mClassInfo.setDirectParentInterfaceName(interfaceName);
-         */
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
 
-        /*
-         * for impl class:
-         step1: generate all field and method(need body).
-         step2: class/interface
-         step3: package name
-         */
+        //to generate impl class and proxy
         final String className = mElement.getSimpleName() + DataMediatorConstants.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);

@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
 import static javax.lang.model.element.Modifier.STATIC;
 
 /**
@@ -137,17 +138,6 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
                 return true;
             }
         }
-
-        //generate SharedProperties_N
-       /* final Set<FieldData> fields = new HashSet<>();
-        for (CodeGenerator generator : mProxyClassMap.values()) {
-            fields.addAll(generator.getFieldDatas());
-        }
-        if(!SharedPropertiesNGenerator.generateSharedProperties(
-                fields, mElementUtils, mFiler, mPrinter)){
-            return true;
-        }*/
-
        //generate module interface / impl /proxy (interface removed)
        for (CodeGenerator generator : mProxyClassMap.values()) {
            if(!generator.generateJavaFile(mFiler, mPrinter)){
@@ -174,24 +164,32 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
                             String targetThing, Element element) {
 
         TypeElement enclosingElement = (TypeElement) element;
-        //被注解的类的全名
+        //full name which is annotated by @Fields
         String qualifiedName = enclosingElement.getQualifiedName().toString();
         // anno = com.heaven7.java.data.mediator.Fields ,parent element is: com.heaven7.data.mediator.demo.Student
         note("isValid","anno = " + annotationClass.getName()
                 + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
-        // can't be private（may be static , if is internal util）
+        // can't be private, current can't be static
         Set<Modifier> modifiers = element.getModifiers();
-        if (modifiers.contains(PRIVATE)) {
+        if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
             String msg = String.format("@%s %s must not be private or static. (%s.%s)",
                     annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
             error("isValid", enclosingElement, msg);
             isValid = false;
         }
+        //must be public
+        if (!modifiers.contains(PUBLIC)) {
+            String msg = String.format("@%s %s must be public. (%s.%s)",
+                    annotationClass.getSimpleName(),
+                    targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());
+            error("isValid", enclosingElement, msg);
+            isValid = false;
+        }
 
-        // 父元素必须接口
+        // must be interface
         if (enclosingElement.getKind() != ElementKind.INTERFACE) {
             String msg = String.format("@%s %s may only be contained in interfaces. (%s.%s)",
                     annotationClass.getSimpleName(),
@@ -200,14 +198,14 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
             isValid = false;
         }
 
-        //不能在Android框架层注解
+        //can't used to android.**
         if (qualifiedName.startsWith("android.")) {
             String msg = String.format("@%s-annotated class incorrectly in Android framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);
             error("isValid",enclosingElement, msg);
             isValid = false;
         }
-        //不能在java框架层注解
+        //can't used to java.**
         if (qualifiedName.startsWith("java.")) {
             String msg = String.format("@%s-annotated class incorrectly in Java framework package. (%s)",
                     annotationClass.getSimpleName(), qualifiedName);

@@ -24,8 +24,3 @@ public interface GsonTest extends DataPools.Poolable {
 ================== start methods from super properties ===============
 ======================================================================= */
 }
-//true is default
-@GlobalConfig(gsonConfig = @GsonConfig(generateJsonAdapter = true))
-class GlobalSetting{
-
-}
