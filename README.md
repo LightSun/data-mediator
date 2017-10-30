@@ -114,7 +114,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
   
 # Quick Start. 
 
-1, global configuration(optional).
+1,[Optional] global configuration.
 ```java
 @GlobalConfig(
         gsonConfig = @GsonConfig(
@@ -142,7 +142,7 @@ public interface Student extends Serializable, Parcelable{
 3, use 'data-mediator-intellij-plugin' generate code, hot key like alt + insert. 
  (you should instanll the plugin , see release).
 
-4, compile project (optional , because it will auto generate when before running.)
+4, [Optional], compile project (optional , because it will auto generate when before running.)
  * java: mouse right click of module. compile/build (module) XXX
  *  android: click the icon of android studio.
    ![make project](res/as_make_project.png)
