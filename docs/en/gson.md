@@ -1,4 +1,4 @@
-# Gson ×¢½âÉú³É
+# Gson annotations
 * here is a demo.
 ```java
 @Fields({
