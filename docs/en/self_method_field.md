@@ -1,4 +1,4 @@
-# Self Method and field
+# Self Method and field 
  ```java
 @Fields({
         @Field(propName = "test_self1"),
@@ -38,4 +38,65 @@ public class TestUtil {
        //do something you want.
     }
 }
+ ```
+ 
+ # Android sample of self method/impl self interface
+ ```java
+ //data module define
+ public interface TestSelfMethod extends TestSelfMethodWithImplInterface.TextDelegate, DataPools.Poolable {
+
+    Property PROP_text = SharedProperties.get("java.lang.String", "text", 0);
+
+    @Keep
+    @ImplMethod(from = HelpUtil.class)
+    void changeText(String text);
+
+    TestSelfMethod setText(String text1);
+
+    String getText();
+
+    class HelpUtil {
+        //compare to  ' void changeText(String text);' , just add a module param at the first.
+        public static void changeText(TestSelfMethod module, String text) {
+            //just mock text change.
+            //module can be real data or data proxy, if is proxy it will auto dispatch text change= event.
+            module.setText(text);
+        }
+
+    }
+}
+
+//sample activity
+public class TestSelfMethodWithImplInterface extends BaseActivity {
+
+    @BindView(R.id.textView)
+    TextView mTv;
+
+    private TestSelfMethod mProxy;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.ac_self_methods;
+    }
+
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        Binder<TestSelfMethod> binder = DataMediatorFactory.createBinder(TestSelfMethod.class);
+        //bind property to textView
+        binder.bindText(TestSelfMethod.PROP_text, mTv);
+        //get proxy
+        mProxy = binder.getDataProxy();
+    }
+
+    @OnClick(R.id.button)
+    public void onClickCallSelf(View view){
+        //call self method
+        mProxy.changeText("text changed: " + System.currentTimeMillis());
+    }
+
+    public interface TextDelegate{
+        void changeText(String text);
+    }
+
+}
+
  ```
