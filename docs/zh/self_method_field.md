@@ -1,4 +1,4 @@
-# 自定义方法，字段
+# 自定义方法/实现自定义接口，字段
  ```java
 @Fields({
         @Field(propName = "test_self1"),
