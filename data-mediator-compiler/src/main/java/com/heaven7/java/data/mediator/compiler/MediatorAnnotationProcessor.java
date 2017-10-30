@@ -181,9 +181,9 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
                 + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
-        // 所在的类不能是private或static修饰
+        // can't be private（may be static , if is internal util）
         Set<Modifier> modifiers = element.getModifiers();
-        if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
+        if (modifiers.contains(PRIVATE)) {
             String msg = String.format("@%s %s must not be private or static. (%s.%s)",
                     annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());

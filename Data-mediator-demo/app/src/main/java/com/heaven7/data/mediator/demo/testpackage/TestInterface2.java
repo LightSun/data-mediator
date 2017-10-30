@@ -49,7 +49,8 @@ public interface TestInterface2 extends StudentBind, Parcelable {
     TestInterface2 setStudent4(TestBind student41);
 
     TestBind getStudent4();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 
     TestInterface2 setName(String name1);
 

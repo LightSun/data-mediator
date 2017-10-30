@@ -34,6 +34,7 @@
         <activity android:name=".activity.TestRecyclerListBind2Activity" android:label="TestRecyclerListBind2"/>
         <activity android:name=".activity.TestSparseArrayActivity" android:label="TestSparseArray"/>
         <activity android:name=".activity.TestAnalyseActivity" android:label="TestAnalyseActivity"/>
+        <activity android:name=".activity.TestSelfMethodWithImplInterface" android:label="TestSelfMethod"/>
 
 
     </application>

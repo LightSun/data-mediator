@@ -8,6 +8,7 @@ import com.heaven7.data.mediator.demo.activity.TestParcelableDataActivity;
 import com.heaven7.data.mediator.demo.activity.TestPropertyChangeActivity;
 import com.heaven7.data.mediator.demo.activity.TestRecyclerListBind2Activity;
 import com.heaven7.data.mediator.demo.activity.TestRecyclerListBindActivity;
+import com.heaven7.data.mediator.demo.activity.TestSelfMethodWithImplInterface;
 import com.heaven7.data.mediator.demo.activity.TestSparseArrayActivity;
 import com.heaven7.data.mediator.demo.activity.TestTextViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestViewBindActivity;
@@ -52,5 +53,6 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestRecyclerListBind2Activity.class, "Test binder recycler list2"));
         list.add(new ActivityInfo(TestSparseArrayActivity.class, "Test sparse array callback"));
         list.add(new ActivityInfo(TestAnalyseActivity.class, "Test analyse"));
+        list.add(new ActivityInfo(TestSelfMethodWithImplInterface.class, "Test self method/interface"));
     }
 }

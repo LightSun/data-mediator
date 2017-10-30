@@ -52,7 +52,8 @@ public interface ClassBind extends TestBind2 ,IDataMediator, DataPools.Poolable 
     ClassBind setStudent4(TestBind student41);
 
     TestBind getStudent4();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 
     ClassBind setName(Integer name1);
 

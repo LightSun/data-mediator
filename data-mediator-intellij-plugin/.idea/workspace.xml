@@ -7,17 +7,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1ffca5d-a0e1-43b0-b3e9-1c2f17da70f9" name="Default" comment="fix boolean array.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../data-mediator-support-gson/.idea/libraries/Gradle__com_heaven7_java_base_Java_base_1_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/.idea/misc.xml" afterPath="$PROJECT_DIR$/../Data-mediator-demo/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/runConfigurations/data_mediator_plugin.xml" afterPath="$PROJECT_DIR$/.idea/runConfigurations/data_mediator_plugin.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestSelfMethodWithImplInterface.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/res/layout/ac_self_methods.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/.idea/vcs.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/$FlowItem$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/$TestItem$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/$TestItem100$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/$TestParcelableData$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Impl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/FlowItem_$Proxy.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem100_$Proxy.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem_$Proxy.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData_$Impl.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestParcelableData_$Proxy.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/$TestItem2$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/$TestItem3$TypeAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem2_$Proxy.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem3_$Proxy.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/module/FlowItem.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/module/FlowItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/module/ViewBind.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/module/ViewBind.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/ClassBind.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/ClassBind.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/Student.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/Student.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/StudentBind.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/StudentBind.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestBind.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestBind.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestBind2.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestBind2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestInterface2.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestInterface2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestParcelableData.java" afterPath="$PROJECT_DIR$/../Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/testpackage/TestParcelableData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/CodeGenerator.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/CodeGenerator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/MediatorAnnotationProcessor.java" afterPath="$PROJECT_DIR$/../data-mediator-compiler/src/main/java/com/heaven7/java/data/mediator/compiler/MediatorAnnotationProcessor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../data-mediator/.idea/modules.xml" afterPath="$PROJECT_DIR$/../data-mediator/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/java/data/mediator/internal/SharedProperties_1.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/java/data/mediator/internal/SharedProperties_1.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem100_$Impl.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem100_$Impl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem_$Impl.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated/com/heaven7/plugin/idea/data_mediator/test/TestItem_$Impl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/java/data/mediator/internal/SharedProperties_2.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/java/data/mediator/internal/SharedProperties_2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem2_$Impl.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem2_$Impl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem3_$Impl.java" afterPath="$PROJECT_DIR$/../plugin-data-mediator-test/generated_tests/com/heaven7/test/TestItem3_$Impl.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,21 +47,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DataMediatorAction.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DataMediatorAction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="178">
-              <caret line="68" column="20" lean-forward="false" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
-              <folding />
+            <state relative-caret-position="23">
+              <caret line="45" column="51" lean-forward="false" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="16" column="34" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="16" selection-end-column="34" />
+            <state relative-caret-position="345">
+              <caret line="15" column="52" lean-forward="false" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -52,7 +72,7 @@
       <file leaf-file-name="PropertyGenerator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PropertyGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
+            <state relative-caret-position="1748">
               <caret line="90" column="97" lean-forward="false" selection-start-line="90" selection-start-column="97" selection-end-line="90" selection-end-column="97" />
               <folding>
                 <element signature="e#1100#1101#0" expanded="true" />
@@ -104,10 +124,10 @@
         <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/typeInterface/TypeInterfaceExtend__Poolable.java" />
         <option value="$PROJECT_DIR$/readme" />
         <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/Property.java" />
-        <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java" />
-        <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java" />
         <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PropertyGenerator.java" />
         <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java" />
+        <option value="$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java" />
       </list>
     </option>
   </component>
@@ -121,8 +141,8 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -140,8 +160,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -171,19 +189,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="data_mediator" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="data-mediator-intellij-plugin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="data-mediator-intellij-plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="data_mediator" type="462c0819:PsiDirectoryNode" />
-              <item name="typeInterface" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -374,7 +387,14 @@
       <option name="project" value="LOCAL" />
       <updated>1509194559667</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="fix doc">
+      <created>1509327659116</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1509327659116</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView">
@@ -387,35 +407,35 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5021322" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21787709" sideWeight="0.4978678" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.4978678" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2375189" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24253732" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3989726" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960895" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -458,7 +478,8 @@
     <MESSAGE value="fix idea chain call bug." />
     <MESSAGE value="change text" />
     <MESSAGE value="change plugin title" />
-    <option name="LAST_COMMIT_MESSAGE" value="change plugin title" />
+    <MESSAGE value="fix doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix doc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -749,7 +770,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="404">
           <caret line="29" column="0" lean-forward="true" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -757,7 +777,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-66">
           <caret line="160" column="15" lean-forward="false" selection-start-line="160" selection-start-column="15" selection-end-line="160" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -773,34 +792,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="166">
           <caret line="24" column="29" lean-forward="true" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="41" column="31" lean-forward="false" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
-          <folding>
-            <element signature="e#616#617#0" expanded="true" />
-            <element signature="e#672#673#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="68" column="20" lean-forward="false" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PropertyGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
+        <state relative-caret-position="1748">
           <caret line="90" column="97" lean-forward="false" selection-start-line="90" selection-start-column="97" selection-end-line="90" selection-end-column="97" />
           <folding>
             <element signature="e#1100#1101#0" expanded="true" />
@@ -815,9 +812,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="16" column="34" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="16" selection-end-column="34" />
+        <state relative-caret-position="345">
+          <caret line="15" column="52" lean-forward="false" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/PsiUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/heaven7/plugin/idea/data_mediator/DataMediatorAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="45" column="51" lean-forward="false" selection-start-line="45" selection-start-column="51" selection-end-line="45" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

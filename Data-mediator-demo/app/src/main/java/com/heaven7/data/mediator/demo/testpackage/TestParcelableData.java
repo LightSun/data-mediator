@@ -409,5 +409,6 @@ public interface TestParcelableData extends Parcelable, Serializable, IResetable
     SparseArray<ResultData> getTest_SparseArray();
 
     SparseArrayPropertyEditor<? extends TestParcelableData, ResultData> beginTest_SparseArrayEditor();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 }

@@ -46,5 +46,6 @@ public interface TestBind extends Parcelable, DataPools.Poolable {
     SparseArray<Student> getCityData2();
 
     SparseArrayPropertyEditor<? extends TestBind, Student> beginCityData2Editor();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 }

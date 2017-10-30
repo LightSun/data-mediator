@@ -73,5 +73,6 @@ public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poola
         StudentBind setTest_array(String[] test_array1);
 
         String[] getTest_array();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 }

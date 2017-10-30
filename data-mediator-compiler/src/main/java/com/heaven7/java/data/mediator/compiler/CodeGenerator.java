@@ -86,7 +86,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         final String log_method = "generateJavaFile";
         //package name
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
-       final  List<? extends TypeMirror> interfaces = mElement.getInterfaces();
+        final  List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);
 
         OutInterfaceManager.setLogPrinter(mPrinter);

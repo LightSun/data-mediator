@@ -49,5 +49,6 @@ public interface TestBind2 extends Parcelable , IDataMediator, DataPools.Poolabl
     TestBind2 setData(ResultData data1);
 
     ResultData getData();/*
-================== start super methods =============== */
+================== start methods from super properties ===============
+======================================================================= */
 }
