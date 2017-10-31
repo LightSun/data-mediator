@@ -1,5 +1,5 @@
 # data cache
- * data cache£º use pool to reuse data
+ * data cache use pool to reuse data
  * steps:
    * 1), use annotation to indicate pool count ¡£eg:
    ```java
@@ -21,4 +21,4 @@
    ```
    * 4), ps: after recycle you must not use the data again or else may cause some problem you don't want¡£
 
- * data cha is thread safe? yes , it is.
+ * data cache is thread safe? yes , it is.
