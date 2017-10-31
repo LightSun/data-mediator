@@ -21,4 +21,4 @@
    ```
    * 4), ps: after recycle you must not use the data again or else may cause some problem you don't want¡£
 
- * data cha is thread safe£¿ yes , it is.
+ * data cha is thread safe? yes , it is.
