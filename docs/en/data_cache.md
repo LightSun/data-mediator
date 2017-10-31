@@ -1,7 +1,7 @@
 # data cache
- * data cache£º use pool to reuse data
+ * data cacheÂ£Âº use pool to reuse data
  * steps:
-   * 1), use annotation to indicate pool count ¡£eg:
+   * 1), use annotation to indicate pool count Â¡Â£eg:
    ```java
    @Fields(value = {
        @Field(propName = "name", seriaName = "heaven7", type = String.class),
@@ -10,15 +10,15 @@
     public interface TestBind extends Parcelable{
     }
    ```
-   * 2),how to get data module £¿  use DataMediatorFactory , eg:
+   * 2),how to get data module ?  use DataMediatorFactory , eg:
    ```java
    Student result = DataMediatorFactory.obtain(Student.class);
    ```
-   * 3), how to recycle £¿   use data entity¡£eg: Student
+   * 3), how to recycle ?   use data entityÂ¡Â£eg: Student
    ```java
    DataMediator<Student> dm =  DataMediatorFactory.obtain(Student.class);;
    dm.getData().recycle();
    ```
-   * 4), ps: after recycle you must not use the data again or else may cause some problem you don't want¡£
+   * 4), ps: after recycle you must not use the data again or else may cause some problem you don't wantÂ¡Â£
 
- * data cha is thread safe£¿ yes , it is.
+ * data cha is thread safeÂ£Â¿ yes , it is.
