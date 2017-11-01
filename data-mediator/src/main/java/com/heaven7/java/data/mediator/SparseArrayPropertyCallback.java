@@ -19,6 +19,7 @@ package com.heaven7.java.data.mediator;
 
 /**
  * the property callback of sparse array.
+ * @param <T> the module type
  * Created by heaven7 on 2017/10/3.
  * @since 1.1.3
  */

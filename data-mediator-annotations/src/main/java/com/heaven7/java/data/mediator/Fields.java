@@ -56,4 +56,17 @@ public @interface Fields {
 	 * @since 1.0.3
 	 */
 	int maxPoolCount() default 0;
+
+	/**
+	 * use {@literal @}JsonAdapter or not. that means is this is enabled .
+	 * it will auto generate TypeAdapter and generate {@literal @}JsonAdapter.
+	 * <p>Note: if global gson config {@linkplain GsonConfig#generateJsonAdapter()} = false,
+	 * no matter this value is true or false, it will not generate . That means only
+	 * {@linkplain GsonConfig#generateJsonAdapter()} = true, and this return true. will generate
+	 * Json adapter for current module.</p>
+	 * @return true if enable json adapter or not. you can see more in 'Google/Gson'.
+	 * @see GsonConfig#generateJsonAdapter()
+	 * @since 1.1.4
+	 */
+	boolean generateJsonAdapter() default true;
 }

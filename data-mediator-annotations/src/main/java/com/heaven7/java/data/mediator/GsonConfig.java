@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * the global setting for data-mediator.
+ * the global gson setting for data-mediator.
  * @since 1.0.5
  * @author heaven7
  */
@@ -27,7 +27,12 @@ public @interface GsonConfig {
     /**
      * use {@literal @}JsonAdapter or not. that means is this is enabled .
      * it will auto generate TypeAdapter and generate {@literal @}JsonAdapter.
+     * <p>Note: if you don't want any module generate of Json Adapter. please return false.
+     * otherwise return true. if you want only some module generate json adapter.
+     * just make other modules {@linkplain Fields#generateJsonAdapter()} return false.
+     * of course this should return true(Global setting).  </p>
      * @return true if enable json adapter or not. you can see more in 'Google/Gson'.
+     * @see Fields#generateJsonAdapter()
      */
     boolean generateJsonAdapter() default true;
 
