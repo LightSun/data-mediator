@@ -15,7 +15,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     @Override
     public boolean addStaticCode(CodeBlock.Builder staticBuilder, Object param) {
         //disable or not generate json adapter.
-        if(!GlobalConfig.getInstance().isJsonAdapterEnabled()){
+        if(!getClassInfo().isGenerateJsonAdapter() || !GlobalConfig.getInstance().isJsonAdapterEnabled()){
             return false;
         }
         ClassName cn_type_handler = ClassName.get(PKG_GSON_SUPPORT, SN_TYPE_HANDLER);
@@ -30,7 +30,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
     @Override
     public void addClassAnnotation(TypeSpec.Builder typeBuilder) {
-        if(!GlobalConfig.getInstance().isJsonAdapterEnabled()){
+        if(!getClassInfo().isGenerateJsonAdapter() || !GlobalConfig.getInstance().isJsonAdapterEnabled()){
             return ;
         }
         ClassName cn_type_adapter = ClassName.get(getClassInfo().getPackageName(),

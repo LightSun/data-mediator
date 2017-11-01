@@ -48,11 +48,16 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
      * @since 1.3.0
      */
     private List<ImplInfo> mSuperImplInfos;
+    private boolean mGenerateJsonAdapter = true;
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
         this.mElement = classElement;
         this.mElements = mElementUtils;
+    }
+
+    public void setGenerateJsonAdapter(boolean generate) {
+          this.mGenerateJsonAdapter = generate;
     }
 
     public void setEnableChain(boolean mEnableChain) {
@@ -105,6 +110,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         mClassInfo.setDirectParentInterfaceName(interfaceName);
         mClassInfo.setSuperClass(null);
         mClassInfo.setSuperInterfaces(interfaces);
+        mClassInfo.setGenerateJsonAdapter(mGenerateJsonAdapter);
 
         //to generate impl class and proxy
         final String className = mElement.getSimpleName() + DataMediatorConstants.IMPL_SUFFIX;
@@ -176,7 +182,8 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
         //======================================================================
 
         //do something for super class/interface
-        final List<? extends TypeMirror> mirrors = OutInterfaceManager.getAttentionInterfaces(mElement, mTypes, mPrinter);
+        final List<? extends TypeMirror> mirrors = OutInterfaceManager.getAttentionInterfaces(
+                mElement, mTypes, mPrinter);
         for(TypeMirror temp_tm : mirrors){
             FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
             //normal methods

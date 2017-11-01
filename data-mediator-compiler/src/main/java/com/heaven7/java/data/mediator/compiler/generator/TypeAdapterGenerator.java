@@ -20,7 +20,7 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
 public class TypeAdapterGenerator {
 
     public static boolean generate(TargetClassInfo info, Collection<FieldData> fields, Filer filer){
-        if(!GlobalConfig.getInstance().isJsonAdapterEnabled()){
+        if(!info.isGenerateJsonAdapter() || !GlobalConfig.getInstance().isJsonAdapterEnabled()){
             //normal ok
             return true;
         }

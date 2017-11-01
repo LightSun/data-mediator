@@ -16,6 +16,14 @@ public class TargetClassInfo {
     private String currentClassname;
     private  List<? extends TypeMirror> superInterfaces;
     private TypeName superClass;
+    private boolean generateJsonAdapter = true;
+
+    public boolean isGenerateJsonAdapter() {
+        return generateJsonAdapter;
+    }
+    public void setGenerateJsonAdapter(boolean generateJsonAdapter) {
+        this.generateJsonAdapter = generateJsonAdapter;
+    }
 
     public String getPackageName() {
         return packageName;

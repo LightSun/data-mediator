@@ -1,18 +1,12 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
-import com.heaven7.java.data.mediator.ImplClass;
-import com.heaven7.java.data.mediator.ImplMethod;
-import com.squareup.javapoet.TypeName;
-import com.sun.org.apache.regexp.internal.RE;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +223,10 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
                 case KEY_MAX_POOL_COUNT:
                     cg.setMaxPoolCount(Integer.parseInt(en.getValue().getValue().toString()));
+                    break;
+
+                case KEY_GSON_GENERATE_JSON_ADAPTER:
+                    cg.setGenerateJsonAdapter((Boolean) en.getValue().getValue());
                     break;
             }
         }
