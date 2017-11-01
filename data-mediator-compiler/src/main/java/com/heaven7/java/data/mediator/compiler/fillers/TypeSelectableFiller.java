@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler.fillers;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.TypeInterfaceFiller;
-import com.heaven7.java.data.mediator.compiler.Util;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.MethodSpec;
@@ -12,7 +12,8 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.FD_SELECTABLE;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_SELECTABLE;
 
 /**   'com.heaven7.adapter.ISelectable' as property 'selected'.
  * Created by heaven7 on 2017/9/26 0026.

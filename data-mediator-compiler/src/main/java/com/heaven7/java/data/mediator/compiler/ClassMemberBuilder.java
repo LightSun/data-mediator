@@ -6,8 +6,8 @@ import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-import static com.heaven7.java.data.mediator.compiler.Util.getFieldModifier;
-import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
+import static com.heaven7.java.data.mediator.compiler.util.Util.getFieldModifier;
+import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
 /**
  * Created by heaven7 on 2017/8/30.

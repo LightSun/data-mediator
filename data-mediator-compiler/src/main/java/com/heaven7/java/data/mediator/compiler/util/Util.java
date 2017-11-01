@@ -1,5 +1,6 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.util;
 
+import com.heaven7.java.data.mediator.compiler.*;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.squareup.javapoet.*;
 
@@ -18,8 +19,6 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
  * Created by heaven7 on 2017/8/28 0028.
  */
 public final class Util {
-
-    private static final String TAG = "Util";
 
     public static MethodSpec.Builder createToStringBuilderForImpl(List<FieldData> dataList, boolean hasSuper){
         ClassName cn_objects = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_ObJECTS);
@@ -80,7 +79,7 @@ public final class Util {
             info.setTypeName(TypeName.BOOLEAN);
             return;
         }
-        final FieldData.TypeCompat typeCompat = field.getTypeCompat();
+        final TypeCompat typeCompat = field.getTypeCompat();
         TypeName rawTypeName = typeCompat.getTypeName();
         info.setSimpleTypeName(rawTypeName);
         info.setParamName(field.getPropertyName() + "1");
@@ -233,7 +232,7 @@ public final class Util {
     }
 
     //serializeable.
-    static Modifier[] getFieldModifier(FieldData fieldData) {
+    public static Modifier[] getFieldModifier(FieldData fieldData) {
         final int flags = fieldData.getFlags();
         List<Modifier> modifiers = new ArrayList<>();
         modifiers.add(Modifier.PRIVATE);

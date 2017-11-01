@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.ProcessorPrinter;
-import com.heaven7.java.data.mediator.compiler.Util;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -14,9 +14,7 @@ import javax.lang.model.util.Elements;
 import java.io.IOException;
 import java.util.Collection;
 
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.DOC;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_DM_INTERNAL;
-import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.SIMPLE_NAME_SHARED_PROP;
+import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
 /**
  * SharedProperties1, SharedProperties2...SharedProperties2N

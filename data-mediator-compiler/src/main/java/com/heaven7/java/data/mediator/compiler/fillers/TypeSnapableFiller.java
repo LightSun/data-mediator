@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler.fillers;
 
 import com.heaven7.java.data.mediator.compiler.DataMediatorConstants;
 import com.heaven7.java.data.mediator.compiler.FieldData;
-import com.heaven7.java.data.mediator.compiler.Util;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 

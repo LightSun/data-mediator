@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -34,7 +33,7 @@ public class ImplInfo {
         return !mMethods.isEmpty();
     }
 
-    public void addImplMethods(TypeName module, TypeSpec.Builder curBuilder){
+    public void addImplMethods(TypeSpec.Builder curBuilder){
           for(MethodInfo info : getMethodInfo()){
               MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(info.getMethodName())
                       .addModifiers(Modifier.PUBLIC)

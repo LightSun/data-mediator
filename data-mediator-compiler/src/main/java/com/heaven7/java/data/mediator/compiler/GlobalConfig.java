@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 public class GlobalConfig {
 
-    private static GlobalConfig sInstance = new GlobalConfig();
+    private static final GlobalConfig sInstance = new GlobalConfig();
     //start gson
     private double version = 1.0;
     private boolean generateJsonAdapter = true;

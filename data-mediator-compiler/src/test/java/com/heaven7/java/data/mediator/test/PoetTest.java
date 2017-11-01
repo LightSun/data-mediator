@@ -1,7 +1,7 @@
 package com.heaven7.java.data.mediator.test;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
-import com.heaven7.java.data.mediator.compiler.Util;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.AnnotationMirror;

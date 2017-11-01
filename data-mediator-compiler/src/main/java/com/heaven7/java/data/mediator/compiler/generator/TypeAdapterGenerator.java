@@ -3,8 +3,8 @@ package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.GlobalConfig;
-import com.heaven7.java.data.mediator.compiler.Util;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;

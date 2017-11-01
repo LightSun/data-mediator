@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler.insert;
 
 
 import com.heaven7.java.data.mediator.compiler.GlobalConfig;
-import com.heaven7.java.data.mediator.compiler.Util;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;

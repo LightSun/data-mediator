@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
+import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
 /**
  * type interface fillers for impl

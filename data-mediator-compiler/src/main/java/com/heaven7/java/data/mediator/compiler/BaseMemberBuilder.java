@@ -9,8 +9,8 @@ import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.Set;
 
-import static com.heaven7.java.data.mediator.compiler.Util.getPropNameForMethod;
-import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
+import static com.heaven7.java.data.mediator.compiler.util.Util.getPropNameForMethod;
+import static com.heaven7.java.data.mediator.compiler.util.Util.getTypeName;
 
 /**
  * the base member builder. just build method for interface.

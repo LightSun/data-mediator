@@ -4,6 +4,7 @@ import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.ProxyGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.TypeAdapterGenerator;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
@@ -17,9 +18,9 @@ import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 import static com.heaven7.java.data.mediator.compiler.OutInterfaceManager.getSuperInterfaceFlagForParent;
-import static com.heaven7.java.data.mediator.compiler.Util.createToStringBuilderForImpl;
-import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
 import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
+import static com.heaven7.java.data.mediator.compiler.util.Util.createToStringBuilderForImpl;
+import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -233,7 +234,7 @@ import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 
         //implements all methods of  @ImplMethods
         if(mImplInfo != null && mImplInfo.isValid()){
-            mImplInfo.addImplMethods(selfParamType, implBuilder);
+            mImplInfo.addImplMethods(implBuilder);
             mSuperImplInfos.add(mImplInfo);
         }
         // hashCode and equals.

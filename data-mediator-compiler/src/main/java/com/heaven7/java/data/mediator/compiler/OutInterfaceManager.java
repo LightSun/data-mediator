@@ -20,8 +20,8 @@ import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_COPYA;
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.NAME_SELECTABLE;
-import static com.heaven7.java.data.mediator.compiler.Util.hasFlag;
-import static com.heaven7.java.data.mediator.compiler.Util.overriding;
+import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
+import static com.heaven7.java.data.mediator.compiler.util.Util.overriding;
 
 /**
  * used for override other interface. impl by module define.

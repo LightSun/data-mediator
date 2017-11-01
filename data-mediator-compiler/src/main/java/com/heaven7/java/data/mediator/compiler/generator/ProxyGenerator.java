@@ -1,9 +1,9 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.compiler.*;
-import com.heaven7.java.data.mediator.compiler.Util;
 import com.heaven7.java.data.mediator.compiler.insert.InsertManager;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.Filer;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-import static com.heaven7.java.data.mediator.compiler.Util.getTypeName;
+import static com.heaven7.java.data.mediator.compiler.util.Util.getTypeName;
 
 /**
  * the proxy generator
@@ -61,7 +61,7 @@ public class ProxyGenerator {
         }
         //handle @ImplMethod
         for(ImplInfo implInfo : implInfoList){
-            implInfo.addImplMethods(cn_inter, typeBuilder);
+            implInfo.addImplMethods(typeBuilder);
         }
 
         //addToString
