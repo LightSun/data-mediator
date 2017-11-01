@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
-import static com.heaven7.java.data.mediator.compiler.OutInterfaceManager.getSuperInterfaceFlagForParent;
 import static com.heaven7.java.data.mediator.compiler.insert.InsertManager.*;
 import static com.heaven7.java.data.mediator.compiler.util.Util.createToStringBuilderForImpl;
 import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
@@ -123,7 +122,8 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         //set target class info
         mClassInfo.setCurrentClassname(className);
 
-        final int superFlagsForParent = getSuperInterfaceFlagForParent(mElement, mElements, mTypes, mPrinter);
+        final int superFlagsForParent = OutInterfaceManager.getSuperInterfaceFlagForParent(
+                mElement, mElements, mTypes, mPrinter);
         // implBuilder.superclass()
         boolean usedSuperClass = false ;
         boolean hasSelectable = hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE);

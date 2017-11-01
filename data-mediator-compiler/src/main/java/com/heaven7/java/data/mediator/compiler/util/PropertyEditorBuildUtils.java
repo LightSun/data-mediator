@@ -1,8 +1,11 @@
-package com.heaven7.java.data.mediator.compiler;
+package com.heaven7.java.data.mediator.compiler.util;
 
+import com.heaven7.java.data.mediator.compiler.FieldData;
+import com.heaven7.java.data.mediator.compiler.TypeInfo;
 import com.squareup.javapoet.*;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
+
 /**
  * the list property build helper
  * Created by heaven7 on 2017/9/22.
