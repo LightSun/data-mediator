@@ -132,9 +132,9 @@ thus the simple data module can be define like :
 ```java
 
 @Fields({
-        @Field(propName = "age" , type = int.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "name" , type = String.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "id" , type = long.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "age" , type = int.class),
+        @Field(propName = "name" , type = String.class),
+        @Field(propName = "id" , type = long.class),
 })
 public interface Student extends Serializable, Parcelable{
 }
