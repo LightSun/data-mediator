@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator;
+package com.heaven7.java.data.mediator.bind;
 
 import com.heaven7.java.data.mediator.internal.BindMethod;
 

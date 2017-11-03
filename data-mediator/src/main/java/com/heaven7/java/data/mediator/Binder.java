@@ -522,7 +522,7 @@ public abstract class Binder<T> {
      */
     public abstract Binder<T> bindTextSizeRes(String property,Object textView);
     /**
-     * bind text size of Text view.
+     * bind text dimension size(pixes) of Text view.
      * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.

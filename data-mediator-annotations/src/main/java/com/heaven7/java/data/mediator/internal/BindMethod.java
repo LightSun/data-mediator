@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * define a bind method info.
+ * define a bind method info of Binder.
  * @author heaven7
  * @since 1.1.5
  */
