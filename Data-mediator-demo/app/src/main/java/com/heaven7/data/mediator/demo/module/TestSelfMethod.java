@@ -5,7 +5,6 @@ import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.ImplMethod;
-import com.heaven7.java.data.mediator.Keep;
 import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.internal.SharedProperties;
 
@@ -19,7 +18,6 @@ public interface TestSelfMethod extends TestSelfMethodWithImplInterface.TextDele
 
     Property PROP_text = SharedProperties.get("java.lang.String", "text", 0);
 
-    @Keep
     @ImplMethod(from = HelpUtil.class)
     void changeText(String text);
 

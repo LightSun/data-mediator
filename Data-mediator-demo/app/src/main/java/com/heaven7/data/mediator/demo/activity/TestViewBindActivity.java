@@ -70,7 +70,8 @@ public class TestViewBindActivity extends BaseActivity {
         // 设置属性拦截器，用于应用绑定的时候过滤一些不需要的属性值。
         binder.setPropertyInterceptor(PropertyInterceptor.NULL_AND_ZERO);
         //绑定并 首次应用属性(绑定只需要1次)
-         binder.bindBackground(ViewBind.PROP_background, mV_bg)
+         binder
+                 .bindBackground(ViewBind.PROP_background, mV_bg)
                          //使用生成的property对象。有助于模型变化后用的地方知晓改变。
                  .bindBackgroundRes(ViewBind.PROP_backgroundRes, mV_bg_res)
                  .bindBackgroundColor(ViewBind.PROP_backgroundColor, mV_bg_color)

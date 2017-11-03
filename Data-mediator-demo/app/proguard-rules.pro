@@ -139,6 +139,12 @@
    *;
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
+-keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{
+  *;
+}
+-keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{
+   *;
+}
 -keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader

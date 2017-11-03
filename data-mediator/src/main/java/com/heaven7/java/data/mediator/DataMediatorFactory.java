@@ -18,6 +18,7 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
+import org.omg.CORBA.DATA_CONVERSION;
 
 import java.lang.reflect.Constructor;
 
@@ -29,6 +30,12 @@ public final class DataMediatorFactory {
 
     /*private*/ static final String  SUFFIX_IMPL   = "_$Impl";
     private static final String  SUFFIX_PROXY  = "_$Proxy";
+
+
+    public static void bind(Object target, Object data, int index){
+        Binder<Object> binder = DataMediatorFactory.createBinder(createDataMediator(data));
+        //binder.bindBackground(String, view)
+    }
 
     /**
      * obtain the data for target class type.
@@ -131,6 +138,16 @@ public final class DataMediatorFactory {
      */
     public static <T> Binder<T> createBinder(Class<T> moduleClass){
         return createBinder(createDataMediator(moduleClass));
+    }
+    /**
+     * create binder for target module data.
+     * @param module the module data.
+     * @param <T> the module data type
+     * @return the binder.
+     * @since 1.3.1
+     */
+    public static <T> Binder<T> createBinder(T module){
+        return createBinder(createDataMediator(module));
     }
 
     /**
