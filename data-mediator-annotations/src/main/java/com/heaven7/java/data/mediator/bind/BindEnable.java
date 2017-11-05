@@ -8,14 +8,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * bind view background.
+ * bind enable of view . eg: android.view.View.
  * @author heaven7
- * @since 1.2.0
+ * @since  1.2.0
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-@BindMethod("bindBackground")
-public @interface BindBackground {
+@BindMethod("bindEnable")
+public @interface BindEnable {
 
     /**
      * the property name which will be used to bind object.

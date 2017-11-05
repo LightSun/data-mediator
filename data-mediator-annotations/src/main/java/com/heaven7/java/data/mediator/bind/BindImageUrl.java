@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 /**
  * bind image link url of view . eg: ImageView.
  * @author heaven7
- * @since 1.1.5
+ * @since  1.2.0
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)

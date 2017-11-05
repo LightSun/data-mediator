@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * define a bind method info of Binder.
  * @author heaven7
- * @since 1.1.5
+ * @since  1.2.0
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.ANNOTATION_TYPE)

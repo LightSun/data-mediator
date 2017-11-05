@@ -8,14 +8,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * bind view background.
+ * bind checkable of view . eg: android.widget.CheckBox.
  * @author heaven7
- * @since 1.2.0
+ * @since  1.2.0
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-@BindMethod("bindBackground")
-public @interface BindBackground {
+@BindMethod("bindCheckable")
+public @interface BindCheckable {
 
     /**
      * the property name which will be used to bind object.

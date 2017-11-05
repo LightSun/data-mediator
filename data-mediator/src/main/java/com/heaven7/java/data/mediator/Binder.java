@@ -17,6 +17,7 @@
  */
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.anno.Deprecated;
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.batchbind.BatchTextViewBinder;
@@ -241,7 +242,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindCheckable(Property property, Object checkableView){
+    public final Binder<T> bindCheckable(Property property, Object checkableView){
         return bindCheckable(property.getName(), checkableView);
     }
 
@@ -254,7 +255,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindVisibility(Property property, Object view, boolean forceAsBoolean){
+    public final Binder<T> bindVisibility(Property property, Object view, boolean forceAsBoolean){
         return bindVisibility(property.getName(), view, forceAsBoolean);
     }
     /**
@@ -265,7 +266,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindVisibility(Property property, Object view){
+    public final Binder<T> bindVisibility(Property property, Object view){
         return bindVisibility(property.getName(), view, true);
     }
 
@@ -276,7 +277,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindEnable(Property property, Object view){
+    public final Binder<T> bindEnable(Property property, Object view){
         return bindEnable(property.getName(), view);
     }
     /**
@@ -286,7 +287,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindBackgroundRes(Property property, Object view){
+    public final Binder<T> bindBackgroundRes(Property property, Object view){
         return bindBackgroundRes(property.getName(), view);
     }
 
@@ -297,7 +298,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindBackground(Property property, Object view){
+    public final Binder<T> bindBackground(Property property, Object view){
         return bindBackground(property.getName(), view);
     }
     /**
@@ -307,7 +308,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindBackgroundColor(Property property, Object view){
+    public final Binder<T> bindBackgroundColor(Property property, Object view){
         return bindBackgroundColor(property.getName(), view);
     }
 
@@ -318,7 +319,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindText(Property property, Object textView){
+    public final Binder<T> bindText(Property property, Object textView){
         return bindText(property.getName(), textView);
     }
     /**
@@ -328,7 +329,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextRes(Property property, Object textView){
+    public final Binder<T> bindTextRes(Property property, Object textView){
         return bindTextRes(property.getName(), textView);
     }
     /**
@@ -338,7 +339,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextColor(Property property, Object textView){
+    public final Binder<T> bindTextColor(Property property, Object textView){
         return bindTextColor(property.getName(), textView);
     }
     /**
@@ -348,7 +349,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextColorRes(Property property, Object textView){
+    public final Binder<T> bindTextColorRes(Property property, Object textView){
         return bindTextColorRes(property.getName(), textView);
     }
     /**
@@ -358,28 +359,42 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextSizeRes(Property property,Object textView){
+    public final Binder<T> bindTextSizeRes(Property property,Object textView){
         return bindTextSizeRes(property.getName(), textView);
     }
     /**
-     * bind text size of Text view.
+     * bind text size of Text view. use default unit 'dip'.
      * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextSize(Property property, Object textView){
+    public final Binder<T> bindTextSize(Property property, Object textView){
         return bindTextSize(property.getName(), textView);
     }
     /**
+     * <p>use {@linkplain #bindTextSize(Property, Object)} instead</p>
      * bind text dimension size(dp value) of Text view.
      * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindTextSizeDp(Property property, Object textView){
-        return bindTextSizeDp(property.getName(), textView);
+    @java.lang.Deprecated
+    @Deprecated("use #bindTextSize instead")
+    public final Binder<T> bindTextSizeDp(Property property, Object textView){
+        return bindTextSize(property.getName(), textView);
+    }
+
+    /**
+     * bind text size in pixes.
+     * @param property the property
+     * @param textView the text view . eg: android.widget.TextView.
+     * @return this
+     * @since 1.4.0
+     */
+    public final Binder<T> bindTextSizePx(Property property, Object textView){
+        return bindTextSizePx(property.getName(), textView);
     }
     /**
      * bind image url of image view.
@@ -389,7 +404,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindImageUrl(Property property, Object imageView, Object imgLoader){
+    public final Binder<T> bindImageUrl(Property property, Object imageView, Object imgLoader){
         return bindImageUrl(property.getName(), imageView, imgLoader);
     }
     /**
@@ -399,7 +414,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public  Binder<T> bindImageUri(Property property, Object imageView){
+    public final Binder<T> bindImageUri(Property property, Object imageView){
         return bindImageUri(property.getName(), imageView);
     }
     /**
@@ -409,7 +424,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindImageRes(Property property, Object imageView){
+    public final Binder<T> bindImageRes(Property property, Object imageView){
         return bindImageRes(property.getName(), imageView);
     }
     /**
@@ -419,7 +434,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindImageDrawable(Property property, Object imageView){
+    public final Binder<T> bindImageDrawable(Property property, Object imageView){
         return bindImageDrawable(property.getName(), imageView);
     }
     /**
@@ -429,7 +444,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindImageBitmap(Property property,  Object imageView){
+    public final Binder<T> bindImageBitmap(Property property,  Object imageView){
         return bindImageBitmap(property.getName(), imageView);
     }
     /**
@@ -439,7 +454,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindRecyclerList(Property property, Object recyclerView){
+    public final Binder<T> bindRecyclerList(Property property, Object recyclerView){
         return bindRecyclerList(property.getName(), recyclerView);
     }
     /**
@@ -449,7 +464,7 @@ public abstract class Binder<T> {
      * @return this.
      * @since 1.1.2
      */
-    public Binder<T> bindList(Property property, Object listView){
+    public final Binder<T> bindList(Property property, Object listView){
         return bindList(property.getName(), listView);
     }
     /**
@@ -459,7 +474,7 @@ public abstract class Binder<T> {
      * @param view the view. eg: android.view.View on android platform
      * @return this.
      */
-    public Binder<T> bindVisibility(String property, Object view){
+    public final Binder<T> bindVisibility(String property, Object view){
         return bindVisibility(property, view, true);
     }
     //============================== abstract =========================================//
@@ -543,19 +558,32 @@ public abstract class Binder<T> {
      */
     public abstract Binder<T> bindTextSizeRes(String property,Object textView);
     /**
-     * bind text dimension size(pixes) of Text view.
+     * bind text  size of Text view. and use default text unit 'dip'.
      * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
     public abstract Binder<T> bindTextSize(String property, Object textView);
     /**
+     * <p>Use {@linkplain #bindTextSize(String, Object)} instead.</p>
      * bind text dimension size(dp value) of Text view.
      * @param property the property of data
      * @param textView the text view. eg: android.widget.TextView on android platform
      * @return this.
      */
-    public abstract Binder<T> bindTextSizeDp(String property, Object textView);
+    @java.lang.Deprecated
+    public final Binder<T> bindTextSizeDp(String property, Object textView){
+        return bindTextSize(property, textView);
+    }
+
+    /**
+     * bind text size in pixes.
+     * @param property the property
+     * @param textView the text view . eg: android.widget.TextView
+     * @return this.
+     * @since 1.4.0
+     */
+    public abstract Binder<T> bindTextSizePx(String property, Object textView);
     /**
      * bind image url of image view.
      * @param property the property of data

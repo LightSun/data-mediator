@@ -1,9 +1,12 @@
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Throwables;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * the super class of data binding.
@@ -16,6 +19,7 @@ public abstract class DataBinding<T> {
     private final HashSet<BindInfo> mBinds = new HashSet<>();
     private final T mTarget;
     private BinderFactory mBinderFactory;
+    private Class<? extends Binder> mBinderClass;
 
     /**
      * create data-binding for target object.
@@ -24,6 +28,14 @@ public abstract class DataBinding<T> {
     public DataBinding(T target) {
         Throwables.checkNull(target);
         this.mTarget = target;
+    }
+
+    /**
+     * set the binder class.
+     * @param binderClass the binder class.
+     */
+    public void setBinderClass(Class<? extends Binder> binderClass) {
+        this.mBinderClass = binderClass;
     }
     /**
      * set binder factory
@@ -82,16 +94,26 @@ public abstract class DataBinding<T> {
      * @param <D> the module data type
      * @return the binder
      */
-    //@SuppressWarnings("unchecked")
-    public <D> Binder<D> bind(D data, int index, PropertyInterceptor interceptor) {
+    @SuppressWarnings("unchecked")
+    public <D> Binder<D> bind(D data, int index, @Nullable PropertyInterceptor interceptor) {
         final DataMediator<D> dm = DataMediatorFactory.createDataMediator(data);
-        //create binder
+        //create binder . order : binder class-> binderFactor -> default.
         Binder<D> binder = null;
-        if(mBinderFactory != null){
-            binder = mBinderFactory.createBinder(dm);
+        if(mBinderClass != null){
+            try {
+                binder = mBinderClass.getConstructor(dm.getClass()).newInstance(dm);
+            } catch (Exception e) {
+                System.err.println(String.format("can't create binder for target class($s), " +
+                        "start use BinderFactory or default Binder.", mBinderClass.getName()) );
+            }
         }
-        if(binder == null){
-            binder = DataMediatorFactory.createBinder(dm);
+        if(binder == null) {
+            if (mBinderFactory != null) {
+                binder = mBinderFactory.createBinder(getTarget(), dm);
+            }
+            if (binder == null) {
+                binder = DataMediatorFactory.createBinder(dm);
+            }
         }
         if (interceptor != null) {
             binder.setPropertyInterceptor(interceptor);

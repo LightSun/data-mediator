@@ -9,10 +9,11 @@ package com.heaven7.java.data.mediator;
 public interface BinderFactory {
 
     /**
-     * create binder by target data mediator.
+     * create binder for target object and data mediator.
      * @param <T> the module data type
+     * @param target the target object.
      * @param dm the data mediator.
      * @return the binder which is used for data-binding. return null means use default binder.
      */
-    <T> Binder<T> createBinder(DataMediator<T>  dm);
+    <T> Binder<T> createBinder(Object target, DataMediator<T>  dm);
 }
