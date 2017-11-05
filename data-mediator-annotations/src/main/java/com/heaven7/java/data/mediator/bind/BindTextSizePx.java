@@ -14,8 +14,8 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-@BindMethod("bindTextSizeDp")
-public @interface BindTextSizeDp {
+@BindMethod("bindTextSizePx")
+public @interface BindTextSizePx {
 
     /**
      * the property name which will be used to bind object.

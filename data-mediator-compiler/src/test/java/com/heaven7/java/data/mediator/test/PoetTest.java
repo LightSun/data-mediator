@@ -22,7 +22,7 @@ public class PoetTest {
 
     //test generate MediatorSharedProperties.
     public static void main(String[] args){
-        generateSharedProperties();
+        //generateSharedProperties();
         //generateSharedProperties2();
        // testGenerateProxy();
         testToStringBuilder();
@@ -30,6 +30,11 @@ public class PoetTest {
         //com.heaven.TestOutter.TestInner
        /* ClassName className = ClassName.get("com.heaven","TestOutter.TestInner");
         System.out.println(className.toString());*/
+        final ParameterizedTypeName name = ParameterizedTypeName.get(
+                ClassName.get("xx", "heaven7"),
+                ClassName.get("","T")
+        );
+        System.out.println(name.toString());
     }
 
     private static void testToStringBuilder(){
@@ -56,6 +61,8 @@ public class PoetTest {
 
         TypeSpec typeSpec = TypeSpec.classBuilder("TestBean")
                 .addModifiers(Modifier.PUBLIC)
+                .addTypeVariable(TypeVariableName.get("T",  TypeName.OBJECT,
+                        ClassName.get("xxx", "XXXDatabinding")))
                 .addMethod(toStringBuilder.build())
                 .build();
 

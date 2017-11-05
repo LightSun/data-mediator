@@ -1,1 +1,2 @@
 com.heaven7.java.data.mediator.compiler.MediatorAnnotationProcessor
+com.heaven7.java.data.mediator.compiler.DataBindingAnnotationProcessor

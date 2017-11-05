@@ -50,7 +50,9 @@ public final class DataMediatorConstants {
     public static final String SIMPLE_NAME_PROP_INTERCEPTOR  = "PropertyInterceptor";
     public static final String SIMPLE_NAME_DATA_POOL         = "DataPools";
     public static final String SIMPLE_NAME_POOLABLE          = "Poolable";
-    public static final String SN_GLOBAL_SETTING              = "GlobalSetting";
+    public static final String SN_GLOBAL_SETTING             = "GlobalSetting";
+    public static final String SN_DATA_BINDING               = "DataBinding";
+    public static final String SN_INTERNAL_UTILS             = "InternalUtils";
 
     public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
     public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";
@@ -77,6 +79,7 @@ public final class DataMediatorConstants {
     public static final String IMPL_SUFFIX      = "_$Impl";
     public static final String PROXY_SUFFIX     = "_$Proxy";
     public static final String TYPE_ADAPTER_PREFIX  = "$";
+    public static final String DATA_BINDING_SUFFIX  = "_$DataBinding";
 
     public static final String SET_PREFIX   = "set";
     public static final String GET_PREFIX   = "get";

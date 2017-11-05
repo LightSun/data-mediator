@@ -40,7 +40,7 @@ import com.heaven7.java.data.mediator.PropertyInterceptor;
  * the binder of android platform.
  * Created by heaven7 on 2017/9/24.
  */
-/*public*/ class AndroidBinder<T> extends Binder<T> {
+public class AndroidBinder<T> extends Binder<T> {
     /**
      * create binder for target data mediator.
      *
