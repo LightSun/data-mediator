@@ -77,8 +77,12 @@ public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity 
         @Override
         public void onPropertyValueChanged(RecyclerListBind data, Property prop,
                                            Object oldValue, Object newValue) {
-            List<T> items = (List<T>) newValue;
-            getAdapterManager().replaceAllItems(items);
+            if(newValue == null){
+                getAdapterManager().clearItems();
+            }else {
+                List<T> items = (List<T>) newValue;
+                getAdapterManager().replaceAllItems(items);
+            }
         }
 
         @Override

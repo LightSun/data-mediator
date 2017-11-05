@@ -177,11 +177,32 @@ public abstract class Binder<T> {
         return this;
     }
     /**
-     * unbind all property callbacks. and auto recycle if need.
+     * unbind all property callbacks which is indicate by tag.
+     * @since 1.3.1
+     */
+    public void unbindByTags(){
+        unbindAll(true);
+    }
+    /**
+     * unbind all property callbacks.
      */
     public void unbindAll(){
+        unbindAll(false);
+    }
+    /**
+     * unbind all property callbacks.
+     * @param onlyTags indicate only unbind the callbacks by tags or not.
+     * @since 1.3.1
+     */
+    protected void unbindAll(boolean onlyTags){
+        if(onlyTags){
+            for(DataMediatorCallback<T> callback : mMap.values()){
+                mMediator.removeDataMediatorCallback(callback);
+            }
+        }else{
+            mMediator.removeDataMediatorCallbacks();
+        }
         mMap.clear();
-        mMediator.removeDataMediatorCallbacks();
     }
     /**
      * should use weak map to save callback which can later call

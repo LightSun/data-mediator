@@ -18,7 +18,6 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
-import org.omg.CORBA.DATA_CONVERSION;
 
 import java.lang.reflect.Constructor;
 
@@ -31,10 +30,65 @@ public final class DataMediatorFactory {
     /*private*/ static final String  SUFFIX_IMPL   = "_$Impl";
     private static final String  SUFFIX_PROXY  = "_$Proxy";
 
+    /**
+     * create data-binding and bind data to the views.
+     * @param target the target object .which is the owner of view.
+     * @param data the module data
+     * @param <T> the module data type
+     * @return the binder of target data.
+     * @since 1.3.1
+     */
+    public static <T> Binder<T> bind(Object target, T data){
+        return createDataBinding(target).bind(data, 0, null);
+    }
 
-    public static void bind(Object target, Object data, int index){
-        Binder<Object> binder = DataMediatorFactory.createBinder(createDataMediator(data));
-        //binder.bindBackground(String, view)
+    /**
+     * create data-binding and bind data to the views.
+     * @param target the target object .which is the owner of view.
+     * @param data the module data
+     * @param index the index of data. often used to bind multi data in one owner.
+     * @param <T> the module data type
+     * @return the binder of target data.
+     * @since 1.3.1
+     */
+    public static <T> Binder<T> bind(Object target, T data, int index){
+        return createDataBinding(target).bind(data, index, null);
+    }
+
+    /**
+     * create data-binding and bind data to the views.
+     * @param target the target object .which is the owner of view.
+     * @param data the module data
+     * @param index the index of data. often used to bind multi data in one owner.
+     * @param interceptor the property interceptor
+     * @param <T> the module data type
+     * @return the binder of target data.
+     * @since 1.3.1
+     */
+    public static <T> Binder<T> bind(Object target, T data,
+                                     int index, PropertyInterceptor interceptor){
+        return createDataBinding(target).bind(data, index, interceptor);
+    }
+
+    /**
+     * create data-binding for target object.
+     * @param target the target
+     * @param <T> the target type.
+     * @return the data-binding class associate with the target object.
+     * @since 1.3.1
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> DataBinding<T> createDataBinding(T target){
+        //DataBinding_xxx
+        final Class<?> clazz = target.getClass();
+        try {
+            Class<?> clazz_databinding =  Class.forName(clazz.getName()
+                    + "_$DataBinding");
+            return (DataBinding<T>) clazz_databinding.getConstructor(clazz).newInstance(target);
+        } catch (Exception e) {
+            throw new RuntimeException("create data-binding failed, caused by can't bind the relative " +
+                    "data-binding class!");
+        }
     }
 
     /**

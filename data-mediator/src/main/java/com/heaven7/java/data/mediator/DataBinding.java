@@ -3,8 +3,7 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.util.Throwables;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * the super class of data binding.
@@ -14,14 +13,25 @@ import java.util.Arrays;
  */
 public abstract class DataBinding<T> {
 
-    private final ArrayList<BindInfo> mBinds = new ArrayList<>();
+    private final HashSet<BindInfo> mBinds = new HashSet<>();
     private final T mTarget;
+    private BinderFactory mBinderFactory;
 
+    /**
+     * create data-binding for target object.
+     * @param target the target object.
+     */
     public DataBinding(T target) {
         Throwables.checkNull(target);
         this.mTarget = target;
     }
-
+    /**
+     * set binder factory
+     * @param factory the binder factory.
+     */
+    public void setBinderFactory(BinderFactory factory) {
+        this.mBinderFactory = factory;
+    }
     /**
      * get the target
      * @return the target
@@ -72,14 +82,23 @@ public abstract class DataBinding<T> {
      * @param <D> the module data type
      * @return the binder
      */
+    //@SuppressWarnings("unchecked")
     public <D> Binder<D> bind(D data, int index, PropertyInterceptor interceptor) {
-        Binder<D> binder = DataMediatorFactory.createBinder(data);
+        final DataMediator<D> dm = DataMediatorFactory.createDataMediator(data);
+        //create binder
+        Binder<D> binder = null;
+        if(mBinderFactory != null){
+            binder = mBinderFactory.createBinder(dm);
+        }
+        if(binder == null){
+            binder = DataMediatorFactory.createBinder(dm);
+        }
         if (interceptor != null) {
             binder.setPropertyInterceptor(interceptor);
         }
         for (BindInfo info : mBinds) {
             if (info.index == index) {
-                invoke(binder, info);
+                bindInternal(binder, info);
             }
         }
         return binder;
@@ -98,7 +117,7 @@ public abstract class DataBinding<T> {
         return binder;
     }
 
-    private static void invoke(Binder<?> binder, BindInfo info) {
+    private static void bindInternal(Binder<?> binder, BindInfo info) {
         try {
             Method method = binder.getClass().getMethod(info.methodName, info.methodTypes);
             method.invoke(binder, new Object[]{info.propName, info.view});
@@ -121,12 +140,26 @@ public abstract class DataBinding<T> {
         final String methodName;
         final Class<?>[] methodTypes;
 
-        public BindInfo(Object view, String propName, int index, String methodName, Class<?>[] methodTypes) {
+        BindInfo(Object view, String propName, int index, String methodName, Class<?>[] methodTypes) {
             this.view = view;
             this.methodName = methodName;
             this.propName = propName;
             this.index = index;
             this.methodTypes = methodTypes;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BindInfo bindInfo = (BindInfo) o;
+            return Objects.equals(view, bindInfo.view) &&
+                    Objects.equals(propName, bindInfo.propName);
+        }
+
+        @Override
+        public int hashCode() {
+            return  Arrays.hashCode(new Object[]{view, propName});
         }
     }
 }
