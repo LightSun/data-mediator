@@ -6,7 +6,6 @@ import com.heaven7.java.data.mediator.internal.BindMethod;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.MirroredTypesException;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,32 +61,6 @@ public class DataBindingParser {
                 return false;
             }
         }
-
-     /*   VariableElement ve = (VariableElement) element;
-        for(AnnotationMirror am :ve.getAnnotationMirrors()) {
-            TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
-            String annoFullname = e1.getQualifiedName().toString();
-            if(annoFullname.equals(BindsView.class.getName())){
-                Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
-                int index = 0;
-                List<String> props = new ArrayList<>();
-                for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
-                    ExecutableElement key = en.getKey();//the method of annotation
-                    String fullName = key.getSimpleName().toString();
-                    if(fullName.equals("value")){
-                        List<TypeMirror> values = (List<TypeMirror>) en.getValue().getValue();
-                        pp.note(TAG, "parseBindsProperty", "BindsView.value(type) = " + values.get(0).getClass().getName());
-                        for(TypeMirror tm : values){
-                            props.add(tm.toString());
-                        }
-                    }else if(fullName.equals("methods")){
-                        List<AnnotationMirror> methods = (List<AnnotationMirror>) en.getValue().getValue();
-                    }else if(fullName.equals("index")){
-                        index = Integer.parseInt(en.getValue().getValue().toString());
-                    }
-                }
-            }
-        }*/
         return true;
     }
 
@@ -257,6 +230,7 @@ public class DataBindingParser {
         return true;
     }
 
+    //often is TypeMirror , but primitive may cause ClassCastException
     private List<String> convertToClassname(List<?> mirrors,@Nullable List<String> out) {
         if(out == null){
             out = new ArrayList<>();

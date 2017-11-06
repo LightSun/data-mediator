@@ -29,12 +29,15 @@ public class DataBindingGenerator extends BaseGenerator {
                 .addModifiers(Modifier.PUBLIC)
                 .addTypeVariable(TypeVariableName.get("T", TypeName.OBJECT, cn_target));
         //super class
-        ClassName superClass = info.getSuperClass();
+        final TypeElement superClass = info.getSuperClass();
         final ParameterizedTypeName realSuper_tn;
         final ClassName cn_data_binding = ClassName.get(PKG_PROP, SN_DATA_BINDING);
         if(superClass != null){
+            final String packageName = getElements().getPackageOf(superClass).getQualifiedName().toString();
+            final String simpleName = superClass.getSimpleName().toString();
             realSuper_tn = ParameterizedTypeName.get(
-                    superClass, ClassName.get("","T")
+                    ClassName.get(packageName, simpleName + DATA_BINDING_SUFFIX),
+                    ClassName.get("","T")
             );
         }else{
             realSuper_tn = ParameterizedTypeName.get(

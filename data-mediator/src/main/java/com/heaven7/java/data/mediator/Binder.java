@@ -126,7 +126,7 @@ public abstract class Binder<T> {
     public Binder<T> bind(String property, BinderCallback<? super T> callback){
         DataMediatorCallback<T> temp = DataMediatorCallback.create(property, callback);
         if(callback.getTag() != null){
-            mMap.put(callback.getTag(), temp);
+            put2Cache(callback.getTag(), temp);
         }
         mMediator.addDataMediatorCallback(temp);
         return this;
@@ -157,9 +157,7 @@ public abstract class Binder<T> {
                 callback);
         if(callback instanceof Tagable){
             Object tag = ((Tagable) callback).getTag();
-            if(tag != null){
-                mMap.put(tag, temp);
-            }
+            put2Cache(tag, temp);
         }
         mMediator.addDataMediatorCallback(temp);
         return this;
@@ -214,6 +212,17 @@ public abstract class Binder<T> {
         return false;
     }
 
+    /**
+     * put callback to the cache.
+     * @param tag the tag of this callback
+     * @param callback the callback.
+     * @since 1.4.0
+     */
+    protected void put2Cache(Object tag, DataMediatorCallback<T> callback){
+        if(tag != null) {
+            mMap.put(tag, callback);
+        }
+    }
     //============================ batch binder =================================================
 
     /**

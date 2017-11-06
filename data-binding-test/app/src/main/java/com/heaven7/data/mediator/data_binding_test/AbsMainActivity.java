@@ -50,6 +50,9 @@ public abstract class AbsMainActivity extends ListActivity {
         final String desc;
         final Class<? extends Activity> clazz;
 
+        public ActivityInfo(Class<? extends Activity> clazz) {
+            this(clazz, clazz.getSimpleName());
+        }
         public ActivityInfo(Class<? extends Activity> clazz, String desc) {
             this.clazz = clazz;
             this.desc = desc;

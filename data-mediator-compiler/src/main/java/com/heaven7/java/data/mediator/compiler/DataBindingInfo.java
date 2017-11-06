@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
 import javax.lang.model.element.TypeElement;
@@ -34,8 +33,8 @@ public class DataBindingInfo {
     public HashSet<BindInfo> getBindInfos() {
         return binds;
     }
-    public ClassName getSuperClass(){
-        return mSuperClass!=null ? ClassName.get(mSuperClass) : null;
+    public TypeElement getSuperClass(){
+        return mSuperClass;
     }
 
     public void setSuperClass(TypeElement superClass) {
