@@ -86,31 +86,51 @@ a data-mediator framework which uses annotation processing to generate boilerpla
    }
    ```
  * android platform ( for android project) .
-   * 1, in the root build file。
-   ```java 
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-   ```
-   * 2, in app module add apt plugin
+   * if you use old gradle version lower of 4.1. such as: '3.5'
+     * 1, in the root build file。
+     ```java 
+      classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+     ```
+     * 2, in app module add apt plugin
+     ```java
+        apply plugin: 'com.neenbedankt.android-apt'
+     ```
+     * 3, add dependencies
+     ```java
+     dependencies {
+         // gson-support( added since 1.2.0)
+         compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
+         compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+
+         compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+         apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+         apt 'com.squareup:javapoet:1.9.0'
+
+         // if you want generate annotation of gson。(since 1.2.0 auto added)
+         compile "com.google.code.gson:gson:2.8.2"
+         // if you want to support data-bind of android
+         compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
+
+     }
+     ```
+   * if you use gradle version >=4.1. use 'annotationProcessor' directly.   
    ```java
-      apply plugin: 'com.neenbedankt.android-apt'
+    dependencies {
+         // gson-support( added since 1.2.0)
+         compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
+         compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+
+         compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+         annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+         annotationProcessor 'com.squareup:javapoet:1.9.0'
+
+         // if you want generate annotation of gson。(since 1.2.0 auto added)
+         compile "com.google.code.gson:gson:2.8.2"
+         // if you want to support data-bind of android
+         compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
+
+     }
    ```
-   * 3, add dependencies
-   ```java
-   dependencies {
-       // gson-support( added since 1.2.0)
-       compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
-       compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
-
-       compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
-       apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
-       apt 'com.squareup:javapoet:1.9.0'
-
-       // if you want generate annotation of gson。(since 1.2.0 auto added)
-       compile "com.google.code.gson:gson:2.8.2"
-       // if you want to support data-bind of android
-       compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
-
-   }
   
 # Quick Start. 
 
