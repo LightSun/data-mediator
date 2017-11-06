@@ -37,7 +37,7 @@ import com.heaven7.java.data.mediator.Property;
 import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 /**
- * the binder of android platform.
+ * the binder of android platform. opened in 1.1.0
  * Created by heaven7 on 2017/9/24.
  */
 public class AndroidBinder<T> extends Binder<T> {
@@ -113,17 +113,18 @@ public class AndroidBinder<T> extends Binder<T> {
         if(!(tv instanceof TextView)){
             throw new IllegalArgumentException("must be TextView");
         }
-        bind(property, new TextSizeBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
-        return this;
-    }
-    @Override
-    public Binder<T> bindTextSizeDp(String property, Object tv){
-        if(!(tv instanceof TextView)){
-            throw new IllegalArgumentException("must be TextView");
-        }
         bind(property, new TextSizeDpBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
         return this;
     }
+    @Override
+    public Binder<T> bindTextSizePx(String property, Object tv) {
+        if(!(tv instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView");
+        }
+        bind(property, new TextSizeBinderCallback<T>((TextView) tv, getPropertyInterceptor()));
+        return this;
+    }
+
     @Override
     public Binder<T> bindEnable(String property, Object view){
         if(!(view instanceof View)){

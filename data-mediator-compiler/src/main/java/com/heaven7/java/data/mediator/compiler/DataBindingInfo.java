@@ -1,20 +1,20 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by heaven7 on 2017/11/5.
  */
 public class DataBindingInfo {
+    private final HashSet<BindInfo> binds = new HashSet<>();
     private TypeMirror binderClass;
     private TypeMirror binderFactoryClass;
-    private final HashSet<BindInfo> binds = new HashSet<>();
+    private TypeElement mSuperClass;
 
     public TypeName getBinderClass() {
         return binderClass == null ? null :TypeName.get(binderClass);
@@ -31,24 +31,52 @@ public class DataBindingInfo {
     public void addBindInfo( BindInfo info){
         binds.add(info);
     }
-
     public HashSet<BindInfo> getBindInfos() {
         return binds;
     }
+    public ClassName getSuperClass(){
+        return mSuperClass!=null ? ClassName.get(mSuperClass) : null;
+    }
+
+    public void setSuperClass(TypeElement superClass) {
+        this.mSuperClass = superClass;
+    }
+
+    public static class BindMethodInfo{
+        public String name;
+        //default types is String.class, Object.class
+        public final List<String> types = new ArrayList<>();
+        public BindMethodInfo() {
+            types.add(String.class.getName());
+            types.add(Object.class.getName());
+        }
+    }
+
     public static class BindInfo {
-        public String fieldViewName;
-        public final String propName;
-        public final int index;
+        public final String fieldViewName;
+        public String propName;
+        public int index;
 
         public final String methodName;
         public final List<String> methodTypes;
+        public Object[] extras;
 
-        BindInfo(String view, String propName, int index, String methodName, List<String> tms) {
-            this.fieldViewName = view;
+        BindInfo(String fieldViewName, String methodName, List<String> types) {
+            this.fieldViewName = fieldViewName;
             this.methodName = methodName;
+            this.methodTypes = types;
+        }
+        BindInfo(String fieldViewName, String propName, int index, String methodName, List<String> types) {
+            this(fieldViewName, methodName, types);
             this.propName = propName;
             this.index = index;
-            this.methodTypes = tms;
+        }
+
+        public void setPropName(String propName) {
+            this.propName = propName;
+        }
+        public void setIndex(int index) {
+            this.index = index;
         }
 
         @Override
@@ -63,6 +91,14 @@ public class DataBindingInfo {
         @Override
         public int hashCode() {
             return  Arrays.hashCode(new Object[]{fieldViewName, propName});
+        }
+
+        public boolean isValid() {
+            return propName != null && !propName.isEmpty();
+        }
+
+        public void setExtras(Object[] extras) {
+            this.extras = extras;
         }
     }
 }

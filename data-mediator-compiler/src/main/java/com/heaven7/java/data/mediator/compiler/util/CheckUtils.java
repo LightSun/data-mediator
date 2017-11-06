@@ -2,10 +2,7 @@ package com.heaven7.java.data.mediator.compiler.util;
 
 import com.heaven7.java.data.mediator.compiler.ProcessorPrinter;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -18,11 +15,37 @@ public class CheckUtils {
 
     private static final String TAG = "CheckUtils";
 
+    public static boolean isValidField(Class<? extends Annotation> clazz,
+                                       Element element, ProcessorPrinter pp) {
+        VariableElement enclosingElement = (VariableElement) element;
+        //full name which is annotated by @Fields
+        String qualifiedName = enclosingElement.getSimpleName().toString();
+        boolean isValid = true;
+
+        // can't be private, current can't be static
+        Set<Modifier> modifiers = element.getModifiers();
+        if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
+            String msg = String.format("field '%s' annotated by @%s must not be private or static.",
+                    qualifiedName,  clazz.getSimpleName());
+            pp.note(TAG, "isValid", msg);
+            isValid = false;
+        }
+
+        // must be field
+        if (element.getKind() != ElementKind.FIELD) {
+            String msg = String.format("@%s can only be contained in field.",
+                    clazz.getSimpleName());
+            pp.note(TAG, "isValid", msg);
+            isValid = false;
+        }
+        return isValid;
+    }
+
     public static boolean isValidClass(Class<? extends Annotation> clazz,
                                   Element element, ProcessorPrinter pp) {
 
         TypeElement enclosingElement = (TypeElement) element;
-        //full name which is annotated by @Fields
+        //full name which is annotated by @BinderClass/BinderFactoryClass
         String qualifiedName = enclosingElement.getQualifiedName().toString();
         // anno = com.heaven7.java.data.mediator.Fields ,parent element is: com.heaven7.data.mediator.demo.Student
         pp.note(TAG,"isValid","anno = " + clazz.getName()

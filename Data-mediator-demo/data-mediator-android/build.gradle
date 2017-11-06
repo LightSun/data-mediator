@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 105
-        versionName '1.0.5'
+        versionCode 110
+        versionName '1.1.0'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -18,6 +18,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -30,7 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.heaven7.core.util:util-v1:1.1.2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.1.3'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.0-beta4'
 }
 
 ext {
@@ -59,7 +62,7 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-//apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
 //gradlew clean build install bintrayUpload
 

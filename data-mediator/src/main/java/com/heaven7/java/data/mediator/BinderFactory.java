@@ -4,7 +4,7 @@ package com.heaven7.java.data.mediator;
  * the binder factory which is used to create binder.<br>
  * Created by heaven7 on 2017/11/5.
  * @author heaven7
- * @since 1.3.1
+ * @since 1.4.0
  */
 public interface BinderFactory {
 

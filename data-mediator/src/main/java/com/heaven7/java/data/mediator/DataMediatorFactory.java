@@ -36,7 +36,7 @@ public final class DataMediatorFactory {
      * @param data the module data
      * @param <T> the module data type
      * @return the binder of target data.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     public static <T> Binder<T> bind(Object target, T data){
         return createDataBinding(target).bind(data, 0, null);
@@ -49,7 +49,7 @@ public final class DataMediatorFactory {
      * @param index the index of data. often used to bind multi data in one owner.
      * @param <T> the module data type
      * @return the binder of target data.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     public static <T> Binder<T> bind(Object target, T data, int index){
         return createDataBinding(target).bind(data, index, null);
@@ -63,7 +63,7 @@ public final class DataMediatorFactory {
      * @param interceptor the property interceptor
      * @param <T> the module data type
      * @return the binder of target data.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     public static <T> Binder<T> bind(Object target, T data,
                                      int index, PropertyInterceptor interceptor){
@@ -75,7 +75,7 @@ public final class DataMediatorFactory {
      * @param target the target
      * @param <T> the target type.
      * @return the data-binding class associate with the target object.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     @SuppressWarnings("unchecked")
     public static <T> DataBinding<T> createDataBinding(T target){
@@ -198,7 +198,7 @@ public final class DataMediatorFactory {
      * @param module the module data.
      * @param <T> the module data type
      * @return the binder.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     public static <T> Binder<T> createBinder(T module){
         return createBinder(createDataMediator(module));

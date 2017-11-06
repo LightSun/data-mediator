@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)
-public @interface BindsTextViewRes {
+public @interface BindsTextView {
 
     /**
      * bind an array of property names in order. currently like: 'textColorRes'. 'textSizeRes'. 'textRes'

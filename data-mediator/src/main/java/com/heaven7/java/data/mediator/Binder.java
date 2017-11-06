@@ -179,7 +179,7 @@ public abstract class Binder<T> {
     }
     /**
      * unbind all property callbacks which is indicate by tag.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     public void unbindByTags(){
         unbindAll(true);
@@ -193,7 +193,7 @@ public abstract class Binder<T> {
     /**
      * unbind all property callbacks.
      * @param onlyTags indicate only unbind the callbacks by tags or not.
-     * @since 1.3.1
+     * @since 1.4.0
      */
     protected void unbindAll(boolean onlyTags){
         if(onlyTags){

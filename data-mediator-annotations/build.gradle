@@ -36,7 +36,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.annotation'
     artifactId = 'data-mediator-annotations'
-    publishVersion = '1.2.0-beta2'
+    publishVersion = '1.2.0-beta3'
     desc = 'this is a annotation lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }

@@ -25,7 +25,7 @@ import java.util.List;
  * the list binder callback
  * @param <T> the item module data type.
  * @author heaven7
- * @since 1.3.1
+ * @since 1.4.0
  */
 public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object> {
 
@@ -38,6 +38,10 @@ public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object>
     public BaseListPropertyCallback(IItemManager<T> mCallback) {
         Throwables.checkNull(mCallback);
         this.mCallback = mCallback;
+    }
+
+    public IItemManager<T> getItemManager() {
+        return mCallback;
     }
 
     @Override

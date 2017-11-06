@@ -1,15 +1,13 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.compiler.DataBindingInfo;
-import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.ProcessorContext;
+import com.heaven7.java.data.mediator.compiler.util.TypeUtils;
 import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.TypeMirror;
 
 import java.io.IOException;
 
@@ -17,6 +15,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
 /**
  * Created by heaven7 on 2017/11/5.
+ * @since 1.4.0
  */
 public class DataBindingGenerator extends BaseGenerator {
 
@@ -25,39 +24,56 @@ public class DataBindingGenerator extends BaseGenerator {
     }
 
     public boolean generate(TypeElement element, DataBindingInfo info){
-        final String className = element.getQualifiedName().toString();
         final ClassName cn_target = ClassName.get(element);
-        final TypeSpec.Builder builder = TypeSpec.classBuilder(className + DATA_BINDING_SUFFIX)
+        final TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + DATA_BINDING_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
                 .addTypeVariable(TypeVariableName.get("T", TypeName.OBJECT, cn_target));
         //super class
-        final TypeMirror superclass = element.getSuperclass();
+        ClassName superClass = info.getSuperClass();
         final ParameterizedTypeName realSuper_tn;
-        if(!(superclass instanceof NoType)){
-           // ParameterizedTypeName.get()get("T");
-            FieldData.TypeCompat tc = new FieldData.TypeCompat(getTypes(), superclass);
+        final ClassName cn_data_binding = ClassName.get(PKG_PROP, SN_DATA_BINDING);
+        if(superClass != null){
             realSuper_tn = ParameterizedTypeName.get(
-                    ClassName.get(tc.getElementAsType()),
-                    ClassName.get("","T")
+                    superClass, ClassName.get("","T")
             );
         }else{
             realSuper_tn = ParameterizedTypeName.get(
-                    ClassName.get(PKG_PROP, SN_DATA_BINDING),
+                    cn_data_binding,
                     ClassName.get("","T")
             );
         }
         builder.superclass(realSuper_tn);
+
          //constructor
         final MethodSpec.Builder constructor = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(cn_target, "target")
+                .addParameter( ClassName.get("","T"), "target")
                 .addStatement("super(target)");
-        final ClassName cn_internal_util = ClassName.get(PKG_DM_INTERNAL, SN_INTERNAL_UTILS);
-        // void addBindInfo(Object view, String propName, int index, String methodName, Class<?>[] methodTypes)
+
+        // add BindInfos
+        boolean defineBindInfo = false;
         for (DataBindingInfo.BindInfo bi : info.getBindInfos()){
-            constructor.addStatement("addBindInfo(target,$N, $N, $L, $N, $T.convert2Classes($N))",
-                    bi.fieldViewName, bi.propName, bi.index,
-                    bi.methodName, cn_internal_util, bi.methodTypes);
+            if(defineBindInfo){
+                constructor.addStatement("bi = $T.createBindInfo(target.$N, $S, $L, $S)", cn_data_binding,
+                        bi.fieldViewName, bi.propName, bi.index, bi.methodName);
+            }else{
+                constructor.addStatement("$T.BindInfo bi = $T.createBindInfo(target.$N, $S, $L, $S)", cn_data_binding, cn_data_binding,
+                        bi.fieldViewName, bi.propName, bi.index, bi.methodName);
+                defineBindInfo = true;
+            }
+            //types
+            constructor.addStatement("bi.typeCount($L)", bi.methodTypes.size());
+            for(String type : bi.methodTypes){
+                constructor.addStatement("bi.addType($T.class)", TypeUtils.getTypeName(type));
+            }
+            //extras
+            if(bi.extras != null && bi.extras.length > 0){
+                constructor.addStatement("bi.extraValueCount($L)", bi.extras.length);
+                for(Object val : bi.extras){
+                    constructor.addStatement("bi.addExtraValue($L)", val);
+                }
+            }
+            constructor.addStatement("addBindInfo(bi)");
         }
         final TypeName binderClass = info.getBinderClass();
         if(binderClass != null){
@@ -69,6 +85,7 @@ public class DataBindingGenerator extends BaseGenerator {
         }
         builder.addMethod(constructor.build());
 
+        //generate java file
         final String packageName = getElements().getPackageOf(element).getQualifiedName().toString();
         try {
             JavaFile.builder(packageName, builder.build())

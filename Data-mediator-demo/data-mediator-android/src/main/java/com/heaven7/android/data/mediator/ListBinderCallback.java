@@ -17,105 +17,38 @@
  */
 package com.heaven7.android.data.mediator;
 
-import com.heaven7.java.base.util.Throwables;
+import com.heaven7.java.data.mediator.BaseListPropertyCallback;
 import com.heaven7.java.data.mediator.Binder;
-import com.heaven7.java.data.mediator.Property;
-
-import java.util.List;
 
 /**
+ * <p>Use {@linkplain BaseListPropertyCallback} instead.</p>
  * the list binder callback
  * @param <T> the item module data type.
  * @author heaven7
  */
-public class ListBinderCallback<T> extends Binder.SimpleBinderCallback<Object> {
-
-    private final IItemManager<T> mCallback;
+@Deprecated
+public class ListBinderCallback<T> extends BaseListPropertyCallback<T> implements Binder.BinderCallback<Object>{
 
     /**
      * create list binder callback with item manager.
      * @param mCallback the item manager.
      */
-    public ListBinderCallback(IItemManager<T> mCallback) {
-        Throwables.checkNull(mCallback);
-        this.mCallback = mCallback;
+    public ListBinderCallback(ListBinderCallback.IItemManager<T> mCallback) {
+        super(mCallback);
     }
 
     @Override
     public Object getTag() {
-        return mCallback;
-    }
-
-    @Override
-    public void onAddPropertyValues(Object data, Property prop, Object newValue, Object addedValue) {
-        List<T> items = (List<T>) addedValue;
-        mCallback.addItems(items);
-    }
-    @Override
-    public void onAddPropertyValuesWithIndex(Object data, Property prop, Object newValue,
-                                             Object addedValue, int index) {
-        List<T> items = (List<T>) addedValue;
-        mCallback.addItems(index, items);
-    }
-    @Override
-    public void onRemovePropertyValues(Object data, Property prop, Object newValue, Object removeValue) {
-        List<T> items = (List<T>) removeValue;
-        mCallback.removeItems(items);
-    }
-    @Override
-    public void onPropertyValueChanged(Object data, Property prop, Object oldValue, Object newValue) {
-        if(newValue != null) {
-            List<T> items = (List<T>) newValue;
-            if(!items.isEmpty()) {
-                mCallback.replaceItems(items);
-            }
-        }
-    }
-
-    @Override
-    public void onPropertyItemChanged(Object data, Property prop, Object oldItem, Object newItem, int index) {
-        mCallback.onItemChanged(index, (T)oldItem, (T) newItem);
+        return getItemManager();
     }
 
     /**
+     * <p>Use {@linkplain BaseListPropertyCallback.IItemManager} instead.</p>
      * the item manager.
      * @param <T> the item data type
      */
-    public interface IItemManager<T>{
-
-        /**
-         * called on add items. should call notify in this when use in adapter.
-         * @param items the items to add.
-         */
-        void addItems(List<T> items);
-
-        /**
-         * called on add items. should call notify in this when use in adapter.
-         * @param index the start index to add
-         * @param items the items to add
-         */
-        void addItems(int index ,List<T> items);
-
-        /**
-         * called on remove items.should call notify in this when use in adapter.
-         * @param items the items
-         */
-        void removeItems(List<T> items);
-
-        /**
-         * called on replace items.should call notify in this when use in adapter.
-         * @param items the items.
-         */
-        void replaceItems(List<T> items);
-
-        /**
-         * called on item changed
-         * @param index the index of item
-         * @param oldItem the old item
-         * @param newItem the new item
-         * @since 1.0.3
-         */
-        void onItemChanged(int index, T oldItem, T newItem);
+    @Deprecated
+    public interface IItemManager<T> extends BaseListPropertyCallback.IItemManager<T>{
     }
 
 }

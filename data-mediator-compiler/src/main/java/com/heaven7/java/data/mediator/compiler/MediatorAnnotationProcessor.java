@@ -36,11 +36,11 @@ import static javax.lang.model.element.Modifier.STATIC;
 public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider{
 
     private static final String TAG = "MediatorAnnotationProcessor";
-    private Filer mFiler;           //文件相关工具类
+    private Filer mFiler;
 
-    private Elements mElementUtils; //元素相关的工具类
-    //private Messager mMessager;     //日志相关的工具类
-    private ProcessorPrinter mPrinter; ////日志相关的处理
+    private Elements mElementUtils;
+    //private Messager mMessager;
+    private ProcessorPrinter mPrinter;
     private Types mTypeUtils;
 
     private final Map<String, CodeGenerator> mProxyClassMap = new ConcurrentHashMap<>();
@@ -149,7 +149,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
     }
 
     private CodeGenerator getProxyClass(Element element) {
-        //被注解的变量所在的类
+        //element which is annotated .
         TypeElement classElement = (TypeElement) element;
         String qualifiedName = classElement.getQualifiedName().toString();
         CodeGenerator proxyClass = mProxyClassMap.get(qualifiedName);
