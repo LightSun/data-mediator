@@ -306,20 +306,36 @@ public abstract class DataBinding<T> {
             this.index = index;
         }
 
+        /**
+         * assign the internal additional parameter count for Binder method.
+         * @param count the internal additional parameter count
+         */
         public void extraValueCount(int count) {
             extraValues = new Object[count];
             mExtraIndex = 0;
         }
 
+        /**
+         * add extra/additional parameter value for Binder method
+         * @param value extra/additional parameter value
+         */
         public void addExtraValue(Object value) {
             extraValues[mExtraIndex++] = value;
         }
 
+        /**
+         * assign the count of method parameter type.
+         * @param count the count of method parameter type.
+         */
         public void typeCount(int count) {
             methodTypes = new Class<?>[count];
             mTypeIndex = 0;
         }
 
+        /**
+         * add  method parameter type.
+         * @param type the type
+         */
         public void addType(Class<?> type) {
             methodTypes[mTypeIndex++] = type;
         }
