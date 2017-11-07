@@ -38,7 +38,7 @@ public class TestViewBindActivity extends BaseActivity {
     @BindView(R.id.v_bg_res)@BindBackgroundRes("backgroundRes")
     View mV_bg_res;
 
-    @BindView(R.id.v_visibility)@BindVisibility("visiblexxx")
+    @BindView(R.id.v_visibility)@BindVisibility("visible")
     View mV_visibility;
 
     private Binder<ViewBind> binder;
