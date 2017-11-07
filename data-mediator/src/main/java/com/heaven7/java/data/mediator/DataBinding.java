@@ -4,6 +4,7 @@ import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Predicates;
 import com.heaven7.java.base.util.Throwables;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,10 +31,26 @@ public abstract class DataBinding<T> {
         this.mTarget = target;
     }
 
+    /**
+     * create bind info, this method often called internal. you should not call this.
+     * @param view the view
+     * @param propName the property name
+     * @param index the index
+     * @param methodName the method name
+     * @return an instance of Binder info
+     * @see BindInfo
+     */
+    public static BindInfo createBindInfo(Object view, String propName, int index, String methodName){
+        return new BindInfo(view, propName, index, methodName);
+    }
+
+    /**
+     * add a bind info
+     * @param bindInfo the bind info to add.
+     */
     public void addBindInfo(BindInfo bindInfo){
         mBinds.add(bindInfo);
     }
-
     /**
      * set the binder class.
      * @param binderClass the binder class.
@@ -48,6 +65,7 @@ public abstract class DataBinding<T> {
     public void setBinderFactory(BinderFactory factory) {
         this.mBinderFactory = factory;
     }
+
     /**
      * get the target
      * @return the target
@@ -92,6 +110,18 @@ public abstract class DataBinding<T> {
      * bind data to the all defined bind views
      * @param data the module data
      * @param extraParams the extra parameters, can be null . if no need.
+     * @param interceptor the property interceptor
+     * @param <D> the module data type
+     * @return the binder
+     */
+    @SuppressWarnings("unchecked")
+    public <D> Binder<D> bind(D data, @Nullable Object[] extraParams, @Nullable PropertyInterceptor interceptor) {
+        return bind(data, extraParams, 0, interceptor);
+    }
+    /**
+     * bind data to the all defined bind views
+     * @param data the module data
+     * @param extraParams the extra parameters, can be null . if no need.
      * @param index the index
      * @param interceptor the property interceptor
      * @param <D> the module data type
@@ -128,6 +158,7 @@ public abstract class DataBinding<T> {
         }
         return binder;
     }
+
     /**
      * bind data to the all defined bind views. and apply it immediately.
      * @param data the module data
@@ -143,6 +174,10 @@ public abstract class DataBinding<T> {
     }
 
     private static void bindInternal(Binder<?> binder, BindInfo info, Object[] extraParams) {
+        //verify property name
+        verifyPropertyName(binder, info);
+
+        //------- start handle parameters of bind method ------------
         Object[] params = { info.propName, info.view };
         int preLength = params.length;
         //if need add internal parameter which is imported by annotation
@@ -173,17 +208,24 @@ public abstract class DataBinding<T> {
         }
     }
 
-    /**
-     * create bind info
-     * @param view the view
-     * @param propName the property name
-     * @param index the index
-     * @param methodName the method name
-     * @return an instance of Binder info
-     * @see BindInfo
-     */
-    public static BindInfo createBindInfo(Object view, String propName, int index, String methodName){
-        return new BindInfo(view, propName, index, methodName);
+    private static void verifyPropertyName(Binder<?> binder, BindInfo info) {
+        final Class<?> clazz = binder.getData().getClass();
+
+        Field field = null;
+        Class<?> curClazz = clazz;
+        while(curClazz != Object.class && !curClazz.getName().startsWith("java.")
+                && !curClazz.getName().startsWith("android.") ) {
+            try {
+                field = curClazz.getDeclaredField(info.propName);
+                break;
+            } catch (NoSuchFieldException e) {
+                curClazz = curClazz.getSuperclass();
+            }
+        }
+        if(field == null){
+            throw new RuntimeException(String.format("can't find property '%s' from class(%s)",
+                    info.propName, clazz.getName()));
+        }
     }
 
     /**

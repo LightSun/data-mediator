@@ -15,6 +15,7 @@ import com.heaven7.java.data.mediator.bind.BindBackground;
 import com.heaven7.java.data.mediator.bind.BindBackgroundColor;
 import com.heaven7.java.data.mediator.bind.BindBackgroundRes;
 import com.heaven7.java.data.mediator.bind.BindEnable;
+import com.heaven7.java.data.mediator.bind.BindVisibility;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,6 +37,9 @@ public class TestViewBindActivity extends BaseActivity {
 
     @BindView(R.id.v_bg_res)@BindBackgroundRes("backgroundRes")
     View mV_bg_res;
+
+    @BindView(R.id.v_visibility)@BindVisibility("visiblexxx")
+    View mV_visibility;
 
     private Binder<ViewBind> binder;
 
@@ -88,6 +92,10 @@ public class TestViewBindActivity extends BaseActivity {
     public void onClickChangeEnable(View v){
         //改变enable 状态
         binder.getDataProxy().setEnable(!binder.getData().isEnable());
+    }
+    @OnClick(R.id.bt_change_visibility)
+    public void onClickChangeVisibility(View v){
+        binder.getDataProxy().setVisible(!binder.getDataProxy().isVisible());
     }
 
     private void initResource(Context context) {

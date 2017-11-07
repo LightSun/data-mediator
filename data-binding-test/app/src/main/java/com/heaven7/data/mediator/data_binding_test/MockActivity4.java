@@ -12,4 +12,9 @@ public class MockActivity4 extends MockActivity3 {
 
     @BindText("tv_class")
     TextView mtv_class;
+
+    public static class Internal extends MockActivity2.TestActivityN{
+        @BindText("tv_internal")
+        TextView mtv_internal;
+    }
 }

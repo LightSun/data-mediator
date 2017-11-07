@@ -35,7 +35,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
  */
 public class GsonSupport {
 
-    private static final String SUFFIX_IMPL = "_$Impl";
+   // private static final String SUFFIX_IMPL = "_$Impl";
 
     /**
      * convert the target object to json. currently support simple object, array , list. SparseArray
@@ -44,10 +44,6 @@ public class GsonSupport {
      * @see SparseArray
      */
     public static String toJson(Object t) {
-        String ImplName = t.getClass().getName();
-        if (!ImplName.endsWith(SUFFIX_IMPL)) {
-            throw new IllegalArgumentException("target object(" + ImplName + ") can't convert to json!");
-        }
         GsonBuilder builder = new GsonBuilder()
                 .setVersion(GlobalSetting.getDefault().getGsonVersion());
 

@@ -16,6 +16,7 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
         @Field(propName = "backgroundRes" , type = int.class),
         @Field(propName = "backgroundColor" , type = int.class),
         @Field(propName = "background" , type = Drawable.class),
+        @Field(propName = "visible" , type = boolean.class),
 }, generateJsonAdapter = false)
 public interface ViewBind extends DataPools.Poolable {
 
@@ -23,6 +24,7 @@ public interface ViewBind extends DataPools.Poolable {
     Property PROP_backgroundRes = SharedProperties.get("int", "backgroundRes", 0);
     Property PROP_backgroundColor = SharedProperties.get("int", "backgroundColor", 0);
     Property PROP_background = SharedProperties.get("android.graphics.drawable.Drawable", "background", 0);
+    Property PROP_visible = SharedProperties.get("boolean", "visible", 0);
 
     ViewBind setEnable(boolean enable1);
 
@@ -38,7 +40,11 @@ public interface ViewBind extends DataPools.Poolable {
 
     ViewBind setBackground(Drawable background1);
 
-    Drawable getBackground();/*
+    Drawable getBackground();
+
+    ViewBind setVisible(boolean visible1);
+
+    boolean isVisible();/*
 ================== start methods from super properties ===============
 ======================================================================= */
 }
