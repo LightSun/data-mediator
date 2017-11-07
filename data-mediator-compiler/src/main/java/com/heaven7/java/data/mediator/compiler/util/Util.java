@@ -20,6 +20,11 @@ import static com.heaven7.java.data.mediator.compiler.FieldData.*;
  */
 public final class Util {
 
+    public static String getTargetClassName(String packageName, String fullName){
+        int packageLen = packageName.length() + 1;
+        return fullName.substring(packageLen).replace('.', '$');
+    }
+
     public static MethodSpec.Builder createToStringBuilderForImpl(List<FieldData> dataList, boolean hasSuper){
         ClassName cn_objects = ClassName.get(PKG_JAVA_BASE_UTIL, SIMPLE_NAME_ObJECTS);
         MethodSpec.Builder toStringBuilder = MethodSpec.methodBuilder("toString")

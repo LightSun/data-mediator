@@ -25,7 +25,7 @@ public class DataBindingGenerator extends BaseGenerator {
 
     public boolean generate(TypeElement element, DataBindingInfo info){
         final ClassName cn_target = ClassName.get(element);
-        final TypeSpec.Builder builder = TypeSpec.classBuilder(element.getSimpleName() + DATA_BINDING_SUFFIX)
+        final TypeSpec.Builder builder = TypeSpec.classBuilder(getContext().getTargetClassName(element) + DATA_BINDING_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
                 .addTypeVariable(TypeVariableName.get("T", TypeName.OBJECT, cn_target));
         //super class
@@ -34,15 +34,14 @@ public class DataBindingGenerator extends BaseGenerator {
         final ClassName cn_data_binding = ClassName.get(PKG_PROP, SN_DATA_BINDING);
         if(superClass != null){
             final String packageName = getElements().getPackageOf(superClass).getQualifiedName().toString();
-            final String simpleName = superClass.getSimpleName().toString();
             realSuper_tn = ParameterizedTypeName.get(
-                    ClassName.get(packageName, simpleName + DATA_BINDING_SUFFIX),
-                    ClassName.get("","T")
+                    ClassName.get(packageName, getContext().getTargetClassName(superClass) + DATA_BINDING_SUFFIX),
+                    TypeVariableName.get("T")
             );
         }else{
             realSuper_tn = ParameterizedTypeName.get(
                     cn_data_binding,
-                    ClassName.get("","T")
+                    TypeVariableName.get("T")
             );
         }
         builder.superclass(realSuper_tn);

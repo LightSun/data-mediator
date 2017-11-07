@@ -90,6 +90,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         final boolean normalJavaBean = !mEnableChain;
         final String log_method = "generateJavaFile";
         //package name
+        final String fullName = mElement.getQualifiedName().toString();
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
         final  List<? extends TypeMirror> interfaces = mElement.getInterfaces();
         mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);

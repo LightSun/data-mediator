@@ -20,6 +20,10 @@ public class BaseGenerator {
     public BaseGenerator(ProcessorContext context) {
         this.mContext = context;
     }
+
+    public ProcessorContext getContext() {
+        return mContext;
+    }
     public ProcessorPrinter getProcessorPrinter() {
         return mContext.getProcessorPrinter();
     }
