@@ -52,9 +52,9 @@ public class CheckUtils {
                 + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
-        // can't be private, current can't be static
+        // can't be private
         Set<Modifier> modifiers = element.getModifiers();
-        if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
+        if (modifiers.contains(PRIVATE) ) {
             String msg = String.format("class %s annotated by @%s must not be private or static.",
                     qualifiedName,  clazz.getSimpleName());
             pp.note(TAG, "isValid", enclosingElement, msg);

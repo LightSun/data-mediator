@@ -39,7 +39,7 @@ public class ProxyGenerator {
                 ClassName.get(PKG_PROP, SIMPLE_NAME_BASE_MEDIATOR), cn_inter);
 
         //proxy
-        TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(interfaceName + PROXY_SUFFIX)
+        TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(Util.getClassName(interfaceName) + PROXY_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(superTypeName)
                 .addSuperinterface(cn_inter);

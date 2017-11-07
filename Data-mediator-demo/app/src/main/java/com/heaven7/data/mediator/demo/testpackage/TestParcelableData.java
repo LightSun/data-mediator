@@ -2,6 +2,7 @@ package com.heaven7.data.mediator.demo.testpackage;
 
 import android.os.Parcelable;
 
+import com.heaven7.data.mediator.demo.module.Outter;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
@@ -15,7 +16,11 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 import java.io.Serializable;
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.FieldFlags.*;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_SPARSE_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
+import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
 /**
  * Created by heaven7 on 2017/9/9.
  */
@@ -82,13 +87,13 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
         @Field(propName = "test_String_array", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
         @Field(propName = "test_String_list", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
 //any object
-        @Field(propName = "test_ResultData", type = ResultData.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "test_ResultData_list", type = ResultData.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_ResultData_array", type = ResultData.class, flags = FLAGS_MAIN_SCOPES, complexType = COMPLEXT_ARRAY),
+        @Field(propName = "test_ResultData", type = Outter.TestSelfMethod3.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "test_ResultData_list", type = Outter.TestSelfMethod3.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
+        @Field(propName = "test_ResultData_array", type = Outter.TestSelfMethod3.class, flags = FLAGS_MAIN_SCOPES, complexType = COMPLEXT_ARRAY),
 // sparseArray
-        @Field(propName = "test_SparseArray", type = ResultData.class,
+        @Field(propName = "test_SparseArray", type = Outter.TestSelfMethod3.class,
                 complexType = COMPLEX_SPARSE_ARRAY, flags = FLAGS_ALL_SCOPES),
-}, maxPoolCount = 100)
+}, maxPoolCount = 100, generateJsonAdapter = false)
 public interface TestParcelableData extends Parcelable, Serializable, IResetable, DataPools.Poolable {
 
     Property PROP_test_int = SharedProperties.get("int", "test_int", 0);
@@ -143,10 +148,10 @@ public interface TestParcelableData extends Parcelable, Serializable, IResetable
     Property PROP_test_String = SharedProperties.get("java.lang.String", "test_String", 0);
     Property PROP_test_String_array = SharedProperties.get("java.lang.String", "test_String_array", 1);
     Property PROP_test_String_list = SharedProperties.get("java.lang.String", "test_String_list", 2);
-    Property PROP_test_ResultData = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "test_ResultData", 0);
-    Property PROP_test_ResultData_list = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "test_ResultData_list", 2);
-    Property PROP_test_ResultData_array = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "test_ResultData_array", 1);
-    Property PROP_test_SparseArray = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "test_SparseArray", 3);
+    Property PROP_test_ResultData = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData", 0);
+    Property PROP_test_ResultData_list = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData_list", 2);
+    Property PROP_test_ResultData_array = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData_array", 1);
+    Property PROP_test_SparseArray = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_SparseArray", 3);
 
     TestParcelableData setTest_int(int test_int1);
 
@@ -390,25 +395,25 @@ public interface TestParcelableData extends Parcelable, Serializable, IResetable
 
     ListPropertyEditor<? extends TestParcelableData, String> beginTest_String_listEditor();
 
-    TestParcelableData setTest_ResultData(ResultData test_ResultData1);
+    TestParcelableData setTest_ResultData(Outter.TestSelfMethod3 test_ResultData1);
 
-    ResultData getTest_ResultData();
+    Outter.TestSelfMethod3 getTest_ResultData();
 
-    TestParcelableData setTest_ResultData_list(List<ResultData> test_ResultData_list1);
+    TestParcelableData setTest_ResultData_list(List<Outter.TestSelfMethod3> test_ResultData_list1);
 
-    List<ResultData> getTest_ResultData_list();
+    List<Outter.TestSelfMethod3> getTest_ResultData_list();
 
-    ListPropertyEditor<? extends TestParcelableData, ResultData> beginTest_ResultData_listEditor();
+    ListPropertyEditor<? extends TestParcelableData, Outter.TestSelfMethod3> beginTest_ResultData_listEditor();
 
-    TestParcelableData setTest_ResultData_array(ResultData[] test_ResultData_array1);
+    TestParcelableData setTest_ResultData_array(Outter.TestSelfMethod3[] test_ResultData_array1);
 
-    ResultData[] getTest_ResultData_array();
+    Outter.TestSelfMethod3[] getTest_ResultData_array();
 
-    TestParcelableData setTest_SparseArray(SparseArray<ResultData> test_SparseArray1);
+    TestParcelableData setTest_SparseArray(SparseArray<Outter.TestSelfMethod3> test_SparseArray1);
 
-    SparseArray<ResultData> getTest_SparseArray();
+    SparseArray<Outter.TestSelfMethod3> getTest_SparseArray();
 
-    SparseArrayPropertyEditor<? extends TestParcelableData, ResultData> beginTest_SparseArrayEditor();/*
+    SparseArrayPropertyEditor<? extends TestParcelableData, Outter.TestSelfMethod3> beginTest_SparseArrayEditor();/*
 ================== start methods from super properties ===============
 ======================================================================= */
 }

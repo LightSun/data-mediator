@@ -3,6 +3,7 @@ package com.heaven7.java.data.mediator.compiler;
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.compiler.util.MockTypeMirror;
+import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 
@@ -236,39 +237,22 @@ public class FieldData {
                 pp.note("TypeCompat", "replaceIfNeed", "Element = null");
             }else{
                 boolean needReplace = false;
-                //when depend another interface(@Fields) need reply.
+                //when depend another interface(@Fields) need replace. Note: @Retention CLASS
                 List<? extends AnnotationMirror> mirrors = getElementAsType().getAnnotationMirrors();
                 for(AnnotationMirror am : mirrors){
                     DeclaredType type = am.getAnnotationType();
                    // pp.note("TypeCompat", "replaceIfNeed", "type = " + type);
                     if(type.toString().equals(Fields.class.getName())){
-                        //need replace.
                         needReplace = true;
                         break;
                     }
                 }
                 if(needReplace){
-                    final String str = tm.toString();
-                    int lastIndexOfDot = str.lastIndexOf(".");
-                    mTypeName_impl = ClassName.get(str.substring(0, lastIndexOfDot),
-                            str.substring(lastIndexOfDot + 1)+  DataMediatorConstants.IMPL_SUFFIX );
-                  //  pp.note("TypeCompat", "replaceIfNeed", "find depend , interface = " + str);
-                }else{
-                  //  pp.note("TypeCompat", "replaceIfNeed", " [can't] find depend , interface = " + tm.toString());
-                     /*
-                     * here have a bug . if one module depend another.(all have annotation @Fields)
-                     * To resolve it . we just judge it has 'IMPL_SUFFIX' or not.
-                     * or make all annotation @Retention CLASS.
-                     */
-                    String  name = tm.toString();
-                    String expectImplName = name + DataMediatorConstants.IMPL_SUFFIX;
-                    final TypeElement temp_te = elements.getTypeElement(expectImplName);
-                    if(temp_te != null){
-                        int lastIndexOfDot = name.lastIndexOf(".");
-                        mTypeName_impl = ClassName.get(name.substring(0, lastIndexOfDot),
-                                name.substring(lastIndexOfDot + 1)
-                                        +  DataMediatorConstants.IMPL_SUFFIX);
-                    }
+                    TypeElement typeElement = getElementAsType();
+                    String packageName = elements.getPackageOf(typeElement).getQualifiedName().toString();
+                    mTypeName_impl = ClassName.get(packageName,
+                            Util.getTargetClassName(packageName, typeElement.getQualifiedName().toString())
+                                    +  DataMediatorConstants.IMPL_SUFFIX );
                 }
             }
         }

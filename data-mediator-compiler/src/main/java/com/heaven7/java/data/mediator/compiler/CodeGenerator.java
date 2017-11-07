@@ -100,7 +100,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
         //super fields
         final Set<FieldData> superFields = new HashSet<>();
-        final String interfaceName = mElement.getSimpleName().toString();
+        final String interfaceName = Util.getRawTargetClassName(packageName, fullName);
         final TypeName selfParamType = ClassName.get(packageName, interfaceName);
         mPrinter.note(TAG, log_method,  "start element = " +
                 packageName + "." + interfaceName, " , superFields = " + superFields);
@@ -114,7 +114,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         mClassInfo.setGenerateJsonAdapter(mGenerateJsonAdapter);
 
         //to generate impl class and proxy
-        final String className = mElement.getSimpleName() + DataMediatorConstants.IMPL_SUFFIX;
+        final String className = Util.getTargetClassName(packageName, fullName) + DataMediatorConstants.IMPL_SUFFIX;
         TypeSpec.Builder implBuilder = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC);
         //doc
@@ -249,7 +249,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             classFile.writeTo(filer);
 
             //handle proxy class.
-            mClassInfo.setCurrentClassname(interfaceName + PROXY_SUFFIX);
+            mClassInfo.setCurrentClassname(Util.getClassName(interfaceName) + PROXY_SUFFIX);
             mClassInfo.setSuperClass(null);
 
             //generate some method from super class.

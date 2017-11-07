@@ -31,7 +31,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 @SupportedAnnotationTypes({
         "com.heaven7.java.data.mediator.Fields",
         "com.heaven7.java.data.mediator.GlobalConfig"
-})                       //可以用"*"表示支持所有Annotations
+})                       //use "*" indicate support all Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider{
 
@@ -171,9 +171,9 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
                 + " ,full name is: " + qualifiedName);
 
         boolean isValid = true;
-        // can't be private, current can't be static
+        // can't be private,
         Set<Modifier> modifiers = element.getModifiers();
-        if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
+        if (modifiers.contains(PRIVATE) ) {
             String msg = String.format("@%s %s must not be private or static. (%s.%s)",
                     annotationClass.getSimpleName(),
                     targetThing, enclosingElement.getQualifiedName(), element.getSimpleName());

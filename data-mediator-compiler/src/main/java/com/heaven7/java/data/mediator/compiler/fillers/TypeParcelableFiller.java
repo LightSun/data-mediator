@@ -336,7 +336,6 @@ public class TypeParcelableFiller extends TypeInterfaceFiller {
         }
     }
 
-    //TODO next version will support SparseArray and etc.
     private void addReadParcelStatement(MethodSpec.Builder builder, FieldData fieldData, String in) {
 
         final FieldData.TypeCompat typeCompat = fieldData.getTypeCompat();
