@@ -28,7 +28,7 @@ dependencies {
 
     // gson-support( added since 1.2.0)
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.4'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.0-beta6'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.0-beta7'
 
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.0-beta3'
     annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.3.1-beta21'
@@ -45,4 +45,6 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:8.5.1"
     compile 'com.jakewharton:butterknife:8.5.1'
     compile project(':testgenerate')
+
+    compile 'com.github.bumptech.glide:glide:4.3.1'
 }

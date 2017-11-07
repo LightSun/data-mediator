@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/bt_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="change image url"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bt_bitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="change bitmap"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/bt_drawable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="change drawable"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_res"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="change image resource"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/iv_url"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="29dp"
+        android:scaleType="centerCrop"
+        />
+    <ImageView
+        android:id="@+id/iv_bitmap"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        />
+    <ImageView
+        android:id="@+id/iv_drawable"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="20dp"
+        />
+    <ImageView
+        android:id="@+id/iv_res"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="20dp"
+        />
+</LinearLayout>

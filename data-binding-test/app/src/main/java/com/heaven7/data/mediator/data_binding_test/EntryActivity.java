@@ -1,5 +1,6 @@
 package com.heaven7.data.mediator.data_binding_test;
 
+import com.heaven7.data.mediator.data_binding_test.sample.TestImageViewBindActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.TestViewBindActivity;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public class EntryActivity extends AbsMainActivity {
     @Override
     protected void addDemos(List<ActivityInfo> list) {
         list.add(new ActivityInfo(TestViewBindActivity.class));
+        list.add(new ActivityInfo(TestImageViewBindActivity.class));
     }
 }
