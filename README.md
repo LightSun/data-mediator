@@ -230,6 +230,14 @@ public class TestPropertyChangeActivity extends BaseActivity {
    *;
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
+# needed since 1.4.0
+-keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{
+  *;
+}
+# needed since 1.4.0
+-keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{
+   *;
+}
 # needed since 1.1.3
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 # needed since 1.2.2 
