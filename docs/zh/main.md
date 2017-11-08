@@ -204,6 +204,7 @@ public interface FlowItem extends Parcelable{
  <br> 绑定以后操作数据代理就是操作view. (使用请参考下面[进阶指南](#进阶指南))
  - 完美搭配gson（支持所有Gson注解）。
  - 支持自定义方法，字段, 可实现任意接口.(使用请参考下面[进阶指南](#进阶指南))
+ - 支持数据绑定及相关注解 完美搭配butterknife.
 
 # 安装
  * 安装idea插件。（see release）
