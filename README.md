@@ -21,7 +21,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 * 8, support data cache.  [Detail](docs/en/data_cache.md)
 * 9, support List/SparseArray Editor with their callbacks.  [Detail](docs/en/listen_property_change.md)
 * 10, support depend or extend other data model.
-* 11. Full support Data-binding on android. [Detail](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
+* 11, Full support Data-binding on android. [Detail](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in release.
