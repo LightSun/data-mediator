@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * all proxy class should extend this class.
  * Created by heaven7 on 2017/9/11 0011.
  */
-public class BaseMediator<T> {
+public class BaseMediator<T>{
 
     private final ArrayList<DataMediatorCallback<? super T>> _mCallbacks;
     private final T _mTarget;
@@ -37,6 +37,7 @@ public class BaseMediator<T> {
     private PropertyInterceptor _mInterceptor = PropertyInterceptor.NULL;
     //temps
     private SparseArrayDispatcher _mSparseArrayDispatcher;
+    private PropertyCollector _mCollector;
 
     /**
      * create a base mediator by target object. called often by framework.
@@ -194,6 +195,44 @@ public class BaseMediator<T> {
         applyTo(_mConsumer);
     }
 
+    /**
+     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches()}.
+     * for example: if you have a item data in adapter. but we don't want to update adapter
+     * on every property change. you should call this to resolve it.
+     * <p> Here is a demo.
+     * <pre>
+     *     DataMediator{@literal <}Student{@literal >} dm = ...;
+     *     dm.getBaseMediator().beginBatchedDispatches();
+     *     dm.getDataProxy().setId(xx)
+     *               .setName(xxx)
+     *               .setGrade(xxx)...;
+     *      dm.getBaseMediator().endBatchedDispatches();
+     * </pre>
+     * </p>
+     * @since 1.4.1
+     */
+    public void beginBatchedDispatches(){
+        if(_mCollector == null){
+            _mCollector = new PropertyCollectorImpl();
+        }
+        _mCollector.open();
+    }
+    /**
+     * Ends the dispatch transaction and dispatches any remaining event to the callback.
+     * @since 1.4.1
+     */
+    public void endBatchedDispatches(){
+        _mCollector.close(new PropertyReceiver() {
+            @Override
+            public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
+                BaseMediator.this.dispatchValueChanged(prop, oldValue, newValue);
+            }
+            @Override
+            public void dispatchValueApplied(Property prop, Object value) {
+                BaseMediator.this.dispatchValueApplied(prop, value);
+            }
+        });
+    }
 //=========================================================================
 
     /**
@@ -217,7 +256,12 @@ public class BaseMediator<T> {
      * @param newValue the new value of property
      * @since 1.0.8
      */
+    @SuppressWarnings("unchecked")
     public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
+        if(_mCollector != null && _mCollector.isOpened()){
+            _mCollector.dispatchValueChanged(prop, oldValue, newValue);
+            return;
+        }
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
             arrLocal[i].onPropertyValueChanged(_mTarget, prop, oldValue, newValue);
@@ -231,7 +275,12 @@ public class BaseMediator<T> {
      * @param value the value of property.
      * @since 1.0.8
      */
+    @SuppressWarnings("unchecked")
     public void dispatchValueApplied(Property prop, Object value) {
+        if(_mCollector != null && _mCollector.isOpened()){
+            _mCollector.dispatchValueApplied(prop, value);
+            return;
+        }
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
             arrLocal[i].onPropertyApplied(_mTarget, prop, value);
@@ -243,9 +292,10 @@ public class BaseMediator<T> {
      *
      * @param prop       the property which is changed.
      * @param newValue   the newest value of property
-     * @param addedValue the values which is added.
+     * @param addedValue the values which were added.
      * @since 1.0.8
      */
+    @SuppressWarnings("unchecked")
     public void dispatchAddValues(Property prop, Object newValue, Object addedValue) {
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
@@ -262,6 +312,7 @@ public class BaseMediator<T> {
      * @param index    the index to add.
      * @since 1.0.8
      */
+    @SuppressWarnings("unchecked")
     public void dispatchAddValuesWithIndex(Property prop, Object newValue, Object addValue, int index) {
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
@@ -278,6 +329,7 @@ public class BaseMediator<T> {
      * @param removeValues the values which is removed..
      * @since 1.0.8
      */
+    @SuppressWarnings("unchecked")
     public void dispatchRemoveValues(Property prop, Object newValue, Object removeValues) {
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
@@ -293,6 +345,7 @@ public class BaseMediator<T> {
      * @param index the index.
      * @since 1.1.2
      */
+    @SuppressWarnings("unchecked")
     public void dispatchItemChanged(Property prop, Object oldItem, Object newItem , int index) {
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
@@ -354,6 +407,7 @@ public class BaseMediator<T> {
          * @param key the key of entry
          * @param value the value of entry
          */
+        @SuppressWarnings("unchecked")
         public void dispatchAddEntry(Property prop, int key, Object value){
             final DataMediatorCallback[] callbacks = _getCallbacks();
             final T target = _getTarget();
@@ -371,6 +425,7 @@ public class BaseMediator<T> {
          * @param oldValue the old value of entry
          * @param newValue the new value of entry
          */
+        @SuppressWarnings("unchecked")
         public void dispatchChangeEntryValue(Property prop, int key, Object oldValue, Object newValue){
             final DataMediatorCallback[] callbacks = _getCallbacks();
             final T target = _getTarget();
@@ -387,6 +442,7 @@ public class BaseMediator<T> {
          * @param key the key of entry
          * @param value the value of entry
          */
+        @SuppressWarnings("unchecked")
         public void dispatchRemoveEntry(Property prop, int key, Object value){
             final DataMediatorCallback[] callbacks = _getCallbacks();
             final T target = _getTarget();
@@ -403,6 +459,7 @@ public class BaseMediator<T> {
          * @param entries the all entries which were  removed.
          *                type is {@linkplain com.heaven7.java.base.util.SparseArray}.
          */
+        @SuppressWarnings("unchecked")
         public void dispatchClearEntries(Property prop, Object entries){
             final DataMediatorCallback[] callbacks = _getCallbacks();
             final T target = _getTarget();
@@ -450,6 +507,7 @@ public class BaseMediator<T> {
         /**
          * batch apply the properties with theirs' value.
          */
+        @SuppressWarnings("unchecked")
         public void apply() {
             final T data = mMediator._getTarget();
             final DataMediatorCallback[] arrLocal = mMediator._getCallbacks();

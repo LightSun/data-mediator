@@ -24,3 +24,6 @@ javax.lang.module Elements 等之类的封装。参考项目: juzu
 1.1.3
    避免属性冲突 for BaseMediator. ok
    prepare SparseArray/map  doing (MapPropertyCallback, SparseArrayPropertyCallback, SparseArrayPropertyEditor)
+
+
+deprecated. BaseMediator. android lib

@@ -46,6 +46,33 @@ public final class DataMediator<T> {
     }
 
     /**
+     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches()}.
+     * for example: if you have a item data in adapter. but we don't want to update adapter
+     * on every property change. you should call this to resolve it.
+     * <p> Here is a demo.
+     * <pre>
+     *     DataMediator{@literal <}Student{@literal >} dm = ...;
+     *     dm.beginBatchedDispatches();
+     *     dm.getDataProxy().setId(xx)
+     *               .setName(xxx)
+     *               .setGrade(xxx)...;
+     *      dm.endBatchedDispatches();
+     * </pre>
+     * </p>
+     * @since 1.4.1
+     */
+    public void beginBatchedDispatches(){
+        getBaseMediator().beginBatchedDispatches();
+    }
+    /**
+     * Ends the dispatch transaction and dispatches any remaining event to the callback.
+     * @since 1.4.1
+     */
+    public void endBatchedDispatches(){
+        getBaseMediator().endBatchedDispatches();
+    }
+
+    /**
      * get the exact module data.
      * @return the module data.
      */
@@ -59,6 +86,7 @@ public final class DataMediator<T> {
      * @see BaseMediator
      * @since 1.0.6
      */
+    @SuppressWarnings("unchecked")
     public final T getDataProxy(){
         return (T) mediator;
     }

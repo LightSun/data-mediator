@@ -76,6 +76,18 @@ public class TestImageViewBindActivity extends BaseActivity implements DataBindi
     public void onClickRes(View v){
         mBinder.getDataProxy().setImageRes(mResHelper.toggleRes());
     }
+
+    /**
+     * {@inheritDoc}. bind imageUrl need pass extra parameter: 'ViewHelper.IImageLoader'
+     * @param data the module data.
+     * @param property the property
+     * @return the parameter of data-binding for target data and property.
+     * @see Binder#bindImageUrl(String, Object, Object)
+     * @see com.heaven7.java.data.mediator.bind.BinderClass
+     * @see com.heaven7.java.data.mediator.bind.BinderFactoryClass
+     * @see Binder
+     * @see com.heaven7.java.data.mediator.BinderFactory
+     */
     @Override //bind imageUrl need pass extra parameter: 'ViewHelper.IImageLoader'
     public Object[] getParameters(Object data, String property) {
         // why here use 'ViewHelper.IImageLoader' ?
