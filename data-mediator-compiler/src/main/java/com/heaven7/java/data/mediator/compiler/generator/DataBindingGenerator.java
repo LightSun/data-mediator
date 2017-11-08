@@ -27,6 +27,7 @@ public class DataBindingGenerator extends BaseGenerator {
         final ClassName cn_target = ClassName.get(element);
         final TypeSpec.Builder builder = TypeSpec.classBuilder(getContext().getTargetClassName(element) + DATA_BINDING_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
+                .addJavadoc(CodeBlock.of(DOC))
                 .addTypeVariable(TypeVariableName.get("T", TypeName.OBJECT, cn_target));
         //super class
         final TypeElement superClass = info.getSuperClass();
