@@ -25,6 +25,7 @@ public abstract class DataBinding<T> {
     private Class<? extends Binder> mBinderClass;
 
     /**
+     * <p>Note: We recommend you use {@linkplain SimpleParameterSupplier} instead.</p>
      * interface for supply parameters which is used for data-binding when we need additional parameters.
      * @author heaven7
      * @since 1.4.0
@@ -227,8 +228,10 @@ public abstract class DataBinding<T> {
         //verify property name
         verifyPropertyName(binder, info);
         //extra parameters
-        final Object[] extraParams = supplier == null ? null :
-                supplier.getParameters(binder.getData(), info.propName);
+        final Object[] extraParams = supplier == null ? null :(
+                (supplier instanceof SimpleParameterSupplier) ?
+                ((SimpleParameterSupplier) supplier).getParameters(binder.getData(), info.propName, info.methodName, info.methodTypes)
+                        : supplier.getParameters(binder.getData(), info.propName) );
 
         //------- start handle parameters of bind method ------------
         Object[] params = {info.propName, info.view};
@@ -279,6 +282,46 @@ public abstract class DataBinding<T> {
             throw new RuntimeException(String.format("can't find property '%s' from class(%s)",
                     info.propName, clazz.getName()));
         }
+    }
+
+    /**
+     * the simple parameter supplier.
+     * @author heaven7
+     * @since 1.4.1
+     * @see ParameterSupplier
+     */
+    public static abstract class SimpleParameterSupplier implements ParameterSupplier{
+
+        @Override
+        public Object[] getParameters(Object data, String property) {
+            return getParameters(data, property, null, null);
+        }
+
+        /**
+         * get additional parameters by target data module , property,binder method name and method parameterTypes.
+         * @param data the data module
+         * @param property the property
+         * @param method the method name of Binder.
+         * @param methodTypes the method parameter types of Binder.
+         * @return the additional parameters. null means default parameters.
+         * @see Binder
+         */
+        public Object[] getParameters(Object data, String property, String method, Class<?>[] methodTypes) {
+            if(!"bindImageUrl".equals(method)){
+                return null;
+            }
+            Object loader = getImageLoader();
+            if(loader == null){
+                throw new IllegalArgumentException("you must assign the image loader. can't be null.");
+            }
+            return new Object[]{ loader};
+        }
+
+        /**
+         * get the image loader. which is used to {@linkplain Binder#bindImageUrl(String, Object, Object)}.
+         * @return the image loader to load image url. can't be null.
+         */
+        protected abstract Object getImageLoader();
     }
 
     /**

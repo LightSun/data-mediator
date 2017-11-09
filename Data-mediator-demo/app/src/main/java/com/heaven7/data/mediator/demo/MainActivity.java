@@ -3,6 +3,7 @@ package com.heaven7.data.mediator.demo;
 
 import com.heaven7.data.mediator.demo.activity.TestAnalyseActivity;
 import com.heaven7.data.mediator.demo.activity.TestChainCallActivity;
+import com.heaven7.data.mediator.demo.activity.TestDatabindingAdapter;
 import com.heaven7.data.mediator.demo.activity.TestDoubleBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestParcelableDataActivity;
 import com.heaven7.data.mediator.demo.activity.TestPropertyChangeActivity;
@@ -54,5 +55,6 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestSparseArrayActivity.class, "Test sparse array callback"));
         list.add(new ActivityInfo(TestAnalyseActivity.class, "Test analyse"));
         list.add(new ActivityInfo(TestSelfMethodWithImplInterface.class, "Test self method/interface"));
+        list.add(new ActivityInfo(TestDatabindingAdapter.class, "Test Data-binding adapter"));
     }
 }

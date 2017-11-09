@@ -54,9 +54,9 @@ dependencies {
     apt 'com.squareup:javapoet:1.9.0'
     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.0'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
-    compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.0'
+    //compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.0'
 
-    //compile project(':data-mediator-android')
+    compile project(':data-mediator-android')
     //helper util
     compile 'com.heaven7.core.util:util-v1:1.1.2'
     compile 'com.heaven7.android.util2:android-util2:1.1.8'

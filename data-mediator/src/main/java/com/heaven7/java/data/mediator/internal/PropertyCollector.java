@@ -1,11 +1,13 @@
-package com.heaven7.java.data.mediator;
+package com.heaven7.java.data.mediator.internal;
+
+import com.heaven7.java.data.mediator.PropertyReceiver;
 
 /**
  * the property collector.
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.1
  */
-public interface PropertyCollector extends PropertyDispatcher{
+public interface PropertyCollector extends PropertyDispatcher {
 
     /**
      * open property collector.

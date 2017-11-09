@@ -1,4 +1,6 @@
-package com.heaven7.java.data.mediator;
+package com.heaven7.java.data.mediator.internal;
+
+import com.heaven7.java.data.mediator.Property;
 
 /**
  * the property dispatcher. <br/>

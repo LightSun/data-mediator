@@ -1,5 +1,7 @@
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.data.mediator.internal.PropertyCollector;
+
 import java.util.LinkedList;
 
 /**

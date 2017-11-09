@@ -129,22 +129,16 @@
 }
 
 #data-mediator.
--keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
-   *;
-}
--keepclasseswithmembers public interface * extends com.heaven7.java.data.mediator.DataPools$Poolable{
-   *;
-}
--keep class * extends com.heaven7.java.data.mediator.BaseMediator{
-   *;
-}
+-keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{*;}
+-keepclasseswithmembers public interface * extends com.heaven7.java.data.mediator.DataPools$Poolable{ *;}
+
+-keep class * extends com.heaven7.java.data.mediator.BaseMediator{*;}
 -keep class com.heaven7.java.data.mediator.BaseMediator
--keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{
-  *;
-}
--keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{
-   *;
-}
+
+-keepclasseswithmembers public class com.heaven7.java.data.mediator.Binder { *; }
+-keepclasseswithmembers public class * extends com.heaven7.java.data.mediator.Binder { *; }
+-keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
+
 -keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
