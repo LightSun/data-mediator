@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.heaven7.android.data.mediator.DataBindingRecyclerAdapter;
+import com.heaven7.android.data.mediator.adapter.DataBindingRecyclerAdapter;
+import com.heaven7.android.data.mediator.adapter.ItemManager;
 import com.heaven7.data.mediator.demo.R;
 import com.heaven7.data.mediator.demo.testpackage.Student;
-import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.bind.BindText;
 
@@ -36,6 +36,8 @@ public class TestDatabindingAdapter extends BaseActivity {
     @BindView(R.id.rv)
     RecyclerView mRv;
 
+    private InternalAdapter mAdapter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.ac_test_databinding_adapter;
@@ -44,13 +46,20 @@ public class TestDatabindingAdapter extends BaseActivity {
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
         mRv.setLayoutManager(new LinearLayoutManager(context));
-        mRv.setAdapter(new InternalAdapter(createItems()));
+        mRv.setAdapter(mAdapter = new InternalAdapter(createItems()));
+    }
+
+    @OnClick(R.id.bt_remove_item)
+    public void onClickRemove(View v){
+        ItemManager<Student> manager = mAdapter.getItemManager();
+        int itemCount = manager.getItemSize();
+        manager.removeItemAt(new Random().nextInt(itemCount));
     }
 
     private static List<Student> createItems() {
         List<Student> list = new ArrayList<>();
         //just mock data
-        final int count = sRan.nextInt(20) + 1;
+        final int count = 20;
         for (int i =0 ; i< count ; i++){
             list.add(createItem());
         }
@@ -58,10 +67,13 @@ public class TestDatabindingAdapter extends BaseActivity {
     }
     private static Student createItem(){
         Student data = DataMediatorFactory.createData(Student.class);
-        data.setAge(sRan.nextInt(10001));
+        data.setAge(sIndex ++ );
         data.setName("google__" + sRan.nextInt(100));
         return data;
     }
+
+    private static int sIndex = 0;
+
 
     private static class InternalAdapter extends DataBindingRecyclerAdapter<Student>{
 
@@ -69,9 +81,9 @@ public class TestDatabindingAdapter extends BaseActivity {
             super(mDatas);
         }
         @Override
-        public DataBindingViewHolder<Student> onCreateViewHolderImpl(ViewGroup parent, int viewType) {
+        public DataBindingViewHolder<Student> onCreateViewHolderImpl(ViewGroup parent, int layoutId) {
             return new InnerViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(viewType, parent, false));
+                    .inflate(layoutId, parent, false));
         }
         @Override
         protected int getItemLayoutId(int position, Student student) {
@@ -88,8 +100,8 @@ public class TestDatabindingAdapter extends BaseActivity {
 
         public InnerViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
         }
+
         @Override
         protected void onPreCreateDataBinding(View itemView) {
             ButterKnife.bind(this, itemView);
@@ -109,12 +121,11 @@ public class TestDatabindingAdapter extends BaseActivity {
         }
         @OnClick(R.id.bt_change_item)
         public void onClickChangeItem(View v){
-            DataMediator<Student> dm = getDataMediator();
-            dm.beginBatchedDispatches();
-            dm.getDataProxy().setAge((int) (System.currentTimeMillis() % 99))
-                    .setId(13123)
-                    .setName("google+" + System.currentTimeMillis());
-            dm.endBatchedDispatches();
+            getDataMediator().getDataProxy()
+                    .setAge((int) (System.currentTimeMillis() % 99))
+                    .setId(getAdapterPosition())
+                    .setName("google+__" + getAdapterPosition());
+            //Note: no need notifyItemChanged here.
         }
     }
 }

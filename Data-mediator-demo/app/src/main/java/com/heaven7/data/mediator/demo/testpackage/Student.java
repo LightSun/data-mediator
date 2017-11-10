@@ -18,7 +18,7 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 
 @Fields({
         @Field(propName = "age" , type = int.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "name" , type = String.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "name" ,  flags = FLAGS_ALL_SCOPES),
         @Field(propName = "id" , type = long.class, flags = FLAGS_ALL_SCOPES),
 })
 public interface Student extends Serializable, Parcelable, ISelectable, DataPools.Poolable {

@@ -170,7 +170,7 @@ public abstract class DataBinding<T> {
             try {
                 binder = mBinderClass.getConstructor(dm.getClass()).newInstance(dm);
             } catch (Exception e) {
-                System.err.println(String.format("can't create binder for target binder class($s), " +
+                System.err.println(String.format("can't create binder for target binder class( %s ), " +
                         "start use BinderFactory or default Binder.", mBinderClass.getName()));
             }
         }

@@ -129,6 +129,7 @@
 }
 
 #data-mediator.
+-dontwarn com.heaven7.adapter.**
 -keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{*;}
 -keepclasseswithmembers public interface * extends com.heaven7.java.data.mediator.DataPools$Poolable{ *;}
 

@@ -19,6 +19,7 @@ package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.util.Throwables;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ import java.util.List;
  * @author heaven7
  * @since 1.4.0
  */
-public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object> {
+public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object>, Binder.BinderCallback<Object> {
 
     private final IItemManager<T> mCallback;
 
@@ -41,6 +42,11 @@ public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object>
     }
 
     public IItemManager<T> getItemManager() {
+        return mCallback;
+    }
+
+    @Override
+    public Object getTag() {
         return mCallback;
     }
 
@@ -61,21 +67,21 @@ public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object>
         mCallback.removeItems(items);
     }
     @Override
+    public void onPropertyItemChanged(Object data, Property prop, Object oldItem, Object newItem, int index) {
+        mCallback.onItemChanged(index, (T)oldItem, (T) newItem);
+    }
+    @Override
     public void onPropertyValueChanged(Object data, Property prop, Object oldValue, Object newValue) {
         if(newValue != null) {
             List<T> items = (List<T>) newValue;
-            if(!items.isEmpty()) {
-                mCallback.replaceItems(items);
-            }
+            mCallback.replaceItems(items);
+        }else{
+            mCallback.replaceItems(null);
         }
     }
     @Override
     public void onPropertyApplied(Object data, Property prop, Object value) {
         onPropertyValueChanged(data, prop, null, value);
-    }
-    @Override
-    public void onPropertyItemChanged(Object data, Property prop, Object oldItem, Object newItem, int index) {
-        mCallback.onItemChanged(index, (T)oldItem, (T) newItem);
     }
 
     /**
@@ -105,7 +111,7 @@ public class BaseListPropertyCallback<T> implements ListPropertyCallback<Object>
 
         /**
          * called on replace items.should call notify in this when use in adapter.
-         * @param items the items.
+         * @param items the items. null means clear all items.
          */
         void replaceItems(List<T> items);
 
