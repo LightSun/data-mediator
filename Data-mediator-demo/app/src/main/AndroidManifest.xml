@@ -35,7 +35,11 @@
         <activity android:name=".activity.TestSparseArrayActivity" android:label="TestSparseArray"/>
         <activity android:name=".activity.TestAnalyseActivity" android:label="TestAnalyseActivity"/>
         <activity android:name=".activity.TestSelfMethodWithImplInterface" android:label="TestSelfMethod"/>
-        <activity android:name=".activity.data_binding.TestDatabindingAdapter" android:label="TestDatabindingAdapter"/>
+
+        <activity android:name=".activity.data_binding.TestDatabindingAdapter"
+            android:label="TestDatabindingAdapter"/>
+        <activity android:name=".activity.data_binding.DataBindingAdapterWithHeader"
+            android:label="DataBindingAdapterWithHeader"/>
 
 
     </application>

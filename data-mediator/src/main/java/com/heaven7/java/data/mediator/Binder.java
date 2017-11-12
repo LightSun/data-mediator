@@ -476,6 +476,33 @@ public abstract class Binder<T> {
     public final Binder<T> bindList(Property property, Object listView){
         return bindList(property.getName(), listView);
     }
+
+    /**
+     * bind list data for any view which support {@linkplain com.heaven7.java.data.mediator.BaseListPropertyCallback.IItemManager}.
+     * the item manager can be used by {@linkplain BaseListPropertyCallback}.
+     * @param <E> the item type of ItemManager.
+     * @param property the property of data
+     * @param itm the item manager of list.
+     * @return this.
+     * @see #bindList(String, BaseListPropertyCallback.IItemManager)
+     * @since 1.4.1
+     */
+    public final <E> Binder<T> bindList(Property property, BaseListPropertyCallback.IItemManager<E> itm){
+        return bind(property.getName(), new BaseListPropertyCallback<E>(itm));
+    }
+    /**
+     * bind list data for any view which support {@linkplain com.heaven7.java.data.mediator.BaseListPropertyCallback.IItemManager}.
+     * the item manager can be used by {@linkplain BaseListPropertyCallback}.
+     * @param <E> the item type of ItemManager.
+     * @param property the property of data
+     * @param itm the item manager of list.
+     * @return this.
+     * @see #bindList(Property, BaseListPropertyCallback.IItemManager)
+     * @since 1.4.1
+     */
+    public final <E> Binder<T> bindList(String property, BaseListPropertyCallback.IItemManager<E> itm){
+        return bind(property, new BaseListPropertyCallback<E>(itm));
+    }
     /**
      * bind visibility of view (on android the visibility is masked as int.).
      * here force use property of visibility as boolean.
@@ -637,6 +664,8 @@ public abstract class Binder<T> {
      * @return this.
      */
     public abstract Binder<T> bindRecyclerList(String property, Object recyclerView);
+
+
     /**
      * bind list of view.
      * @param property the property of data

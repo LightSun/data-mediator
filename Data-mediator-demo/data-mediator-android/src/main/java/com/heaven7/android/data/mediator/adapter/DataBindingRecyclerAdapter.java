@@ -5,7 +5,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -73,9 +72,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             holder.setAdapter(this);
             return holder;
         } else {
-            return new RecyclerView.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(
-                    viewType, parent, false)) {
-            };
+            return new RecyclerView.ViewHolder(hfHelper.findView(viewType, mItemManager.getItemSize())){};
         }
     }
 
@@ -137,7 +134,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     /**
      * get the binder by target real position.(include header and footer)
      *
-     * @param position the position
+     * @param position the position, include header and footer
      * @return the binder
      */
     private Binder<T> getBinder(int position) {
@@ -148,18 +145,16 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
         if (holder instanceof DataBindingViewHolder) {
-            Logger.d(TAG, "onViewDetachedFromWindow", "pos = "
-                    + holder.getLayoutPosition());
-            ((DataBindingViewHolder) holder).onDetachItem();
+            ((DataBindingViewHolder) holder).onDetachItem(
+                    holder.getLayoutPosition() - getHeaderSize());
         }
     }
 
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         if (holder instanceof DataBindingViewHolder) {
-            ((DataBindingViewHolder) holder).onAttachItem();
-            Logger.d(TAG, "onViewAttachedToWindow", "pos = "
-                    + holder.getAdapterPosition());
+            ((DataBindingViewHolder) holder).onAttachItem(
+                    holder.getAdapterPosition() - getHeaderSize());
         }
     }
 
@@ -381,6 +376,15 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             final DataMediator<T> dm = getDataMediator();
             return dm != null ? dm.getDataProxy() : null;
         }
+        /**
+         * get the data of current position.
+         *
+         * @return the proxy data
+         */
+        public final T getData() {
+            final DataMediator<T> dm = getDataMediator();
+            return dm != null ? dm.getData() : null;
+        }
 
         /**
          * get the data-binding adapter.
@@ -390,20 +394,6 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
          */
         public final DataBindingRecyclerAdapter<T> getAdapter() {
             return mWeakAdapter != null ? mWeakAdapter.get() : null;
-        }
-
-        /**
-         * called on attach the item of current position.
-         */
-        protected void onAttachItem() {
-
-        }
-
-        /**
-         * called on detach the item of current position.
-         */
-        protected void onDetachItem() {
-
         }
 
         /**
@@ -441,6 +431,22 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         }
 
         /**
+         * called on attach the item of target position.
+         * @param position the position of adapter .exclude header and footer
+         */
+        protected void onAttachItem(int position) {
+
+        }
+
+        /**
+         * called on detach the item of target position.
+         * @param position  the position of adapter .exclude header and footer
+         */
+        protected void onDetachItem(int position) {
+
+        }
+
+        /**
          * called on pre create data-binding. this often used by 'ButterKnife', like :
          * <pre>
          *     ButterKnife.bind(this, itemView);
@@ -451,12 +457,10 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         protected void onPreCreateDataBinding(View itemView) {
 
         }
-
         //==================== end public/protected methods ================
 
 
         //================= START private/default method ==================
-
         void setAdapter(DataBindingRecyclerAdapter<T> adapter) {
             this.mWeakAdapter = new WeakReference<>(adapter);
         }

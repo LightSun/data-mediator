@@ -40,7 +40,7 @@ public class TestDatabindingAdapter extends BaseActivity {
     @BindView(R.id.rv)
     RecyclerView mRv;
 
-    private InternalAdapter mAdapter;
+    protected InternalAdapter mAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -66,12 +66,12 @@ public class TestDatabindingAdapter extends BaseActivity {
     public void onClickAdd(View v){
         ItemManager<Student> manager = mAdapter.getItemManager();
         int itemCount = manager.getItemSize();
-      /*  final int index = new Random().nextInt(itemCount - 1);*/
-        Logger.i(TAG, "onClickAdd","index = " + 1);
-        manager.addItem(1, createItem().setAge(1));
+        final int index = new Random().nextInt(itemCount - 1);
+        Logger.i(TAG, "onClickAdd","index = " + index);
+        manager.addItem(index, createItem().setAge(1));
     }
 
-    private static List<Student> createItems() {
+    public static List<Student> createItems() {
         sIndex = 0;
         List<Student> list = new ArrayList<>();
         //just mock data
@@ -81,7 +81,7 @@ public class TestDatabindingAdapter extends BaseActivity {
         }
         return list;
     }
-    private static Student createItem(){
+    public static Student createItem(){
         Student data = DataMediatorFactory.createData(Student.class);
         data.setAge(sIndex ++ );
         data.setName("google__" + sRan.nextInt(100));
@@ -90,7 +90,7 @@ public class TestDatabindingAdapter extends BaseActivity {
 
     private static int sIndex = 0;
 
-    private static class InternalAdapter extends DataBindingRecyclerAdapter<Student>{
+    public static class InternalAdapter extends DataBindingRecyclerAdapter<Student>{
 
         public InternalAdapter(List<Student> mDatas) {
             super(mDatas, true);

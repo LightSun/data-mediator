@@ -12,6 +12,7 @@ import com.heaven7.data.mediator.demo.activity.TestSelfMethodWithImplInterface;
 import com.heaven7.data.mediator.demo.activity.TestSparseArrayActivity;
 import com.heaven7.data.mediator.demo.activity.TestTextViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestViewBindActivity;
+import com.heaven7.data.mediator.demo.activity.data_binding.DataBindingAdapterWithHeader;
 import com.heaven7.data.mediator.demo.activity.data_binding.TestDatabindingAdapter;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.GlobalConfig;
@@ -55,6 +56,8 @@ public class MainActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestSparseArrayActivity.class, "Test sparse array callback"));
         list.add(new ActivityInfo(TestAnalyseActivity.class, "Test analyse"));
         list.add(new ActivityInfo(TestSelfMethodWithImplInterface.class, "Test self method/interface"));
+
         list.add(new ActivityInfo(TestDatabindingAdapter.class, "Test Data-binding adapter"));
+        list.add(new ActivityInfo(DataBindingAdapterWithHeader.class, " Data-binding adapter with header"));
     }
 }

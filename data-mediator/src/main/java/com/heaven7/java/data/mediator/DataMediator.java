@@ -17,6 +17,7 @@
  */
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
 
 /**
@@ -46,17 +47,18 @@ public final class DataMediator<T> {
     }
 
     /**
-     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches()}.
+     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches(PropertyReceiver)}.
      * for example: if you have a item data in adapter. but we don't want to update adapter
      * on every property change. you should call this to resolve it.
      * <p> Here is a demo.
      * <pre>
+     *     PropertyReceiver receiver = ...;
      *     DataMediator{@literal <}Student{@literal >} dm = ...;
      *     dm.beginBatchedDispatches();
      *     dm.getDataProxy().setId(xx)
      *               .setName(xxx)
      *               .setGrade(xxx)...;
-     *      dm.endBatchedDispatches();
+     *      dm.endBatchedDispatches(receiver);
      * </pre>
      * </p>
      * @since 1.4.1
@@ -66,10 +68,11 @@ public final class DataMediator<T> {
     }
     /**
      * Ends the dispatch transaction and dispatches any remaining event to the callback.
+     * @param receiver the receiver which used to receive batch dispatch events. null means use default receiver.
      * @since 1.4.1
      */
-    public void endBatchedDispatches(){
-        getBaseMediator().endBatchedDispatches();
+    public void endBatchedDispatches(@Nullable  PropertyReceiver receiver){
+        getBaseMediator().endBatchedDispatches(receiver);
     }
 
     /**
