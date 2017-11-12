@@ -6,6 +6,7 @@ data-mediator
 | android   | ok  | ok |  ok | ok |
 
  <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
+  <img src="res/data_mediator_binding_adapter.gif" alt="base binder demo"/>
 
 a data-mediator framework which uses annotation processing to generate boilerplate code for you. <br>
 [文档还是中文的好](docs/zh/main.md)
