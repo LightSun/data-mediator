@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.heaven7.adapter.AdapterManager;
 import com.heaven7.adapter.HeaderFooterHelper;
-import com.heaven7.core.util.Logger;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataBinding;
@@ -31,11 +30,11 @@ import java.util.List;
  */
 
 public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements AdapterManager.IHeaderFooterManager, ItemManager.Callback {
+        implements AdapterManager.IHeaderFooterManager, AdapterItemManager.Callback {
 
     private static final String TAG = "DB_Adapter";
     private final SparseArray<Binder<T>> mBinderMap = new SparseArray<>();
-    private final ItemManager<T> mItemManager;
+    private final AdapterItemManager<T> mItemManager;
 
     private DataBinding.SimpleParameterSupplier mSupplier;
     private HeaderFooterHelper mHeaderFooterHelper;
@@ -58,7 +57,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
      *                           this is help of data-binding, if you really want to remove/add item.
      */
     public DataBindingRecyclerAdapter(List<T> list, boolean mayRemoveOrAddItem) {
-        this.mItemManager = new ItemManager<T>(this, this, list);
+        this.mItemManager = new AdapterItemManager<T>(this, this, list);
         if (mayRemoveOrAddItem) {
             mItemManager.setAdapterDataObserver2(new InternalDataObserver());
         }
@@ -93,7 +92,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             position -= mHeaderFooterHelper.getHeaderViewSize();
         }
         if (holder instanceof DataBindingViewHolder) {
-            Logger.i(TAG, "onBindViewHolder", "pos = " + position);
+           // Logger.i(TAG, "onBindViewHolder", "pos = " + position);
             ((DataBindingViewHolder) holder).onBindData(position, getParameterSupplier());
         }
     }
@@ -122,6 +121,11 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                         mHeaderFooterHelper.getFooterViewSize();
     }
 
+    /**
+     * get item at target position
+     * @param position the position. exclude header and footer
+     * @return the item
+     */
     public final T getItem(int position) {
         return mItemManager.getItem(position);
     }
@@ -219,13 +223,12 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     }
 
     // =================== end header footer view ======================= //
-
     /**
      * get the item manager of adapter.which implements {@linkplain com.heaven7.java.data.mediator.BaseListPropertyCallback.IItemManager}.
      *
      * @return the item manager.
      */
-    public final ItemManager<T> getItemManager() {
+    public final AdapterItemManager<T> getItemManager() {
         return mItemManager;
     }
 
@@ -269,11 +272,17 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     private class InternalDataObserver implements AdapterDataObserver2<T> {
         @Override
         public void onItemRemoved(int index, T t) {
-            Binder<T> binder = mBinderMap.getAndRemove(index);
+            Binder<T> binder = mBinderMap.get(index);
             if (binder != null) {
                 binder.unbindAll();
             }
-            //decrease position/index of binder. iterate from lower.
+            /*
+             * decrease position/index of binder. iterate from lower.
+             * problems:
+             * 1, if index is last.
+             * 2, handle the last item.
+             */
+            boolean removed = false;
             final int size = mBinderMap.size();
             for (int i = 0; i < size; i++) {
                 final int key = mBinderMap.keyAt(i);
@@ -282,8 +291,16 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                 }
                 final Binder<T> val = mBinderMap.valueAt(i);
                 mBinderMap.put(key - 1, val);
-               /* Logger.d(TAG, "onItemRemoved",
+                //for the last item . it had moved to pre index. so need remove.
+                if(i == size - 1){
+                    mBinderMap.removeAt(i);
+                    removed = true;
+                }
+             /*   Logger.d(TAG, "onItemRemoved",
                         String.format("pos from %d to %d", key, key - 1));*/
+            }
+            if(!removed){
+                mBinderMap.remove(index);
             }
         }
 
@@ -317,7 +334,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                 final Binder<T> val = mBinderMap.valueAt(i);
                 //move from key -> key +1
                 mBinderMap.put(key + addSize, val);
-               /* Logger.d(TAG, "processAddForBinder",
+              /*  Logger.d(TAG, "processAddForBinder",
                         String.format("pos from %d to %d", key, key + addSize));*/
             }
             //for add . the old index of binder already exist. need remove.
@@ -351,6 +368,17 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
 
         //=================== start public or protected methods ================
 
+        /**
+         * get the right position of adapter. exclude header and footer.
+         * relative to {@linkplain #getAdapterPosition()} subtract the header size.
+         * for no header . this is equals to {@linkplain #getAdapterPosition()}.
+         * @return  the right position of adapter. exclude header and footer.
+         * @since 1.1.3
+         */
+        public int getAdapterPosition2(){
+            final DataBindingRecyclerAdapter<T> adapter = getAdapter();
+            return  adapter !=null ?  getAdapterPosition() - adapter.getHeaderSize() : -1;
+        }
         /**
          * get the data mediator for current position.
          *
@@ -413,6 +441,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             }
             Binder<T> binder = adapter.mBinderMap.get(position);
             if (binder != null) {
+               // Logger.i(TAG , "onBindData", "unbindAll() >>> pos = " + position);
                 binder.unbindAll();
             }
             adapter.mBinderMap.put(position, mDataBinding.bindAndApply(

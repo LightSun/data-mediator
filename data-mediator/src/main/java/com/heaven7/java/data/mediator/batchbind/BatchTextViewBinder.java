@@ -152,22 +152,46 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         return this;
     }
     /**
+     * <p>Use {@linkplain #bindTextSize(String)} instead.</p>
      * bind text dimension size(dp value) of Text view.
      * @param property the property
      * @return this.
      */
+    @Deprecated
     public BatchTextViewBinder<T> bindTextSizeDp(String property){
-        mBinder.bindTextSizeDp(property, mView);
+        mBinder.bindTextSize(property, mView);
         return this;
     }
     /**
+     * <p>Use {@linkplain #bindTextSize(Property)} instead.</p>
      * bind text dimension size(dp value) of Text view.
      * @param property the property
      * @return this.
      * @since 1.1.2
      */
+    @Deprecated
     public BatchTextViewBinder<T> bindTextSizeDp(Property property){
-        mBinder.bindTextSizeDp(property.getName(), mView);
+        mBinder.bindTextSize(property.getName(), mView);
+        return this;
+    }
+    /**
+     * bind text dimension size(pix value) of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.4.1
+     */
+    public BatchTextViewBinder<T> bindTextSizePx(Property property){
+        mBinder.bindTextSizePx(property.getName(), mView);
+        return this;
+    }
+    /**
+     * bind text dimension size(pix value) of Text view.
+     * @param property the property
+     * @return this.
+     * @since 1.4.1
+     */
+    public BatchTextViewBinder<T> bindTextSizePx(String property){
+        mBinder.bindTextSizePx(property, mView);
         return this;
     }
 }

@@ -9,11 +9,11 @@ import android.view.View;
 
 import com.heaven7.adapter.ISelectable;
 import com.heaven7.adapter.QuickRecycleViewAdapter;
-import com.heaven7.android.data.mediator.ListBinderCallback;
 import com.heaven7.core.util.ViewHelper;
 import com.heaven7.data.mediator.demo.R;
 import com.heaven7.data.mediator.demo.module.RecyclerListBind;
 import com.heaven7.data.mediator.demo.testpackage.Student;
+import com.heaven7.java.data.mediator.BaseListPropertyCallback;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 
@@ -83,8 +83,7 @@ public class TestRecyclerListBindActivity extends BaseActivity {
 
     protected void onBindListItems(Binder<RecyclerListBind> mBinder) {
         //通用的绑定方法. 这里用于绑定列表
-        mBinder.bind(RecyclerListBind.PROP_students.getName(),
-                new ListBinderCallback<>(mAdapter));
+        mBinder.bindList(RecyclerListBind.PROP_students, mAdapter);
     }
 
     protected void initAdapter() {
@@ -119,7 +118,7 @@ public class TestRecyclerListBindActivity extends BaseActivity {
 
     private static abstract class TestRecyclerListAdapter<T extends ISelectable>
              extends QuickRecycleViewAdapter<T> implements
-             ListBinderCallback.IItemManager<T>{
+            BaseListPropertyCallback.IItemManager<T> {
 
         public TestRecyclerListAdapter(int layoutId, List<T> mDatas) {
             super(layoutId, mDatas);

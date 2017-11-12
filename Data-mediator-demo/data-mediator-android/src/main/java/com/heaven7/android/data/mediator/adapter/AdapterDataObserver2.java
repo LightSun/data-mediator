@@ -3,7 +3,7 @@ package com.heaven7.android.data.mediator.adapter;
 import java.util.List;
 
 /**
- * adapter data observer.
+ * adapter data observer. which will help we handle 'data-binding' in adapter.
  *
  * @param <T> the item type
  * @author heaven7

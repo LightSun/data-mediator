@@ -24,6 +24,10 @@ javax.lang.module Elements 等之类的封装。参考项目: juzu
 1.1.3
    避免属性冲突 for BaseMediator. ok
    prepare SparseArray/map  doing (MapPropertyCallback, SparseArrayPropertyCallback, SparseArrayPropertyEditor)
-
+1.4.1
+  1, add   beginBatchedDispatches. and endBatchedDispatches for BaseMediator and DataMediator.
+  2, data-binding adapter .(support header and footer. support add/remove/change item)
+  3, Binder .add  bindList method for it which make ItemManager as parameter.
+  4, compiler for data-binding support non static inner class.
 
 deprecated. BaseMediator. android lib

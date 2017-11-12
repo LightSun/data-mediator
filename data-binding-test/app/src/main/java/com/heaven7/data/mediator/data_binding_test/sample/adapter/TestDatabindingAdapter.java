@@ -1,4 +1,4 @@
-package com.heaven7.data.mediator.demo.activity.data_binding;
+package com.heaven7.data.mediator.data_binding_test.sample.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.heaven7.android.data.mediator.adapter.DataBindingRecyclerAdapter;
 import com.heaven7.android.data.mediator.adapter.AdapterItemManager;
+import com.heaven7.android.data.mediator.adapter.DataBindingRecyclerAdapter;
 import com.heaven7.core.util.Logger;
-import com.heaven7.data.mediator.demo.R;
-import com.heaven7.data.mediator.demo.activity.BaseActivity;
-import com.heaven7.data.mediator.demo.testpackage.Student;
+import com.heaven7.data.mediator.data_binding_test.R;
+import com.heaven7.data.mediator.data_binding_test.module.Student;
+import com.heaven7.data.mediator.data_binding_test.sample.BaseActivity;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.bind.BindText;
 
@@ -90,7 +90,7 @@ public class TestDatabindingAdapter extends BaseActivity {
 
     private static int sIndex = 0;
 
-    public static class InternalAdapter extends DataBindingRecyclerAdapter<Student>{
+    public static class InternalAdapter extends DataBindingRecyclerAdapter<Student> {
 
         public InternalAdapter(List<Student> mDatas) {
             super(mDatas, true);

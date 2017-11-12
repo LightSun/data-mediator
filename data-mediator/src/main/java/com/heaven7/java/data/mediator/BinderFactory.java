@@ -11,7 +11,7 @@ public interface BinderFactory {
     /**
      * create binder for target object and data mediator.
      * @param <T> the module data type
-     * @param target the target object.
+     * @param target the target object which use 'data-binding'.
      * @param dm the data mediator.
      * @return the binder which is used for data-binding. return null means use default binder.
      */

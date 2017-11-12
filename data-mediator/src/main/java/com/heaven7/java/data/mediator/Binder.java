@@ -457,22 +457,26 @@ public abstract class Binder<T> {
         return bindImageBitmap(property.getName(), imageView);
     }
     /**
+     * <p>Recommend you use {@linkplain #bindList(Property, BaseListPropertyCallback.IItemManager)} instead.</p>
      * bind list of recycler view.
      * @param property the property of data
      * @param recyclerView the recycler view. eg: android.support.v7.widget.RecyclerView on android platform
      * @return this.
      * @since 1.1.2
      */
+    @java.lang.Deprecated
     public final Binder<T> bindRecyclerList(Property property, Object recyclerView){
         return bindRecyclerList(property.getName(), recyclerView);
     }
     /**
+     * <p>Recommend you use {@linkplain #bindList(Property, BaseListPropertyCallback.IItemManager)} instead.</p>
      * bind list of view.
      * @param property the property of data
      * @param listView the list view. eg: android.widget.ListView on android platform
      * @return this.
      * @since 1.1.2
      */
+    @java.lang.Deprecated
     public final Binder<T> bindList(Property property, Object listView){
         return bindList(property.getName(), listView);
     }
@@ -658,20 +662,24 @@ public abstract class Binder<T> {
      */
     public abstract Binder<T> bindImageBitmap(String property,  Object imageView);
     /**
+     * <p>Recommend you use {@linkplain #bindList(String, BaseListPropertyCallback.IItemManager)} instead.</p>
      * bind list of recycler view.
      * @param property the property of data
      * @param recyclerView the recycler view. eg: android.support.v7.widget.RecyclerView on android platform
      * @return this.
      */
+    @java.lang.Deprecated
     public abstract Binder<T> bindRecyclerList(String property, Object recyclerView);
 
 
     /**
+     * <p>Recommend you use {@linkplain #bindList(String, BaseListPropertyCallback.IItemManager)} instead.</p>
      * bind list of view.
      * @param property the property of data
      * @param listView the list view. eg: android.widget.ListView on android platform
      * @return this.
      */
+    @java.lang.Deprecated
     public abstract Binder<T> bindList(String property, Object listView);
 
     /**

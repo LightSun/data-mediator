@@ -24,7 +24,7 @@ public class TestRecyclerListBind2Activity extends TestRecyclerListBindActivity 
     @Override
     protected void onBindListItems(Binder<RecyclerListBind> mBinder) {
         //默认方式 (需要现在RecyclerView 上设置adapter)
-        mBinder.bindRecyclerList(RecyclerListBind.PROP_students.getName(), mRv);
+        mBinder.bindRecyclerList(RecyclerListBind.PROP_students, mRv);
     }
 
     @Override

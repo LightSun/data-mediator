@@ -10,12 +10,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * the item manager
+ * the item manager, used by {@linkplain DataBindingRecyclerAdapter}.
  *
  * @author heaven7
  * @since 1.1.2
  */
-public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> {
+public class AdapterItemManager<T> implements BaseListPropertyCallback.IItemManager<T> {
 
     /**
      * the  threshold percent of remove.
@@ -24,7 +24,7 @@ public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> 
     private static final Comparator<Integer> INT_INVERSE =  new Comparator<Integer>() {
         @Override
         public int compare(Integer o1, Integer o2) {
-            return ItemManager.compare(o2, o1);
+            return AdapterItemManager.compare(o2, o1);
         }
     };
 
@@ -33,7 +33,7 @@ public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> 
     private final AdapterManager.IHeaderFooterManager mManager;
     private AdapterDataObserver2<T> mObserver;
 
-    /*public*/ ItemManager(Callback callback, AdapterManager.IHeaderFooterManager ifm, List<T> list) {
+    /*public*/ AdapterItemManager(Callback callback, AdapterManager.IHeaderFooterManager ifm, List<T> list) {
         Throwables.checkNull(callback);
         this.mManager = ifm;
         this.mCallback = callback;
@@ -57,11 +57,11 @@ public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> 
     }
 
     /**
-     * get the items
+     * get the items, but the items can't be modify.
      * @return the items
      */
     public List<T> getItems() {
-        return mDatas;
+        return Collections.unmodifiableList(mDatas);
     }
 
     /**
@@ -206,6 +206,15 @@ public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> 
         mCallback.notifyItemChanged(index + getHeaderSize());
     }
 
+    /**
+     * set the new item to the target position.
+     * @param index the index
+     * @param newItem the new item
+     */
+    public void setItem(int index, T newItem){
+        onItemChanged(index, mDatas.get(index), newItem);
+    }
+
     private int getHeaderSize() {
         return mManager.getHeaderSize();
     }
@@ -241,4 +250,62 @@ public class ItemManager<T> implements BaseListPropertyCallback.IItemManager<T> 
 
         void notifyDataSetChanged();
     }
+
+    /*public static class AdapterNotifier implements Callback{
+
+        *//**
+         * the flag of notify callback. without rebind item.
+         *//*
+        public static final int FLAG_WITHOUT_REBIND_ITEM = 0x0001;
+
+        private final Callback mCallback;
+        private int mFlags;
+
+        public AdapterNotifier(Callback mCallback) {
+            this.mCallback = mCallback;
+        }
+        public AdapterNotifier withFlags(int flags) {
+            this.mFlags = flags;
+            return this;
+        }
+        @Override
+        public void notifyItemInserted(int position) {
+            mCallback.notifyItemInserted(position);
+        }
+
+        @Override
+        public void notifyItemChanged(int position) {
+
+        }
+
+        @Override
+        public void notifyItemRemoved(int position) {
+
+        }
+
+        @Override
+        public void notifyItemMoved(int fromPosition, int toPosition) {
+
+        }
+
+        @Override
+        public void notifyItemRangeChanged(int positionStart, int itemCount) {
+
+        }
+
+        @Override
+        public void notifyItemRangeInserted(int positionStart, int itemCount) {
+
+        }
+
+        @Override
+        public void notifyItemRangeRemoved(int positionStart, int itemCount) {
+
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+
+        }
+    }*/
 }
