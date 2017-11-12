@@ -205,6 +205,48 @@ public interface FlowItem extends Parcelable{
  - 完美搭配gson（支持所有Gson注解）。
  - 支持自定义方法，字段, 可实现任意接口.(使用请参考下面[进阶指南](#进阶指南))
  - 支持数据绑定及相关注解 完美搭配butterknife. [详情](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
+ - 支持adapter数据绑定, 完美搭配ButterKnife.
+ ```java
+  public static class InnerViewHolder extends DataBindingRecyclerAdapter.DataBindingViewHolder<Student>{
+
+        @BindView(R.id.tv_name) @BindText("name")
+        TextView mTv_name;
+
+        @BindView(R.id.tv_age) @BindText("age")
+        TextView mTv_age;
+
+        public InnerViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onPreCreateDataBinding(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.tv_name)
+        public void onClickName(View v){
+            //here just toast
+            Toast.makeText(v.getContext(), "onClickName is called, pos = "
+                    + getAdapterPosition2(), Toast.LENGTH_SHORT).show();
+        }
+        @OnClick(R.id.tv_age)
+        public void onClickAge(View v){
+            //here just toast
+            Toast.makeText(v.getContext(), "onClickAge is called, pos = "
+                    + getAdapterPosition2(), Toast.LENGTH_SHORT).show();
+        }
+        @OnClick(R.id.bt_change_item)
+        public void onClickChangeItem(View v){
+            final int pos = getAdapterPosition2();
+            getDataProxy()
+                    .setAge((int) (System.currentTimeMillis() % 99))
+                    .setId(pos)
+                    .setName("google+__" + pos);
+            //Note: no need notifyItemChanged here.
+        }
+    }
+ ```
 
 # 安装
  * 安装idea插件。（see release）
