@@ -23,7 +23,48 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 * 9, support List/SparseArray Editor with their callbacks.  [Detail](docs/en/listen_property_change.md)
 * 10, support depend or extend other data model.
 * 11, Full support Data-binding on android. [Detail](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
-* 12, Seamless with 'butterknife'.
+* 12, Can Best Seamless with 'butterknife'.
+```java
+ public class InnerViewHolder extends DataBindingRecyclerAdapter.DataBindingViewHolder<Student>{
+
+        @BindView(R.id.tv_name) @BindText("name")
+        TextView mTv_name;
+
+        @BindView(R.id.tv_age) @BindText("age")
+        TextView mTv_age;
+
+        public InnerViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        protected void onPreCreateDataBinding(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.tv_name)
+        public void onClickName(View v){
+            //here just toast
+            Toast.makeText(v.getContext(), "onClickName is called, pos = "
+                    + getAdapterPosition2(), Toast.LENGTH_SHORT).show();
+        }
+        @OnClick(R.id.tv_age)
+        public void onClickAge(View v){
+            //here just toast
+            Toast.makeText(v.getContext(), "onClickAge is called, pos = "
+                    + getAdapterPosition2(), Toast.LENGTH_SHORT).show();
+        }
+        @OnClick(R.id.bt_change_item)
+        public void onClickChangeItem(View v){
+            final int pos = getAdapterPosition2();
+            getDataProxy()
+                    .setAge((int) (System.currentTimeMillis() % 99))
+                    .setId(pos)
+                    .setName("google+__" + pos);
+            //Note: no need notifyItemChanged here.
+        }
+    }
+```
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in release.
