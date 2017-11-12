@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.heaven7.adapter.AdapterManager;
 import com.heaven7.adapter.HeaderFooterHelper;
 import com.heaven7.core.util.Logger;
+import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataBinding;
 import com.heaven7.java.data.mediator.DataMediator;
@@ -19,12 +20,10 @@ import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 import java.lang.ref.WeakReference;
-import java.util.Comparator;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
- * the data-binding adapter of recycler view.
+ * the data-binding base adapter of recycler view.</br>
  * Created by heaven7 on 2017/11/9 0009.
  *
  * @see DataBinding
@@ -35,33 +34,35 @@ import java.util.TreeMap;
 public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements AdapterManager.IHeaderFooterManager, ItemManager.Callback {
 
+    private static final String TAG = "DB_Adapter";
+    private final SparseArray<Binder<T>> mBinderMap = new SparseArray<>();
     private final ItemManager<T> mItemManager;
-    private final TreeMap<T, Binder<T>> mBinderMap = new TreeMap<>(new Comparator<T>() {
-        @Override
-        public int compare(T o1, T o2) {
-            return o1.equals(o2)? 0 : -1;
-        }
-    });
 
     private DataBinding.SimpleParameterSupplier mSupplier;
     private HeaderFooterHelper mHeaderFooterHelper;
 
-
+    /**
+     * create data-binding adapter for target data.
+     *
+     * @param list the list data to show in {@linkplain RecyclerView}.
+     * @see #DataBindingRecyclerAdapter(List, boolean)
+     */
     public DataBindingRecyclerAdapter(List<T> list) {
+        this(list, false);
+    }
+
+    /**
+     * create data-binding adapter for target data.
+     *
+     * @param list               the list data to show in {@linkplain RecyclerView}.
+     * @param mayRemoveOrAddItem true if you may want to remove/add item. false otherwise.
+     *                           this is help of data-binding, if you really want to remove/add item.
+     */
+    public DataBindingRecyclerAdapter(List<T> list, boolean mayRemoveOrAddItem) {
         this.mItemManager = new ItemManager<T>(this, this, list);
-        registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                Logger.w("DataBindingViewHolder", "onItemRangeRemoved", "itemCount = " + itemCount);
-                final int headerSize = getHeaderSize();
-                /*for (int i = itemCount - 1; i >= 0; i--) {
-                    Binder<T> binder = removeBinder(positionStart + i  - headerSize);
-                    if(binder != null){
-                        binder.unbindAll();
-                    }
-                }*/
-            }
-        });
+        if (mayRemoveOrAddItem) {
+            mItemManager.setAdapterDataObserver2(new InternalDataObserver());
+        }
     }
 
     @Override
@@ -95,7 +96,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             position -= mHeaderFooterHelper.getHeaderViewSize();
         }
         if (holder instanceof DataBindingViewHolder) {
-            Logger.i("DataBindingRecyclerAdapter","onBindViewHolder","position = " + position);
+            Logger.i(TAG, "onBindViewHolder", "pos = " + position);
             ((DataBindingViewHolder) holder).onBindData(position, getParameterSupplier());
         }
     }
@@ -134,27 +135,21 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     }
 
     /**
-     * get the binder by target real position.(exclude header and footer)
+     * get the binder by target real position.(include header and footer)
+     *
      * @param position the position
      * @return the binder
      */
-    private Binder<T> getBinder(int position) {//TODO header
-        T item = getItem(position);
-        Logger.i("DataBindingRecyclerAdapter","getBinder",
-                "position = " + position + ", item = " + item);
-        return mBinderMap.get(item);
+    private Binder<T> getBinder(int position) {
+        return mBinderMap.get(position - getHeaderSize());
     }
-    private Binder<T> removeBinder(int position) {
-        return mBinderMap.remove(getItem(position));
-    }
-
     // ========================== end private method ======================
 
     @Override
     public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
         if (holder instanceof DataBindingViewHolder) {
-            Logger.i("DataBindingRecyclerAdapter", "onViewDetachedFromWindow", "pos = "
-                    + holder.getAdapterPosition());
+            Logger.d(TAG, "onViewDetachedFromWindow", "pos = "
+                    + holder.getLayoutPosition());
             ((DataBindingViewHolder) holder).onDetachItem();
         }
     }
@@ -163,7 +158,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         if (holder instanceof DataBindingViewHolder) {
             ((DataBindingViewHolder) holder).onAttachItem();
-            Logger.i("DataBindingRecyclerAdapter", "onViewAttachedToWindow", "pos = "
+            Logger.d(TAG, "onViewAttachedToWindow", "pos = "
                     + holder.getAdapterPosition());
         }
     }
@@ -241,6 +236,13 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
 
     /**
      * called when we want to create parameter supplier for {@linkplain DataBinding}.
+     * rg: when we want to  bind image url to {@linkplain android.widget.ImageView}.
+     * the internal implements use {@linkplain Binder#bindImageUrl(String, Object, Object)} to bind image.
+     * so we need additional parameter named 'the image loader'. if you not use self {@link Binder}.
+     * the default is {@linkplain com.heaven7.android.data.mediator.AndroidBinder}.
+     * <p>How to define self Binder? extends {@linkplain Binder}. optional use
+     * self {@linkplain com.heaven7.java.data.mediator.BinderFactory}, The double can be defined by
+     * annotation '@BinderClass' and @BinderFactory.</p>
      *
      * @return the parameter supplier.
      * @see DataBinding#bind(Object, int, DataBinding.ParameterSupplier, PropertyInterceptor)
@@ -256,8 +258,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
      * @param t        the data
      * @return the layout id.
      */
-    protected abstract @LayoutRes
-    int getItemLayoutId(int position, T t);
+    protected abstract @LayoutRes int getItemLayoutId(int position, T t);
 
     /**
      * called on create view holder. header and footer will not be called in this.
@@ -269,6 +270,65 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
      * @see DataBindingViewHolder
      */
     protected abstract DataBindingViewHolder<T> onCreateViewHolderImpl(ViewGroup parent, int layoutId);
+
+    private class InternalDataObserver implements AdapterDataObserver2<T> {
+        @Override
+        public void onItemRemoved(int index, T t) {
+            Binder<T> binder = mBinderMap.getAndRemove(index);
+            if (binder != null) {
+                binder.unbindAll();
+            }
+            //decrease position/index of binder. iterate from lower.
+            final int size = mBinderMap.size();
+            for (int i = 0; i < size; i++) {
+                final int key = mBinderMap.keyAt(i);
+                if (key <= index) {
+                    continue;
+                }
+                final Binder<T> val = mBinderMap.valueAt(i);
+                mBinderMap.put(key - 1, val);
+               /* Logger.d(TAG, "onItemRemoved",
+                        String.format("pos from %d to %d", key, key - 1));*/
+            }
+        }
+
+        @Override
+        public void onResetItems(List<T> items) {
+            for (int size = mBinderMap.size(), i = size - 1; i >= 0; i--) {
+                final Binder<T> binder = mBinderMap.getAndRemove(mBinderMap.keyAt(i));
+                if (binder != null) {
+                    binder.unbindAll();
+                }
+            }
+        }
+
+        @Override
+        public void onAddItem(int index, T item) {
+            processAddForBinder(index, 1);
+        }
+
+        @Override
+        public void onAddItems(int index, List<T> list) {
+            processAddForBinder(index, list.size());
+        }
+
+        void processAddForBinder(int index ,int addSize){
+            //iterate from larger
+            for (int size = mBinderMap.size() , i = size - 1; i >= 0; i--) {
+                final int key = mBinderMap.keyAt(i);
+                if (key < index) {
+                    continue;
+                }
+                final Binder<T> val = mBinderMap.valueAt(i);
+                //move from key -> key +1
+                mBinderMap.put(key + addSize, val);
+               /* Logger.d(TAG, "processAddForBinder",
+                        String.format("pos from %d to %d", key, key + addSize));*/
+            }
+            //for add . the old index of binder already exist. need remove.
+            mBinderMap.remove(index);
+        }
+    }
 
 
     /**
@@ -307,8 +367,19 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                 return null;
             }
             int pos = getAdapterPosition();
-            Logger.i("DataBindingViewHolder","getDataMediator","pos = " + pos);
+          /*  Logger.i(TAG,"getDataMediator","pos = "
+                    + pos + " , layoutPos = " + getLayoutPosition() + " ,oldPos = " + getOldPosition());*/
             return adapter.getBinder(pos).getDataMediator();
+        }
+
+        /**
+         * get the data proxy of current position.
+         *
+         * @return the proxy data
+         */
+        public final T getDataProxy() {
+            final DataMediator<T> dm = getDataMediator();
+            return dm != null ? dm.getDataProxy() : null;
         }
 
         /**
@@ -324,14 +395,14 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         /**
          * called on attach the item of current position.
          */
-        public void onAttachItem() {
+        protected void onAttachItem() {
 
         }
 
         /**
          * called on detach the item of current position.
          */
-        public void onDetachItem() {
+        protected void onDetachItem() {
 
         }
 
@@ -345,29 +416,27 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
          * @see DataBinding#bind(Object, int, DataBinding.ParameterSupplier, PropertyInterceptor)
          */
         @CallSuper
-        public void onBindData(int position, @Nullable DataBinding.SimpleParameterSupplier supplier) {
+        protected void onBindData(int position, @Nullable DataBinding.SimpleParameterSupplier supplier) {
             DataBindingRecyclerAdapter<T> adapter = getAdapter();
             if (adapter == null) {
                 return;
             }
-            T module = adapter.getItem(position);
-            Binder<T> binder = adapter.mBinderMap.get(module);
+            Binder<T> binder = adapter.mBinderMap.get(position);
             if (binder != null) {
                 binder.unbindAll();
             }
-            adapter.mBinderMap.put(module, mDataBinding.bindAndApply(module,
-                    0, supplier, getPropertyInterceptor()));
+            adapter.mBinderMap.put(position, mDataBinding.bindAndApply(
+                    adapter.getItem(position), 0, supplier, getPropertyInterceptor()));
         }
 
         /**
          * get the property interceptor which is used to data-binding.
          *
-         * @return the property interceptor.
+         * @return the property interceptor. can be null.
          * @see PropertyInterceptor
          * @see DataBinding#bind(Object, int, DataBinding.ParameterSupplier, PropertyInterceptor)
          */
-        protected @Nullable
-        PropertyInterceptor getPropertyInterceptor() {
+        protected @Nullable PropertyInterceptor getPropertyInterceptor() {
             return PropertyInterceptor.NULL;
         }
 

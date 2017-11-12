@@ -3,7 +3,6 @@ package com.heaven7.data.mediator.demo;
 
 import com.heaven7.data.mediator.demo.activity.TestAnalyseActivity;
 import com.heaven7.data.mediator.demo.activity.TestChainCallActivity;
-import com.heaven7.data.mediator.demo.activity.TestDatabindingAdapter;
 import com.heaven7.data.mediator.demo.activity.TestDoubleBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestParcelableDataActivity;
 import com.heaven7.data.mediator.demo.activity.TestPropertyChangeActivity;
@@ -13,6 +12,7 @@ import com.heaven7.data.mediator.demo.activity.TestSelfMethodWithImplInterface;
 import com.heaven7.data.mediator.demo.activity.TestSparseArrayActivity;
 import com.heaven7.data.mediator.demo.activity.TestTextViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestViewBindActivity;
+import com.heaven7.data.mediator.demo.activity.data_binding.TestDatabindingAdapter;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.GsonConfig;

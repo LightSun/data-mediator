@@ -1,4 +1,4 @@
-package com.heaven7.data.mediator.demo.activity;
+package com.heaven7.data.mediator.demo.activity.data_binding;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.heaven7.android.data.mediator.adapter.DataBindingRecyclerAdapter;
 import com.heaven7.android.data.mediator.adapter.ItemManager;
+import com.heaven7.core.util.Logger;
 import com.heaven7.data.mediator.demo.R;
+import com.heaven7.data.mediator.demo.activity.BaseActivity;
 import com.heaven7.data.mediator.demo.testpackage.Student;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.bind.BindText;
@@ -26,11 +28,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * test data-binding in adapter.
  * Created by heaven7 on 2017/11/9 0009.
  */
 
 public class TestDatabindingAdapter extends BaseActivity {
 
+    private static final String TAG = "TD adapter";
     private static final Random sRan = new Random();
 
     @BindView(R.id.rv)
@@ -49,14 +53,26 @@ public class TestDatabindingAdapter extends BaseActivity {
         mRv.setAdapter(mAdapter = new InternalAdapter(createItems()));
     }
 
-    @OnClick(R.id.bt_remove_item)
+    //random remove item
+    @OnClick(R.id.bt_remove)
     public void onClickRemove(View v){
         ItemManager<Student> manager = mAdapter.getItemManager();
         int itemCount = manager.getItemSize();
-        manager.removeItemAt(new Random().nextInt(itemCount));
+        final int index = new Random().nextInt(itemCount - 1);
+        Logger.i(TAG, "onClickRemove","index = " + index);
+        manager.removeItemAt(index);
+    }
+    @OnClick(R.id.bt_add)
+    public void onClickAdd(View v){
+        ItemManager<Student> manager = mAdapter.getItemManager();
+        int itemCount = manager.getItemSize();
+      /*  final int index = new Random().nextInt(itemCount - 1);*/
+        Logger.i(TAG, "onClickAdd","index = " + 1);
+        manager.addItem(1, createItem().setAge(1));
     }
 
     private static List<Student> createItems() {
+        sIndex = 0;
         List<Student> list = new ArrayList<>();
         //just mock data
         final int count = 20;
@@ -74,11 +90,10 @@ public class TestDatabindingAdapter extends BaseActivity {
 
     private static int sIndex = 0;
 
-
     private static class InternalAdapter extends DataBindingRecyclerAdapter<Student>{
 
         public InternalAdapter(List<Student> mDatas) {
-            super(mDatas);
+            super(mDatas, true);
         }
         @Override
         public DataBindingViewHolder<Student> onCreateViewHolderImpl(ViewGroup parent, int layoutId) {
@@ -121,7 +136,7 @@ public class TestDatabindingAdapter extends BaseActivity {
         }
         @OnClick(R.id.bt_change_item)
         public void onClickChangeItem(View v){
-            getDataMediator().getDataProxy()
+            getDataProxy()
                     .setAge((int) (System.currentTimeMillis() % 99))
                     .setId(getAdapterPosition())
                     .setName("google+__" + getAdapterPosition());
