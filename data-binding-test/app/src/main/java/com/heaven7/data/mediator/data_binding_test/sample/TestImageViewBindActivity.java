@@ -72,7 +72,7 @@ public class TestImageViewBindActivity extends BaseActivity implements DataBindi
     }
     @OnClick(R.id.bt_res)
     public void onClickRes(View v){
-        mBinder.getDataProxy().setImageRes(mResHelper.toggleRes());
+        mBinder.getDataProxy().setImageRes(mResHelper.toggleDrawableRes());
     }
 
     /**

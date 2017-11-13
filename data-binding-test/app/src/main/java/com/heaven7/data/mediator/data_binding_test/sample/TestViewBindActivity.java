@@ -70,7 +70,7 @@ public class TestViewBindActivity extends BaseActivity {
     @OnClick(R.id.bt_change_bg_res)
     public void onClickChangeBgRes(View v){
         //改变背景（resource id）
-        binder.getDataProxy().setBackgroundRes(mHelper.toggleRes());
+        binder.getDataProxy().setBackgroundRes(mHelper.toggleDrawableRes());
     }
 
     @OnClick(R.id.bt_change_enable)

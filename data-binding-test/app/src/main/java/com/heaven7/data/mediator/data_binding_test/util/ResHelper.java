@@ -32,6 +32,18 @@ public class ResHelper {
     boolean useDrawable1;
     boolean useColor1;
 
+    //=============================================
+    int textColorRes1;
+    int textColorRes2;
+    int textSizeRes1;
+    int textSizeRes2;
+    int textRes1;
+    int textRes2;
+
+    boolean useTextColorRes1;
+    boolean useTextSizeRes1;
+    boolean useTextRes1;
+
     public void init(Context context) {
         final Resources res = context.getResources();
         res1 = R.mipmap.ic_launcher;
@@ -42,6 +54,16 @@ public class ResHelper {
         bitmap2 = BitmapFactory.decodeResource(res, res2);
         color1 = Color.RED;
         color2 = Color.GREEN;
+
+        textColorRes1 = android.R.color.holo_red_light;
+        textColorRes2 = android.R.color.black;
+
+        textSizeRes1 = R.dimen.dip_20;
+        textSizeRes2 = R.dimen.dip_30;
+
+        textRes1 = R.string.text_1;
+        textRes2 = R.string.text_3;
+        int size = res.getDimensionPixelSize(textSizeRes2);
     }
 
     public String toggleUrl() {
@@ -50,7 +72,7 @@ public class ResHelper {
         return result;
     }
 
-    public int toggleRes() {
+    public int toggleDrawableRes() {
         int result = useRes1 ? res2 : res1;
         useRes1 = !useRes1;
         return result;
@@ -71,5 +93,21 @@ public class ResHelper {
         int color = useColor1 ? color2 : color1;
         useColor1 = !useColor1;
         return color;
+    }
+
+    public int toggleTextColorRes(){
+        int colorRes = useTextColorRes1 ? textColorRes2 : textColorRes1;
+        useTextColorRes1 = !useTextColorRes1;
+        return colorRes;
+    }
+    public int toggleTextSizeRes(){
+        int res = useTextSizeRes1 ? textSizeRes2 : textSizeRes1;
+        useTextSizeRes1 = !useTextSizeRes1;
+        return res;
+    }
+    public int toggleTextRes(){
+        int res = useTextRes1 ? textRes2 : textRes1;
+        useTextRes1 = !useTextRes1;
+        return res;
     }
 }
