@@ -285,6 +285,18 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 ```
 
+# Reading The Source
+* Sample project
+  * [Data-mediator-demo](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo) core demo of data-mediator.
+  * [data-binding-test](https://github.com/LightSun/data-mediator/tree/master/data-binding-test)  core data-binding demo of data-mediator.
+  * [plugin-data-mediator-test](https://github.com/LightSun/data-mediator/tree/master/plugin-data-mediator-test) the java project demo of Data-mediator.
+* library
+  * [data-mediator](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core lib of whole project
+  * [data-mediator-compiler](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core compiler lib of whole project
+  * [data-mediator-annotations](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the annotation lib of whole project
+* Plugin
+  * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
+
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
  - [Google/Gson](https://github.com/google/gson)
