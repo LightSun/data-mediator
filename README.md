@@ -1,9 +1,9 @@
 data-mediator
 =======================================
-| Platform        | compiler   | gson-support  |  binder |  SparseArray |
-| ------------- | ------------- | ----- | ------- | ------- |
-| java      | ok  | ok | need manual impl |  ok |
-| android   | ok  | ok |  ok | ok |
+| Platform        | compiler   | gson-support  |  binder |  SparseArray | data-binding |
+| ------------- | ------------- | ----- | ------- | ------- | ------- |
+| java      | ok  | ok | need manual impl |  ok | need manual impl |
+| android   | ok  | ok |  ok | ok | ok |
 
  <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
   <img src="res/data_mediator_binding_adapter.gif" alt="base binder demo"/>
