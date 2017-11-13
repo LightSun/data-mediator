@@ -1,14 +1,12 @@
 package com.heaven7.data.mediator.data_binding_test.sample;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
 import com.heaven7.data.mediator.data_binding_test.R;
 import com.heaven7.data.mediator.data_binding_test.module.ViewBind;
+import com.heaven7.data.mediator.data_binding_test.util.ResHelper;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.bind.BindBackground;
@@ -41,18 +39,8 @@ public class TestViewBindActivity extends BaseActivity {
     @BindView(R.id.v_visibility)@BindVisibility("visible")
     View mV_visibility;
 
+    private ResHelper mHelper = new ResHelper();
     private Binder<ViewBind> binder;
-
-    private Drawable mDrawable1;
-    private Drawable mDrawable2;
-    private int mResId1;
-    private int mResId2;
-    private int mColor1;
-    private int mColor2;
-
-    private boolean mUserDrawable1;
-    private boolean mUserRes1;
-    private boolean mUserColor1;
 
     @Override
     protected int getLayoutId() {
@@ -60,7 +48,7 @@ public class TestViewBindActivity extends BaseActivity {
     }
     @Override
     protected void onInit(Context context, Bundle savedInstanceState) {
-        initResource(context);
+        mHelper.init(context);
 
         final ViewBind data = DataMediatorFactory.createData(ViewBind.class);
         //bind data.
@@ -70,22 +58,19 @@ public class TestViewBindActivity extends BaseActivity {
     @OnClick(R.id.bt_change_bg)
     public void onClickChangeBg(View v){
         //改变背景（drawable）
-        binder.getDataProxy().setBackground(mUserDrawable1 ? mDrawable2 : mDrawable1);
-        mUserDrawable1 = !mUserDrawable1;
+        binder.getDataProxy().setBackground(mHelper.toggleDrawable());
     }
 
     @OnClick(R.id.bt_change_bg_color)
     public void onClickChangeBgColor(View v){
         //改变背景（color）
-        binder.getDataProxy().setBackgroundColor(mUserColor1 ? mColor2 : mColor1);
-        mUserColor1 = !mUserColor1;
+        binder.getDataProxy().setBackgroundColor(mHelper.toggleColor());
     }
 
     @OnClick(R.id.bt_change_bg_res)
     public void onClickChangeBgRes(View v){
         //改变背景（resource id）
-        binder.getDataProxy().setBackgroundRes(mUserRes1 ? mResId2 : mResId1);
-        mUserRes1 = !mUserRes1;
+        binder.getDataProxy().setBackgroundRes(mHelper.toggleRes());
     }
 
     @OnClick(R.id.bt_change_enable)
@@ -96,20 +81,6 @@ public class TestViewBindActivity extends BaseActivity {
     @OnClick(R.id.bt_change_visibility)
     public void onClickChangeVisibility(View v){
         binder.getDataProxy().setVisible(!binder.getDataProxy().isVisible());
-    }
-
-    private void initResource(Context context) {
-        Resources res = context.getResources();
-        mDrawable1 = res.getDrawable(R.mipmap.ic_launcher);
-        mDrawable2 = res.getDrawable(R.mipmap.ic_launcher_round);
-        mResId1 = R.mipmap.ic_launcher;
-        mResId2 = R.mipmap.ic_launcher_round;
-        mColor1 = Color.RED;
-        mColor2 = Color.GREEN;
-
-        mUserDrawable1 = true;
-        mUserRes1 = true;
-        mUserColor1 = true;
     }
 
     @Override

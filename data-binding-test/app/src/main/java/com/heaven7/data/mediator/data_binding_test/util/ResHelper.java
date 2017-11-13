@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import com.heaven7.data.mediator.data_binding_test.R;
@@ -22,10 +23,14 @@ public class ResHelper {
     Drawable drawable1;
     Drawable drawable2;
 
+    int color1;
+    int color2;
+
     boolean useUrl1;
     boolean useRes1;
     boolean useBitmap1;
     boolean useDrawable1;
+    boolean useColor1;
 
     public void init(Context context) {
         final Resources res = context.getResources();
@@ -35,6 +40,8 @@ public class ResHelper {
         drawable2 = res.getDrawable(res2);
         bitmap1 = BitmapFactory.decodeResource(res, res1);
         bitmap2 = BitmapFactory.decodeResource(res, res2);
+        color1 = Color.RED;
+        color2 = Color.GREEN;
     }
 
     public String toggleUrl() {
@@ -59,5 +66,10 @@ public class ResHelper {
         Drawable result = useDrawable1 ? drawable2 : drawable1;
         useDrawable1 = !useDrawable1;
         return result;
+    }
+    public int toggleColor() {
+        int color = useColor1 ? color2 : color1;
+        useColor1 = !useColor1;
+        return color;
     }
 }
