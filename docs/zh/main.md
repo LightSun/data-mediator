@@ -249,7 +249,7 @@ public interface FlowItem extends Parcelable{
  ```
 
 # 安装
- * 安装idea插件。see [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0）
+ * 安装idea插件。see [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0)
  * java平台.
     * 1, gradle配置
     ```java
