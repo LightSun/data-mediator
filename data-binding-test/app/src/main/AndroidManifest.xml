@@ -25,6 +25,7 @@
         <activity android:name=".sample.TestViewBindActivity" android:label="TestViewBind"/>
         <activity android:name=".sample.TestImageViewBindActivity" android:label="ImageViewBind"/>
         <activity android:name=".sample.TestSelfBinderActivity" android:label="SelfBinder"/>
+        <activity android:name=".sample.TestSelfBinderFactory" android:label="SelfBinderFactory"/>
         <activity android:name=".sample.TestBindArrayPropertyToOneView" android:label="BindArrayPropertyToOneView"/>
 
 
