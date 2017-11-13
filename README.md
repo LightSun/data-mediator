@@ -294,6 +294,8 @@ public class TestPropertyChangeActivity extends BaseActivity {
   * [data-mediator](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core lib of whole project
   * [data-mediator-compiler](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core compiler lib of whole project
   * [data-mediator-annotations](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the annotation lib of whole project
+  * [Data-mediator-demo/data-mediator-android](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/data-mediator-android)  support lib on android platform of data-mediator
+  * [data-mediator-support-gson](https://github.com/LightSun/data-mediator/tree/master/data-mediator-support-gson) the gson support lib 
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
 
