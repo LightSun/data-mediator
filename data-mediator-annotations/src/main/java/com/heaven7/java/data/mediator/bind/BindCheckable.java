@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind checkable of view . eg: android.widget.CheckBox.
+ * it will auto set checked or not when you change check state from proxy.
+ * <pre>
+ *     {@literal @}BindCheckable("checkable") CheckBox cb;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind text color resource of view . eg: TextView.
+ * it will auto set text color resource when you change text color resource from proxy.
+ * <pre>
+ *     {@literal @}BindTextColorRes("textColorRes") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

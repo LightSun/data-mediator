@@ -8,7 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * bind view background.
+ * bind view background. it will auto set background drawable when you change background from proxy.
+ * <pre>
+ *     {@literal @}BindBackground("background") TextView title;
+ * </pre>
  * @author heaven7
  * @since 1.2.0
  */

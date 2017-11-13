@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind image uri({android.net.Uri}) of view . eg: ImageView.
+ * it will auto set image uri when you change image uri from proxy.
+ * <pre>
+ *     {@literal @}BindImageUri("imageUri") ImageView iv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

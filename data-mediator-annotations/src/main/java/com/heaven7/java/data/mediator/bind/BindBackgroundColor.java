@@ -8,7 +8,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * bind view background color.
+ * bind view background color.it will auto set background color when you change background from proxy.
+ * <pre>
+ *     {@literal @}BindBackgroundColor("backgroundColor") TextView title;
+ * </pre>
  * @author heaven7
  * @since 1.2.0
  */

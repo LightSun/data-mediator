@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind image bitmap of view . eg: ImageView.
+ * it will auto set image bitmap when you change bitmap from proxy.
+ * <pre>
+ *     {@literal @}BindImageBitmap("imageBitmap") ImageView iv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

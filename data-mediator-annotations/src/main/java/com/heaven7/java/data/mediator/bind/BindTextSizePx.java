@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind text size (dip value) of view . eg: TextView.
+ * it will auto set text size as pix when you change text size from proxy.
+ * <pre>
+ *     {@literal @}BindTextSizePx("textSizePx") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind view visibility.
+ * it will auto set Visibility when you change visibility from proxy.
+ * <pre>
+ *     {@literal @}BindVisibility("visible") TextView title;
+ * </pre>
  * @author heaven7
  * @since 1.2.0
  */

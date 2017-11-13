@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind view background resource.
+ * it will auto set background resource when you change background from proxy.
+ * <pre>
+ *     {@literal @}BindBackgroundRes("backgroundRes") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

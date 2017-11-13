@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind enable of view . eg: android.view.View.
+ * it will auto set enable or not when you change enable state from proxy.
+ * <pre>
+ *     {@literal @}BindEnable("enable") TextView tv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

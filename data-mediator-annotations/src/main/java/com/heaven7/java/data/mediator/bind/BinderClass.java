@@ -7,6 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * define the binder class.<br>
+ * it will auto create binder when you using data-binding of data-mediator.
+ * <pre>
+ *     {@literal @}BinderClass(AndroidBinder.class) public class MainActivity extends BaseActivity{ ...}
+ * </pre>
  * Created by heaven7 on 2017/11/5.
  * @since 1.2.0
  */

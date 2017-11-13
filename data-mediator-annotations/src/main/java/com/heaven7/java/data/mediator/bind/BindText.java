@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind text of view . eg: TextView.
+ * it will auto set text when you change text from proxy.
+ * <pre>
+ *     {@literal @}BindText("text") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

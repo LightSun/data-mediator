@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind text color of view . eg: TextView.
+ * it will auto set text color when you change text color from proxy.
+ * <pre>
+ *     {@literal @}BindTextColor("textColor") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

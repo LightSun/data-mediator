@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind image drawable of view . eg: ImageView.
+ * it will auto set image drawable when you change image drawable from proxy.
+ * <pre>
+ *     {@literal @}BindImageDrawable("imageDrawable") ImageView iv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

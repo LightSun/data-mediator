@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 
 /**
  * bind an array of property names in order, currently like: 'textColorRes'. 'textSizeRes'. 'textRes'
+ * <p>Here is a demo</p>
+ * <pre>
+ *      {@literal @}@BindsTextView( {"textColorRes", "textSizeRes", "textRes"})
+         TextView mTv;
+ * </pre>
  * Created by heaven7 on 2017/11/5.
  * @since 1.2.0
  */

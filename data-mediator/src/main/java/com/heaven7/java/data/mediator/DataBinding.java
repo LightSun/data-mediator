@@ -12,6 +12,37 @@ import java.util.Objects;
 
 /**
  * the super class of data binding.
+ * <p>Here is a simple demo:</p>
+ * <pre>
+ * public class TestViewBindActivity extends BaseActivity {
+ *
+ * {@literal }@BindView(R.id.v_bg) @BindBackground("background")
+ * View mV_bg;
+ *
+ * private ResHelper mHelper = new ResHelper();
+ * private Binder<ViewBind> binder;
+ *
+ * {@literal } @Override
+ * protected int getLayoutId() {
+ * return R.layout.ac_test_view_bind;
+ * }
+ * {@literal } @Override
+ * protected void onInit(Context context, Bundle savedInstanceState) {
+ * mHelper.init(context);
+ *
+ * final ViewBind data = DataMediatorFactory.createData(ViewBind.class);
+ * //bind data.
+ * binder = DataMediatorFactory.bind(this, data);
+ * }
+ *
+ * {@literal } @OnClick(R.id.bt_change_bg)
+ * public void onClickChangeBg(View v){
+ * //（drawable）
+ * binder.getDataProxy().setBackground(mHelper.toggleDrawable());
+ * }
+ *
+ * }
+ * </pre>
  *
  * @param <T> the object which whose view will be bind.
  * @author heaven7
@@ -27,13 +58,15 @@ public abstract class DataBinding<T> {
     /**
      * <p>Note: We recommend you use {@linkplain SimpleParameterSupplier} instead.</p>
      * interface for supply parameters which is used for data-binding when we need additional parameters.
+     *
      * @author heaven7
      * @since 1.4.0
      */
     public interface ParameterSupplier {
         /**
          * get the parameters for target property from data.
-         * @param data the module data which is used for this bind.
+         *
+         * @param data     the module data which is used for this bind.
          * @param property the property
          * @return the parameters
          */
@@ -133,7 +166,7 @@ public abstract class DataBinding<T> {
      * @return the binder
      */
     public <D> Binder<D> bind(D data, int index, @Nullable PropertyInterceptor interceptor) {
-        return bind(data, index, null,  interceptor);
+        return bind(data, index, null, interceptor);
     }
 
     /**
@@ -203,10 +236,11 @@ public abstract class DataBinding<T> {
      * @return the binder
      */
     public <D> Binder<D> bindAndApply(D data, int index, PropertyInterceptor interceptor) {
-        Binder<D> binder = bind(data, index, null,interceptor);
+        Binder<D> binder = bind(data, index, null, interceptor);
         binder.applyProperties();
         return binder;
     }
+
     /**
      * bind data to the all defined bind views. and apply it immediately.
      *
@@ -218,7 +252,7 @@ public abstract class DataBinding<T> {
      * @return the binder
      */
     public <D> Binder<D> bindAndApply(D data, int index, @Nullable ParameterSupplier supplier,
-                             @Nullable PropertyInterceptor interceptor) {
+                                      @Nullable PropertyInterceptor interceptor) {
         final Binder<D> binder = bind(data, index, supplier, interceptor);
         binder.applyProperties();
         return binder;
@@ -228,10 +262,10 @@ public abstract class DataBinding<T> {
         //verify property name
         verifyPropertyName(binder, info);
         //extra parameters
-        final Object[] extraParams = supplier == null ? null :(
+        final Object[] extraParams = supplier == null ? null : (
                 (supplier instanceof SimpleParameterSupplier) ?
-                ((SimpleParameterSupplier) supplier).getParameters(binder.getData(), info.propName, info.methodName, info.methodTypes)
-                        : supplier.getParameters(binder.getData(), info.propName) );
+                        ((SimpleParameterSupplier) supplier).getParameters(binder.getData(), info.propName, info.methodName, info.methodTypes)
+                        : supplier.getParameters(binder.getData(), info.propName));
 
         //------- start handle parameters of bind method ------------
         Object[] params = {info.propName, info.view};
@@ -260,7 +294,7 @@ public abstract class DataBinding<T> {
             method.invoke(binder, params);
         } catch (Exception e) {
             throw new RuntimeException("can't find method, name = " + info.methodName + " ,info.methodTypes = "
-                    + (info.methodTypes != null ? Arrays.toString(info.methodTypes) : null));
+                    + (info.methodTypes != null ? Arrays.toString(info.methodTypes) : null), e);
         }
     }
 
@@ -286,11 +320,12 @@ public abstract class DataBinding<T> {
 
     /**
      * the simple parameter supplier.
+     *
      * @author heaven7
-     * @since 1.4.1
      * @see ParameterSupplier
+     * @since 1.4.1
      */
-    public static abstract class SimpleParameterSupplier implements ParameterSupplier{
+    public static abstract class SimpleParameterSupplier implements ParameterSupplier {
 
         @Override
         public Object[] getParameters(Object data, String property) {
@@ -299,26 +334,28 @@ public abstract class DataBinding<T> {
 
         /**
          * get additional parameters by target data module , property,binder method name and method parameterTypes.
-         * @param data the data module
-         * @param property the property
-         * @param method the method name of Binder.
+         *
+         * @param data        the data module
+         * @param property    the property
+         * @param method      the method name of Binder.
          * @param methodTypes the method parameter types of Binder.
          * @return the additional parameters. null means default parameters.
          * @see Binder
          */
         public Object[] getParameters(Object data, String property, String method, Class<?>[] methodTypes) {
-            if(!"bindImageUrl".equals(method)){
+            if (!"bindImageUrl".equals(method)) {
                 return null;
             }
             Object loader = getImageLoader();
-            if(loader == null){
+            if (loader == null) {
                 throw new IllegalArgumentException("you must assign the image loader. can't be null.");
             }
-            return new Object[]{ loader};
+            return new Object[]{loader};
         }
 
         /**
          * get the image loader. which is used to {@linkplain Binder#bindImageUrl(String, Object, Object)}.
+         *
          * @return the image loader to load image url. can't be null.
          */
         protected abstract Object getImageLoader();
@@ -351,6 +388,7 @@ public abstract class DataBinding<T> {
 
         /**
          * assign the internal additional parameter count for Binder method.
+         *
          * @param count the internal additional parameter count
          */
         public void extraValueCount(int count) {
@@ -360,6 +398,7 @@ public abstract class DataBinding<T> {
 
         /**
          * add extra/additional parameter value for Binder method
+         *
          * @param value extra/additional parameter value
          */
         public void addExtraValue(Object value) {
@@ -368,6 +407,7 @@ public abstract class DataBinding<T> {
 
         /**
          * assign the count of method parameter type.
+         *
          * @param count the count of method parameter type.
          */
         public void typeCount(int count) {
@@ -377,6 +417,7 @@ public abstract class DataBinding<T> {
 
         /**
          * add  method parameter type.
+         *
          * @param type the type
          */
         public void addType(Class<?> type) {

@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind image resource of view . eg: ImageView.
+ * it will auto set image resource when you change image resource from proxy.
+ * <pre>
+ *     {@literal @}BindImageRes("imageRes") ImageView iv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

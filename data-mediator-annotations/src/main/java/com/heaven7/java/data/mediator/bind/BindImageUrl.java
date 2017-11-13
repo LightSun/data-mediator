@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind image link url of view . eg: ImageView.
+ * it will auto set image from url when you change image url from proxy.
+ * <pre>
+ *     {@literal @}BindImageUrl("url") ImageView iv;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */

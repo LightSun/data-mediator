@@ -9,6 +9,11 @@ import java.lang.annotation.Target;
 
 /**
  * bind an array of property names in order, currently like: 'backgroundRes'. 'visibility'. 'enable'.<br>
+ * <p>Here is a demo</p>
+ * <pre>
+ *      {@literal @}BindsView( {"backgroundRes", "visibility", "enable"})
+         TextView mTv;
+ * </pre>
  * Created by heaven7 on 2017/11/5.
  * @since 1.2.0
  */

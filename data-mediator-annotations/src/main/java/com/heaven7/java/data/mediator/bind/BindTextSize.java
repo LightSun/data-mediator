@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * bind text size of view . eg: TextView.
+ * it will auto set text size when you change text size from proxy.
+ * <pre>
+ *     {@literal @}BindTextSize("textSize") TextView title;
+ * </pre>
  * @author heaven7
  * @since  1.2.0
  */
