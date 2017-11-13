@@ -1,9 +1,9 @@
 data-mediator
 =======================================
-| Platform        | compiler   | gson-support  |  binder |  SparseArray |
-| ------------- | ------------- | ----- | ------- | ------- |
-| java      | ok  | ok | need manual impl |  ok |
-| android   | ok  | ok |  ok | ok |
+| Platform        | compiler   | gson-support  |  binder |  SparseArray | data-binding |
+| ------------- | ------------- | ----- | ------- | ------- | ------- |
+| java      | ok  | ok | need manual impl |  ok | need manual impl |
+| android   | ok  | ok |  ok | ok | ok |
 
  <img src="res/data-mediator-generator.gif" alt="base binder demo"/>
   <img src="res/data_mediator_binding_adapter.gif" alt="base binder demo"/>
@@ -67,7 +67,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 ```
 
 # Install 
- * first , install the plugin of 'data-mediator-intellij-plugin', see it in release.
+ * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0).
  * java platform(for java/j2ee).
     * 1, gradle.
     ```java
@@ -264,6 +264,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 # Proguard
 ```java
+-dontwarn com.heaven7.adapter.**
 -keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
    *;
 }
@@ -274,18 +275,13 @@ public class TestPropertyChangeActivity extends BaseActivity {
    *;
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
-# needed since 1.4.0
--keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{
-  *;
-}
-# needed since 1.4.0
--keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{
-   *;
-}
-# needed since 1.1.3
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
-# needed since 1.2.2 
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
+
+# needed since 1.4.0
+-keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{*;}
+-keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{*;}
+-keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
 
 ```
 

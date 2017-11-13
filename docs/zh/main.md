@@ -249,7 +249,7 @@ public interface FlowItem extends Parcelable{
  ```
 
 # 安装
- * 安装idea插件。（see release）
+ * 安装idea插件(data-mediator-intellij-plugin.jar)。see [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0)
  * java平台.
     * 1, gradle配置
     ```java
@@ -435,6 +435,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 # 混淆配置
 ```java
+-dontwarn com.heaven7.adapter.**
 -keepclasseswithmembers public class * implements com.heaven7.java.data.mediator.DataPools$Poolable{
    *;
 }
@@ -445,16 +446,11 @@ public class TestPropertyChangeActivity extends BaseActivity {
    *;
 }
 -keep class com.heaven7.java.data.mediator.BaseMediator
-# 1.1.3 新增
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl
-# 1.2.2新增
 -keep class com.heaven7.java.data.mediator.internal.$StaticLoader
+
 # since 1.4.0
--keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{
-  *;
-}
-# since 1.4.0
--keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{
-   *;
-}
+-keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{ *;}
+-keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{*;}
+-keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
 ```
