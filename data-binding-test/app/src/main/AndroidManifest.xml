@@ -24,6 +24,9 @@
         </activity>
         <activity android:name=".sample.TestViewBindActivity" android:label="TestViewBind"/>
         <activity android:name=".sample.TestImageViewBindActivity" android:label="ImageViewBind"/>
+        <activity android:name=".sample.TestSelfBinderActivity" android:label="SelfBinder"/>
+
+
         <activity android:name=".sample.adapter.TestDatabindingAdapter" android:label="ImageViewBind"/>
         <activity android:name=".sample.adapter.DataBindingAdapterWithHeader" android:label="ImageViewBind"/>
     </application>

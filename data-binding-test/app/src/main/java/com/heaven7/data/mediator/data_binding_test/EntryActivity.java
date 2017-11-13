@@ -1,6 +1,7 @@
 package com.heaven7.data.mediator.data_binding_test;
 
 import com.heaven7.data.mediator.data_binding_test.sample.TestImageViewBindActivity;
+import com.heaven7.data.mediator.data_binding_test.sample.TestSelfBinderActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.TestViewBindActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.adapter.DataBindingAdapterWithHeader;
 import com.heaven7.data.mediator.data_binding_test.sample.adapter.TestDatabindingAdapter;
@@ -17,6 +18,7 @@ public class EntryActivity extends AbsMainActivity {
     protected void addDemos(List<ActivityInfo> list) {
         list.add(new ActivityInfo(TestViewBindActivity.class));
         list.add(new ActivityInfo(TestImageViewBindActivity.class));
+        list.add(new ActivityInfo(TestSelfBinderActivity.class));
         list.add(new ActivityInfo(TestDatabindingAdapter.class));
         list.add(new ActivityInfo(DataBindingAdapterWithHeader.class));
     }
