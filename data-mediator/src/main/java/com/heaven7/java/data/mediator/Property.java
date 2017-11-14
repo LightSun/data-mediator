@@ -18,8 +18,8 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.util.SparseArray;
-import com.heaven7.java.base.util.Throwables;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,7 @@ public class Property{
      private final String type;
      private final String name;
      private final int complexType;
+     private WeakReference<Class<?>> mWeakClass;
 
      /**
       * create a property instance by type , name  and complex type
@@ -101,29 +102,12 @@ public class Property{
       * @see #getComplexType()
       */
      public Class<?> getType() {
-          switch (type){
-               case TYPE_int:
-                    return int.class;
-               case TYPE_long:
-                    return long.class;
-               case TYPE_short:
-                    return short.class;
-               case TYPE_byte:
-                    return byte.class;
-               case TYPE_boolean:
-                    return boolean.class;
-               case TYPE_float:
-                    return float.class;
-               case TYPE_double:
-                    return double.class;
-               case TYPE_char:
-                    return char.class;
+          //this object may be const, so weak reference ,
+          // even if the Class very likely exist loaded all the time.
+          if(mWeakClass == null || mWeakClass.get() == null){
+               mWeakClass = new WeakReference<Class<?>>(getType0());
           }
-          try {
-               return bestGuessClass(type);
-          } catch (ClassNotFoundException e) {
-               throw new RuntimeException(e);
-          }
+          return mWeakClass.get();
      }
 
      /**
@@ -212,7 +196,33 @@ public class Property{
                   '}';
      }
 
-     //resolve inner class
+     private Class<?> getType0() {
+          switch (type){
+               case TYPE_int:
+                    return int.class;
+               case TYPE_long:
+                    return long.class;
+               case TYPE_short:
+                    return short.class;
+               case TYPE_byte:
+                    return byte.class;
+               case TYPE_boolean:
+                    return boolean.class;
+               case TYPE_float:
+                    return float.class;
+               case TYPE_double:
+                    return double.class;
+               case TYPE_char:
+                    return char.class;
+          }
+          try {
+               return bestGuessClass(type);
+          } catch (ClassNotFoundException e) {
+               throw new RuntimeException(e);
+          }
+     }
+
+     //resolve inner class, can't used to primitive.
      private static Class<?> bestGuessClass(String classNameString) throws ClassNotFoundException {
           List<String> names = new ArrayList<>();
 

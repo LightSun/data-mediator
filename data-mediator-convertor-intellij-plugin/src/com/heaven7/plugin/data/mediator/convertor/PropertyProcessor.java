@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NonNls;
 
 import java.util.*;
 
+/**
+ * the convertor processor
+ */
 public class PropertyProcessor {
 
     private static final String NAME_SERIALIZE = "com.google.gson.annotations.SerializedName";
@@ -100,7 +103,6 @@ public class PropertyProcessor {
                 complexType = FieldFlags.COMPLEX_SPARSE_ARRAY;
                 fdTyoe = fdTyoe.substring(fdTyoe.indexOf("<") + 1, fdTyoe.lastIndexOf(">"));
             }
-            //TODO inner class?
             pi.setProperty(new Property(fdTyoe, field.getName(), complexType));
             if(list != null){
                 PsiAnnotation seria = list.findAnnotation(NAME_SERIALIZE);
@@ -226,11 +228,12 @@ public class PropertyProcessor {
                     sb.append("|").append(fieldFlags).append(".FLAG_EXPOSE_DESERIALIZE_FALSE");
                 }
             }
-            if(info.getSince() != 0){
+            if(info.getSince() > 1.0){
                 sb.append(",since = ").append(info.getSince());
             }
-            if(info.getUntil() != 0){
-                sb.append(",until = ").append(info.getUntil());
+            final double until = info.getUntil();
+            if(until > 1.0 && until < Integer.MAX_VALUE){
+                sb.append(",until = ").append(until);
             }
             sb.append(")");
             if(i != size - 1){
