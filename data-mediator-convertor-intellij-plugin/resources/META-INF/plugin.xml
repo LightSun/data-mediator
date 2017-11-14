@@ -1,0 +1,53 @@
+<idea-plugin>
+  <id>com.heaven7.plugin.data.mediator.convertor</id>
+  <name>Data-Mediator bean convertor</name>
+  <version>1.0</version>
+  <vendor email="donshine723@gmail.com" url="https://github.com/LightSun/data-mediator">heaven7</vendor>
+
+  <description><![CDATA[
+      This is the bean convertor of Data-Mediator. That convert bean data to the module of Data-Mediator.<br>
+      what's Data-Mediator ? <br>
+      Data-mediator is a framework of data.<br>
+      It can hele we do much work. <br>
+      Features:<br>
+      1, like listen property change, <br>
+      2, generate get/is/set method. <br>
+      3, chain call. <br>
+      4, auto impl Serializable and parcelable. or others.<br>
+      5, full support for Google/Gson.<br>
+      6, support data-bind for android platform.<br>
+      7, support self method/interface. <br>
+      8, full support data-binding in adapter which can Best Seamless with 'ButterKnife'.
+      8. ...... the more to see in github. <br>
+      Plugin which generates Data-mediator code for you.
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action id="convertBeanForDataMediatorNew" class="com.heaven7.plugin.data.mediator.convertor.ConvertAction"
+            text="Data-Mediator bean convertor"
+            description=" Convert bean data to the module of Data-Mediator.">
+      <add-to-group group-id="GenerateGroup" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>

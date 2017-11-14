@@ -17,4 +17,5 @@ public interface TestItem3 extends TestItem2{
     String getTestItem3();
 
     TestItem3 setTestItem3(String testItem31);
+
 }

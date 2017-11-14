@@ -54,7 +54,7 @@ public class DataMediatorAction extends AnAction {
         pmGenerator.setHasSelectable(PsiUtils.hasSelectable(psiClass) && !superHasSelectable);
         //do generate
         generateDataMediator(psiClass, pmGenerator);
-        //change subclass's generate methods  when chainc all enabled and super property changed.
+        //change subclass's generate methods  when chain call enabled and super property changed.
         //but we don't manual change all sub PsiClass. Note this.
     }
     private void parseSuperProperties(Project project, PsiClass psiClass,

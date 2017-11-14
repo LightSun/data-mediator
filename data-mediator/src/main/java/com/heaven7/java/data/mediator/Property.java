@@ -18,8 +18,10 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.util.SparseArray;
+import com.heaven7.java.base.util.Throwables;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -118,7 +120,7 @@ public class Property{
                     return char.class;
           }
           try {
-               return Class.forName(type);
+               return bestGuessClass(type);
           } catch (ClassNotFoundException e) {
                throw new RuntimeException(e);
           }
@@ -208,5 +210,43 @@ public class Property{
                   ", name='" + name + '\'' +
                   ", complexType=" + complexType +
                   '}';
+     }
+
+     //resolve inner class
+     private static Class<?> bestGuessClass(String classNameString) throws ClassNotFoundException {
+          List<String> names = new ArrayList<>();
+
+          // Add the package name, like "java.util.concurrent", or "" for no package.
+          int p = 0;
+          while (p < classNameString.length() && Character.isLowerCase(classNameString.codePointAt(p))) {
+               p = classNameString.indexOf('.', p) + 1;
+               checkArgument(p != 0, "couldn't make a guess for %s", classNameString);
+          }
+          names.add(p != 0 ? classNameString.substring(0, p - 1) : "");
+
+          // Add the class names, like "Map" and "Entry".
+          for (String part : classNameString.substring(p).split("\\.", -1)) {
+               checkArgument(!part.isEmpty() && Character.isUpperCase(part.codePointAt(0)),
+                       "couldn't make a guess for %s", classNameString);
+               names.add(part);
+          }
+
+          final int size = names.size();
+          checkArgument(size >= 2, "couldn't make a guess for %s", classNameString);
+          //System.out.println(names);
+          StringBuilder sb = new StringBuilder();
+          sb.append(names.get(0))
+                  .append(".")
+                  .append(names.get(1));
+          if(size > 2){
+               for(int i = 2 ; i < size; i ++){
+                    sb.append("$")
+                            .append(names.get(i));
+               }
+          }
+          return Class.forName(sb.toString());
+     }
+     private static void checkArgument(boolean condition, String format, Object... args) {
+          if (!condition) throw new IllegalArgumentException(String.format(format, args));
      }
 }

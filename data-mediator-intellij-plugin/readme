@@ -11,6 +11,12 @@ PsiJavaFile javaFile = (PsiJavaFile) mPsiClass.getContainingFile();
         PsiPackage pkg = JavaPsiFacade.getInstance(mPsiClass.getProject())
                 .findPackage(javaFile.getPackageName());
 
+ //find package
+ PsiJavaFile javaFile = (PsiJavaFile) mPsiClass.getContainingFile();
+ PsiPackage pkg = JavaPsiFacade.getInstance(project).findPackage(javaFile.getPackageName());
+ //create PsiClass
+ PsiDirectory dir = PsiManager.getInstance(project).findDirectory(mVirtualFile);
+
 http://blog.csdn.net/hawkdowen/article/details/41213001
 
 //无法配置插件config时
