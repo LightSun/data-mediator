@@ -65,6 +65,9 @@ a data-mediator framework which uses annotation processing to generate boilerpla
         }
     }
 ```
+ * Plugin support: 
+   * the plugin of 'data-mediator-intellij-plugin' used to generate module.
+   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2).
@@ -300,6 +303,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
   * [data-mediator-support-gson](https://github.com/LightSun/data-mediator/tree/master/data-mediator-support-gson) the gson support lib 
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
+  * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module od this framework. 
 
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
