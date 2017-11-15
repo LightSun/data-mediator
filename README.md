@@ -7,7 +7,6 @@ data-mediator
 
 <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
 <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
-<img src="res/data_mediator_binding_adapter.gif" alt="Data-binding demo"/>
 
 a data-mediator framework which uses annotation processing to generate boilerplate code for you. <br>
 [文档还是中文的好](docs/zh/main.md)
@@ -70,7 +69,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0).
    * [Optionally] install the convertor plugin . if you want to convert java bean to the module of 'Data-Mediator'.
-   click [here](https://github.com/LightSun/data-mediator/releases/tag/1.4.2) to download
+   click to download [data-mediator-convertor-intellij-plugin.jar](https://github.com/LightSun/data-mediator/releases/tag/1.4.2) to download
  * java platform(for java/j2ee).
     * 1, gradle.
     ```java
