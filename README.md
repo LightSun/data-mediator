@@ -303,7 +303,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
   * [data-mediator-support-gson](https://github.com/LightSun/data-mediator/tree/master/data-mediator-support-gson) the gson support lib 
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
-  * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module od this framework. 
+  * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module of this framework. 
 
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
