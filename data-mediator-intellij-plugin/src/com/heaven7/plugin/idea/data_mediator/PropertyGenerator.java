@@ -148,7 +148,7 @@ import java.util.List;
                 mPsiClass.getProject(), GlobalSearchScope.allScope(mPsiClass.getProject()));
         PsiField psiField = elementFactory.createField("PROP_" + prop.getName(), psiType);
         PsiExpression psiInitializer = elementFactory.createExpressionFromText(
-                String.format("%s.get(\"%s\", \"%s\" ,%d)",
+                String.format("%s.get(%s.class.getName(), \"%s\" ,%d)",
                         "com.heaven7.java.data.mediator.internal.SharedProperties",
                         prop.getTypeString(), prop.getName(), prop.getComplexType()),
                 psiField);

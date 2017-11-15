@@ -1,6 +1,6 @@
 <idea-plugin>
   <id>com.heaven7.plugin.data.mediator.convertor</id>
-  <name>Data-Mediator bean convertor</name>
+  <name>Data-Mediator convertor</name>
   <version>1.0</version>
   <vendor email="donshine723@gmail.com" url="https://github.com/LightSun/data-mediator">heaven7</vendor>
 
@@ -23,8 +23,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      convert java bean to the module of data-mediator<br>
     ]]>
   </change-notes>
 
@@ -44,7 +43,7 @@
   <actions>
     <!-- Add your actions here -->
     <action id="convertBeanForDataMediatorNew" class="com.heaven7.plugin.data.mediator.convertor.ConvertAction"
-            text="Data-Mediator bean convertor"
+            text="Data-Mediator convertor"
             description=" Convert bean data to the module of Data-Mediator.">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>

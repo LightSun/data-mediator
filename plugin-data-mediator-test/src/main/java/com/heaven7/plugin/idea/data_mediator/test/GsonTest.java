@@ -11,8 +11,9 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
         @Field(propName = "test", flags = FieldFlags.FLAGS_MAIN_SCOPES_2 &~ FieldFlags.FLAG_GSON_PERSISTENCE)
 })
 public interface GsonTest extends DataPools.Poolable {
-    Property PROP_id = SharedProperties.get("java.lang.String", "id", 0);
-    Property PROP_test = SharedProperties.get("java.lang.String", "test", 0);
+
+    Property PROP_id = SharedProperties.get(String.class.getName(), "id", 0);
+    Property PROP_test = SharedProperties.get(String.class.getName(), "test", 0);
 
     GsonTest setId(String id1);
 
@@ -20,7 +21,5 @@ public interface GsonTest extends DataPools.Poolable {
 
     GsonTest setTest(String test1);
 
-    String getTest();/*
-================== start methods from super properties ===============
-======================================================================= */
+    String getTest();
 }

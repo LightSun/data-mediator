@@ -11,14 +11,16 @@ import java.util.List;
         @Field(propName = "testItem10_1"),
 })
 public interface TestItem10 extends TestItem{
+    Property PROP_testItem10_1 = SharedProperties.get(String.class.getName(), "testItem10_1", 0);
 
-    Property PROP_testItem10_1 = SharedProperties.get("java.lang.String", "testItem10_1", 0);
+    /*
+================== start super methods =============== */
 
     TestItem10 setTestItem10_1(String testItem10_11);
 
-    String getTestItem10_1();
-    /*
-================== start super methods =============== */
+    String getTestItem10_1();/*
+================== start methods from super properties ===============
+======================================================================= */
 
     TestItem10 setTestItem_1(Student testItem_11);
 

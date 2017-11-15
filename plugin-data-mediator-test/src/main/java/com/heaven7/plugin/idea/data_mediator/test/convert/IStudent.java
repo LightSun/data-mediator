@@ -12,11 +12,11 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 }, generateJsonAdapter = false)
 //this class is convert by convertor plugin
 public interface IStudent extends DataPools.Poolable {
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_id = SharedProperties.get("java.lang.String", "id", 0);
-    Property PROP_age = SharedProperties.get("int", "age", 0);
-    Property PROP_grade = SharedProperties.get("int", "grade", 0);
-    Property PROP_nickName = SharedProperties.get("java.lang.String", "nickName", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_id = SharedProperties.get(String.class.getName(), "id", 0);
+    Property PROP_age = SharedProperties.get(int.class.getName(), "age", 0);
+    Property PROP_grade = SharedProperties.get(int.class.getName(), "grade", 0);
+    Property PROP_nickName = SharedProperties.get(String.class.getName(), "nickName", 0);
 
     IStudent setName(String name1);
 

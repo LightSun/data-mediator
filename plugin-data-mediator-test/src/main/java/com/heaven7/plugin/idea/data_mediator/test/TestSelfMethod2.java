@@ -15,18 +15,26 @@ import com.heaven7.plugin.idea.data_mediator.test.util.TestUtil2;
 @ImplClass(TestUtil2.class)
 public interface TestSelfMethod2 extends TestSelfMethod1{
 
-    Property PROP_id = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "id", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-
-    Student getId();
-    TestSelfMethod2 setId(Student id1);
-
-    String getName();
-    TestSelfMethod2 setName(String name1);
+    Property PROP_id = SharedProperties.get(Student.class.getName(), "id", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
 
     @ImplMethod(value = "parseStudent", from = TestUtil.class)
     void parseStudent2(Student stu, int key);
 
     @ImplMethod()
     int getStudentId2(Student stu, int key);
+
+    TestSelfMethod2 setId(Student id1);
+
+    Student getId();
+
+    TestSelfMethod2 setName(String name1);
+
+    String getName();/*
+================== start methods from super properties ===============
+======================================================================= */
+
+    TestSelfMethod2 setTest_self1(String test_self11);
+
+    TestSelfMethod2 setTest_self2(int test_self21);
 }

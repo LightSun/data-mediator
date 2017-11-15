@@ -21,53 +21,53 @@ import java.util.List;
 })
 public interface FlowItem extends DataPools.Poolable {
 
-    Property PROP_id = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "id", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 2);
-    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-    Property PROP_xxx1 = SharedProperties.get("int", "xxx1", 0);
-    Property PROP_xxx2 = SharedProperties.get("java.lang.Integer", "xxx2", 0);
-    Property PROP_xxx3 = SharedProperties.get("int", "xxx3", 3);
-    Property PROP_xxx4 = SharedProperties.get("int", "xxx4", 1);
-    Property PROP_xxx5 = SharedProperties.get("java.lang.Integer", "xxx5", 1);
-
-    Student getId();
+    Property PROP_id = SharedProperties.get(Student.class.getName(), "id", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_desc = SharedProperties.get(String.class.getName(), "desc", 2);
+    Property PROP_selected = SharedProperties.get(boolean.class.getName(), "selected", 0);
+    Property PROP_xxx1 = SharedProperties.get(int.class.getName(), "xxx1", 0);
+    Property PROP_xxx2 = SharedProperties.get(Integer.class.getName(), "xxx2", 0);
+    Property PROP_xxx3 = SharedProperties.get(int.class.getName(), "xxx3", 3);
+    Property PROP_xxx4 = SharedProperties.get(int.class.getName(), "xxx4", 1);
+    Property PROP_xxx5 = SharedProperties.get(Integer.class.getName(), "xxx5", 1);
 
     FlowItem setId(Student id1);
 
-    String getName();
+    Student getId();
 
     FlowItem setName(String name1);
 
-    List<String> getDesc();
+    String getName();
 
     FlowItem setDesc(List<String> desc1);
 
-    ListPropertyEditor<? extends FlowItem, String> beginDescEditor();
+    List<String> getDesc();
 
-    boolean isSelected();
+    ListPropertyEditor<? extends FlowItem, String> beginDescEditor();
 
     FlowItem setSelected(boolean selected1);
 
-    int getXxx1();
+    boolean isSelected();
 
     FlowItem setXxx1(int xxx11);
 
-    Integer getXxx2();
+    int getXxx1();
 
     FlowItem setXxx2(Integer xxx21);
 
-    SparseArray<Integer> getXxx3();
+    Integer getXxx2();
 
     FlowItem setXxx3(SparseArray<Integer> xxx31);
 
-    SparseArrayPropertyEditor<? extends FlowItem, Integer> beginXxx3Editor();
+    SparseArray<Integer> getXxx3();
 
-    int[] getXxx4();
+    SparseArrayPropertyEditor<? extends FlowItem, Integer> beginXxx3Editor();
 
     FlowItem setXxx4(int[] xxx41);
 
-    Integer[] getXxx5();
+    int[] getXxx4();
 
     FlowItem setXxx5(Integer[] xxx51);
+
+    Integer[] getXxx5();
 }

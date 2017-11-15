@@ -17,16 +17,8 @@ public interface TestSelfMethod1 extends DataPools.Poolable {
     //define a constant field. add annotation @Keep for not effect by idea-plugin(Data-mediator generator)
     @Keep
     int STATE_OK = 1;
-
-    Property PROP_test_self1 = SharedProperties.get("java.lang.String", "test_self1", 0);
-    Property PROP_test_self2 = SharedProperties.get("int", "test_self2", 0);
-
-    String getTest_self1();
-
-    TestSelfMethod1 setTest_self1(String test_self11);
-
-    int getTest_self2();
-    TestSelfMethod1 setTest_self2(int test_self21);
+    Property PROP_test_self1 = SharedProperties.get(String.class.getName(), "test_self1", 0);
+    Property PROP_test_self2 = SharedProperties.get(int.class.getName(), "test_self2", 0);
 
     @ImplMethod("getStudentId")
     int getId(Student stu, int key);
@@ -34,4 +26,12 @@ public interface TestSelfMethod1 extends DataPools.Poolable {
     //not assigned method name of ImplClass. so use the same name.
     @ImplMethod
     void parseStudent(Student stu, int key);
+
+    TestSelfMethod1 setTest_self1(String test_self11);
+
+    String getTest_self1();
+
+    TestSelfMethod1 setTest_self2(int test_self21);
+
+    int getTest_self2();
 }

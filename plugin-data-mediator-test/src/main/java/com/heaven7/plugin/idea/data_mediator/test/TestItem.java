@@ -17,12 +17,12 @@ import java.util.List;
 @ImplClass(Student.class)
 public interface TestItem extends FlowItem{
 
-    Property PROP_testItem_1 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.Student", "testItem_1", 0);
-    Property PROP_testItem_2 = SharedProperties.get("java.lang.String", "testItem_2", 0);
-    Property PROP_testItem_3 = SharedProperties.get("java.lang.String", "testItem_3", 2);
-    Property PROP_testItem_4 = SharedProperties.get("boolean", "testItem_4", 0);
-    Property PROP_testItem_5 = SharedProperties.get("int", "testItem_5", 0);
-    Property PROP_testItem_6 = SharedProperties.get("com.heaven7.plugin.idea.data_mediator.test.TestParcelableData", "testItem_6", 0);
+    Property PROP_testItem_1 = SharedProperties.get(Student.class.getName(), "testItem_1", 0);
+    Property PROP_testItem_2 = SharedProperties.get(String.class.getName(), "testItem_2", 0);
+    Property PROP_testItem_3 = SharedProperties.get(String.class.getName(), "testItem_3", 2);
+    Property PROP_testItem_4 = SharedProperties.get(boolean.class.getName(), "testItem_4", 0);
+    Property PROP_testItem_5 = SharedProperties.get(int.class.getName(), "testItem_5", 0);
+    Property PROP_testItem_6 = SharedProperties.get(TestParcelableData.class.getName(), "testItem_6", 0);
 
     @ImplMethod()
     void test();
