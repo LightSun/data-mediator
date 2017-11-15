@@ -38,7 +38,7 @@ public class PropertyProcessor {
         LinkedList<PsiClass> list = new LinkedList<>();
         list.addLast(mPsiClass);
         PsiClass superClass = mPsiClass.getSuperClass();
-        while (superClass != null){
+        while (superClass != null && superClass.isWritable()){
             String qualifiedName = superClass.getQualifiedName();
             if(qualifiedName == null || qualifiedName.startsWith("java.") || qualifiedName.startsWith("android.")){
                 break;
@@ -54,8 +54,10 @@ public class PropertyProcessor {
 
     private void parseInternal(PsiClass mPsiClass) {
         final ClassInfo info = new ClassInfo();
-        if(mPsiClass.getSuperClass() != null){
-            info.addInterface(getSuperClassAsInterfaceName(mPsiClass.getSuperClass()));
+        PsiClass superClass = mPsiClass.getSuperClass();
+        //must writable
+        if(superClass != null && superClass.isWritable()){
+            info.addInterface(getSuperClassAsInterfaceName(superClass));
         }
         for(PsiClass pcs : mPsiClass.getInterfaces()){
             info.addInterface(pcs.getQualifiedName());
@@ -149,8 +151,19 @@ public class PropertyProcessor {
             Util.log("mPsiClass.getName() == null");
             return;
         }
-        final String name = "I" + mPsiClass.getName();
         final Project project = mPsiClass.getProject();
+        //delete if exist
+        PsiClass psiClass_pre = JavaPsiFacade.getInstance(project).findClass(getSuperClassAsInterfaceName(mPsiClass),
+                GlobalSearchScope.projectScope(project));
+        if(psiClass_pre != null && psiClass_pre.isValid()){
+            if(!psiClass_pre.isWritable()){
+                Util.log("the previous PsiClass (" + psiClass_pre.getQualifiedName() + ") can write. will be ignored.");
+                return;
+            }
+            psiClass_pre.delete();
+        }
+
+        final String name = "I" + mPsiClass.getName();
         JavaCodeStyleManager styleManager = JavaCodeStyleManager.getInstance(project);
         PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 
@@ -158,7 +171,7 @@ public class PropertyProcessor {
         if(parent instanceof PsiClass){
             Util.log("start nested class.");
             PsiClass psic = elementFactory.createInterface(name);
-            psic.getModifierList().addAnnotation("com.heaven7.java.data.mediator.Fields(value ={"
+            psic.getModifierList().addAnnotation("com.heaven7.java.data.mediator.Fields(value ={\n"
                     + buildFieldAnnotations(info.getPropertyInfos())+ "\n} , generateJsonAdapter = false)");
             if (!addExtendInterfaces(info, styleManager, elementFactory, psic)) {
                 return;
@@ -166,7 +179,7 @@ public class PropertyProcessor {
             styleManager.shortenClassReferences(parent.addAfter(psic, mPsiClass));
         }else{
             PsiDirectory dir = mPsiClass.getContainingFile().getContainingDirectory();
-            PsiClass psiClass = createJavaFile(name, "@com.heaven7.java.data.mediator.Fields(value ={"
+            PsiClass psiClass = createJavaFile(name, "@com.heaven7.java.data.mediator.Fields(value ={\n"
                                         + buildFieldAnnotations(info.getPropertyInfos())
                     + "\n}, generateJsonAdapter = false) "
                     + "public interface " + name + "{}");

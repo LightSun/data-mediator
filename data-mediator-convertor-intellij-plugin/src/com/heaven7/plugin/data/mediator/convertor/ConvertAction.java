@@ -32,7 +32,7 @@ public class ConvertAction extends AnAction{
     @Override
     public void update(AnActionEvent e) {
         PsiClass psiClass = getPsiClassFromContext(e);
-        e.getPresentation().setEnabled(psiClass != null && !psiClass.isInterface());
+        e.getPresentation().setEnabled(psiClass != null && !psiClass.isInterface() && psiClass.isWritable());
     }
 
     private PsiClass getPsiClassFromContext(AnActionEvent e) {
