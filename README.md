@@ -69,6 +69,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0).
+   * [Optionally] install the convertot plugin . if you want to convert java bean to the module of 'Data-Mediator'.
  * java platform(for java/j2ee).
     * 1, gradle.
     ```java
