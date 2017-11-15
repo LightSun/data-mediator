@@ -250,6 +250,8 @@ public interface FlowItem extends Parcelable{
 
 # 安装
  * 安装idea插件(data-mediator-intellij-plugin.jar)。see [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0)
+   * 可选插件。 [data-mediator-convertor-intellij-plugin.jar](https://github.com/LightSun/data-mediator/releases/tag/1.4.2)
+    它可以帮助你把普通的java bean 转化为本框架需要的数据模型
  * java平台.
     * 1, gradle配置
     ```java
