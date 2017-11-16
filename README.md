@@ -304,6 +304,12 @@ public class TestPropertyChangeActivity extends BaseActivity {
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
   * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module of this framework. 
+  
+# Using apps
+* Data-Mediator is collecting the product list which are using this framework.
+Your registration will allow more people to participate and use Data-Mediator.
+Data-Mediator will therefore be able to cover more business scenarios. 
+if you want please send email(with application logo) to me.
 
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
