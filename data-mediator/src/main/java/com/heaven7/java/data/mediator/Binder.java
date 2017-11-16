@@ -517,6 +517,17 @@ public abstract class Binder<T> {
     public final Binder<T> bindVisibility(String property, Object view){
         return bindVisibility(property, view, true);
     }
+    /**
+     * <p>Use {@linkplain #bindTextSize(String, Object)} instead.</p>
+     * bind text dimension size(dp value) of Text view.
+     * @param property the property of data
+     * @param textView the text view. eg: android.widget.TextView on android platform
+     * @return this.
+     */
+    @java.lang.Deprecated
+    public final Binder<T> bindTextSizeDp(String property, Object textView){
+        return bindTextSize(property, textView);
+    }
     //============================== abstract =========================================//
     /**
      * bind checkable of view.
@@ -604,17 +615,6 @@ public abstract class Binder<T> {
      * @return this.
      */
     public abstract Binder<T> bindTextSize(String property, Object textView);
-    /**
-     * <p>Use {@linkplain #bindTextSize(String, Object)} instead.</p>
-     * bind text dimension size(dp value) of Text view.
-     * @param property the property of data
-     * @param textView the text view. eg: android.widget.TextView on android platform
-     * @return this.
-     */
-    @java.lang.Deprecated
-    public final Binder<T> bindTextSizeDp(String property, Object textView){
-        return bindTextSize(property, textView);
-    }
 
     /**
      * bind text size in pixes.
@@ -681,6 +681,123 @@ public abstract class Binder<T> {
      */
     @java.lang.Deprecated
     public abstract Binder<T> bindList(String property, Object listView);
+
+    //==================================================================
+
+    /**
+     * bind text gravity for TextView.
+     * @param property the property
+     * @param textView the text view.
+     * @return this.
+     * @since 1.4.3
+     */
+    public final Binder<T> bindTextGravity(Property property, Object textView){
+        return bindTextGravity(property.getName(), textView);
+    }
+    /**
+     * bind high light color for TextView.
+     * @param property the property
+     * @param textView the text view.
+     * @return this.
+     * @since 1.4.3
+     */
+    public final Binder<T> bindHighlightColor(Property property, Object textView){
+        return bindHighlightColor(property.getName(), textView);
+    }
+    /**
+     * bind hint text color of Text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public final Binder<T> bindHintTextColor(Property property, Object textView){
+        //ColorStateList
+        return bindHintTextColor(property.getName(), textView);
+    }
+    /**
+     * bind hint text color resource of Text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public final Binder<T> bindHintTextColorRes(Property property, Object textView){
+        return bindHintTextColorRes(property.getName(), textView);
+    }
+
+    /**
+     * bind hint text resource of text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this.
+     * @since 1.4.3
+     */
+    public final Binder<T> bindHintTextRes(Property property, Object textView){
+        return bindHintTextRes(property.getName(), textView);
+    }
+
+    /**
+     * bind hint text of text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public final Binder<T> bindHintText(Property property, Object textView){
+        return bindHintText(property.getName(), textView);
+    }
+    /**
+     * bind text gravity for TextView.
+     * @param property the property
+     * @param textView the text view.
+     * @return this.
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindTextGravity(String property, Object textView);
+
+    /**
+     * bind hint text of text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindHintText(String property, Object textView);
+    /**
+     * bind hint text resource of text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this.
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindHintTextRes(String property, Object textView);
+    /**
+     * bind hint text color of Text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindHintTextColor(String property, Object textView);//ColorStateList
+
+    /**
+     * bind hint text color resource of Text view.
+     * @param property the property
+     * @param textView the text view
+     * @return this
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindHintTextColorRes(String property, Object textView);
+
+    /**
+     * bind high light color for TextView.
+     * @param property the property
+     * @param textView the text view.
+     * @return the binder.
+     * @since 1.4.3
+     */
+    public abstract Binder<T> bindHighlightColor(String property, Object textView);
 
     /**
      * represent the object can be tagged or not.
