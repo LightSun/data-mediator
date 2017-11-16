@@ -65,9 +65,12 @@ a data-mediator framework which uses annotation processing to generate boilerpla
         }
     }
 ```
+ * Plugin support: 
+   * the plugin of 'data-mediator-intellij-plugin' used to generate module.
+   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.
 
 # Install 
- * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.3.0).
+ * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2).
    * [Optionally] install the convertor plugin . if you want to convert java bean to the module of 'Data-Mediator'.
    click [data-mediator-convertor-intellij-plugin.jar](https://github.com/LightSun/data-mediator/releases/tag/1.4.2) to download
  * java platform(for java/j2ee).
@@ -300,6 +303,13 @@ public class TestPropertyChangeActivity extends BaseActivity {
   * [data-mediator-support-gson](https://github.com/LightSun/data-mediator/tree/master/data-mediator-support-gson) the gson support lib 
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
+  * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module of this framework. 
+  
+# Using apps
+* Data-Mediator is collecting the product list which are using this framework.
+Your registration will allow more people to participate and use Data-Mediator.
+Data-Mediator will therefore be able to cover more business scenarios. 
+if you want please send email(with application logo) to me.
 
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
