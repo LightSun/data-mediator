@@ -291,19 +291,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 ```
 
 # Reading The Source
-* Sample project
-  * [Data-mediator-demo](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo) core demo of data-mediator.
-  * [data-binding-test](https://github.com/LightSun/data-mediator/tree/master/data-binding-test)  core data-binding demo of data-mediator.
-  * [plugin-data-mediator-test](https://github.com/LightSun/data-mediator/tree/master/plugin-data-mediator-test) the java project demo of Data-mediator.
-* library
-  * [data-mediator](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core lib of whole project
-  * [data-mediator-compiler](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the core compiler lib of whole project
-  * [data-mediator-annotations](https://github.com/LightSun/data-mediator/tree/master/data-mediator)  the annotation lib of whole project
-  * [Data-mediator-demo/data-mediator-android](https://github.com/LightSun/data-mediator/tree/master/Data-mediator-demo/data-mediator-android)  support lib on android platform of data-mediator
-  * [data-mediator-support-gson](https://github.com/LightSun/data-mediator/tree/master/data-mediator-support-gson) the gson support lib 
-* Plugin
-  * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
-  * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module of this framework. 
+* see [here](https://github.com/LightSun/data-mediator/blob/master/docs/en/reading_source.md).
   
 # Using apps
 * Data-Mediator is collecting the product list which are using this framework.
