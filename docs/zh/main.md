@@ -371,13 +371,7 @@ public interface Student extends Serializable, Parcelable{
 ```
 3, 使用idea插件生成代码, 快捷键比如 alt + insert. (安装release里面的idea插件).
 
-4,[可选], 编译项目生成代码.
- * java: module上鼠标右键. compile/build (module) XXX
- * android: 点击android studio 工具栏上的图标
-   ![make project](https://github.com/LightSun/data-mediator/blob/master/res/as_make_project.png)
-  即可自动生成代码（数据定义没变化，不会重新生成).
-
-5, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+4, 调用示例 （来自data-mediator-demo下的[TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * 属性改变demo
