@@ -5,8 +5,7 @@ data-mediator
 | java      | ok  | ok | need manual impl |  ok | need manual impl |
 | android   | ok  | ok |  ok | ok | ok |
 
-<img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
-<img src="res/data-mediator-generator.gif" alt="generattor demo"/>
+<img src="res/workflow.png" alt="workflow"/>
 
 a data-mediator framework which uses annotation processing to generate boilerplate code for you. <br>
 [文档还是中文的好](docs/zh/main.md)
@@ -65,9 +64,11 @@ a data-mediator framework which uses annotation processing to generate boilerpla
         }
     }
 ```
- * Plugin support: 
-   * the plugin of 'data-mediator-intellij-plugin' used to generate module.
-   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.
+ * Plugin support: <br>
+   * the plugin of 'data-mediator-intellij-plugin' used to generate module.<br>
+     <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
+   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.<br>
+     <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2).
@@ -211,12 +212,7 @@ public interface Student extends Serializable, Parcelable{
 3, use 'data-mediator-intellij-plugin' generate code, hot key like alt + insert. 
  (you should instanll the plugin , see release).
 
-4, [Optional], compile project (optional , because it will auto generate when before running.)
- * java: mouse right click of module. compile/build (module) XXX
- *  android: click the icon of android studio.
-   ![make project](res/as_make_project.png)
-
-5, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+4, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * listen property change demo
