@@ -387,6 +387,16 @@ public abstract class DataBinding<T> {
         }
 
         /**
+         * inflate the bind method parameter types by target supplier.
+         * @param supplier the bind method supplier.
+         * @since 1.4.3
+         */
+        public void inflateMethodParamTypes(BindMethodSupplier supplier){
+            Throwables.checkNull(supplier);
+            this.methodTypes = supplier.getMethodParameterTypes(view, propName, methodName);
+        }
+
+        /**
          * assign the internal additional parameter count for Binder method.
          *
          * @param count the internal additional parameter count

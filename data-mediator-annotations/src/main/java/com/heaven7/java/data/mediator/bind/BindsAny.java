@@ -6,7 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * the annotation which can bind any array of properties to any view's array of methods.
+ * the annotation which can bind an array of properties to any view's array of methods.
+ * It must be used in conjunction with {@linkplain BindMethodSupplierClass} and self Binder.<br>
+ *     <code><pre>
+             {@literal @}BindsAny(value = {"prop1", "prop2"}, methods = {"bindAddText1", "bindAddText2"})
+              TextView mTv_supplier;
+ *     </pre></code>
  * Created by heaven7 on 2017/11/16.
  * @since 1.4.3
  */
@@ -20,10 +25,10 @@ public @interface BindsAny {
     String[] value();
 
     /**
-     * the method supplier classes. any one must extend com.heaven7.java.data.mediator.BindMethodSupplier.
+     * the method names of binder
      * @return the method supplier classes.
      */
-    Class<?>[] methodSupplier();
+    String[] methods();
 
     /**
      * the object index. which used for bind multi objects .

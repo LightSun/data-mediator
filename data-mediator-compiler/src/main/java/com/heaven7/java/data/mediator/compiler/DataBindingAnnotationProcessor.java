@@ -1,9 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.bind.*;
-import com.heaven7.java.data.mediator.compiler.databinding.parser.FieldAnnotationParser;
-import com.heaven7.java.data.mediator.compiler.databinding.parser.FieldBindParser;
-import com.heaven7.java.data.mediator.compiler.databinding.parser.FieldBindsParser;
+import com.heaven7.java.data.mediator.compiler.databinding.parser.*;
 import com.heaven7.java.data.mediator.compiler.generator.DataBindingGenerator;
 import com.heaven7.java.data.mediator.compiler.util.CheckUtils;
 
@@ -67,6 +65,13 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         set.add(BindImageRes.class.getName());
         set.add(BindImageUrl.class.getName());
         set.add(BindImageUri.class.getName());
+
+
+        //for any method.
+        set.add(BindAny.class.getName());
+        set.add(BindsAny.class.getName());
+        set.add(BindMethodSupplierClass.class.getName());
+        //BindHighlightColor, BindHintText, BindHintTextColor,BindHintTextColorRes, BindHintTextRes
         return Collections.unmodifiableSet(set);
     }
 
@@ -83,12 +88,13 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         if (annotations.isEmpty()) {
             return false;
         }
-        //binder and binder factory
-        Set<? extends Element> targets = roundEnv.getElementsAnnotatedWith(BinderClass.class);
-        parseBinderClass(targets);
-        targets = roundEnv.getElementsAnnotatedWith(BinderFactoryClass.class);
-        parseBinderFactoryClass(targets);
+        //binder and binder factory , supplier
+        parseClassAnnotation(roundEnv, BinderClass.class);
+        parseClassAnnotation(roundEnv, BinderFactoryClass.class);
+        parseClassAnnotation(roundEnv, BindMethodSupplierClass.class);
 
+
+        // field annotations
         FieldBindsParser bindsParser = new FieldBindsParser();
         //================== Binds ===========================
         if(!parseField(roundEnv, BindsView.class, bindsParser)){
@@ -154,6 +160,13 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
             return true;
         }
         if(!parseField(roundEnv, BindImageUri.class, bindParser)){
+            return true;
+        }
+      //BindAny and BindsAny
+        if(!parseField(roundEnv, BindAny.class, new BindAnyParser())){
+            return true;
+        }
+        if(!parseField(roundEnv, BindsAny.class, new BindsAnyParser())){
             return true;
         }
         //handle super class
@@ -243,6 +256,9 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
                     || rootAnnoName.equals(BindImageRes.class.getName())
                     || rootAnnoName.equals(BindImageUrl.class.getName())
                     || rootAnnoName.equals(BindImageUri.class.getName())
+
+                    || rootAnnoName.equals(BindAny.class.getName())
+                    || rootAnnoName.equals(BindsAny.class.getName())
                     ){
                 return true;
             }
@@ -255,37 +271,23 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         for(AnnotationMirror am : mirrors){
             TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
             final String rootAnnoName = e1.getQualifiedName().toString();
-            if(rootAnnoName.equals(BinderClass.class.getName()) || rootAnnoName.equals(BinderFactoryClass.class.getName())){
+            if(rootAnnoName.equals(BinderClass.class.getName()) || rootAnnoName.equals(BinderFactoryClass.class.getName())
+                    || rootAnnoName.equals(BindMethodSupplierClass.class.getName())){
                  return true;
             }
         }
         return false;
     }
 
-    private boolean parseBinderFactoryClass(Set<? extends Element> targets) {
+    private boolean parseClassAnnotation(RoundEnvironment env, Class<? extends Annotation> clazz) {
         final ProcessorPrinter pp = mContext.getProcessorPrinter();
-        for (Element e : targets) {
-            if (!CheckUtils.isValidClass(BinderFactoryClass.class, e, pp)) {
+        for (Element e :  env.getElementsAnnotatedWith(clazz)) {
+            if (!CheckUtils.isValidClass(clazz, e, pp)) {
                 return false;
             }
             TypeElement te = (TypeElement) e;
             final DataBindingInfo info = getDataBindingInfo(te);
-            if(!mParser.parseBinderFactoryClass(te, info)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean parseBinderClass(Set<? extends Element> targets) {
-        final ProcessorPrinter pp = mContext.getProcessorPrinter();
-        for (Element e : targets) {
-            if (!CheckUtils.isValidClass(BinderClass.class, e, pp)) {
-                return false;
-            }
-            TypeElement te = (TypeElement) e;
-            final DataBindingInfo info = getDataBindingInfo(te);
-            if(!mParser.parseBinderClass(te, info)){
+            if(!mParser.parseClassAnnotations(te, info)){
                 return false;
             }
         }

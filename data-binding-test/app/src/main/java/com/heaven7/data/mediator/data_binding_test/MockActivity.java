@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.heaven7.android.data.mediator.AndroidBinder;
 import com.heaven7.data.mediator.data_binding_test.util.MockBinderFactory;
+import com.heaven7.java.data.mediator.BindMethodSupplier;
+import com.heaven7.java.data.mediator.bind.BindAny;
 import com.heaven7.java.data.mediator.bind.BindBackground;
 import com.heaven7.java.data.mediator.bind.BindBackgroundColor;
 import com.heaven7.java.data.mediator.bind.BindBackgroundRes;
@@ -18,6 +20,7 @@ import com.heaven7.java.data.mediator.bind.BindImageDrawable;
 import com.heaven7.java.data.mediator.bind.BindImageRes;
 import com.heaven7.java.data.mediator.bind.BindImageUri;
 import com.heaven7.java.data.mediator.bind.BindImageUrl;
+import com.heaven7.java.data.mediator.bind.BindMethodSupplierClass;
 import com.heaven7.java.data.mediator.bind.BindText;
 import com.heaven7.java.data.mediator.bind.BindTextColor;
 import com.heaven7.java.data.mediator.bind.BindTextColorRes;
@@ -28,6 +31,7 @@ import com.heaven7.java.data.mediator.bind.BindTextSizeRes;
 import com.heaven7.java.data.mediator.bind.BindVisibility;
 import com.heaven7.java.data.mediator.bind.BinderClass;
 import com.heaven7.java.data.mediator.bind.BinderFactoryClass;
+import com.heaven7.java.data.mediator.bind.BindsAny;
 import com.heaven7.java.data.mediator.bind.BindsTextView;
 import com.heaven7.java.data.mediator.bind.BindsView;
 
@@ -37,6 +41,7 @@ import com.heaven7.java.data.mediator.bind.BindsView;
  */
 @BinderFactoryClass(MockBinderFactory.class)
 @BinderClass(AndroidBinder.class)
+@BindMethodSupplierClass(BindMethodSupplier.DefaultBindMethodSupplier2.class)
 public class MockActivity extends AppCompatActivity {
 
     @BindsView({"stu_backgroundRes", "stu_visibility", "stu_enable"})
@@ -77,4 +82,8 @@ public class MockActivity extends AppCompatActivity {
     @BindImageDrawable("iv_drawable")
     @BindImageRes("iv_res")
     ImageView mIv;
+
+    @BindAny(value = "prop", method = "bindAddText")
+    @BindsAny(value = {"prop1", "prop2"}, methods = {"bindAddText1", "bindAddText2"})
+    TextView mTv_supplier;
 }

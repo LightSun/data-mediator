@@ -15,6 +15,10 @@ public class CheckUtils {
 
     private static final String TAG = "CheckUtils";
 
+    public static boolean checkEmptyString(String str){
+        return str != null && str.trim().length() > 0;
+    }
+
     public static boolean isValidField(Class<? extends Annotation> clazz,
                                        Element element, ProcessorPrinter pp) {
         VariableElement enclosingElement = (VariableElement) element;

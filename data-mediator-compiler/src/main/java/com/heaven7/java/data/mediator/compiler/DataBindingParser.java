@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.PKG_DATA_BINDING_ANNO;
+import static com.heaven7.java.data.mediator.compiler.util.CheckUtils.checkEmptyString;
 
 /**
  * Created by heaven7 on 2017/11/5.
@@ -26,7 +27,7 @@ public class DataBindingParser {
         this.mContext = mContext;
     }
 
-    public boolean parseBinderClass(TypeElement te, DataBindingInfo info) {
+    public boolean parseClassAnnotations(TypeElement te, DataBindingInfo info) {
         for(AnnotationMirror am :te.getAnnotationMirrors()){
             TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
             String annoFullname = e1.getQualifiedName().toString();
@@ -34,12 +35,11 @@ public class DataBindingParser {
                 info.setBinderClass(getSimpleTypeMirror(am));
             }else if(annoFullname.equals(BinderFactoryClass.class.getName())){
                 info.setBinderFactoryClass(getSimpleTypeMirror(am));
+            }else if(annoFullname.equals(BindMethodSupplierClass.class.getName())){
+                info.setBindMethodSupplier(getSimpleTypeMirror(am));
             }
         }
         return true;
-    }
-    public boolean parseBinderFactoryClass(TypeElement te, DataBindingInfo info) {
-        return parseBinderClass(te, info);
     }
 
     /** parse array properties */
@@ -59,6 +59,48 @@ public class DataBindingParser {
         if(bindsTextViewRes != null){
             if(!parseBindsInternal(info, varName, bindsTextViewRes.index(), bindsTextViewRes.value(), bindsTextViewRes.methods())){
                 return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean parseBindAny(Element element, DataBindingInfo info) {
+        final String methodName = "parseBindAny";
+        final ProcessorPrinter pp = mContext.getProcessorPrinter();
+        final VariableElement ve = (VariableElement) element;
+        final String varName = ve.getSimpleName().toString();
+
+        BindAny bindAny = element.getAnnotation(BindAny.class);
+        pp.note(TAG, methodName, "bindsView = " + bindAny);
+        if(bindAny != null){
+            if (!addBindInfo(info, varName, bindAny.value(), bindAny.method(), bindAny.index())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean parseBindsAny(Element element, DataBindingInfo info) {
+        final String methodName = "parseBindsAny";
+        final ProcessorPrinter pp = mContext.getProcessorPrinter();
+        final VariableElement ve = (VariableElement) element;
+        final String varName = ve.getSimpleName().toString();
+
+        BindsAny bindsAny = element.getAnnotation(BindsAny.class);
+        pp.note(TAG, methodName, "bindsView = " + bindsAny);
+        if(bindsAny != null){
+            int index = bindsAny.index();
+            String[] props = bindsAny.value();
+            String[] methods = bindsAny.methods();
+            if(props.length != methods.length){
+                pp.error(TAG, methodName, String.format("@BindsAny for field '%s' property names count($d) != methods count(%d)",
+                        varName, props.length,  methods.length));
+                return false;
+            }
+            for (int len = props.length , i = 0 ; i < len ; i++){
+                if(!addBindInfo(info, varName, props[i], methods[i], index)){
+                    return false;
+                }
             }
         }
         return true;
@@ -179,6 +221,26 @@ public class DataBindingParser {
         return true;
     }
 
+    /** only used for {@linkplain BindAny} and {@linkplain BindsAny}. */
+    private boolean addBindInfo(DataBindingInfo info, String varName, String prop, String method, int index) {
+        final String methodName = "addBindInfo";
+        final ProcessorPrinter pp = mContext.getProcessorPrinter();
+        if(!checkEmptyString(prop)){
+            pp.error(TAG, methodName, "property name = '" + prop + "' for field '"+ varName + " 'is invalid.");
+            return false;
+        }
+        if(!checkEmptyString(method)){
+            pp.error(TAG, methodName, "bind method name = '" + method + "' for field '"+ varName + " 'is invalid.");
+            return false;
+        }
+        //type is from dynamic invoke
+        DataBindingInfo.BindInfo bindInfo = new DataBindingInfo.BindInfo(varName, method, null);
+        bindInfo.setIndex(index);
+        bindInfo.setPropName(prop);
+        info.addBindInfo(bindInfo);
+        return true;
+    }
+
     private DataBindingInfo.BindMethodInfo getBindMethodInfo(TypeElement e1) {
         DataBindingInfo.BindMethodInfo bmi = new DataBindingInfo.BindMethodInfo();
         for(AnnotationMirror am : e1.getAnnotationMirrors()) {
@@ -229,8 +291,8 @@ public class DataBindingParser {
         }
         return true;
     }
-
     //often is TypeMirror , but primitive may cause ClassCastException
+
     private List<String> convertToClassname(List<?> mirrors,@Nullable List<String> out) {
         if(out == null){
             out = new ArrayList<>();
@@ -254,8 +316,8 @@ public class DataBindingParser {
         }
         return arr;
     }
-
     //eg: @BinderClass(XXX.class)
+
     private TypeMirror getSimpleTypeMirror(AnnotationMirror am) {
         Map<? extends ExecutableElement, ? extends AnnotationValue> map = am.getElementValues();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {

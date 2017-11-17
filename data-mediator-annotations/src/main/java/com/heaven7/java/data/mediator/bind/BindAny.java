@@ -7,6 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * the annotation which can bind any property to any view's any method.
+ * It must be used in conjunction with {@linkplain BindMethodSupplierClass} and self Binder.<br>
+ *     <code><pre>
+ *          {@literal @}BindAny(value = "text", method = "bindAppendText")
+              TextView mTv_supplier;
+ *     </pre></code>
  * Created by heaven7 on 2017/11/16.
  * @since 1.4.3
  */
@@ -20,10 +25,9 @@ public @interface BindAny {
     String value();
 
     /**
-     * the method supplier class. which extend com.heaven7.java.data.mediator.BindMethodSupplier.
-     * @return the method supplier class.
+     * the bind method name of Binder
      */
-    Class<?> methodSupplier();
+    String method();
 
     /**
      * the object index. which used for bind multi objects .

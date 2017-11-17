@@ -1,57 +1,73 @@
 package com.heaven7.java.data.mediator;
 
-import com.heaven7.java.base.util.SparseArray;
-
 /**
  * the bind method supplier which used for {@linkplain DataBinding}.
- * supply the method name with it's parameter type .
+ * supply the method parameter types .
  * this is often used for bind self method of any view.
  * this class is unlike the {@linkplain com.heaven7.java.data.mediator.DataBinding.ParameterSupplier}.
  * <br>Created by heaven7 on 2017/11/16.
  *
  * @since 1.4.3
  */
-public abstract class BindMethodSupplier {
-
-    private static final SparseArray<BindMethodSupplier> sSupplierMap;
-
-    static {
-        sSupplierMap = new SparseArray<>();
-    }
+public interface BindMethodSupplier {
 
     /**
-     * get the bind method supplier for target class type.
-     * the internal use share mode to share {@linkplain BindMethodSupplier}.
-     * @param clazz the BindMethodSupplier class.
-     * @return an instance of {@linkplain BindMethodSupplier}.
+     * get the bind method parameter types which are using by 'Data-Binding'.
+     * @param view the view object which will be bound by 'data-binding'.
+     * @param property the property of data-module
+     * @param bindMethodName the bind method name of {@linkplain Binder}.
+     * @return the method parameter types.
      */
-    public static BindMethodSupplier get(Class<? extends BindMethodSupplier> clazz){
-        BindMethodSupplier supplier = sSupplierMap.get(clazz.hashCode());
-        if(supplier == null){
-            try {
-                supplier = clazz.newInstance();
-                sSupplierMap.put(clazz.hashCode(), supplier);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+    Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName);
+
+    /**
+     * the default bind method supplier with two parameters.
+     * @since 1.4.3
+     */
+    class DefaultBindMethodSupplier2 implements BindMethodSupplier{
+        @Override
+        public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
+            return new Class<?>[]{ String.class, Object.class };
         }
-        return supplier;
     }
-
     /**
-     * get the method name of {@linkplain Binder}.
-     *
-     * @return the method name of {@linkplain Binder}.
+     * the default bind method supplier with three parameters.
+     * @since 1.4.3
      */
-    public abstract String getMethodName();
-
+    class DefaultBindMethodSupplier3 implements BindMethodSupplier{
+        @Override
+        public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
+            return new Class<?>[]{ String.class, Object.class, Object.class};
+        }
+    }
     /**
-     * get the method parameter types. default is String and object types.
-     *
-     * @return the parameter types of {@linkplain Binder}.
-     * @see Binder
+     * the default bind method supplier with four parameters.
+     * @since 1.4.3
      */
-    public Class<?>[] getMethodParameterTypes() {
-        return new Class<?>[]{ String.class, Object.class };
+    class DefaultBindMethodSupplier4 implements BindMethodSupplier{
+        @Override
+        public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
+            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class};
+        }
+    }
+    /**
+     * the default bind method supplier with five parameters.
+     * @since 1.4.3
+     */
+    class DefaultBindMethodSupplier5 implements BindMethodSupplier{
+        @Override
+        public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
+            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class, Object.class};
+        }
+    }
+    /**
+     * the default bind method supplier with six parameters.
+     * @since 1.4.3
+     */
+    class DefaultBindMethodSupplier6 implements BindMethodSupplier{
+        @Override
+        public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
+            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class, Object.class, Object.class};
+        }
     }
 }

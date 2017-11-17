@@ -12,7 +12,8 @@ public class ProcessorPrinter {
 
     private static final List<String> sEnableTags = Arrays.asList(
             "DataBindingAnnotationProcessor",
-            "DataBindingParser"
+            "DataBindingParser",
+            "DataBindingGenerator"
     );
     //only debug show info log
     private static final boolean sDebug = true;

@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
+import com.heaven7.java.base.util.Predicates;
 import com.heaven7.java.data.mediator.compiler.DataBindingInfo;
 import com.heaven7.java.data.mediator.compiler.ProcessorContext;
 import com.heaven7.java.data.mediator.compiler.util.TypeUtils;
@@ -53,6 +54,7 @@ public class DataBindingGenerator extends BaseGenerator {
                 .addParameter( ClassName.get("","T"), "target")
                 .addStatement("super(target)");
 
+        final TypeName bindMethodSupplier = info.getBindMethodSupplier();
         // add BindInfos
         boolean defineBindInfo = false;
         for (DataBindingInfo.BindInfo bi : info.getBindInfos()){
@@ -64,17 +66,27 @@ public class DataBindingGenerator extends BaseGenerator {
                         bi.fieldViewName, bi.propName, bi.index, bi.methodName);
                 defineBindInfo = true;
             }
-            //types
-            constructor.addStatement("bi.typeCount($L)", bi.methodTypes.size());
-            for(String type : bi.methodTypes){
-                constructor.addStatement("bi.addType($T.class)", TypeUtils.getTypeName(type));
-            }
-            //extras
-            if(bi.extras != null && bi.extras.length > 0){
-                constructor.addStatement("bi.extraValueCount($L)", bi.extras.length);
-                for(Object val : bi.extras){
-                    constructor.addStatement("bi.addExtraValue($L)", val);
+            if(!Predicates.isEmpty(bi.methodTypes)){
+                //types
+                constructor.addStatement("bi.typeCount($L)", bi.methodTypes.size());
+                for (String type : bi.methodTypes) {
+                    constructor.addStatement("bi.addType($T.class)", TypeUtils.getTypeName(type));
                 }
+                //extras
+                if (bi.extras != null && bi.extras.length > 0) {
+                    constructor.addStatement("bi.extraValueCount($L)", bi.extras.length);
+                    for (Object val : bi.extras) {
+                        constructor.addStatement("bi.addExtraValue($L)", val);
+                    }
+                }
+            }else{
+                //handle BindAny or BindsAny
+                if(bindMethodSupplier == null){
+                    getProcessorPrinter().error(TAG, "generate",
+                            "use @BindAny or @BindsAny must be used in conjunction with @BindMethodSupplierClass !");
+                    return false;
+                }
+                constructor.addStatement("bi.inflateMethodParamTypes(new $T())", bindMethodSupplier);
             }
             constructor.addStatement("addBindInfo(bi)");
         }

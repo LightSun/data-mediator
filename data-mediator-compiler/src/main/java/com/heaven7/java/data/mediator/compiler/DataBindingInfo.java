@@ -13,6 +13,7 @@ public class DataBindingInfo {
     private final HashSet<BindInfo> binds = new HashSet<>();
     private TypeMirror binderClass;
     private TypeMirror binderFactoryClass;
+    private TypeMirror bindMethodSupplier;
     private TypeElement mSuperClass;
 
     public TypeName getBinderClass() {
@@ -39,6 +40,13 @@ public class DataBindingInfo {
 
     public void setSuperClass(TypeElement superClass) {
         this.mSuperClass = superClass;
+    }
+
+    public void setBindMethodSupplier(TypeMirror tm) {
+        this.bindMethodSupplier = tm;
+    }
+    public TypeName getBindMethodSupplier() {
+        return bindMethodSupplier == null ? null : TypeName.get(bindMethodSupplier);
     }
 
     public static class BindMethodInfo{
@@ -78,6 +86,10 @@ public class DataBindingInfo {
             this.index = index;
         }
 
+        public void setExtras(Object[] extras) {
+            this.extras = extras;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -94,10 +106,6 @@ public class DataBindingInfo {
 
         public boolean isValid() {
             return propName != null && !propName.isEmpty();
-        }
-
-        public void setExtras(Object[] extras) {
-            this.extras = extras;
         }
     }
 }
