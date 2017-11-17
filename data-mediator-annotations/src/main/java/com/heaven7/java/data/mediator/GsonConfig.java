@@ -7,6 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * the global gson setting for data-mediator.
+ <code><pre>
+ *     {@literal @}GlobalConfig(gsonConfig = @GsonConfig(
+             version = 1.5,             //the gson version which will used by GsonBuilder.
+             generateJsonAdapter = true //default
+         ))
+ * </pre></code>
  * @since 1.0.5
  * @author heaven7
  */

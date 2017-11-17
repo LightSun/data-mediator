@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * this class used to describe the field of entity(like java bean).
+ * Here is a simple definition.
+ * <code><pre>
+ *      {@literal @}Field(propName = "testItem_1", type = Student.class,  since = 1.2, until = 2.0),
+ * </pre></code>
  * @author heaven7
  * @see Fields
  */
@@ -41,23 +45,6 @@ public @interface Field {
 	 {@literal}@Field(propName = "data", seriaName = "result", type = ResultData.class),
 	 })
 	 public interface TestBind {
-	 }
-
-	 // another data-module will be extends by ClassBind.
-	 {@literal}@Fields({
-	 {@literal}@Field(propName = "name2", seriaName = "xxx2", type = Integer.class, complexType = COMPLEXT_ARRAY),
-	 {@literal}@Field(propName = "name3", seriaName = "xxx3", type = Integer.class, complexType = COMPLEXT_LIST),
-	 {@literal}@Field(propName = "data", seriaName = "result", type = ResultData.class, flags = FLAG_PARCEABLE),
-	 })
-	 public interface TestBind2 extends Parcelable {
-	 }
-
-	 // below the data-module  depend TestBind. and super class is TestBind2
-	 {@literal}@Fields({
-	 {@literal}@Field(propName = "student", seriaName = "class_1", type = TestBind.class),
-	 })
-	 public interface ClassBind extends TestBind2{  //here can't extends multi data-module or else cause error.
-
 	 }
 	 * </pre>
 	 * @return the class type. default is String.class
@@ -117,10 +104,6 @@ public @interface Field {
 		 {@literal @}Until(2.1)
 		private String maker;
 
-		private double cost;
-
-		private List<String> colors = new ArrayList<String>();
-
 		public String getMark() {
 		return mark;
 		}
@@ -149,24 +132,10 @@ public @interface Field {
 		this.maker = maker;
 		}
 
-		public double getCost() {
-		return cost;
-		}
-		public void setCost(double cost) {
-		this.cost = cost;
-		}
-
-		public List<String> getColors() {
-		return colors;
-		}
-		public void setColors(List<String> colors) {
-		this.colors = colors;
-		}
-
 		 {@literal @}Override
 		public String toString() {
 		return "Car3 [mark=" + mark + ", model=" + model + ", type=" + type
-		+ ", maker=" + maker + ", cost=" + cost + ", colors=" + colors
+		+ ", maker=" + maker
 		+ "]";
 		}
 	}
@@ -177,18 +146,13 @@ public @interface Field {
 	 car.setModel(2014); //2,1
 	 car.setType("DIESEL");
 	 car.setMaker("AUDI GERMANY");
-	 car.setCost(55000);
-
-	 car.getColors().add("GREY");
-	 car.getColors().add("BLACK");
-	 car.getColors().add("WHITE");
 
 	 // Serialize
 	String jsonString = gson.toJson(car);
         System.out.println("Serialized jsonString : " + jsonString);
 
 	// Deserialize
-	String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\",\"cost\":55000,\"colors\":[\"GRAY\",\"BLACK\",\"WHITE\"]}";
+	String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\"}";
 	car = gson.fromJson(inputJson, Car3.class);
         System.out.println("Deserialized Car : " + car);
 	 </pre></code>
@@ -216,10 +180,6 @@ public @interface Field {
 
 		 {@literal @}Until(2.1)
 		 private String maker;
-
-		 private double cost;
-
-		 private List<String> colors = new ArrayList<String>();
 
 		 public String getMark() {
 		 return mark;
@@ -249,24 +209,10 @@ public @interface Field {
 		 this.maker = maker;
 		 }
 
-		 public double getCost() {
-		 return cost;
-		 }
-		 public void setCost(double cost) {
-		 this.cost = cost;
-		 }
-
-		 public List<String> getColors() {
-		 return colors;
-		 }
-		 public void setColors(List<String> colors) {
-		 this.colors = colors;
-		 }
-
 		 {@literal @}Override
 		 public String toString() {
 		 return "Car3 [mark=" + mark + ", model=" + model + ", type=" + type
-		 + ", maker=" + maker + ", cost=" + cost + ", colors=" + colors
+		 + ", maker=" + maker
 		 + "]";
 		 }
 	 }
@@ -277,18 +223,13 @@ public @interface Field {
 	 car.setModel(2014); //2,1
 	 car.setType("DIESEL");
 	 car.setMaker("AUDI GERMANY");
-	 car.setCost(55000);
-
-	 car.getColors().add("GREY");
-	 car.getColors().add("BLACK");
-	 car.getColors().add("WHITE");
 
 	 // Serialize
 	 String jsonString = gson.toJson(car);
 	 System.out.println("Serialized jsonString : " + jsonString);
 
 	 // Deserialize
-	 String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\",\"cost\":55000,\"colors\":[\"GRAY\",\"BLACK\",\"WHITE\"]}";
+	 String inputJson = "{\"mark\":\"AUDI\",\"model\":2014,\"type\":\"DIESEL\",\"maker\":\"AUDI Germany\"}";
 	 car = gson.fromJson(inputJson, Car3.class);
 	 System.out.println("Deserialized Car : " + car);
 	 </pre></code>

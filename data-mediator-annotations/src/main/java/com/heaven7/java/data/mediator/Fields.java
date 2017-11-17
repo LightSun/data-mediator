@@ -11,20 +11,14 @@ import java.lang.annotation.Target;
  *  <h2>Here is a demo</h2>
  *  <code><pre>
 
- {@literal @}Fields({
- {@literal @}Field(propName = "name", seriaName = "heaven7",type = String.class),
- {@literal @}Field(propName = "test_object", seriaName = "test_object",
-              flags = FLAG_EXPOSE_DEFAULT|FLAG_EXPOSE_SERIALIZE_FALSE,type = Object.class),
- {@literal @}Field(propName = "test_Format", seriaName = "test_Format",flags = 1,type = Double.class),
- {@literal @}Field(propName = "test_int", seriaName = "test_int",type = int.class,
-              flags = FLAG_EXPOSE_DEFAULT | FLAG_COPY | FLAG_RESET),
- {@literal @}Field(propName = "test_list", seriaName = "test_list",type = long.class, complexType = COMPLEXT_LIST,
-              flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP ),
- {@literal @}Field(propName = "test_array", seriaName = "test_array",type = String.class,
-              complexType = COMPLEXT_ARRAY,flags =FLAG_RESET | FLAG_SHARE | FLAG_SNAP
-      ),
- })
- public interface StudentBind extends ICopyable, IResetable, IShareable, ISnapable{
+ {@literal @}Fields(value = {
+ {@literal @}Field(propName = "name"),
+ {@literal @}Field(propName = "id", seriaName = "_id"),
+ {@literal @}Field(propName = "age", type = int.class, flags = FieldFlags.FLAGS_MAIN_SCOPES_2 | FieldFlags.FLAG_EXPOSE_DEFAULT),
+ {@literal @}Field(propName = "grade", type = int.class, since = 1.3),
+ {@literal @}Field(propName = "nickName", since = 1.2, until = 2.6)
+ }, generateJsonAdapter = false)
+ public interface IStudent {
  }
    </pre></code>
  * @author heaven7

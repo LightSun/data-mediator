@@ -7,6 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * indicate that the field or method should be keep. it will not effect by the intellij plugin of 'data-mediator'.
+ * <code><pre>
+ *      {@literal @}keep
+        int STATE_OK = 1;
+ * </pre></code>
  * @author heaven7
  * @since 1.1.3
  */
