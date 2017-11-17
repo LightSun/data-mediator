@@ -212,12 +212,7 @@ public interface Student extends Serializable, Parcelable{
 3, use 'data-mediator-intellij-plugin' generate code, hot key like alt + insert. 
  (you should instanll the plugin , see release).
 
-4, [Optional], compile project (optional , because it will auto generate when before running.)
- * java: mouse right click of module. compile/build (module) XXX
- *  android: click the icon of android studio.
-   ![make project](res/as_make_project.png)
-
-5, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
+4, call sample （from project(data-mediator-demo) [TestPropertyChangeActivity](https://github.com/LightSun/data-mediator/blob/master/Data-mediator-demo/app/src/main/java/com/heaven7/data/mediator/demo/activity/TestPropertyChangeActivity.java)）
 ```java
 /**
  * listen property change demo
