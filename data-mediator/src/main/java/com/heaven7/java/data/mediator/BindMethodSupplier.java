@@ -5,6 +5,12 @@ package com.heaven7.java.data.mediator;
  * supply the method parameter types .
  * this is often used for bind self method of any view.
  * this class is unlike the {@linkplain com.heaven7.java.data.mediator.DataBinding.ParameterSupplier}.
+ * Here is demo to use annotation.
+ * <code><pre>
+ *     {@literal @}BindMethodSupplierClass(BindMethodSupplier.DefaultBindMethodSupplier2.class)
+        public class MockActivity extends AppCompatActivity {
+        }
+ * </pre></code>
  * <br>Created by heaven7 on 2017/11/16.
  *
  * @since 1.4.3
@@ -25,9 +31,11 @@ public interface BindMethodSupplier {
      * @since 1.4.3
      */
     class DefaultBindMethodSupplier2 implements BindMethodSupplier{
+
+        private static final Class<?>[] TYPES =  new Class<?>[]{ String.class, Object.class };
         @Override
         public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
-            return new Class<?>[]{ String.class, Object.class };
+            return TYPES;
         }
     }
     /**
@@ -35,9 +43,10 @@ public interface BindMethodSupplier {
      * @since 1.4.3
      */
     class DefaultBindMethodSupplier3 implements BindMethodSupplier{
+        private static final Class<?>[] TYPES =  new Class<?>[]{ String.class, Object.class, Object.class};
         @Override
         public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
-            return new Class<?>[]{ String.class, Object.class, Object.class};
+            return TYPES;
         }
     }
     /**
@@ -45,9 +54,11 @@ public interface BindMethodSupplier {
      * @since 1.4.3
      */
     class DefaultBindMethodSupplier4 implements BindMethodSupplier{
+        private static final Class<?>[] TYPES =  new Class<?>[]{
+                String.class, Object.class, Object.class,  Object.class};
         @Override
         public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
-            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class};
+            return TYPES;
         }
     }
     /**
@@ -55,9 +66,11 @@ public interface BindMethodSupplier {
      * @since 1.4.3
      */
     class DefaultBindMethodSupplier5 implements BindMethodSupplier{
+        private static final Class<?>[] TYPES =  new Class<?>[]{
+                String.class, Object.class, Object.class,  Object.class, Object.class};
         @Override
         public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
-            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class, Object.class};
+            return TYPES;
         }
     }
     /**
@@ -65,9 +78,12 @@ public interface BindMethodSupplier {
      * @since 1.4.3
      */
     class DefaultBindMethodSupplier6 implements BindMethodSupplier{
+        private static final Class<?>[] TYPES =  new Class<?>[]{
+                String.class, Object.class, Object.class,
+                Object.class, Object.class, Object.class};
         @Override
         public Class<?>[] getMethodParameterTypes(Object view, String property, String bindMethodName) {
-            return new Class<?>[]{ String.class, Object.class, Object.class, Object.class, Object.class, Object.class};
+            return TYPES;
         }
     }
 }

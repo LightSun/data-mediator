@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * the bind method supplier class. which supplier the method parameter types of {@linkplain BindAny} or {@linkplain BindsAny}.
  * It must be used in conjunction with {@linkplain BindAny} or {@linkplain BindsAny} and self Binder.<br>
- * @since 1.4.3
+ * @since 1.2.1
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)

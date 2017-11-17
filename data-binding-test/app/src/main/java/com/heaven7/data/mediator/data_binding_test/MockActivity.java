@@ -15,6 +15,11 @@ import com.heaven7.java.data.mediator.bind.BindBackgroundColor;
 import com.heaven7.java.data.mediator.bind.BindBackgroundRes;
 import com.heaven7.java.data.mediator.bind.BindCheckable;
 import com.heaven7.java.data.mediator.bind.BindEnable;
+import com.heaven7.java.data.mediator.bind.BindHighlightColor;
+import com.heaven7.java.data.mediator.bind.BindHintText;
+import com.heaven7.java.data.mediator.bind.BindHintTextColor;
+import com.heaven7.java.data.mediator.bind.BindHintTextColorRes;
+import com.heaven7.java.data.mediator.bind.BindHintTextRes;
 import com.heaven7.java.data.mediator.bind.BindImageBitmap;
 import com.heaven7.java.data.mediator.bind.BindImageDrawable;
 import com.heaven7.java.data.mediator.bind.BindImageRes;
@@ -86,4 +91,11 @@ public class MockActivity extends AppCompatActivity {
     @BindAny(value = "prop", method = "bindAddText")
     @BindsAny(value = {"prop1", "prop2"}, methods = {"bindAddText1", "bindAddText2"})
     TextView mTv_supplier;
+
+    @BindHighlightColor("highLightColor")
+    @BindHintText("hintText")
+    @BindHintTextRes("hintTextRes")
+    @BindHintTextColor("hintTextColor")
+    @BindHintTextColorRes("hintTextColorRes")
+    TextView mTv_hints;
 }

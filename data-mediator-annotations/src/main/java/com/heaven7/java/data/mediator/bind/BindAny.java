@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
               TextView mTv_supplier;
  *     </pre></code>
  * Created by heaven7 on 2017/11/16.
- * @since 1.4.3
+ * @since 1.2.1
  */
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.FIELD)

@@ -212,7 +212,28 @@ public class DataBindingParser {
                 bindInfo.setIndex(annotation.index());
                 bindInfo.setPropName(annotation.value());
             }
-
+            //high light and hints.
+            else if(annoFullname.equals(BindHighlightColor.class.getName())){
+                BindHighlightColor annotation = element.getAnnotation(BindHighlightColor.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
+            }else if(annoFullname.equals(BindHintText.class.getName())){
+                BindHintText annotation = element.getAnnotation(BindHintText.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
+            }else if(annoFullname.equals(BindHintTextRes.class.getName())){
+                BindHintTextRes annotation = element.getAnnotation(BindHintTextRes.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
+            }else if(annoFullname.equals(BindHintTextColor.class.getName())){
+                BindHintTextColor annotation = element.getAnnotation(BindHintTextColor.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
+            }else if(annoFullname.equals(BindHintTextColorRes.class.getName())){
+                BindHintTextColorRes annotation = element.getAnnotation(BindHintTextColorRes.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
+            }
             //add
             if(bindInfo.isValid()) {
                 info.addBindInfo(bindInfo);

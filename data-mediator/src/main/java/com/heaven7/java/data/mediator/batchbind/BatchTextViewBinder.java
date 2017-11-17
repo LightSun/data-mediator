@@ -194,4 +194,132 @@ public class BatchTextViewBinder<T> extends BatchViewBinder<T> {
         mBinder.bindTextSizePx(property, mView);
         return this;
     }
+
+    //========================= start 1.4.3 =========================================
+
+    /**
+     * bind text gravity for TextView.
+     * @param property the property
+     * @return this.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindTextGravity(Property property){
+        mBinder.bindTextGravity(property.getName(), mView);
+        return this;
+    }
+    /**
+     * bind high light color for TextView.
+     * @param property the property
+     * @return this.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHighlightColor(Property property){
+        mBinder.bindHighlightColor(property.getName(), mView);
+        return this;
+    }
+    /**
+     * bind hint text color (ColorStateList) of Text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextColor(Property property){
+        mBinder.bindHintTextColor(property.getName(), mView);
+         return this;
+    }
+    /**
+     * bind hint text color resource of Text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextColorRes(Property property){
+        mBinder.bindHintTextColorRes(property.getName(), mView);
+        return this;
+    }
+
+    /**
+     * bind hint text resource of text view.
+     * @param property the property
+     * @return this.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextRes(Property property){
+         mBinder.bindHintTextRes(property.getName(), mView);
+         return this;
+    }
+
+    /**
+     * bind hint text of text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintText(Property property){
+        mBinder.bindHintText(property.getName(), mView);
+        return this;
+    }
+    /**
+     * bind text gravity for TextView.
+     * @param property the property
+     * @return this.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindTextGravity(String property){
+        mBinder.bindTextGravity(property, mView);
+        return this;
+    }
+
+    /**
+     * bind hint text of text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintText(String property){
+        mBinder.bindHintText(property, mView);
+        return this;
+    }
+    /**
+     * bind hint text resource of text view.
+     * @param property the property
+     * @return this.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextRes(String property){
+        mBinder.bindHintTextRes(property, mView);
+        return this;
+    }
+    /**
+     * bind hint text color (ColorStateList) of Text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextColor(String property){
+        mBinder.bindHintTextColor(property, mView);
+        return this;
+    }
+
+    /**
+     * bind hint text color resource of Text view.
+     * @param property the property
+     * @return this
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHintTextColorRes(String property){
+        mBinder.bindHintTextColorRes(property, mView);
+        return this;
+    }
+
+    /**
+     * bind high light color for TextView.
+     * @param property the property
+     * @return the binder.
+     * @since 1.4.3
+     */
+    public final BatchTextViewBinder<T> bindHighlightColor(String property){
+        mBinder.bindHighlightColor(property, mView);
+        return this;
+    }
 }

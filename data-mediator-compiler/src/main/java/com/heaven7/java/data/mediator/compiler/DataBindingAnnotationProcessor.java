@@ -65,13 +65,16 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         set.add(BindImageRes.class.getName());
         set.add(BindImageUrl.class.getName());
         set.add(BindImageUri.class.getName());
-
-
         //for any method.
         set.add(BindAny.class.getName());
         set.add(BindsAny.class.getName());
         set.add(BindMethodSupplierClass.class.getName());
-        //BindHighlightColor, BindHintText, BindHintTextColor,BindHintTextColorRes, BindHintTextRes
+        //bind hints
+        set.add(BindHighlightColor.class.getName());
+        set.add(BindHintText.class.getName());
+        set.add(BindHintTextRes.class.getName());
+        set.add(BindHintTextColor.class.getName());
+        set.add(BindHintTextColorRes.class.getName());
         return Collections.unmodifiableSet(set);
     }
 
@@ -162,6 +165,23 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         if(!parseField(roundEnv, BindImageUri.class, bindParser)){
             return true;
         }
+        //BindHighlightColor and all hints
+        if(!parseField(roundEnv, BindHighlightColor.class, bindParser)){
+            return true;
+        }
+        if(!parseField(roundEnv, BindHintText.class, bindParser)){
+            return true;
+        }
+        if(!parseField(roundEnv, BindHintTextRes.class, bindParser)){
+            return true;
+        }
+        if(!parseField(roundEnv, BindHintTextColor.class, bindParser)){
+            return true;
+        }
+        if(!parseField(roundEnv, BindHintTextColorRes.class, bindParser)){
+            return true;
+        }
+
       //BindAny and BindsAny
         if(!parseField(roundEnv, BindAny.class, new BindAnyParser())){
             return true;
@@ -257,6 +277,12 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
                     || rootAnnoName.equals(BindImageUrl.class.getName())
                     || rootAnnoName.equals(BindImageUri.class.getName())
 
+                    || rootAnnoName.equals(BindHighlightColor.class.getName())
+                    || rootAnnoName.equals(BindHintText.class.getName())
+                    || rootAnnoName.equals(BindHintTextRes.class.getName())
+                    || rootAnnoName.equals(BindHintTextColor.class.getName())
+                    || rootAnnoName.equals(BindHintTextColorRes.class.getName())
+
                     || rootAnnoName.equals(BindAny.class.getName())
                     || rootAnnoName.equals(BindsAny.class.getName())
                     ){
@@ -271,7 +297,8 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         for(AnnotationMirror am : mirrors){
             TypeElement e1 = (TypeElement) am.getAnnotationType().asElement();
             final String rootAnnoName = e1.getQualifiedName().toString();
-            if(rootAnnoName.equals(BinderClass.class.getName()) || rootAnnoName.equals(BinderFactoryClass.class.getName())
+            if(rootAnnoName.equals(BinderClass.class.getName())
+                    || rootAnnoName.equals(BinderFactoryClass.class.getName())
                     || rootAnnoName.equals(BindMethodSupplierClass.class.getName())){
                  return true;
             }
