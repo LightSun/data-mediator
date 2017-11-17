@@ -6,8 +6,6 @@ data-mediator
 | android   | ok  | ok |  ok | ok | ok |
 
 <img src="res/workflow.png" alt="workflow"/>
-<img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
-<img src="res/data-mediator-generator.gif" alt="generattor demo"/>
 
 a data-mediator framework which uses annotation processing to generate boilerplate code for you. <br>
 [文档还是中文的好](docs/zh/main.md)
@@ -68,7 +66,9 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 ```
  * Plugin support: 
    * the plugin of 'data-mediator-intellij-plugin' used to generate module.
+     * <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
    * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.
+     * <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2).
