@@ -5,6 +5,7 @@ data-mediator
 | java      | ok  | ok | need manual impl |  ok | need manual impl |
 | android   | ok  | ok |  ok | ok | ok |
 
+<img src="res/workflow.png" alt="workflow"/>
 <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
 <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
 
