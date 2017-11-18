@@ -430,6 +430,9 @@ public class TestPropertyChangeActivity extends BaseActivity {
  * [数据缓存-详解](https://github.com/LightSun/data-mediator/blob/master/docs/zh/data_cache.md) 
  * [api 说明](https://github.com/LightSun/data-mediator/blob/master/docs/zh/api.md)
  * [自定义方法,接口实现](https://github.com/LightSun/data-mediator/blob/master/docs/zh/self_method_field.md)
+ 
+# 博客地址
+ * [掘金](https://juejin.im/user/58b77b3a128fe1006429394a)
 
 # 混淆配置
 ```java
