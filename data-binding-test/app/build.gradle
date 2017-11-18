@@ -41,9 +41,9 @@ dependencies {
 
     // gson-support( added since 1.2.0)
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1-beta2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.3-beta'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.3-beta3'
     annotationProcessor 'com.squareup:javapoet:1.9.0'
-    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.3-beta2'
+    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.3-beta3'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
     compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.3'
 

@@ -26,7 +26,10 @@
         <activity android:name=".sample.TestImageViewBindActivity" android:label="ImageViewBind"/>
         <activity android:name=".sample.TestSelfBinderActivity" android:label="SelfBinder"/>
         <activity android:name=".sample.TestSelfBinderFactory" android:label="SelfBinderFactory"/>
-        <activity android:name=".sample.TestBindArrayPropertyToOneView" android:label="BindArrayPropertyToOneView"/>
+        <activity android:name=".sample.TestBindArrayPropertyToOneView"
+            android:label="BindArrayPropertyToOneView"/>
+        <activity android:name=".sample.TestBindArrayPropertyToOneView2"
+            android:label="BindArrayPropertyToOneView2"/>
 
 
         <activity android:name=".sample.adapter.TestDatabindingAdapter" android:label="DatabindingAdapter"/>

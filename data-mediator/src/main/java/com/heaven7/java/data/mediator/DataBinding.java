@@ -54,6 +54,7 @@ public abstract class DataBinding<T> {
     private final T mTarget;
     private BinderFactory mBinderFactory;
     private Class<? extends Binder> mBinderClass;
+    private BindMethodSupplier mBindMethodSupplier;
 
     /**
      * <p>Note: We recommend you use {@linkplain SimpleParameterSupplier} instead.</p>
@@ -95,6 +96,22 @@ public abstract class DataBinding<T> {
      */
     public static BindInfo createBindInfo(Object view, String propName, int index, String methodName) {
         return new BindInfo(view, propName, index, methodName);
+    }
+
+    /**
+     * get bind method supplier.
+     * @return the bind method supplier.
+     * @since 1.4.3
+     */
+    protected final BindMethodSupplier getBindMethodSupplier() {
+        return mBindMethodSupplier;
+    }
+    /**
+     * set the  bind method supplier.
+     * @since 1.4.3
+     */
+    protected final void setBindMethodSupplier(BindMethodSupplier bindMethodSupplier) {
+        this.mBindMethodSupplier = bindMethodSupplier;
     }
 
     /**
@@ -388,11 +405,14 @@ public abstract class DataBinding<T> {
 
         /**
          * inflate the bind method parameter types by target supplier.
-         * @param supplier the bind method supplier.
+         * @param supplier the bind method supplier. can't be null.
          * @since 1.4.3
          */
         public void inflateMethodParamTypes(BindMethodSupplier supplier){
-            Throwables.checkNull(supplier);
+            if(supplier == null){
+                throw new IllegalStateException("for use @BindAny or @BindsAny you must " +
+                        "use annotation @BindMethodSupplierClass first!");
+            }
             this.methodTypes = supplier.getMethodParameterTypes(view, propName, methodName);
         }
 

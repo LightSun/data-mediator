@@ -54,7 +54,12 @@ public class DataBindingGenerator extends BaseGenerator {
                 .addParameter( ClassName.get("","T"), "target")
                 .addStatement("super(target)");
 
+        //set bindMethodSupplier first.
         final TypeName bindMethodSupplier = info.getBindMethodSupplier();
+        if(bindMethodSupplier != null){
+            constructor.addStatement("this.setBindMethodSupplier(new $T())", bindMethodSupplier);
+        }
+
         // add BindInfos
         boolean defineBindInfo = false;
         for (DataBindingInfo.BindInfo bi : info.getBindInfos()){
@@ -80,13 +85,8 @@ public class DataBindingGenerator extends BaseGenerator {
                     }
                 }
             }else{
-                //handle BindAny or BindsAny
-                if(bindMethodSupplier == null){
-                    getProcessorPrinter().error(TAG, "generate",
-                            "use @BindAny or @BindsAny must be used in conjunction with @BindMethodSupplierClass !");
-                    return false;
-                }
-                constructor.addStatement("bi.inflateMethodParamTypes(new $T())", bindMethodSupplier);
+                //for @BindAny or @BindsAny use @BindMethodSupplierClass(BindMethodSupplier) ;
+                constructor.addStatement("bi.inflateMethodParamTypes(this.getBindMethodSupplier())");
             }
             constructor.addStatement("addBindInfo(bi)");
         }
