@@ -315,7 +315,7 @@ public interface FlowItem extends Parcelable{
      apt 'com.squareup:javapoet:1.9.0'
    }
    ```
- * android平台.
+ * android平台 (android gralde <= 2.3).
    * 1, 在项目根目录添加apt依赖。
    ```java 
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -324,7 +324,7 @@ public interface FlowItem extends Parcelable{
    ```java
       apply plugin: 'com.neenbedankt.android-apt'
    ```
-   * 3, 添加dependencies
+   * 3, 添加dependencies 
    ```java
    dependencies {
        // gson支持库( 1.2.0 版本新增)
@@ -334,6 +334,25 @@ public interface FlowItem extends Parcelable{
        compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
        apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
        apt 'com.squareup:javapoet:1.9.0'
+
+       // 如果需要生成对应的gson注解。请加入gson依赖。(1.2.0版本后 data-mediator-support-gson自带)
+       compile "com.google.code.gson:gson:2.8.2"
+       // 如果要支持android平台的数据绑定. 请添加依赖
+       compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
+
+   }
+   ```
+ * 如果你使用 'com.android.tools.build:gradle:3.0.0' (大于等于3.0.0), 直接
+  添加依赖即可。
+    ```java
+   dependencies {
+       // gson支持库( 1.2.0 版本新增)
+       compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
+       compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
+
+       compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:<see release>'
+       annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:<see release>'
+       annotationProcessor 'com.squareup:javapoet:1.9.0'
 
        // 如果需要生成对应的gson注解。请加入gson依赖。(1.2.0版本后 data-mediator-support-gson自带)
        compile "com.google.code.gson:gson:2.8.2"
