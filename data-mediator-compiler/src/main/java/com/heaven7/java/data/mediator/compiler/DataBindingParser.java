@@ -233,6 +233,10 @@ public class DataBindingParser {
                 BindHintTextColorRes annotation = element.getAnnotation(BindHintTextColorRes.class);
                 bindInfo.setIndex(annotation.index());
                 bindInfo.setPropName(annotation.value());
+            }else if(annoFullname.equals(BindTextGravity.class.getName())){
+                BindTextGravity annotation = element.getAnnotation(BindTextGravity.class);
+                bindInfo.setIndex(annotation.index());
+                bindInfo.setPropName(annotation.value());
             }
             //add
             if(bindInfo.isValid()) {

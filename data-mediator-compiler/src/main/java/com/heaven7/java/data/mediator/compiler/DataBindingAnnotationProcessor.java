@@ -75,6 +75,8 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         set.add(BindHintTextRes.class.getName());
         set.add(BindHintTextColor.class.getName());
         set.add(BindHintTextColorRes.class.getName());
+        //text gravity
+        set.add(BindTextGravity.class.getName());
         return Collections.unmodifiableSet(set);
     }
 
@@ -181,6 +183,10 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
         if(!parseField(roundEnv, BindHintTextColorRes.class, bindParser)){
             return true;
         }
+        //text gravity
+        if(!parseField(roundEnv, BindTextGravity.class, bindParser)){
+            return true;
+        }
 
       //BindAny and BindsAny
         if(!parseField(roundEnv, BindAny.class, new BindAnyParser())){
@@ -282,6 +288,7 @@ public class DataBindingAnnotationProcessor extends AbstractProcessor {
                     || rootAnnoName.equals(BindHintTextRes.class.getName())
                     || rootAnnoName.equals(BindHintTextColor.class.getName())
                     || rootAnnoName.equals(BindHintTextColorRes.class.getName())
+                    || rootAnnoName.equals(BindTextGravity.class.getName())
 
                     || rootAnnoName.equals(BindAny.class.getName())
                     || rootAnnoName.equals(BindsAny.class.getName())
