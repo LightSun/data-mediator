@@ -29,6 +29,7 @@ import com.heaven7.java.data.mediator.bind.BindMethodSupplierClass;
 import com.heaven7.java.data.mediator.bind.BindText;
 import com.heaven7.java.data.mediator.bind.BindTextColor;
 import com.heaven7.java.data.mediator.bind.BindTextColorRes;
+import com.heaven7.java.data.mediator.bind.BindTextGravity;
 import com.heaven7.java.data.mediator.bind.BindTextRes;
 import com.heaven7.java.data.mediator.bind.BindTextSize;
 import com.heaven7.java.data.mediator.bind.BindTextSizePx;
@@ -92,6 +93,7 @@ public class MockActivity extends AppCompatActivity {
     @BindsAny(value = {"prop1", "prop2"}, methods = {"bindAddText1", "bindAddText2"})
     TextView mTv_supplier;
 
+    @BindTextGravity("gravity")
     @BindHighlightColor("highLightColor")
     @BindHintText("hintText")
     @BindHintTextRes("hintTextRes")

@@ -46,7 +46,7 @@ public class AndroidBinder<T> extends Binder<T> {
      *
      * @param mMediator the target data mediator.
      */
-    protected AndroidBinder(DataMediator<T> mMediator) {
+    public AndroidBinder(DataMediator<T> mMediator) {
         super(mMediator);
     }
 
@@ -227,10 +227,119 @@ public class AndroidBinder<T> extends Binder<T> {
     }
 
     @Override
+    public Binder<T> bindTextGravity(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView." );
+        }
+        return bind(property, new TextGravityCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
+    public Binder<T> bindHintText(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView.");
+        }
+        return bind(property, new HintTextCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
+    public Binder<T> bindHintTextRes(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView.");
+        }
+        return bind(property, new HintTextResCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
+    public Binder<T> bindHintTextColor(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView.");
+        }
+        return bind(property, new HintTextColorCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
+    public Binder<T> bindHintTextColorRes(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView.");
+        }
+        return bind(property, new HintTextColorResCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
+    public Binder<T> bindHighlightColor(String property, Object textView) {
+        if(!(textView instanceof TextView)){
+            throw new IllegalArgumentException("must be TextView.");
+        }
+        return bind(property, new HighLightColorCallback<T>((TextView) textView,
+                getPropertyInterceptor()));
+    }
+
+    @Override
     protected boolean shouldUseWeakMap() {
         return true;
     }
     //=================================== internal class ==========================
+    private static class HighLightColorCallback<T> extends SimpleBinderCallback2<T>{
+        public HighLightColorCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            ((TextView)view).setHighlightColor((Integer) newValue);
+        }
+    }
+    private static class HintTextColorResCallback<T> extends SimpleBinderCallback2<T>{
+        public HintTextColorResCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            int color = view.getResources().getColor((Integer) newValue);
+            ((TextView)view).setHintTextColor(color);
+        }
+    }
+    private static class HintTextColorCallback<T> extends SimpleBinderCallback2<T>{
+        public HintTextColorCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            ((TextView)view).setHintTextColor((Integer) newValue);
+        }
+    }
+    private static class HintTextResCallback<T> extends SimpleBinderCallback2<T>{
+        public HintTextResCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            ((TextView)view).setHint((Integer) newValue);
+        }
+    }
+    private static class HintTextCallback<T> extends SimpleBinderCallback2<T>{
+        public HintTextCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            ((TextView)view).setHint((CharSequence) newValue);
+        }
+    }
+    private static class TextGravityCallback<T> extends SimpleBinderCallback2<T>{
+        public TextGravityCallback(View tv, PropertyInterceptor interceptor) {
+            super(tv, interceptor);
+        }
+        @Override
+        protected void apply(Property prop, View view, Object newValue) {
+            ((TextView)view).setGravity((Integer) newValue);
+        }
+    }
     private static class VisibilityBinderCallback<T> extends SimpleBinderCallback2<T>{
 
         final boolean mForceAsBoolean;
@@ -415,4 +524,5 @@ public class AndroidBinder<T> extends Binder<T> {
                     view.getResources().getColor((Integer) newValue));
         }
     }
+
 }
