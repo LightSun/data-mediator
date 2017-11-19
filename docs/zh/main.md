@@ -315,7 +315,7 @@ public interface FlowItem extends Parcelable{
      apt 'com.squareup:javapoet:1.9.0'
    }
    ```
- * android平台 (android gralde <= 2.3).
+ * android平台 : android build工具 (eg: 'com.android.tools.build:gradle:2.3.3'）只要小于3.0.0).按下面方式集成
    * 1, 在项目根目录添加apt依赖。
    ```java 
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -342,11 +342,10 @@ public interface FlowItem extends Parcelable{
 
    }
    ```
- * 如果你使用 'com.android.tools.build:gradle:3.0.0' (大于等于3.0.0), 直接
-  添加依赖即可。
-    ```java
-   dependencies {
-       // gson支持库( 1.2.0 版本新增)
+ * android平台： 如果你使用 'com.android.tools.build:gradle:3.0.0' (大于等于3.0.0), 直接
+  使用annotationProcessor 添加依赖即可。
+  ```java
+   // gson支持库( 1.2.0 版本新增)
        compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:<see release>'
        compile 'com.heaven7.java.data.mediator:data-mediator:<see release>'
 
@@ -358,9 +357,7 @@ public interface FlowItem extends Parcelable{
        compile "com.google.code.gson:gson:2.8.2"
        // 如果要支持android平台的数据绑定. 请添加依赖
        compile 'com.heaven7.android.data.mediator:data-mediator-android:<see release>'
-
-   }
-   ```
+  ```
 
 # 快速入门
 
