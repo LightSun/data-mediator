@@ -16,13 +16,14 @@ a data-mediator framework which uses annotation processing to generate boilerpla
 * 3, support chain call. [Detail](docs/en/chain_call.md)
 * 4, support impl Serializable and parcelable(android). or others. [Detail](docs/en/parcelable.md)
 * 5, full support Annotations of Google/Gson. [Detail](docs/en/gson.md)
-* 6, support data-bind for android platform. [Detail](docs/en/data_bind.md)
-* 7, support self method. self field. extend self interface you like. [Detail](docs/en/self_method_field.md)
-* 8, support data cache.  [Detail](docs/en/data_cache.md)
-* 9, support List/SparseArray Editor with their callbacks.  [Detail](docs/en/listen_property_change.md)
-* 10, support depend or extend other data model.
-* 11, Full support Data-binding on android. [Detail](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
-* 12, full support data-binding in adapter which Can Best Seamless with 'butterknife'.
+* 6, support self method. self field. extend self interface you like. [Detail](docs/en/self_method_field.md)
+* 7, support data cache.  [Detail](docs/en/data_cache.md)
+* 8, support List/SparseArray Editor with their callbacks.  [Detail](docs/en/listen_property_change.md)
+* 9, support depend or extend other data model.
+* 10, Full support Data-binding on android.
+  * [Detail1](docs/en/data_bind.md) 
+  * [Detail2](https://github.com/LightSun/data-mediator/releases/tag/1.4.0)
+* 11, full support data-binding in adapter which Can Best Seamless with 'butterknife'.
 ```java
  public class InnerViewHolder extends DataBindingRecyclerAdapter.DataBindingViewHolder<Student>{
 
