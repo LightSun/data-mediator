@@ -34,7 +34,7 @@ dependencies {
 
     compile 'com.heaven7.java.base:Java-base:1.1.0'
     compile 'com.squareup:javapoet:1.9.0'
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1-beta2'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1'
     //compile files('libs/data-mediator-annotations.jar')
 }
 
@@ -42,7 +42,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.compiler'
     artifactId = 'data-mediator-compiler'
-    publishVersion = '1.4.3-beta4'
+    publishVersion = '1.4.3'
     desc = 'this is a java compiler lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }

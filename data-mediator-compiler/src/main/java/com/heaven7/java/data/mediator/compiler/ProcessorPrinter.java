@@ -16,7 +16,7 @@ public class ProcessorPrinter {
             "DataBindingGenerator"
     );
     //only debug show info log
-    private static final boolean sDebug = true;
+    private static final boolean sDebug = false;
     private final Messager mMessager;
 
     public ProcessorPrinter(Messager mMessager) {

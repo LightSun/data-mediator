@@ -17,6 +17,7 @@
  */
 package com.heaven7.android.data.mediator;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -300,8 +301,8 @@ public class AndroidBinder<T> extends Binder<T> {
         }
         @Override
         protected void apply(Property prop, View view, Object newValue) {
-            int color = view.getResources().getColor((Integer) newValue);
-            ((TextView)view).setHintTextColor(color);
+            ColorStateList list = view.getResources().getColorStateList((Integer) newValue);
+            ((TextView)view).setHintTextColor(list);
         }
     }
     private static class HintTextColorCallback<T> extends SimpleBinderCallback2<T>{

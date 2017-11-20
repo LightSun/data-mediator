@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.heaven7.adapter.AdapterManager;
 import com.heaven7.adapter.HeaderFooterHelper;
+import com.heaven7.core.util.Logger;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataBinding;
@@ -32,6 +33,7 @@ import java.util.List;
 public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements AdapterManager.IHeaderFooterManager, AdapterItemManager.Callback {
 
+    private static final boolean DEBUG = false;
     private static final String TAG = "DB_Adapter";
     private final SparseArray<Binder<T>> mBinderMap = new SparseArray<>();
     private final AdapterItemManager<T> mItemManager;
@@ -92,7 +94,9 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             position -= mHeaderFooterHelper.getHeaderViewSize();
         }
         if (holder instanceof DataBindingViewHolder) {
-           // Logger.i(TAG, "onBindViewHolder", "pos = " + position);
+            if(DEBUG) {
+                Logger.i(TAG, "onBindViewHolder", "pos = " + position);
+            }
             ((DataBindingViewHolder) holder).onBindData(position, getParameterSupplier());
         }
     }
@@ -296,8 +300,10 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                     mBinderMap.removeAt(i);
                     removed = true;
                 }
-             /*   Logger.d(TAG, "onItemRemoved",
-                        String.format("pos from %d to %d", key, key - 1));*/
+                if(DEBUG) {
+                    Logger.d(TAG, "onItemRemoved",
+                            String.format("pos from %d to %d", key, key - 1));
+                }
             }
             if(!removed){
                 mBinderMap.remove(index);
@@ -334,8 +340,10 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                 final Binder<T> val = mBinderMap.valueAt(i);
                 //move from key -> key +1
                 mBinderMap.put(key + addSize, val);
-              /*  Logger.d(TAG, "processAddForBinder",
-                        String.format("pos from %d to %d", key, key + addSize));*/
+                if(DEBUG) {
+                    Logger.d(TAG, "processAddForBinder",
+                            String.format("pos from %d to %d", key, key + addSize));
+                }
             }
             //for add . the old index of binder already exist. need remove.
             mBinderMap.remove(index);
@@ -390,8 +398,10 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                 return null;
             }
             int pos = getAdapterPosition();
-          /*  Logger.i(TAG,"getDataMediator","pos = "
-                    + pos + " , layoutPos = " + getLayoutPosition() + " ,oldPos = " + getOldPosition());*/
+            if(DEBUG) {
+                Logger.i(TAG, "getDataMediator", "pos = "
+                        + pos + " , layoutPos = " + getLayoutPosition() + " ,oldPos = " + getOldPosition());
+            }
             return adapter.getBinder(pos).getDataMediator();
         }
 
@@ -441,7 +451,9 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             }
             Binder<T> binder = adapter.mBinderMap.get(position);
             if (binder != null) {
-               // Logger.i(TAG , "onBindData", "unbindAll() >>> pos = " + position);
+                if(DEBUG) {
+                    Logger.i(TAG, "onBindData", "unbindAll() >>> pos = " + position);
+                }
                 binder.unbindAll();
             }
             adapter.mBinderMap.put(position, mDataBinding.bindAndApply(

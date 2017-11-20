@@ -35,10 +35,10 @@ dependencies {
 
     //数据层框架的库
 
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1-beta2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.3-beta3'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.3'
     apt 'com.squareup:javapoet:1.9.0'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.3-beta4'
+    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.3'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
 
 }
