@@ -225,22 +225,24 @@ public class BaseMediator<T>{
      * @since 1.4.1
      */
     public void endBatchedDispatches(@Nullable PropertyReceiver receiver){
-        _mCollector.close(receiver != null ? receiver : new PropertyReceiver() {
+        //TODO change
+       /* PropertyReceiver2 real = receiver != null ? PropertyReceiver2.from(receiver): new PropertyReceiver2() {
             @Override
-            public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
+            public void dispatchValueChanged(Object originalSource, Property prop, Object oldValue, Object newValue) {
                 BaseMediator.this.dispatchValueChanged(prop, oldValue, newValue);
             }
             @Override
-            public void dispatchValueApplied(Property prop, Object value) {
-                BaseMediator.this.dispatchValueApplied(prop, value);
+            public void dispatchValueApplied(Object originalSource, Property prop, Object value) {
+                BaseMediator.this.dispatchValueApplied( prop, value);
             }
-        });
+        };
+        _mCollector.close(real);*/
     }
 //=========================================================================
 
     /**
      * dispatch the change event to the callbacks.
-     * <p>use {@linkplain #dispatchValueChanged(Property, Object, Object)} instead</p>
+     * <p>use {@linkplain #dispatchValueChanged(Property, Object, Object)} instead, this will be removed in 2.x.</p>
      *
      * @param prop     the property which is changed.
      * @param oldValue the old value of property
@@ -261,10 +263,11 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
-        if(_mCollector != null && _mCollector.isOpened()){
-            _mCollector.dispatchValueChanged(prop, oldValue, newValue);
+        //TODO change
+       /* if(_mCollector != null && _mCollector.isOpened()){
+            _mCollector.dispatchValueChanged(_mTarget, prop, oldValue, newValue);
             return;
-        }
+        }*/
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
             arrLocal[i].onPropertyValueChanged(_mTarget, prop, oldValue, newValue);
@@ -280,10 +283,11 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchValueApplied(Property prop, Object value) {
-        if(_mCollector != null && _mCollector.isOpened()){
-            _mCollector.dispatchValueApplied(prop, value);
+        //TODO change
+      /*  if(_mCollector != null && _mCollector.isOpened()){
+            _mCollector.dispatchValueApplied(_mTarget, prop, value);
             return;
-        }
+        }*/
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
             arrLocal[i].onPropertyApplied(_mTarget, prop, value);

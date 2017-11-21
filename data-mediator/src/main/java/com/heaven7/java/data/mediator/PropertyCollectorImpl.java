@@ -4,6 +4,9 @@ import com.heaven7.java.data.mediator.internal.PropertyCollector;
 
 import java.util.LinkedList;
 
+import static com.heaven7.java.data.mediator.PropertyEvent.TYPE_PROPERTY_APPLY;
+import static com.heaven7.java.data.mediator.PropertyEvent.TYPE_PROPERTY_CHANGE;
+
 /**
  * the property collector.
  * @author heaven7 on 2017/11/8.
@@ -11,10 +14,6 @@ import java.util.LinkedList;
  */
 /*public*/ class PropertyCollectorImpl implements PropertyCollector {
 
-    /** the property event type: change event */
-    private static final byte TYPE_PROPERTY_CHANGE = 1;
-    /** the property event type: apply event */
-    private static final byte TYPE_PROPERTY_APPLY  = 2;
     /** indicate the collector is open */
     private static final byte STATE_OPEN    = 1;
     /** indicate the collector is closing */
@@ -24,6 +23,10 @@ import java.util.LinkedList;
 
     private final LinkedList<PropertyEvent> mEvents = new LinkedList<>();
     private byte mState = STATE_CLOSED;
+
+    protected void addPropertyEvent(PropertyEvent event){
+        mEvents.addLast(event);
+    }
 
     @Override
     public boolean isOpened() {
@@ -39,7 +42,7 @@ import java.util.LinkedList;
     }
 
     @Override
-    public void close(PropertyReceiver receiver) {
+    public void close(PropertyReceiver2 receiver) {
         if(mState != STATE_OPEN){
             throw new IllegalStateException("can't close collector twice.");
         }
@@ -48,43 +51,18 @@ import java.util.LinkedList;
             mEvents.clear();
         }else {
             for (PropertyEvent pe = mEvents.pollFirst(); pe != null; pe = mEvents.pollFirst()) {
-                firePropertyEvent(pe, receiver);
+                pe.fire(receiver);
             }
         }
         mState = STATE_CLOSED;
     }
     @Override
-    public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
-        mEvents.addLast(new PropertyEvent(TYPE_PROPERTY_CHANGE, prop, oldValue, newValue));
+    public void dispatchValueChanged(Object current, Object source, Property prop, Object oldValue, Object newValue) {
+        mEvents.addLast(PropertyEvent.of(TYPE_PROPERTY_CHANGE, current, source, prop, oldValue, newValue));
     }
     @Override
-    public void dispatchValueApplied(Property prop, Object value) {
-        mEvents.addLast(new PropertyEvent(TYPE_PROPERTY_APPLY, prop, null, value));
+    public void dispatchValueApplied(Object current, Object source, Property prop, Object value) {
+        mEvents.addLast(PropertyEvent.of(TYPE_PROPERTY_APPLY, current, source, prop, null, value));
     }
 
-    private static void firePropertyEvent(PropertyEvent event, PropertyReceiver receiver){
-        switch (event.type) {
-            case TYPE_PROPERTY_CHANGE:
-                receiver.dispatchValueChanged(event.prop, event.oldValue, event.newValue);
-                break;
-            case TYPE_PROPERTY_APPLY:
-                receiver.dispatchValueApplied(event.prop, event.newValue);
-                break;
-            default:
-                throw new UnsupportedOperationException("unknown type = " + event.type);
-        }
-    }
-    private static class PropertyEvent {
-        final byte type;
-        final Property prop;
-        final Object oldValue;
-        final Object newValue;
-
-        PropertyEvent(byte type, Property prop, Object oldValue, Object newValue) {
-            this.type = type;
-            this.prop = prop;
-            this.oldValue = oldValue;
-            this.newValue = newValue;
-        }
-    }
 }
