@@ -24,7 +24,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.1
  */
-public interface PropertyCollector extends PropertyDispatcher {
+public interface PropertyCollector extends PropertyDispatcher{
 
     /**
      * open property collector.

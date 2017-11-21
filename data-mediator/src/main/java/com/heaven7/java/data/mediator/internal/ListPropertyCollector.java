@@ -7,7 +7,7 @@ import com.heaven7.java.data.mediator.Property;
  * @author heaven7
  * @since 1.4.4
  */
-public interface ListPropertyDispatcher extends PropertyDispatcher {
+public interface ListPropertyCollector extends PropertyCollector {
 
     /**
      * called on add property values.

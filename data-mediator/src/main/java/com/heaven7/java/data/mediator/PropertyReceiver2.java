@@ -17,7 +17,7 @@
  */
 package com.heaven7.java.data.mediator;
 
-import com.heaven7.java.data.mediator.internal.ListPropertyDispatcher;
+import com.heaven7.java.data.mediator.internal.MapPropertyCollector;
 import com.heaven7.java.data.mediator.internal.PropertyDispatcher;
 
 /**
@@ -26,7 +26,7 @@ import com.heaven7.java.data.mediator.internal.PropertyDispatcher;
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.4
  */
-public abstract class PropertyReceiver2 implements PropertyDispatcher, ListPropertyDispatcher{
+public abstract class PropertyReceiver2 implements PropertyDispatcher{
 
     static PropertyReceiver2 from(final PropertyReceiver receiver){
         return new PropertyReceiver2() {
@@ -34,14 +34,24 @@ public abstract class PropertyReceiver2 implements PropertyDispatcher, ListPrope
             public void dispatchValueChanged(Object data, Object originalSource, Property prop, Object oldValue, Object newValue) {
                 receiver.dispatchValueChanged(prop, oldValue, newValue);
             }
-
             @Override
             public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
                 receiver.dispatchValueApplied(prop, value);
             }
         };
     }
-    public void dispatchOnAddPropertyValues(Object data, Object original, Property prop, Object newValue, Object addedValue){
+    @Override
+    public void dispatchValueChanged(Object data, Object originalSource, Property prop,
+                                     Object oldValue, Object newValue) {
+    }
+
+    @Override
+    public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
+
+    }
+
+    public void dispatchOnAddPropertyValues(Object data, Object original, Property prop,
+                                            Object newValue, Object addedValue){
 
     }
 
@@ -50,12 +60,18 @@ public abstract class PropertyReceiver2 implements PropertyDispatcher, ListPrope
 
     }
 
-    public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop, Object newValue, Object removeValue){
+    public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop,
+                                               Object newValue, Object removeValue){
 
     }
 
-    public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop, Object oldItem, Object newItem, int index){
+    public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop,
+                                              Object oldItem, Object newItem, int index){
 
+    }
+
+    public MapPropertyCollector<Integer> getSparseArrayDispatcher(){
+        return null;
     }
 
 }

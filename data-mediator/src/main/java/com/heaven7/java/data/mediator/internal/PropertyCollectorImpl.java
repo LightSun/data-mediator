@@ -1,11 +1,12 @@
-package com.heaven7.java.data.mediator;
+package com.heaven7.java.data.mediator.internal;
 
-import com.heaven7.java.data.mediator.internal.PropertyCollector;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.PropertyReceiver2;
 
 import java.util.LinkedList;
 
-import static com.heaven7.java.data.mediator.PropertyEvent.TYPE_PROPERTY_APPLY;
-import static com.heaven7.java.data.mediator.PropertyEvent.TYPE_PROPERTY_CHANGE;
+import static com.heaven7.java.data.mediator.internal.PropertyEvent.TYPE_PROPERTY_APPLY;
+import static com.heaven7.java.data.mediator.internal.PropertyEvent.TYPE_PROPERTY_CHANGE;
 
 /**
  * the property collector.

@@ -7,7 +7,7 @@ import com.heaven7.java.data.mediator.Property;
  * @author heaven7
  * @since 1.4.4
  */
-public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
+public interface MapPropertyCollector<K> extends PropertyCollector{
 
     /**
      * called on value changed.
@@ -19,7 +19,8 @@ public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
      * @param newValue the new value of entry
      * @since 1.1.3
      */
-    void onEntryValueChanged(Object data, Object original, Property prop, K key, Object oldValue, Object newValue);
+    void dispatchOnEntryValueChanged(Object data, Object original, Property prop,
+                             K key, Object oldValue, Object newValue);
 
     /**
      * called on add entry for the map
@@ -30,7 +31,8 @@ public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
      * @param value the value of entry
      * @since 1.1.3
      */
-    void onAddEntry(Object data, Object original, Property prop, K key, Object value);
+    void dispatchOnAddEntry(Object data, Object original, Property prop,
+                    K key, Object value);
     /**
      * called on remove entry for the map
      * @param data the module data
@@ -40,7 +42,8 @@ public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
      * @param value the value of entry
      * @since 1.1.3
      */
-    void onRemoveEntry(Object data, Object original,Property prop, K key, Object value);
+    void dispatchOnRemoveEntry(Object data, Object original,Property prop,
+                       K key, Object value);
 
     /**
      * called on clear all entries.
@@ -50,6 +53,6 @@ public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
      * @param entries the all entries which were removed. type is like map.
      * @since 1.1.3
      */
-    void onClearEntries(Object data, Object original, Property prop, Object entries);
+    void dispatchOnClearEntries(Object data, Object original, Property prop, Object entries);
 
 }
