@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
 
@@ -6,8 +6,8 @@ import com.heaven7.java.data.mediator.Property;
  * Created by heaven7 on 2017/11/21.
  * @since 1.4.4
  */
-/*public*/ class SparseArrayPropertyCollector extends PropertyCollectorImpl
-        implements MapPropertyCollector<Integer> {
+/*public*/ class SparseArrayPropertyCollectorImpl extends PropertyCollectorImpl
+        implements SparseArrayPropertyCollector {
     @Override
     public void dispatchOnEntryValueChanged(Object data, Object original, Property prop,
                                     Integer key, Object oldValue, Object newValue) {

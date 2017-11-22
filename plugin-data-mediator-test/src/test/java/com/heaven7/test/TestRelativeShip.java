@@ -54,7 +54,7 @@ public class TestRelativeShip {
     }
 
     private void testList1() {
-        //@BindXXX("stus[0].name")
+        //@BindXXX("stus[0].name?")
         DataMediator<TestItem> dm = DataMediatorFactory.createDataMediator(TestItem.class);
         Student student = dm.getData().getTestItem_3().get(0);
 

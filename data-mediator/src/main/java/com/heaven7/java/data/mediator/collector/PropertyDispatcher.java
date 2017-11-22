@@ -15,7 +15,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
 

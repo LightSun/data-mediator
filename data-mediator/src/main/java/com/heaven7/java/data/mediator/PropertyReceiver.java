@@ -18,8 +18,10 @@
 package com.heaven7.java.data.mediator;
 
 
+import com.heaven7.java.data.mediator.collector.PropertyEventReceiver;
+
 /**
- * <p>Use {@linkplain PropertyReceiver2} instead. This Class Will be removed in 2.x.</p>
+ * <p>Use {@linkplain PropertyEventReceiver} instead. This Class Will be removed in 2.x.</p>
  * the property receiver which used to receive property event.
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.1

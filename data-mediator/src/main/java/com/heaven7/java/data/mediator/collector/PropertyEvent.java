@@ -1,7 +1,6 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
-import com.heaven7.java.data.mediator.PropertyReceiver2;
 
 /**
  * the property event
@@ -89,7 +88,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
     public void setKey(Object key) {
         this.key = key;
     }
-    public void fire(PropertyReceiver2 receiver2){
+    public void fire(PropertyEventReceiver receiver2){
         switch (type) {
             case TYPE_PROPERTY_CHANGE:
                 receiver2.dispatchValueChanged(current, original, prop, oldValue, newValue);
@@ -115,7 +114,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
                 break;
             //sparse array
             case TYPE_SPARSE_PROPERTY_CHANGE: {
-                MapPropertyCollector<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
+                MapPropertyDispatcher<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
                 if(saDispatcher != null){
                     saDispatcher.dispatchOnEntryValueChanged(current, original, prop,
                             (Integer)key, oldValue, newValue);
@@ -124,7 +123,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
                 break;
 
             case TYPE_SPARSE_PROPERTY_ADD: {
-                MapPropertyCollector<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
+                MapPropertyDispatcher<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
                 if(saDispatcher != null){
                     saDispatcher.dispatchOnAddEntry(current, original, prop,
                             (Integer)key, newValue);
@@ -133,7 +132,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
             break;
 
             case TYPE_SPARSE_PROPERTY_REMOVE: {
-                MapPropertyCollector<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
+                MapPropertyDispatcher<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
                 if(saDispatcher != null){
                     saDispatcher.dispatchOnRemoveEntry(current, original, prop,
                             (Integer)key, newValue);
@@ -142,7 +141,7 @@ import com.heaven7.java.data.mediator.PropertyReceiver2;
             break;
 
             case TYPE_SPARSE_PROPERTY_CLEAR: {
-                MapPropertyCollector<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
+                MapPropertyDispatcher<Integer> saDispatcher = receiver2.getSparseArrayDispatcher();
                 if(saDispatcher != null){
                     saDispatcher.dispatchOnClearEntries(current, original, prop, oldValue);
                 }

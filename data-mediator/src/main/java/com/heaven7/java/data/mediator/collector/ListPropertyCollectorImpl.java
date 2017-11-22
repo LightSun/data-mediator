@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
 

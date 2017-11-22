@@ -1,4 +1,4 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
 
@@ -7,7 +7,7 @@ import com.heaven7.java.data.mediator.Property;
  * @author heaven7
  * @since 1.4.4
  */
-public interface ListPropertyCollector extends PropertyCollector {
+public interface ListPropertyDispatcher extends PropertyDispatcher{
 
     /**
      * called on add property values.
@@ -31,7 +31,7 @@ public interface ListPropertyCollector extends PropertyCollector {
      * @param index      the index to add.
      */
     void dispatchOnAddPropertyValuesWithIndex(Object data, Object original, Property prop,
-                                      Object newValue, Object addedValue, int index);
+                                              Object newValue, Object addedValue, int index);
 
     /**
      * called on remove property values.

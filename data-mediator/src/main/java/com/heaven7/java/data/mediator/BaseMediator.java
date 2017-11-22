@@ -19,7 +19,7 @@ package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Throwables;
-import com.heaven7.java.data.mediator.internal.PropertyCollector;
+import com.heaven7.java.data.mediator.collector.*;
 import com.heaven7.java.data.mediator.util.DefaultEqualsComparator;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
 
@@ -39,7 +39,8 @@ public class BaseMediator<T>{
     private PropertyInterceptor _mInterceptor = PropertyInterceptor.NULL;
     //temps
     private SparseArrayDispatcher _mSparseArrayDispatcher;
-    private PropertyCollector _mCollector;
+    private CollectorManager _mCollector;
+    private PropertyEventReceiver _mDefaultReceiver;
 
     /**
      * create a base mediator by target object. called often by framework.
@@ -198,45 +199,94 @@ public class BaseMediator<T>{
     }
 
     /**
-     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches(PropertyReceiver)}.
+     * <p>Use {@linkplain #beginBatchedDispatches(int)} instead. </p>
+     * @since 1.4.1
+     */
+    @Deprecated
+    public void beginBatchedDispatches(){
+        if(_mCollector == null){
+            _mCollector = new CollectorManagerImpl();
+        }
+        _mCollector.open(CollectorManagerImpl.FLAG_SIMPLE);
+    }
+    /**
+     * <P>Use {@linkplain #endBatchedDispatches(PropertyEventReceiver)} or {@linkplain #dropBatchedDispatches()} instead.</P>
+     * Ends the dispatch transaction and dispatches any remaining event to the callback.
+     * @param receiver the receiver which used to receive batch dispatch events. null means use default receiver.
+     * @since 1.4.1
+     */
+    @Deprecated
+    public void endBatchedDispatches(final @Nullable PropertyReceiver receiver){
+        PropertyEventReceiver real = receiver != null ?
+                new PropertyEventReceiver() {
+                    @Override
+                    public void dispatchValueChanged(Object data, Object originalSource, Property prop, Object oldValue, Object newValue) {
+                        receiver.dispatchValueChanged(prop, oldValue, newValue);
+                    }
+                    @Override
+                    public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
+                        receiver.dispatchValueApplied(prop, value);
+                    }
+                }
+                : new PropertyEventReceiver() {
+            @Override
+            public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
+                BaseMediator.this.dispatchValueApplied(prop, value);
+            }
+            @Override
+            public void dispatchValueChanged(Object data, Object originalSource, Property prop, Object oldValue, Object newValue) {
+                BaseMediator.this.dispatchValueChanged(prop, oldValue, newValue);
+            }
+        };
+        _mCollector.close(real);
+    }
+
+    /**
+     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches(PropertyEventReceiver)}.
      * for example: if you have a item data in adapter. but we don't want to update adapter
      * on every property change. you should call this to resolve it.
      * <p> Here is a demo.
      * <pre>
      *     DataMediator{@literal <}Student{@literal >} dm = ...;
-     *     dm.getBaseMediator().beginBatchedDispatches();
+     *     dm.getBaseMediator().beginBatchedDispatches(CollectorManagerImpl.FLAGS_ALL);
      *     dm.getDataProxy().setId(xx)
      *               .setName(xxx)
      *               .setGrade(xxx)...;
-     *      dm.getBaseMediator().endBatchedDispatches(null);
+     *      PropertyEventReceiver receiver = ...;
+     *      dm.getBaseMediator().endBatchedDispatches(receiver);
      * </pre>
      * </p>
-     * @since 1.4.1
+     * @param collectorFlags  the flags of collector. see {@linkplain CollectorManagerImpl#FLAG_SIMPLE},
+     * {@linkplain CollectorManagerImpl#FLAG_LIST}, {@linkplain CollectorManagerImpl#FLAG_SPARSE_ARRAY}
+     * @since 1.4.4
      */
-    public void beginBatchedDispatches(){
+    public void beginBatchedDispatches(int collectorFlags){
         if(_mCollector == null){
-            _mCollector = new PropertyCollectorImpl();
+            _mCollector = new CollectorManagerImpl();
         }
-        _mCollector.open();
+        _mCollector.open(collectorFlags);
+    }
+    /**
+     * drop the all batch dispatch event
+     * @since 1.4.4
+     */
+    public void dropBatchedDispatches(){
+        _mCollector.close(null);
     }
     /**
      * Ends the dispatch transaction and dispatches any remaining event to the callback.
      * @param receiver the receiver which used to receive batch dispatch events. null means use default receiver.
-     * @since 1.4.1
+     * @since 1.4.4
      */
-    public void endBatchedDispatches(@Nullable PropertyReceiver receiver){
-        //TODO change
-       /* PropertyReceiver2 real = receiver != null ? PropertyReceiver2.from(receiver): new PropertyReceiver2() {
-            @Override
-            public void dispatchValueChanged(Object originalSource, Property prop, Object oldValue, Object newValue) {
-                BaseMediator.this.dispatchValueChanged(prop, oldValue, newValue);
-            }
-            @Override
-            public void dispatchValueApplied(Object originalSource, Property prop, Object value) {
-                BaseMediator.this.dispatchValueApplied( prop, value);
-            }
-        };
-        _mCollector.close(real);*/
+    public void endBatchedDispatches(final @Nullable PropertyEventReceiver receiver){
+        _mCollector.close(receiver != null ? receiver :
+                (_mDefaultReceiver != null ? _mDefaultReceiver : (_mDefaultReceiver =
+                        PropertyEventReceiver.of(new PropertyEventReceiver.DataMediatorCallbackDelegate() {
+                    @Override
+                    public DataMediatorCallback[] getCallbacks() {
+                        return new DataMediatorCallback[0];
+                    }
+                })) ));
     }
 //=========================================================================
 
@@ -264,10 +314,9 @@ public class BaseMediator<T>{
     @SuppressWarnings("unchecked")
     public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
         //TODO change
-       /* if(_mCollector != null && _mCollector.isOpened()){
-            _mCollector.dispatchValueChanged(_mTarget, prop, oldValue, newValue);
+        if(_mCollector != null && _mCollector.dispatchValueChanged(_mTarget, _mTarget, prop, oldValue, newValue)){
             return;
-        }*/
+        }
         final DataMediatorCallback[] arrLocal = _getCallbacks();
         for (int i = arrLocal.length - 1; i >= 0; i--) {
             arrLocal[i].onPropertyValueChanged(_mTarget, prop, oldValue, newValue);

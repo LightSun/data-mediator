@@ -27,9 +27,19 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
 
     private Object mOriginalSource;
 
+    /**
+     * get the original source where occurs this callback.
+     * @return the source object
+     * @since 1.4.4
+     */
     public Object getOriginalSource() {
         return mOriginalSource;
     }
+    /**
+     * set the original source where occurs this callback.
+     * @param source  the source object
+     * @since 1.4.4
+     */
     public void setOriginalSource(Object source) {
         this.mOriginalSource = source;
     }

@@ -1,13 +1,15 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
+
 
 import com.heaven7.java.data.mediator.Property;
 
 /**
- * the sparse array property dispatcher.
+ * the sparse array dispatcher
+ * @param <K> the key type of map
  * @author heaven7
  * @since 1.4.4
  */
-public interface MapPropertyCollector<K> extends PropertyCollector{
+public interface MapPropertyDispatcher<K> extends PropertyDispatcher{
 
     /**
      * called on value changed.
@@ -17,10 +19,9 @@ public interface MapPropertyCollector<K> extends PropertyCollector{
      * @param key the key in map
      * @param oldValue the old value of entry
      * @param newValue the new value of entry
-     * @since 1.1.3
      */
     void dispatchOnEntryValueChanged(Object data, Object original, Property prop,
-                             K key, Object oldValue, Object newValue);
+                                     K key, Object oldValue, Object newValue);
 
     /**
      * called on add entry for the map
@@ -29,10 +30,9 @@ public interface MapPropertyCollector<K> extends PropertyCollector{
      * @param prop the property
      * @param key the key of entry
      * @param value the value of entry
-     * @since 1.1.3
      */
     void dispatchOnAddEntry(Object data, Object original, Property prop,
-                    K key, Object value);
+                            K key, Object value);
     /**
      * called on remove entry for the map
      * @param data the module data
@@ -40,10 +40,9 @@ public interface MapPropertyCollector<K> extends PropertyCollector{
      * @param prop the property
      * @param key the key of entry
      * @param value the value of entry
-     * @since 1.1.3
      */
-    void dispatchOnRemoveEntry(Object data, Object original,Property prop,
-                       K key, Object value);
+    void dispatchOnRemoveEntry(Object data, Object original, Property prop,
+                               K key, Object value);
 
     /**
      * called on clear all entries.
@@ -51,8 +50,6 @@ public interface MapPropertyCollector<K> extends PropertyCollector{
      * @param original  the original module where occurs this event.
      * @param prop the property
      * @param entries the all entries which were removed. type is like map.
-     * @since 1.1.3
      */
     void dispatchOnClearEntries(Object data, Object original, Property prop, Object entries);
-
 }

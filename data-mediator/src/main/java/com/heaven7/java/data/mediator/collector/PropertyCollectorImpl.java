@@ -1,12 +1,10 @@
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
 import com.heaven7.java.data.mediator.Property;
-import com.heaven7.java.data.mediator.PropertyReceiver2;
-
 import java.util.LinkedList;
 
-import static com.heaven7.java.data.mediator.internal.PropertyEvent.TYPE_PROPERTY_APPLY;
-import static com.heaven7.java.data.mediator.internal.PropertyEvent.TYPE_PROPERTY_CHANGE;
+import static com.heaven7.java.data.mediator.collector.PropertyEvent.TYPE_PROPERTY_APPLY;
+import static com.heaven7.java.data.mediator.collector.PropertyEvent.TYPE_PROPERTY_CHANGE;
 
 /**
  * the property collector.
@@ -43,7 +41,7 @@ import static com.heaven7.java.data.mediator.internal.PropertyEvent.TYPE_PROPERT
     }
 
     @Override
-    public void close(PropertyReceiver2 receiver) {
+    public void close(PropertyEventReceiver receiver) {
         if(mState != STATE_OPEN){
             throw new IllegalStateException("can't close collector twice.");
         }

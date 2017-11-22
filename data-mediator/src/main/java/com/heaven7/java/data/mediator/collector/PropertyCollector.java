@@ -15,16 +15,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-package com.heaven7.java.data.mediator.internal;
+package com.heaven7.java.data.mediator.collector;
 
-import com.heaven7.java.data.mediator.PropertyReceiver2;
 
 /**
  * the property collector.
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.1
  */
-public interface PropertyCollector extends PropertyDispatcher{
+public interface PropertyCollector extends PropertyDispatcher {
 
     /**
      * open property collector.
@@ -41,5 +40,5 @@ public interface PropertyCollector extends PropertyDispatcher{
      * close property collector. and fire all event. after dispatch the event pool is cleared.
      * @param receiver the property receiver. if receiver == null, the all event will be discard.
      */
-    void close(PropertyReceiver2 receiver);
+    void close(PropertyEventReceiver receiver);
 }
