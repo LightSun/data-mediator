@@ -26,9 +26,9 @@ public interface TestItem10 extends TestItem{
 
     TestItem10 setTestItem_2(String testItem_21);
 
-    TestItem10 setTestItem_3(List<String> testItem_31);
+    TestItem10 setTestItem_3(List<Student> testItem_31);
 
-    ListPropertyEditor<? extends TestItem10, String> beginTestItem_3Editor();
+    ListPropertyEditor<? extends TestItem10, Student> beginTestItem_3Editor();
 
     TestItem10 setTestItem_4(boolean testItem_41);
 

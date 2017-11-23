@@ -1,47 +1,74 @@
 /**
  * Copyright 2017
- group of data-mediator
- member: heaven7(donshine723@gmail.com)
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
+ * group of data-mediator
+ * member: heaven7(donshine723@gmail.com)
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.anno.CalledInternal;
 import com.heaven7.java.base.util.Throwables;
 
 /**
  *  the listener of property change.
  * Created by heaven7 on 2017/9/11 0011.
  */
-public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, ListPropertyCallback<T> {
+public abstract class DataMediatorCallback<T> extends PropertyCallbackContext implements PropertyCallback<T>, ListPropertyCallback<T> {
 
-    private Object mOriginalSource;
+    @CalledInternal
+    public void onPreCallback(Params params) {
+        super.onPreCallback(params);
+        SparseArrayPropertyCallback<T> callback = getSparseArrayPropertyCallback();
+        if (callback != null && callback instanceof SparseArrayPropertyCallback2) {
+            ((SparseArrayPropertyCallback2) callback).onPreCallback(params);
+        }
+    }
 
-    /**
-     * get the original source where occurs this callback.
-     * @return the source object
-     * @since 1.4.4
-     */
-    public Object getOriginalSource() {
-        return mOriginalSource;
+    @CalledInternal
+    public void onPostCallback() {
+        super.onPostCallback();
+        SparseArrayPropertyCallback<T> callback = getSparseArrayPropertyCallback();
+        if (callback != null && callback instanceof SparseArrayPropertyCallback2) {
+            ((SparseArrayPropertyCallback2) callback).onPostCallback();
+        }
     }
     /**
-     * set the original source where occurs this callback.
-     * @param source  the source object
+     * create data mediator callback for Sparse by target callback and property.
+     * @param propertyName the property
+     * @param callback the callback
+     * @param <T> the data module type
+     * @return the data mediator callback.
+     * @see com.heaven7.java.base.util.SparseArray
      * @since 1.4.4
      */
-    public void setOriginalSource(Object source) {
-        this.mOriginalSource = source;
+    public static <T> DataMediatorCallback<T> createForSparse(String propertyName,
+                                                              SparseArrayPropertyCallback2<? super T> callback) {
+        Throwables.checkNull(propertyName);
+        Throwables.checkNull(callback);
+        return new WrappedSparseArrayCallback<T>(propertyName, callback) {
+            @Override
+            protected void onPreCallback(SparseArrayPropertyCallback<? super T> mSAPC) {
+                SparseArrayPropertyCallback2<? super T> callback = (SparseArrayPropertyCallback2<? super T>) mSAPC;
+                callback.onPreCallback(getParams());
+            }
+
+            @Override
+            protected void onPostCallback(SparseArrayPropertyCallback<? super T> mSAPC) {
+                SparseArrayPropertyCallback2<? super T> callback = (SparseArrayPropertyCallback2<? super T>) mSAPC;
+                callback.onPostCallback();
+            }
+        };
     }
 
     /**
@@ -54,11 +81,12 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @since 1.1.3
      */
     public static <T> DataMediatorCallback<T> createForSparse(String propertyName,
-                                                     SparseArrayPropertyCallback<? super T> callback){
+                                                              SparseArrayPropertyCallback<? super T> callback) {
         Throwables.checkNull(propertyName);
         Throwables.checkNull(callback);
         return new WrappedSparseArrayCallback<T>(propertyName, callback);
     }
+
     /**
      * create  {@linkplain DataMediatorCallback} by target property name and callback.
      * @param propertyName the property name
@@ -68,7 +96,7 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @since 1.0.8
      */
     public static <T> DataMediatorCallback<T> create(String propertyName,
-                                                     ListPropertyCallback<? super T> callback){
+                                                     ListPropertyCallback<? super T> callback) {
         Throwables.checkNull(propertyName);
         Throwables.checkNull(callback);
         return new WrappedListCallback<T>(propertyName, callback);
@@ -83,19 +111,19 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @since 1.0.8
      */
     public static <T> DataMediatorCallback<T> create(final String propertyName,
-                                                     final PropertyCallback<? super T> callback){
+                                                     final PropertyCallback<? super T> callback) {
         Throwables.checkNull(propertyName);
         Throwables.checkNull(callback);
         return new NameableCallback<T>(propertyName) {
             @Override
             public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
-                if(prop.getName().equals(name)) {
+                if (allow(prop)) {
                     callback.onPropertyValueChanged(data, prop, oldValue, newValue);
                 }
             }
             @Override
             public void onPropertyApplied(T data, Property prop, Object value) {
-                if(prop.getName().equals(name)) {
+                if (allow(prop)) {
                     callback.onPropertyApplied(data, prop, value);
                 }
             }
@@ -114,7 +142,7 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
     public abstract void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue);
 
     @Override
-    public void onPropertyApplied(T data, Property prop, Object value){
+    public void onPropertyApplied(T data, Property prop, Object value) {
         onPropertyValueChanged(data, prop, null, value);
     }
 
@@ -126,7 +154,7 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @param addedValue the value which is added.
      * @since 1.0.8
      */
-    public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue){
+    public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue) {
 
     }
 
@@ -140,7 +168,7 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @since 1.0.8
      */
     public void onAddPropertyValuesWithIndex(T data, Property prop,
-                                             Object newValue, Object addedValue, int index){
+                                             Object newValue, Object addedValue, int index) {
 
     }
 
@@ -152,7 +180,7 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @param removeValue the value which is removed.
      * @since 1.0.8
      */
-    public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue){
+    public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue) {
 
     }
 
@@ -165,15 +193,16 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * @param index the index of old item
      * @since 1.1.2
      */
-    public void onPropertyItemChanged(T  data, Property prop, Object oldItem, Object newItem, int index){
+    public void onPropertyItemChanged(T data, Property prop, Object oldItem, Object newItem, int index) {
 
     }
+
     /**
      * get property callback of sparse array. if not exist return null.
      * @return the property callback of sparse array
      * @since 1.1.3
      */
-    public SparseArrayPropertyCallback<T> getSparseArrayPropertyCallback(){
+    public SparseArrayPropertyCallback<T> getSparseArrayPropertyCallback() {
         return null;
     }
 
@@ -181,119 +210,165 @@ public abstract class DataMediatorCallback<T> implements PropertyCallback<T>, Li
      * the wrapped sparse array callback
      * @param <T> the module data type
      * @since 1.1.3
+     * @see SparseArrayPropertyCallback
+     * @see SparseArrayPropertyCallback2
      */
     private static class WrappedSparseArrayCallback<T> extends NameableCallback<T>
-            implements SparseArrayPropertyCallback<T>{
+            implements SparseArrayPropertyCallback<T> {
         final SparseArrayPropertyCallback<? super T> mSAPC;
-        public WrappedSparseArrayCallback(String prop, SparseArrayPropertyCallback<? super T> mSAPC) {
+        SparseArrayPropertyCallback2<T> mSAPC2;
+
+        WrappedSparseArrayCallback(String prop, SparseArrayPropertyCallback<? super T> mSAPC) {
             super(prop);
             this.mSAPC = mSAPC;
         }
+
+        protected void onPreCallback(SparseArrayPropertyCallback<? super T> mSAPC) {
+
+        }
+
+        protected void onPostCallback(SparseArrayPropertyCallback<? super T> mSAPC) {
+
+        }
         @Override
         public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
-            if(prop.getName().equals(name)){
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onPropertyValueChanged(data, prop, oldValue, newValue);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public void onPropertyApplied(T data, Property prop, Object value) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onPropertyApplied(data, prop, value);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public void onEntryValueChanged(T data, Property prop, Integer key,
                                         Object oldValue, Object newValue) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onEntryValueChanged(data, prop, key, oldValue, newValue);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public void onAddEntry(T data, Property prop,
                                Integer key, Object value) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onAddEntry(data, prop, key, value);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public void onRemoveEntry(T data, Property prop,
                                   Integer key, Object value) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onRemoveEntry(data, prop, key, value);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public void onClearEntries(T data, Property prop, Object newMap) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
+                onPreCallback(mSAPC);
                 mSAPC.onClearEntries(data, prop, newMap);
+                onPostCallback(mSAPC);
             }
         }
+
         @Override
         public SparseArrayPropertyCallback<T> getSparseArrayPropertyCallback() {
-            return this;
+            if (mSAPC2 == null) {
+                mSAPC2 = new SparseArrayPropertyCallback2.WrappedSparseArrayPropertyCallback2<T>(mSAPC);
+            }
+            return mSAPC2;
         }
     }
+
     /**
      * the wrapped list property callback
      * @param <T> the module data type
      * @since 1.0.8
      */
-    private static class WrappedListCallback<T> extends NameableCallback<T>{
+    private static class WrappedListCallback<T> extends NameableCallback<T> {
         final ListPropertyCallback<? super T> callback;
+
         public WrappedListCallback(String propertyName, ListPropertyCallback<? super T> callback) {
             super(propertyName);
             this.callback = callback;
         }
+
         @Override
         public void onPropertyValueChanged(T data, Property prop, Object oldValue, Object newValue) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onPropertyValueChanged(data, prop, oldValue, newValue);
             }
         }
+
         @Override
         public void onPropertyApplied(T data, Property prop, Object value) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onPropertyApplied(data, prop, value);
             }
         }
 
         @Override
         public void onAddPropertyValues(T data, Property prop, Object newValue, Object addedValue) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onAddPropertyValues(data, prop, newValue, addedValue);
             }
         }
+
         @Override
         public void onAddPropertyValuesWithIndex(T data, Property prop, Object newValue,
                                                  Object addedValue, int index) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onAddPropertyValuesWithIndex(data, prop, newValue, addedValue, index);
             }
         }
+
         @Override
         public void onRemovePropertyValues(T data, Property prop, Object newValue, Object removeValue) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onRemovePropertyValues(data, prop, newValue, removeValue);
             }
         }
+
         @Override
         public void onPropertyItemChanged(T data, Property prop, Object oldItem, Object newItem, int index) {
-            if(prop.getName().equals(name)) {
+            if (allow(prop)) {
                 callback.onPropertyItemChanged(data, prop, oldItem, newItem, index);
             }
         }
     }
 
-    private static abstract class NameableCallback<T> extends DataMediatorCallback<T> implements Nameable{
+    /*private*/ static abstract class NameableCallback<T> extends DataMediatorCallback<T> implements Nameable {
 
         protected final String name;
 
         public NameableCallback(String name) {
             this.name = name;
         }
+
         @Override
         public String getName() {
             return name;
         }
+
+        protected boolean allow(Property property){
+            return property.getName().equals(name)/* && (getParams() == null || getParams().getDepth() == 0)*/;
+        }
     }
+
 }

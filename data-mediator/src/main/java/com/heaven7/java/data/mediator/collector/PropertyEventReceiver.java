@@ -24,7 +24,7 @@ import com.heaven7.java.data.mediator.*;
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.4
  */
-public abstract class PropertyEventReceiver implements PropertyDispatcher, ListPropertyDispatcher{
+public abstract class PropertyEventReceiver extends PropertyCallbackContext implements PropertyDispatcher, ListPropertyDispatcher{
 
     /**
      * the data mediator callback delegate
@@ -37,6 +37,9 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
 
     public static PropertyEventReceiver of(DataMediatorCallbackDelegate delegate){
          return new InternalPropertyEventReceiver(delegate);
+    }
+    public static PropertyEventReceiver of(PropertyEventReceiver base, int depth){
+         return new DepthPropertyEventReceiver(base, depth);
     }
 
     public void dispatchValueChanged(Object data, Object originalSource, Property prop,
@@ -71,6 +74,56 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
         return null;
     }
 
+    private static class DepthPropertyEventReceiver extends PropertyEventReceiver{
+        final PropertyEventReceiver base;
+        final int depth;
+
+        DepthPropertyEventReceiver(PropertyEventReceiver base, int depth) {
+            this.base = base;
+            this.depth = depth;
+        }
+        @Override
+        public void onPreCallback(Params params) {
+            params.setDepth(depth);
+            super.onPreCallback(params);
+            base.onPreCallback(params);
+        }
+
+        @Override
+        public void onPostCallback() {
+            super.onPostCallback();
+            base.onPostCallback();
+        }
+
+        public void dispatchValueChanged(Object data, Object original, Property prop,
+                                         Object oldValue, Object newValue) {
+            base.dispatchValueChanged(data, original, prop, oldValue, newValue);
+        }
+        public void dispatchValueApplied(Object data, Object original, Property prop, Object value) {
+            base.dispatchValueApplied(data, original, prop, value);
+        }
+        public void dispatchOnAddPropertyValues(Object data, Object original, Property prop,
+                                                Object newValue, Object addedValue){
+            base.dispatchOnAddPropertyValues(data, original, prop, newValue, addedValue);
+        }
+        public void dispatchOnAddPropertyValuesWithIndex(Object data, Object original, Property prop,
+                                                         Object newValue, Object addedValue, int index){
+            base.dispatchOnAddPropertyValuesWithIndex(data, original, prop, newValue, addedValue, index);
+        }
+        public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop,
+                                                   Object newValue, Object removeValue){
+            base.dispatchOnRemovePropertyValues(data, original, prop, newValue, removeValue);
+        }
+
+        public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop,
+                                                  Object oldItem, Object newItem, int index){
+            base.dispatchOnPropertyItemChanged(data, original, prop, oldItem, newItem, index);
+        }
+        public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
+            return base.getSparseArrayDispatcher();
+        }
+    }
+
     /**
      * @author heaven7
      * @since 1.4.4
@@ -87,67 +140,73 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
         @Override  @SuppressWarnings("unchecked")
         public void dispatchValueChanged(Object data, Object originalSource, Property prop,
                                          Object oldValue, Object newValue) {
-            DataMediatorCallback[] callbacks = delegate.getCallbacks();
+            final DataMediatorCallback[] callbacks = delegate.getCallbacks();
+            final Params params = getParams();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(originalSource);
+                callback.onPreCallback(params);
                 callback.onPropertyValueChanged(data, prop, oldValue, newValue);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
         @Override @SuppressWarnings("unchecked")
         public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
+            final Params params = getParams();
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(originalSource);
+                callback.onPreCallback(params);
                 callback.onPropertyApplied(data, prop, value);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
 
         @Override  @SuppressWarnings("unchecked")
         public void dispatchOnAddPropertyValues(Object data, Object original, Property prop,
                                                 Object newValue, Object addedValue){
+            final Params params = getParams();
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(original);
+                callback.onPreCallback(params);
                 callback.onAddPropertyValues(data, prop, newValue, addedValue);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
         @Override @SuppressWarnings("unchecked")
         public void dispatchOnAddPropertyValuesWithIndex(Object data, Object original, Property prop,
                                                          Object newValue, Object addedValue, int index){
+            final Params params = getParams();
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(original);
+                callback.onPreCallback(params);
                 callback.onAddPropertyValuesWithIndex(data, prop, newValue, addedValue, index);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
         @Override @SuppressWarnings("unchecked")
         public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop,
                                                    Object newValue, Object removeValue){
+            final Params params = getParams();
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(original);
+                callback.onPreCallback(params);
                 callback.onRemovePropertyValues(data, prop, newValue, removeValue);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
         @Override @SuppressWarnings("unchecked")
         public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop,
                                                   Object oldItem, Object newItem, int index){
+            final Params params = getParams();
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
-                callback.setOriginalSource(original);
+                callback.onPreCallback(params);
                 callback.onPropertyItemChanged(data, prop, oldItem, newItem, index);
-                callback.setOriginalSource(null);
+                callback.onPostCallback();
             }
         }
         @Override
         public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
             if(mSparseDispatcher == null){
-                mSparseDispatcher = new SparseArrayPropertyDispatcher(delegate);
+                mSparseDispatcher = new SparseArrayPropertyDispatcher(delegate, getParams());
             }
             return mSparseDispatcher;
         }
@@ -159,9 +218,11 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
     private static class SparseArrayPropertyDispatcher implements MapPropertyDispatcher<Integer>{
 
         final DataMediatorCallbackDelegate delegate;
+        final Params params;
 
-        SparseArrayPropertyDispatcher(DataMediatorCallbackDelegate delegate) {
+        public SparseArrayPropertyDispatcher(DataMediatorCallbackDelegate delegate, Params params) {
             this.delegate = delegate;
+            this.params = params;
         }
 
         @Override @SuppressWarnings("unchecked")
@@ -171,9 +232,9 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.setOriginalSource(original);
+                    callback.onPreCallback(params);
                     sa.onEntryValueChanged(data, prop, key, oldValue, newValue);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }
@@ -183,10 +244,10 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
-                if(sa != null){
-                    callback.setOriginalSource(original);
+                if(sa != null) {
+                    callback.onPreCallback(params);
                     sa.onAddEntry(data, prop, key, value);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }
@@ -197,9 +258,9 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.setOriginalSource(original);
+                    callback.onPreCallback(params);
                     sa.onRemoveEntry(data, prop, key, value);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }
@@ -210,35 +271,35 @@ public abstract class PropertyEventReceiver implements PropertyDispatcher, ListP
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.setOriginalSource(original);
+                    callback.onPreCallback(params);
                     sa.onClearEntries(data, prop, entries);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }
 
         @Override @SuppressWarnings("unchecked")
-        public void dispatchValueChanged(Object data, Object originalSource, Property prop, Object oldValue, Object newValue) {
+        public void dispatchValueChanged(Object data, Object original, Property prop, Object oldValue, Object newValue) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.setOriginalSource(originalSource);
+                    callback.onPreCallback(params);
                     sa.onPropertyValueChanged(data, prop, oldValue, newValue);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }
 
         @Override @SuppressWarnings("unchecked")
-        public void dispatchValueApplied(Object data, Object originalSource, Property prop, Object value) {
+        public void dispatchValueApplied(Object data, Object original, Property prop, Object value) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.setOriginalSource(originalSource);
+                    callback.onPreCallback(params);
                     sa.onPropertyApplied(data, prop, value);
-                    callback.setOriginalSource(null);
+                    callback.onPostCallback();
                 }
             }
         }

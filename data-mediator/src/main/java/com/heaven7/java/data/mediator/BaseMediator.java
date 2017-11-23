@@ -40,7 +40,17 @@ public class BaseMediator<T>{
     //temps
     private SparseArrayDispatcher _mSparseArrayDispatcher;
     private CollectorManager _mCollector;
-    private PropertyEventReceiver _mDefaultReceiver;
+
+    /**
+     * the event transit station
+     */
+    private final PropertyEventReceiver _mDispatcher = PropertyEventReceiver.of(
+            new PropertyEventReceiver.DataMediatorCallbackDelegate() {
+        @Override
+        public DataMediatorCallback[] getCallbacks() {
+            return _getCallbacks();
+        }
+    });
 
     /**
      * create a base mediator by target object. called often by framework.
@@ -279,14 +289,7 @@ public class BaseMediator<T>{
      * @since 1.4.4
      */
     public void endBatchedDispatches(final @Nullable PropertyEventReceiver receiver){
-        _mCollector.close(receiver != null ? receiver :
-                (_mDefaultReceiver != null ? _mDefaultReceiver : (_mDefaultReceiver =
-                        PropertyEventReceiver.of(new PropertyEventReceiver.DataMediatorCallbackDelegate() {
-                    @Override
-                    public DataMediatorCallback[] getCallbacks() {
-                        return new DataMediatorCallback[0];
-                    }
-                })) ));
+        _mCollector.close(receiver != null ? receiver : _mDispatcher);
     }
 //=========================================================================
 
@@ -313,14 +316,10 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchValueChanged(Property prop, Object oldValue, Object newValue) {
-        //TODO change
         if(_mCollector != null && _mCollector.dispatchValueChanged(_mTarget, _mTarget, prop, oldValue, newValue)){
             return;
         }
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyValueChanged(_mTarget, prop, oldValue, newValue);
-        }
+        _mDispatcher.dispatchValueChanged(_mTarget, _mTarget, prop, oldValue, newValue);
     }
 
     /**
@@ -332,15 +331,10 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchValueApplied(Property prop, Object value) {
-        //TODO change
-      /*  if(_mCollector != null && _mCollector.isOpened()){
-            _mCollector.dispatchValueApplied(_mTarget, prop, value);
+        if(_mCollector != null && _mCollector.dispatchValueApplied(_mTarget, _mTarget, prop, value)){
             return;
-        }*/
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyApplied(_mTarget, prop, value);
         }
+        _mDispatcher.dispatchValueApplied(_mTarget, _mTarget, prop, value);
     }
 
     /**
@@ -353,10 +347,10 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchAddValues(Property prop, Object newValue, Object addedValue) {
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onAddPropertyValues(_mTarget, prop, newValue, addedValue);
+        if(_mCollector != null && _mCollector.dispatchOnAddPropertyValues(_mTarget, _mTarget, prop, newValue, addedValue)){
+            return;
         }
+        _mDispatcher.dispatchOnAddPropertyValues(_mTarget, _mTarget, prop, newValue, addedValue);
     }
 
     /**
@@ -370,11 +364,12 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchAddValuesWithIndex(Property prop, Object newValue, Object addValue, int index) {
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onAddPropertyValuesWithIndex(_mTarget, prop,
-                    newValue, addValue, index);
+        if(_mCollector != null && _mCollector.dispatchOnAddPropertyValuesWithIndex(_mTarget, _mTarget,
+                prop, newValue, addValue, index)){
+            return;
         }
+        _mDispatcher.dispatchOnAddPropertyValuesWithIndex(_mTarget, _mTarget,
+                prop, newValue, addValue, index);
     }
 
     /**
@@ -387,10 +382,12 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchRemoveValues(Property prop, Object newValue, Object removeValues) {
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onRemovePropertyValues(_mTarget, prop, newValue, removeValues);
+        if(_mCollector != null && _mCollector.dispatchOnRemovePropertyValues(_mTarget, _mTarget,
+                prop, newValue, removeValues)){
+            return;
         }
+        _mDispatcher.dispatchOnRemovePropertyValues(_mTarget, _mTarget,
+                prop, newValue, removeValues);
     }
 
     /**
@@ -403,10 +400,12 @@ public class BaseMediator<T>{
      */
     @SuppressWarnings("unchecked")
     public void dispatchItemChanged(Property prop, Object oldItem, Object newItem , int index) {
-        final DataMediatorCallback[] arrLocal = _getCallbacks();
-        for (int i = arrLocal.length - 1; i >= 0; i--) {
-            arrLocal[i].onPropertyItemChanged(_mTarget, prop, oldItem, newItem, index);
+        if(_mCollector != null && _mCollector.dispatchOnPropertyItemChanged(_mTarget, _mTarget,
+                prop, oldItem, newItem, index)){
+            return;
         }
+        _mDispatcher.dispatchOnPropertyItemChanged(_mTarget, _mTarget,
+                prop, oldItem, newItem, index);
     }
 
     /**
@@ -450,11 +449,19 @@ public class BaseMediator<T>{
     }
 
     /**
+     * get internal dispatcher
+     * @since 1.4.4
+     */
+    PropertyEventReceiver _getInternalDispatcher(){
+        return _mDispatcher;
+    }
+
+    /**
      * dispatch callback of SparseArray.
      * @since 1.1.3
      * @see com.heaven7.java.base.util.SparseArray
      */
-    public class SparseArrayDispatcher{
+    class SparseArrayDispatcher{
 
         private SparseArrayDispatcher(){}
         /**
@@ -465,14 +472,7 @@ public class BaseMediator<T>{
          */
         @SuppressWarnings("unchecked")
         public void dispatchAddEntry(Property prop, int key, Object value){
-            final DataMediatorCallback[] callbacks = _getCallbacks();
-            final T target = _getTarget();
-            for (int i = callbacks.length - 1; i >= 0; i--) {
-                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
-                if(callback != null) {
-                    callback.onAddEntry(target, prop, key, value);
-                }
-            }
+            _mDispatcher.getSparseArrayDispatcher().dispatchOnAddEntry(_mTarget, _mTarget,  prop, key, value);
         }
         /**
          * dispatch change entry value.
@@ -483,14 +483,8 @@ public class BaseMediator<T>{
          */
         @SuppressWarnings("unchecked")
         public void dispatchChangeEntryValue(Property prop, int key, Object oldValue, Object newValue){
-            final DataMediatorCallback[] callbacks = _getCallbacks();
-            final T target = _getTarget();
-            for (int i = callbacks.length - 1; i >= 0; i--) {
-                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
-                if(callback != null) {
-                    callback.onEntryValueChanged(target, prop, key, oldValue, newValue);
-                }
-            }
+            _mDispatcher.getSparseArrayDispatcher().dispatchOnEntryValueChanged(_mTarget, _mTarget,
+                    prop, key, oldValue, newValue);
         }
         /**
          * dispatch remove entry event.
@@ -500,14 +494,8 @@ public class BaseMediator<T>{
          */
         @SuppressWarnings("unchecked")
         public void dispatchRemoveEntry(Property prop, int key, Object value){
-            final DataMediatorCallback[] callbacks = _getCallbacks();
-            final T target = _getTarget();
-            for (int i = callbacks.length - 1; i >= 0; i--) {
-                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
-                if(callback != null) {
-                    callback.onRemoveEntry(target, prop, key, value);
-                }
-            }
+            _mDispatcher.getSparseArrayDispatcher().dispatchOnRemoveEntry(_mTarget, _mTarget,
+                    prop, key, value);
         }
         /**
          * dispatch clear all entries.
@@ -517,14 +505,8 @@ public class BaseMediator<T>{
          */
         @SuppressWarnings("unchecked")
         public void dispatchClearEntries(Property prop, Object entries){
-            final DataMediatorCallback[] callbacks = _getCallbacks();
-            final T target = _getTarget();
-            for (int i = callbacks.length - 1; i >= 0; i--) {
-                final SparseArrayPropertyCallback callback = callbacks[i].getSparseArrayPropertyCallback();
-                if(callback != null) {
-                    callback.onClearEntries(target, prop, entries);
-                }
-            }
+            _mDispatcher.getSparseArrayDispatcher().dispatchOnClearEntries(_mTarget, _mTarget,
+                    prop, entries);
         }
     }
     /**
@@ -569,11 +551,14 @@ public class BaseMediator<T>{
             final DataMediatorCallback[] arrLocal = mMediator._getCallbacks();
             final int size = mProps.size();
 
+            PropertyCallbackContext.Params params = new PropertyCallbackContext.Params(data, 0);
             DataMediatorCallback callback;
             for (int i = arrLocal.length - 1; i >= 0; i--) {
                 callback = arrLocal[i];
                 for (int j = 0; j < size; j++) {
+                    callback.onPreCallback(params);
                     callback.onPropertyApplied(data, mProps.get(j), mValue.get(j));
+                    callback.onPostCallback();
                 }
             }
         }

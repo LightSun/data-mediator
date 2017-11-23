@@ -53,6 +53,7 @@ public class TestRelativeShip {
         }));
     }
 
+    //最后一个List<String> ？， SparseArray<String>.
     private void testList1() {
         //@BindXXX("stus[0].name?")
         DataMediator<TestItem> dm = DataMediatorFactory.createDataMediator(TestItem.class);
