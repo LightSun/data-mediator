@@ -1,45 +1,61 @@
 package com.heaven7.java.data.mediator;
 
+import com.heaven7.java.base.util.SparseArray;
+import com.heaven7.java.data.mediator.collector.MapPropertyDispatcher;
 import com.heaven7.java.data.mediator.collector.PropertyEventReceiver;
 
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * the data mediator tree . which help we handle property chain.
+ * @param <T> the root module type
+ * @author heaven7
+ * @since 1.4.4
+ */
 //Property-chain, depth, key(for list and SparseArray)
 public class DataMediatorTree<T> {
     private static final Pattern REG_BIND = Pattern.compile("^[A-Za-z_$]+[A-Za-z_$\\d]+([\\[]\\d+[]])??" +
             "([\\.][A-Za-z_$]+[A-Za-z_$\\d]+([\\[]\\d+[]])??$)");
     private static final Pattern REG_INDICATOR_BIND = Pattern.compile("[\\[]\\d+[]]$");
-    private final DataMediator<T> root;
+    private static final HashMap<String, TreeInfo> sCache;
 
-    public DataMediatorTree(DataMediator<T> root) {
+    static {
+        sCache = new HashMap<>();
+    }
+    private final SparseArray<DataMediator<?>> mChildrenMap;
+    private DataMediator<T> root;
+
+    public DataMediatorTree() {
+        this.mChildrenMap = new SparseArray<>();
+    }
+    public void clearChildren(){
+        mChildrenMap.clear();
+    }
+    public boolean hasRoot(){
+        return root != null;
+    }
+    public void setRootDataMediator(DataMediator<T> root){
         this.root = root;
     }
-
-    public Object getData(String propertyChain){
-        final TreeInfo treeInfo = parse(propertyChain);
-        final DataMediator dm = treeInfo.resolve(root);
-
-        final PropertyEventReceiver target = PropertyEventReceiver.of(root.getBaseMediator()._getInternalDispatcher(),
-                treeInfo.depth);
-        //TODO
-        dm.addDataMediatorCallback(new DataMediatorCallback.NameableCallback(treeInfo.lastSecondNode.prop) {
-            @Override
-            public void onPropertyValueChanged(Object data, Property prop, Object oldValue, Object newValue) {
-                if(allow(prop)){
-                    //virtual property
-                    target.dispatchValueChanged(root.getData(), data, prop, oldValue, newValue);
-                }
-            }
-            @Override
-            public void onPropertyApplied(Object data, Property prop, Object value) {
-                if(allow(prop)){
-                    //virtual property
-                    target.dispatchValueApplied(root.getData(), data, prop, value);
-                }
-            }
-        });
-        return null;
+    @SuppressWarnings("unchecked")
+    public <M> DataMediator<M> bindPropertyChain(String propertyChain){
+        TreeInfo treeInfo = sCache.get(propertyChain);
+        if(treeInfo == null){
+            treeInfo = parse(propertyChain);
+            sCache.put(propertyChain, treeInfo);
+        }
+        DataMediator<?> dm = mChildrenMap.get(propertyChain.hashCode());
+        if(dm == null){
+            dm = treeInfo.resolve(root);
+            mChildrenMap.put(propertyChain.hashCode(), dm);
+        }
+        dm.addDataMediatorCallback(new InternalCallback(treeInfo.lastSecondNode.prop,
+                root, treeInfo.depth));
+        return (DataMediator<M>) dm;
     }
 
     //@BindXXX("stus[0].name")  @BindXXX("stu.name") // no ?
@@ -95,16 +111,28 @@ public class DataMediatorTree<T> {
         Node rootNode;
         Node lastNode;
         Node lastSecondNode;
-        String  expression;
+        String expression;
         int depth;
 
-        DataMediator resolve(DataMediator root) {
-            return rootNode.resolve(root);
+        DataMediator resolve(DataMediator parent) {
+            return rootNode.resolve(parent);
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TreeInfo treeInfo = (TreeInfo) o;
+            return depth == treeInfo.depth &&
+                    Objects.equals(expression, treeInfo.expression);
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hash(expression, depth);
         }
     }
 
     private static class Node{
-        final String prop;
+        final String prop; //-> Property.
         final Object key;
 
         Node next;
@@ -113,11 +141,110 @@ public class DataMediatorTree<T> {
             this.prop = prop;
             this.key = key;
         }
-
-        public DataMediator resolve(DataMediator root) {
+        public DataMediator resolve(DataMediator parent) {
             //TODO
             return null;
         }
     }
 
+    private static class InternalCallback extends DataMediatorCallback.NameableCallback<Object>{
+        final DepthPropertyEventReceiver depthReceiver;
+        final WeakReference<DataMediator> weakDm_root;
+        final DepthParams params;
+
+        InternalCallback(String name, DataMediator root, int depth) {
+            super(name);
+            this.depthReceiver = new DepthPropertyEventReceiver();
+            this.weakDm_root = new WeakReference<DataMediator>(root);
+            this.params = new DepthParams(depth);
+        }
+        @Override
+        public void onPropertyValueChanged(Object data, Property prop, Object oldValue, Object newValue) {
+            final DataMediator root = weakDm_root.get();
+            if(root == null){
+                return;
+            }
+            if(allow(prop)){
+                params.mOriginalSource = data;
+                params.receiver = root.getBaseMediator()._getInternalDispatcher();
+                depthReceiver.onPreCallback(params);
+                depthReceiver.dispatchValueChanged(root.getData(), data, prop, oldValue, newValue);
+                depthReceiver.onPostCallback();
+            }
+        }
+        @Override
+        public void onPropertyApplied(Object data, Property prop, Object value) {
+            final DataMediator root = weakDm_root.get();
+            if(root == null){
+                return;
+            }
+            if(allow(prop)){
+                params.mOriginalSource = data;
+                params.receiver = root.getBaseMediator()._getInternalDispatcher();
+                depthReceiver.onPreCallback(params);
+                depthReceiver.dispatchValueApplied(root.getData(), data, prop, value);
+                depthReceiver.onPostCallback();
+            }
+        }
+    }
+    private static class DepthPropertyEventReceiver extends PropertyEventReceiver{
+        PropertyEventReceiver base;
+        @Override
+        public void onPreCallback(Params params) {
+            if(!(params instanceof DepthParams)){
+                throw new IllegalArgumentException();
+            }
+            super.onPreCallback(params);
+            base = ((DepthParams) params).receiver;
+            base.onPreCallback(params);
+        }
+        @Override
+        public void onPostCallback() {
+            super.onPostCallback();
+            base.onPostCallback();
+            this.base = null;
+        }
+        public void dispatchValueChanged(Object data, Object original, Property prop,
+                                         Object oldValue, Object newValue) {
+            base.dispatchValueChanged(data, original, prop, oldValue, newValue);
+        }
+        public void dispatchValueApplied(Object data, Object original, Property prop, Object value) {
+            base.dispatchValueApplied(data, original, prop, value);
+        }
+        public void dispatchOnAddPropertyValues(Object data, Object original, Property prop,
+                                                Object newValue, Object addedValue){
+            base.dispatchOnAddPropertyValues(data, original, prop, newValue, addedValue);
+        }
+        public void dispatchOnAddPropertyValuesWithIndex(Object data, Object original, Property prop,
+                                                         Object newValue, Object addedValue, int index){
+            base.dispatchOnAddPropertyValuesWithIndex(data, original, prop, newValue, addedValue, index);
+        }
+        public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop,
+                                                   Object newValue, Object removeValue){
+            base.dispatchOnRemovePropertyValues(data, original, prop, newValue, removeValue);
+        }
+
+        public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop,
+                                                  Object oldItem, Object newItem, int index){
+            base.dispatchOnPropertyItemChanged(data, original, prop, oldItem, newItem, index);
+        }
+        public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
+            return base.getSparseArrayDispatcher();
+        }
+    }
+
+    private static class DepthParams extends PropertyCallbackContext.Params{
+
+        PropertyEventReceiver receiver;
+
+        public DepthParams(int mDepth) {
+            super(null, mDepth);
+        }
+        @Override
+        public void cleanUp() {
+            //super.cleanUp();
+            mOriginalSource = null;
+            receiver = null;
+        }
+    }
 }

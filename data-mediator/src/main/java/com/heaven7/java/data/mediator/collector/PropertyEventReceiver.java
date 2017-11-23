@@ -24,7 +24,8 @@ import com.heaven7.java.data.mediator.*;
  * Created by heaven7 on 2017/11/8.
  * @since 1.4.4
  */
-public abstract class PropertyEventReceiver extends PropertyCallbackContext implements PropertyDispatcher, ListPropertyDispatcher{
+public abstract class PropertyEventReceiver extends PropertyCallbackContext
+        implements PropertyDispatcher, ListPropertyDispatcher{
 
     /**
      * the data mediator callback delegate
@@ -38,10 +39,6 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext impl
     public static PropertyEventReceiver of(DataMediatorCallbackDelegate delegate){
          return new InternalPropertyEventReceiver(delegate);
     }
-    public static PropertyEventReceiver of(PropertyEventReceiver base, int depth){
-         return new DepthPropertyEventReceiver(base, depth);
-    }
-
     public void dispatchValueChanged(Object data, Object originalSource, Property prop,
                                      Object oldValue, Object newValue) {
     }
@@ -73,57 +70,6 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext impl
     public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
         return null;
     }
-
-    private static class DepthPropertyEventReceiver extends PropertyEventReceiver{
-        final PropertyEventReceiver base;
-        final int depth;
-
-        DepthPropertyEventReceiver(PropertyEventReceiver base, int depth) {
-            this.base = base;
-            this.depth = depth;
-        }
-        @Override
-        public void onPreCallback(Params params) {
-            params.setDepth(depth);
-            super.onPreCallback(params);
-            base.onPreCallback(params);
-        }
-
-        @Override
-        public void onPostCallback() {
-            super.onPostCallback();
-            base.onPostCallback();
-        }
-
-        public void dispatchValueChanged(Object data, Object original, Property prop,
-                                         Object oldValue, Object newValue) {
-            base.dispatchValueChanged(data, original, prop, oldValue, newValue);
-        }
-        public void dispatchValueApplied(Object data, Object original, Property prop, Object value) {
-            base.dispatchValueApplied(data, original, prop, value);
-        }
-        public void dispatchOnAddPropertyValues(Object data, Object original, Property prop,
-                                                Object newValue, Object addedValue){
-            base.dispatchOnAddPropertyValues(data, original, prop, newValue, addedValue);
-        }
-        public void dispatchOnAddPropertyValuesWithIndex(Object data, Object original, Property prop,
-                                                         Object newValue, Object addedValue, int index){
-            base.dispatchOnAddPropertyValuesWithIndex(data, original, prop, newValue, addedValue, index);
-        }
-        public void dispatchOnRemovePropertyValues(Object data, Object original, Property prop,
-                                                   Object newValue, Object removeValue){
-            base.dispatchOnRemovePropertyValues(data, original, prop, newValue, removeValue);
-        }
-
-        public void dispatchOnPropertyItemChanged(Object data, Object original, Property prop,
-                                                  Object oldItem, Object newItem, int index){
-            base.dispatchOnPropertyItemChanged(data, original, prop, oldItem, newItem, index);
-        }
-        public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
-            return base.getSparseArrayDispatcher();
-        }
-    }
-
     /**
      * @author heaven7
      * @since 1.4.4

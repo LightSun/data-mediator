@@ -1,7 +1,6 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.CalledInternal;
-import com.heaven7.java.base.anno.Hide;
 
 /**
  * the property callback context
@@ -19,11 +18,7 @@ public abstract class PropertyCallbackContext {
      */
     @CalledInternal
     public void onPreCallback(Params params) {
-        if (mParams == null) {
-            mParams = new Params(params);
-        }else{
-            mParams.set(params);
-        }
+        mParams = params;
     }
     /**
      *  called when after callback.
@@ -33,6 +28,7 @@ public abstract class PropertyCallbackContext {
     public void onPostCallback() {
         if (mParams != null) {
             mParams.cleanUp();
+            mParams = null;
         }
     }
     public Params getParams() {
@@ -45,33 +41,19 @@ public abstract class PropertyCallbackContext {
      * @since 1.4.4
      */
     public static class Params {
-        private Object mOriginalSource;
-        private int mDepth;
+        public Object mOriginalSource;
+        public int mDepth;
 
         public Params(Object original, int mDepth) {
             this.mOriginalSource = original;
             this.mDepth = mDepth;
         }
         public Params(Params params) {
-            this.mOriginalSource = params.mOriginalSource;
-            this.mDepth = params.mDepth;
-        }
-        public void set(Params params) {
-            this.mOriginalSource = params.mOriginalSource;
-            this.mDepth = params.mDepth;
+            this(params.mOriginalSource, params.mDepth);
         }
         public void cleanUp() {
             mOriginalSource = null;
             mDepth = 0;
-        }
-        public Object getOriginalSource() {
-            return mOriginalSource;
-        }
-        public int getDepth() {
-            return mDepth;
-        }
-        public void setDepth(int depth) {
-            this.mDepth = depth;
         }
     }
 }
