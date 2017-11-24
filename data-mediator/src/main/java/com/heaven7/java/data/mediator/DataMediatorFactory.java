@@ -20,6 +20,7 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Created by heaven7 on 2017/9/14 0014.
@@ -155,22 +156,41 @@ public final class DataMediatorFactory {
      * @since 1.1.3
      */
     public static <T> DataMediator<T> createDataMediator(T t){
+        return createDataMediator(null, t);
+    }
+
+    /**
+     * create data mediator for target 'data-impl'. and attach inflated callbacks to the DataMediator if need.
+     * @param root the root DataMediator for target data
+     * @param t the target data-impl
+     * @param <T> the module data type.
+     * @return the {@linkplain DataMediator} of target object.
+     */
+    public static <T> DataMediator<T> createDataMediator(DataMediator<?> root, T t){
+        DataMediator<T> target ;
         if(t instanceof BaseMediator){
-            return new DataMediator<T>((BaseMediator<T>) t);
+            target =  new DataMediator<T>((BaseMediator<T>) t);
+        }else {
+            String ImplName = t.getClass().getName();
+            if (!ImplName.endsWith(SUFFIX_IMPL)) {
+                throw new IllegalArgumentException("target object(" + ImplName + ") can't wrap to DataMediator.");
+            }
+            final String interfaceName = ImplName.substring(0, ImplName.lastIndexOf(SUFFIX_IMPL));
+            try {
+                Class<?> proxyClazz = Class.forName(interfaceName + SUFFIX_PROXY);
+                Constructor<?> constructor = proxyClazz.getConstructor(Class.forName(interfaceName));
+                target = new DataMediator<T>((BaseMediator<T>) constructor.newInstance(t));
+            } catch (Exception e) {
+                throw new IllegalArgumentException("can't create module proxy for class(" + ImplName
+                        + ")! have you make project or rebuild ? ", e);
+            }
         }
-        String ImplName = t.getClass().getName();
-        if(!ImplName.endsWith(SUFFIX_IMPL)){
-            throw new IllegalArgumentException("target object(" + ImplName + ") can't wrap to DataMediator.");
+        if(root != null) {
+            for (DataMediatorCallback inflateCallback : root.getInflateCallbacks(target.getData())) {
+                target.addDataMediatorCallback(inflateCallback);
+            }
         }
-        final String interfaceName = ImplName.substring(0, ImplName.lastIndexOf(SUFFIX_IMPL));
-        try {
-            Class<?> proxyClazz = Class.forName(interfaceName + SUFFIX_PROXY);
-            Constructor<?> constructor = proxyClazz.getConstructor(Class.forName(interfaceName));
-            return new DataMediator<T>((BaseMediator<T>) constructor.newInstance(t));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("can't create module proxy for class("+ ImplName
-                    + ")! have you make project or rebuild ? " ,e);
-        }
+        return target;
     }
 
     /**

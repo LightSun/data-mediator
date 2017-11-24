@@ -18,7 +18,12 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.Nullable;
+import com.heaven7.java.data.mediator.collector.CollectorManagerImpl;
+import com.heaven7.java.data.mediator.collector.PropertyEventReceiver;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * the data mediator .wrap a base mediator and module data.
@@ -28,6 +33,8 @@ import com.heaven7.java.data.mediator.util.EqualsComparator;
 public final class DataMediator<T> {
 
     private final BaseMediator<T> mediator;
+
+    private DataMediatorTree<T> mTree;
 
     /**
      * create data mediator
@@ -47,32 +54,60 @@ public final class DataMediator<T> {
     }
 
     /**
-     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches(PropertyReceiver)}.
-     * for example: if you have a item data in adapter. but we don't want to update adapter
-     * on every property change. you should call this to resolve it.
-     * <p> Here is a demo.
-     * <pre>
-     *     PropertyReceiver receiver = ...;
-     *     DataMediator{@literal <}Student{@literal >} dm = ...;
-     *     dm.beginBatchedDispatches();
-     *     dm.getDataProxy().setId(xx)
-     *               .setName(xxx)
-     *               .setGrade(xxx)...;
-     *      dm.endBatchedDispatches(receiver);
-     * </pre>
-     * </p>
+     * <p>Use {@linkplain #beginBatchedDispatches(int)} instead. this wll be removed in 2.x</p>
      * @since 1.4.1
      */
+    @Deprecated
     public void beginBatchedDispatches(){
         getBaseMediator().beginBatchedDispatches();
     }
     /**
+     * <p>Use {@linkplain #endBatchedDispatches(PropertyEventReceiver)} instead. this wll be removed in 2.x</p>
      * Ends the dispatch transaction and dispatches any remaining event to the callback.
      * @param receiver the receiver which used to receive batch dispatch events. null means use default receiver.
      * @since 1.4.1
      */
+    @Deprecated
     public void endBatchedDispatches(@Nullable  PropertyReceiver receiver){
         getBaseMediator().endBatchedDispatches(receiver);
+    }
+
+    /**
+     * Batch property dispatch  that happen by calling this method until {@linkplain #endBatchedDispatches(PropertyEventReceiver)}.
+     * for example: if you have a item data in adapter. but we don't want to update adapter
+     * on every property change. you should call this to resolve it.
+     * <p> Here is a demo.
+     * <pre>
+     *     DataMediator{@literal <}Student{@literal >} dm = ...;
+     *     dm.beginBatchedDispatches(CollectorManagerImpl.FLAGS_ALL);
+     *     dm.getDataProxy().setId(xx)
+     *               .setName(xxx)
+     *               .setGrade(xxx)...;
+     *      PropertyEventReceiver receiver = ...;
+     *      dm.endBatchedDispatches(receiver);
+     * </pre>
+     * </p>
+     * @param collectorFlags  the flags of collector. see {@linkplain CollectorManagerImpl#FLAG_SIMPLE},
+     * {@linkplain CollectorManagerImpl#FLAG_LIST}, {@linkplain CollectorManagerImpl#FLAG_SPARSE_ARRAY}
+     * @since 1.4.4
+     */
+    public void beginBatchedDispatches(int collectorFlags){
+         getBaseMediator().beginBatchedDispatches(collectorFlags);
+    }
+    /**
+     * Ends the dispatch transaction and dispatches any remaining event to the callback.
+     * @param receiver the receiver which used to receive batch dispatch events. null means use default receiver.
+     * @since 1.4.4
+     */
+    public void endBatchedDispatches(final @Nullable PropertyEventReceiver receiver){
+        getBaseMediator().endBatchedDispatches(receiver);
+    }
+    /**
+     * drop the all batch dispatch event
+     * @since 1.4.4
+     */
+    public void dropBatchedDispatches(){
+        getBaseMediator().dropBatchedDispatches();
     }
 
     /**
@@ -92,6 +127,31 @@ public final class DataMediator<T> {
     @SuppressWarnings("unchecked")
     public final T getDataProxy(){
         return (T) mediator;
+    }
+
+    /**
+     * inflate the property chain as callback .
+     * @param propertyChain the property chain
+     * @since 1.4.4
+     */
+    public void inflatePropertyChain(String propertyChain){
+         if(mTree == null){
+             mTree = new DataMediatorTree<T>(this);
+         }
+        mTree.inflatePropertyChain(propertyChain);
+    }
+
+    /**
+     * get the inflate callbacks of target child data.
+     * @param data the child data.
+     * @return the inflate callbacks. may be empty, but never be null.
+     * @since 1.4.4
+     */
+    public List<DataMediatorCallback> getInflateCallbacks(Object data){
+        if(mTree == null){
+            return Collections.emptyList();
+        }
+        return mTree.getInflateCallbacks(data);
     }
 
     /**
@@ -215,5 +275,6 @@ public final class DataMediator<T> {
     public void removeDataMediatorCallbacks() {
         mediator.removeCallbacks();
     }
+
 
 }

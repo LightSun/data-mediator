@@ -176,12 +176,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
                                                 Integer key, Object oldValue, Object newValue) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.onPreCallback(params);
                     sa.onEntryValueChanged(data, prop, key, oldValue, newValue);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
 
@@ -189,12 +189,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
         public void dispatchOnAddEntry(Object data, Object original, Property prop, Integer key, Object value) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null) {
-                    callback.onPreCallback(params);
                     sa.onAddEntry(data, prop, key, value);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
 
@@ -202,12 +202,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
         public void dispatchOnRemoveEntry(Object data, Object original, Property prop, Integer key, Object value) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.onPreCallback(params);
                     sa.onRemoveEntry(data, prop, key, value);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
 
@@ -215,12 +215,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
         public void dispatchOnClearEntries(Object data, Object original, Property prop, Object entries) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.onPreCallback(params);
                     sa.onClearEntries(data, prop, entries);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
 
@@ -228,12 +228,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
         public void dispatchValueChanged(Object data, Object original, Property prop, Object oldValue, Object newValue) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.onPreCallback(params);
                     sa.onPropertyValueChanged(data, prop, oldValue, newValue);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
 
@@ -241,12 +241,12 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
         public void dispatchValueApplied(Object data, Object original, Property prop, Object value) {
             DataMediatorCallback[] callbacks = delegate.getCallbacks();
             for(DataMediatorCallback callback : callbacks){
+                callback.onPreCallback(params);
                 SparseArrayPropertyCallback sa = callback.getSparseArrayPropertyCallback();
                 if(sa != null){
-                    callback.onPreCallback(params);
                     sa.onPropertyApplied(data, prop, value);
-                    callback.onPostCallback();
                 }
+                callback.onPostCallback();
             }
         }
     }

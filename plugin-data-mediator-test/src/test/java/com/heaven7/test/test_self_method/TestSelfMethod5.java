@@ -17,12 +17,28 @@ import com.heaven7.test.TestUtil3;
 })
 public interface TestSelfMethod5 extends TestSelfMethod4{
 
-    Property PROP_test_self5_1 = SharedProperties.get("java.lang.String", "test_self5_1", 0);
+    Property PROP_test_self5_1 = SharedProperties.get(String.class.getName(), "test_self5_1", 0);
 
     @ImplMethod(value = "getStudentId3", from = TestUtil3.class)
     String getStudentId5(Student stu, int key);
 
-    String getTest_self5_1();
-
     TestSelfMethod5 setTest_self5_1(String test_self5_11);
+
+    String getTest_self5_1();/*
+================== start methods from super properties ===============
+======================================================================= */
+
+    TestSelfMethod5 setTest_self4_1(String test_self4_11);
+
+    TestSelfMethod5 setTest_1(boolean test_11);
+
+    TestSelfMethod5 setTest_2(String test_21);
+
+    TestSelfMethod5 setId(Student id1);
+
+    TestSelfMethod5 setName(String name1);
+
+    TestSelfMethod5 setTest_self1(String test_self11);
+
+    TestSelfMethod5 setTest_self2(int test_self21);
 }

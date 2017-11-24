@@ -2,8 +2,11 @@ package com.heaven7.plugin.idea.data_mediator.test.convert;
 
 
 
+import com.heaven7.java.data.mediator.DataPools;
 import com.heaven7.java.data.mediator.Field;
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.util.ArrayList;
 
@@ -17,7 +20,12 @@ public class Outter2 {
 
         @Fields(value = {@Field(propName = "text")
         }, generateJsonAdapter = false)
-        public interface IInner2_2 {
+        public interface IInner2_2 extends DataPools.Poolable {
+            Property PROP_text = SharedProperties.get(String.class.getName(), "text", 0);
+
+            IInner2_2 setText(String text1);
+
+            String getText();
         }
 
     }
