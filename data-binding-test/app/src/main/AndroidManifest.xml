@@ -31,6 +31,9 @@
         <activity android:name=".sample.TestBindArrayPropertyToOneView2"
             android:label="BindArrayPropertyToOneView2"/>
 
+        <activity android:name=".sample.TestRootViewBindActivity" android:label="RootViewBind"/>
+        <activity android:name=".sample.TestRootViewBindActivity2" android:label="RootViewBind2"/>
+
 
         <activity android:name=".sample.adapter.TestDatabindingAdapter" android:label="DatabindingAdapter"/>
         <activity android:name=".sample.adapter.DataBindingAdapterWithHeader" android:label="DataBindingAdapterWithHeader"/>

@@ -16,30 +16,30 @@ import java.util.Objects;
  * <pre>
  * public class TestViewBindActivity extends BaseActivity {
  *
- * {@literal }@BindView(R.id.v_bg) @BindBackground("background")
- * View mV_bg;
- *
- * private ResHelper mHelper = new ResHelper();
- * private Binder<ViewBind> binder;
- *
- * {@literal } @Override
- * protected int getLayoutId() {
- * return R.layout.ac_test_view_bind;
- * }
- * {@literal } @Override
- * protected void onInit(Context context, Bundle savedInstanceState) {
- * mHelper.init(context);
- *
- * final ViewBind data = DataMediatorFactory.createData(ViewBind.class);
- * //bind data.
- * binder = DataMediatorFactory.bind(this, data);
- * }
- *
- * {@literal } @OnClick(R.id.bt_change_bg)
- * public void onClickChangeBg(View v){
- * //（drawable）
- * binder.getDataProxy().setBackground(mHelper.toggleDrawable());
- * }
+     * {@literal }@BindView(R.id.v_bg) @BindBackground("background")
+     * View mV_bg;
+     *
+     * private ResHelper mHelper = new ResHelper();
+     * private Binder<ViewBind> binder;
+     *
+     * {@literal } @Override
+     * protected int getLayoutId() {
+     * return R.layout.ac_test_view_bind;
+     * }
+     * {@literal } @Override
+     * protected void onInit(Context context, Bundle savedInstanceState) {
+     * mHelper.init(context);
+     *
+     * final ViewBind data = DataMediatorFactory.createData(ViewBind.class);
+     * //bind data.
+     * binder = DataMediatorFactory.bind(this, data);
+     * }
+     *
+     * {@literal } @OnClick(R.id.bt_change_bg)
+     * public void onClickChangeBg(View v){
+     * //（drawable）
+     * binder.getDataProxy().setBackground(mHelper.toggleDrawable());
+     * }
  *
  * }
  * </pre>
@@ -57,18 +57,19 @@ public abstract class DataBinding<T> {
     private BindMethodSupplier mBindMethodSupplier;
 
     /**
-     * <p>Note: We recommend you use {@linkplain SimpleParameterSupplier} instead.</p>
+     * <p><h2>Note: Use {@linkplain SimpleParameterSupplier} instead as this class can't handle complex property.</h2></p>
      * interface for supply parameters which is used for data-binding when we need additional parameters.
      *
      * @author heaven7
      * @since 1.4.0
      */
+    @Deprecated
     public interface ParameterSupplier {
         /**
          * get the parameters for target property from data.
          *
          * @param data     the module data which is used for this bind.
-         * @param property the property
+         * @param property the full property name
          * @return the parameters
          */
         Object[] getParameters(Object data, String property);
@@ -276,16 +277,41 @@ public abstract class DataBinding<T> {
     }
 
     private static void bindInternal(Binder<?> binder, BindInfo info, @Nullable ParameterSupplier supplier) {
-        //verify property name
-        verifyPropertyName(binder, info);
+        //verifyPropertyName(binder, info);
+
         //extra parameters
-        final Object[] extraParams = supplier == null ? null : (
+        //property name may be complex.like stu.name. and etc.
+        final Object[] extraParams ;
+        final String simpleProp;
+         // handle simple property name
+        final String fullName = info.propName;
+        if(fullName.contains(".")){
+            binder.getDataMediator().inflatePropertyChain(fullName);
+            simpleProp = fullName.substring(fullName.lastIndexOf(".") + 1);
+        }else{
+            simpleProp = fullName;
+            //verify property name will be moved to lint.
+            verifyPropertyName(binder, simpleProp);
+        }
+        //handle extra parameters
+        if(supplier == null){
+            extraParams = null;
+        }else{
+            if(supplier instanceof SimpleParameterSupplier){
+                SimpleParameterSupplier localSupplier = (SimpleParameterSupplier) supplier;
+                localSupplier.fullProperty = fullName;
+                extraParams = localSupplier.getParameters(binder.getData(), simpleProp, info.methodName, info.methodTypes);
+            }else{
+                extraParams = supplier.getParameters(binder.getData(), fullName);
+            }
+        }
+      /*  final Object[] extraParams = supplier == null ? null : (
                 (supplier instanceof SimpleParameterSupplier) ?
                         ((SimpleParameterSupplier) supplier).getParameters(binder.getData(), info.propName, info.methodName, info.methodTypes)
-                        : supplier.getParameters(binder.getData(), info.propName));
+                        : supplier.getParameters(binder.getData(), info.propName));*/
 
         //------- start handle parameters of bind method ------------
-        Object[] params = {info.propName, info.view};
+        Object[] params = { simpleProp, info.view};
         int preLength = params.length;
         //if need add internal parameter which is imported by annotation
         if (!Predicates.isEmpty(info.extraValues)) {
@@ -315,7 +341,7 @@ public abstract class DataBinding<T> {
         }
     }
 
-    private static void verifyPropertyName(Binder<?> binder, BindInfo info) {
+   private static void verifyPropertyName(Binder<?> binder, String simpleProp) {
         final Class<?> clazz = binder.getData().getClass();
 
         Field field = null;
@@ -323,7 +349,7 @@ public abstract class DataBinding<T> {
         while (curClazz != Object.class && !curClazz.getName().startsWith("java.")
                 && !curClazz.getName().startsWith("android.")) {
             try {
-                field = curClazz.getDeclaredField(info.propName);
+                field = curClazz.getDeclaredField(simpleProp);
                 break;
             } catch (NoSuchFieldException e) {
                 curClazz = curClazz.getSuperclass();
@@ -331,7 +357,7 @@ public abstract class DataBinding<T> {
         }
         if (field == null) {
             throw new RuntimeException(String.format("can't find property '%s' from class(%s)",
-                    info.propName, clazz.getName()));
+                    simpleProp, clazz.getName()));
         }
     }
 
@@ -339,10 +365,29 @@ public abstract class DataBinding<T> {
      * the simple parameter supplier.
      *
      * @author heaven7
-     * @see ParameterSupplier
      * @since 1.4.1
      */
     public static abstract class SimpleParameterSupplier implements ParameterSupplier {
+
+        String fullProperty;
+
+        /**
+         * get the full property name .
+         * @return the full property name.
+         * @since 1.4.4
+         */
+        public final String getFullProperty() {
+            return fullProperty;
+        }
+
+        /**
+         * get the property depth
+         * @return the depth of full property. start from 0.
+         * @since 1.4.4
+         */
+        public final int getDepth() {
+            return fullProperty.split("\\.").length - 1;
+        }
 
         @Override
         public Object[] getParameters(Object data, String property) {
@@ -353,7 +398,7 @@ public abstract class DataBinding<T> {
          * get additional parameters by target data module , property,binder method name and method parameterTypes.
          *
          * @param data        the data module
-         * @param property    the property
+         * @param property    the simple property
          * @param method      the method name of Binder.
          * @param methodTypes the method parameter types of Binder.
          * @return the additional parameters. null means default parameters.

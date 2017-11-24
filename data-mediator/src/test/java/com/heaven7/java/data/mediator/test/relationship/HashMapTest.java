@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.test.relationship;
 
-import com.heaven7.java.data.mediator.test.copy.GoodStudent;
 import com.heaven7.java.data.mediator.test.copy.Student;
 import org.junit.Test;
 

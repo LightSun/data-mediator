@@ -3,6 +3,8 @@ package com.heaven7.data.mediator.data_binding_test;
 import com.heaven7.data.mediator.data_binding_test.sample.TestBindArrayPropertyToOneView;
 import com.heaven7.data.mediator.data_binding_test.sample.TestBindArrayPropertyToOneView2;
 import com.heaven7.data.mediator.data_binding_test.sample.TestImageViewBindActivity;
+import com.heaven7.data.mediator.data_binding_test.sample.TestRootViewBindActivity;
+import com.heaven7.data.mediator.data_binding_test.sample.TestRootViewBindActivity2;
 import com.heaven7.data.mediator.data_binding_test.sample.TestSelfBinderActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.TestSelfBinderFactory;
 import com.heaven7.data.mediator.data_binding_test.sample.TestViewBindActivity;
@@ -28,5 +30,8 @@ public class EntryActivity extends AbsMainActivity {
 
         list.add(new ActivityInfo(TestDatabindingAdapter.class));
         list.add(new ActivityInfo(DataBindingAdapterWithHeader.class));
+
+        list.add(new ActivityInfo(TestRootViewBindActivity.class));
+        list.add(new ActivityInfo(TestRootViewBindActivity2.class));
     }
 }
