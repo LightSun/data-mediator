@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.base.anno.Deprecated;
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.compiler.util.MockTypeMirror;
@@ -55,21 +56,32 @@ public class FieldData {
     public static final int FLAG_EXPOSE_DESERIALIZE_FALSE = 0x00000400;//1024
 
     /**
-     * hashCode and equals.
-     */
-    public static final int FLAG_HASH_EQUALS             = 0x00000800; //2048
-
-    /**
      * a scope flag of gson serialize/deserialize json for field.
      * Note this only effect the auto generate TypeAdapter.
      * @since 1.2.0
      */
-    public static final int FLAG_GSON_PERSISTENCE         = 0x00001000;
+    public static final int FLAG_GSON_PERSISTENCE         = 0x00000800;
+    /**
+     * flag of hashCode.
+     *  @since 1.4.4
+     */
+    public static final int FLAG_HASH                     = 0x00001000;
+    /** flag of equals
+     * @since 1.4.4
+     * */
+    public static final int FLAG_EQUALS                   = 0x00002000;
+    /**
+     * hashCode and equals.
+     */
+    @Deprecated("in 1.4.4")
+    @java.lang.Deprecated
+    public static final int FLAG_HASH_EQUALS        = FLAG_HASH |  FLAG_EQUALS ;
 
     /** the common flags */
     public static final int FLAGS_MAIN = FLAG_COPY | FLAG_TO_STRING | FLAG_PARCELABLE | FLAG_GSON_PERSISTENCE;
-    public static final int FLAGS_MAIN_2 = FLAGS_MAIN | FLAG_HASH_EQUALS;
+    //public static final int FLAGS_MAIN_2 = FLAGS_MAIN | FLAG_HASH | FLAG_EQUALS ;
 
+    public static final int FLAGS_MAIN_3 = FLAGS_MAIN | FLAG_EQUALS;
 
     //========================================================================================
     /** only used in compile lib */
@@ -79,7 +91,7 @@ public class FieldData {
 
     private String propertyName;
     private String serializeName;
-    private int flags = FLAGS_MAIN_2;  //default to main flags
+    private int flags = FLAGS_MAIN_3;  //default. FLAGS_MAIN_2 -> FLAGS_MAIN_3(1.4.4)
     private int complexType;
     private TypeCompat mTypeCompat = sTC_STRING; //default to string
 

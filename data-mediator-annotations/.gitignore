@@ -3,7 +3,7 @@
 *.log
 *.ctxt
 .mtj.tmp/
-*.jar
+#*.jar
 *.war
 *.ear
 *.zip

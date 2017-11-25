@@ -146,17 +146,27 @@ public final class FieldFlags {
 
 
     /**
-     *  a scope flag of hashCode and equals method
-     * @since 1.1.1
-     */
-    public static final int FLAG_HASH_EQUALS              = 0x00000800; //2048
-    /**
-     * a scope flag of gson serialize/deserialize json for field.
+     * a scope flag of gson serialize/deserialize json for field in generate JsonAdapter.
      * <p><h3>Note this only effect the auto generate TypeAdapter.</h3></p>
      * <p><h3>Note if this has effect on json, in priority, this is better than the Gson.setVersion(xxx). </h3></p>
      * @since 1.2.0
      */
-    public static final int FLAG_GSON_PERSISTENCE         = 0x00001000;
+    public static final int FLAG_GSON_PERSISTENCE         = 0x00000800;//2048
+    /**
+     * flag of hashCode. indicate the filed will participate in 'hashCode' method
+     * @since 1.4.4
+     */
+    public static final int FLAG_HASH                     = 0x00001000;
+    /** flag of equals. indicate the filed will participate in 'equals' method.
+     * @since 1.4.4
+     * */
+    public static final int FLAG_EQUALS                   = 0x00002000;
+    /**
+     *  a scope flag of hashCode and equals method
+     * @since 1.1.1
+     */
+    @Deprecated
+    public static final int FLAG_HASH_EQUALS              = FLAG_HASH | FLAG_EQUALS;
 
     /**
      * a complex flags. which have multi flags. .
@@ -166,11 +176,13 @@ public final class FieldFlags {
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
-     * @see #FLAG_HASH_EQUALS
+     * @see #FLAG_HASH
+     * @see #FLAG_EQUALS
      * @see #FLAG_GSON_PERSISTENCE
      */
     public static final int FLAGS_ALL_SCOPES = FLAG_SNAP | FLAG_RESET | FLAG_SHARE
-            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING | FLAG_HASH_EQUALS | FLAG_GSON_PERSISTENCE;
+            | FLAG_COPY | FLAG_PARCELABLE | FLAG_TO_STRING
+            | FLAG_HASH | FLAG_EQUALS | FLAG_GSON_PERSISTENCE;
 
     /**
      * a main complex flags . which have multi flags
@@ -193,13 +205,27 @@ public final class FieldFlags {
     public static final int FLAGS_NO_EXPOSE = FLAG_EXPOSE_DEFAULT | FLAG_EXPOSE_SERIALIZE_FALSE | FLAG_EXPOSE_DESERIALIZE_FALSE;
 
     /**
-     * a complex flags. which have multi flags. relative to {@linkplain #FLAGS_MAIN_SCOPES} add {@linkplain #FLAG_HASH_EQUALS}.
+     * a complex flags. which have multi flags. relative to {@linkplain #FLAGS_MAIN_SCOPES} , {@linkplain #FLAG_EQUALS}
+     * add {@linkplain #FLAG_HASH}.
      * @see #FLAG_COPY
      * @see #FLAG_PARCELABLE
      * @see #FLAG_TO_STRING
      * @see #FLAG_GSON_PERSISTENCE
-     * @see #FLAG_HASH_EQUALS
+     * @see #FLAG_HASH
+     * @see #FLAG_EQUALS
      * @since 1.1.1
      */
-    public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH_EQUALS;
+    public static final int FLAGS_MAIN_SCOPES_2 = FLAGS_MAIN_SCOPES | FLAG_HASH | FLAG_EQUALS;
+
+    /**
+     * a complex flags . which have multi flags. relative to {@linkplain #FLAGS_MAIN_SCOPES}.
+     * add {@linkplain #FLAG_EQUALS}. without {@linkplain #FLAG_HASH}
+     * @see #FLAG_COPY
+     * @see #FLAG_PARCELABLE
+     * @see #FLAG_TO_STRING
+     * @see #FLAG_GSON_PERSISTENCE
+     * @see #FLAG_EQUALS
+     * @since 1.4.4
+     */
+    public static final int FLAGS_MAIN_SCOPES_3 = FLAGS_MAIN_SCOPES | FLAG_EQUALS;
 }

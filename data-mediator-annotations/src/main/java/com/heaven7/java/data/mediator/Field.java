@@ -80,10 +80,10 @@ public @interface Field {
 
 	/**
 	 * define the flags for the field. more to see in wiki or demo.
-	 * default is  FieldFlags.FLAGS_MAIN_SCOPES_2
+	 * default is  {@linkplain FieldFlags#FLAGS_MAIN_SCOPES_3}.
 	 * @return the flags.
 	 */
-	int flags() default 6352;
+	int flags() default FieldFlags.FLAGS_MAIN_SCOPES_3;
 
 	/**
 	 * define the {@literal @}Since annotation for gson.

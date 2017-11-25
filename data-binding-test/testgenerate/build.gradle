@@ -41,9 +41,9 @@ dependencies {
    // androidTestImplementation 'com.android.support.test:runner:1.0.1'
    // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.1'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4-beta5'
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.2'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
     annotationProcessor 'com.squareup:javapoet:1.9.0'
-    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.3'
+    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.4'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
 }

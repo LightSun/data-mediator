@@ -41,7 +41,8 @@ public class TypeAdapterGenerator {
         for(FieldData fd : fields){
             //gson persistence json.
             if(Util.hasFlag(fd.getFlags(), FLAG_GSON_PERSISTENCE)) {
-                constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))", cn_gson_prop, cn_inter, fd.getFieldConstantName(),
+                constructor.addStatement(" this.addGsonProperty($T.of($T.$N, $S, $L, $L))",
+                        cn_gson_prop, cn_inter, fd.getFieldConstantName(),
                         getSerializeName(fd), getSinceValue(fd), getUntilValue(fd));
             }
         }

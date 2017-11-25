@@ -93,7 +93,7 @@ import java.util.regex.Pattern;
         return true;
     }
 
-    //@BindXXX("stus[0].name")  @BindXXX("stu.name") // no ?
+    //@BindXXX("stus[0].name")  @BindXXX("stu.name")
     private static TreeInfo parse(String propertyChain){
         if(!REG_BIND.matcher(propertyChain).find()){
             throw new IllegalArgumentException("property chain must match the Data-Mediator binding specification. like xxx.xxx/xxx.xxx.xxx[1]");

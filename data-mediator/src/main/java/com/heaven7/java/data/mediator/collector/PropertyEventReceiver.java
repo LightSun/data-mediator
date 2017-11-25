@@ -67,6 +67,10 @@ public abstract class PropertyEventReceiver extends PropertyCallbackContext
 
     }
 
+    /**
+     * get the sparse array dispatcher .
+     * @return the sparse array dispatcher ,or null if not need.
+     */
     public MapPropertyDispatcher<Integer> getSparseArrayDispatcher(){
         return null;
     }

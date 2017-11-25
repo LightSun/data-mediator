@@ -11,16 +11,14 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.io.Serializable;
 
-import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
-
 /**
  * Created by heaven7 on 2017/9/12 0012.
  */
 
 @Fields({
-        @Field(propName = "age" , type = int.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "name" ,  flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "id" , type = long.class, flags = FLAGS_ALL_SCOPES),
+        @Field(propName = "age" , type = int.class),
+        @Field(propName = "name" ),
+        @Field(propName = "id" , type = long.class),
 })
 public interface Student extends Serializable, Parcelable, ISelectable, DataPools.Poolable {
 

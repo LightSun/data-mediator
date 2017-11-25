@@ -24,12 +24,15 @@ public class HashEqualsGenerator {
 
     private static boolean sTemp_defined = false;
 
-    public static void generateForImpl(TypeSpec.Builder typeBuilder, Collection<FieldData> fields, Collection<FieldData> superFields,
+    public static void generateForImpl(TypeSpec.Builder typeBuilder, Collection<FieldData> fields,
+                                       Collection<FieldData> superFields,
                                        TargetClassInfo info, boolean hasSuperClass){
-        List<FieldData> fieldDataSet = filter(fields);
-        List<FieldData> superSet = filter(superFields);
-        generateHashCode(typeBuilder, fieldDataSet, superSet, hasSuperClass);
-        generateEquals(typeBuilder, fieldDataSet, superSet, info, hasSuperClass);
+        final List<FieldData> hash_current = filterHash(fields);
+        final List<FieldData> hash_super = filterHash(superFields);
+        final List<FieldData> equals_current = filterEquals(fields);
+        final List<FieldData> equals_super = filterEquals(superFields);
+        generateHashCode(typeBuilder, hash_current, hash_super, hasSuperClass);
+        generateEquals(typeBuilder, equals_current, equals_super, info, hasSuperClass);
     }
 
     private static void generateHashCode(TypeSpec.Builder typeBuilder, Collection<FieldData> fields,
@@ -93,10 +96,19 @@ public class HashEqualsGenerator {
         typeBuilder.addMethod(equalsBuilder.build());
     }
 
-    private static List<FieldData> filter(Collection<FieldData> fds){
+    private static List<FieldData> filterHash(Collection<FieldData> fds){
         List<FieldData> set = new ArrayList<>();
         for (FieldData fd : fds){
-            if(Util.hasFlag(fd.getFlags(), FieldData.FLAG_HASH_EQUALS)) {
+            if(Util.hasFlag(fd.getFlags(), FieldData.FLAG_HASH)) {
+                set.add(fd);
+            }
+        }
+        return set;
+    }
+    private static List<FieldData> filterEquals(Collection<FieldData> fds){
+        List<FieldData> set = new ArrayList<>();
+        for (FieldData fd : fds){
+            if(Util.hasFlag(fd.getFlags(), FieldData.FLAG_EQUALS)) {
                 set.add(fd);
             }
         }
