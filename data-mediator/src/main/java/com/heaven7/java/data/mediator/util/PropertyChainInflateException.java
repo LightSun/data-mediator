@@ -1,7 +1,7 @@
 package com.heaven7.java.data.mediator.util;
 
 /**
- * indicate the property chain is unexpected. so throws this exception
+ * indicate inflate the property chain failed as property chain is incorrect.
  * @author heaven7
  * @since 1.4.4
  */

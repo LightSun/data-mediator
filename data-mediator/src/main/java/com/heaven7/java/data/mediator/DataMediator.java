@@ -131,7 +131,7 @@ public final class DataMediator<T> {
     }
 
     /**
-     * inflate the property chain as callback .
+     * inflate the property chain as callback.
      * @param propertyChain the property chain
      * @since 1.4.4
      */

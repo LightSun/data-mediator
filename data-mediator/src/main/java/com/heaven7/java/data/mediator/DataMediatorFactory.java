@@ -20,7 +20,6 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 /**
  * Created by heaven7 on 2017/9/14 0014.
@@ -161,11 +160,12 @@ public final class DataMediatorFactory {
 
     /**
      * create data mediator for target 'data-impl'. and attach inflated callbacks to the DataMediator if need.
-     * @param root the root DataMediator for target data
+     * @param root the root DataMediator for target data. or null if no need. see {@linkplain DataMediator#inflatePropertyChain(String)}
      * @param t the target data-impl
      * @param <T> the module data type.
      * @return the {@linkplain DataMediator} of target object.
      */
+    @SuppressWarnings("unchecked")
     public static <T> DataMediator<T> createDataMediator(DataMediator<?> root, T t){
         DataMediator<T> target ;
         if(t instanceof BaseMediator){

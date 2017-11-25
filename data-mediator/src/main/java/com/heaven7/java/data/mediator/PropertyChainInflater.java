@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * the property chain inflater . which help we handle property chain.
+ * the property chain inflater . which help we handle property chain, like 'viewBindList[0].enable'
  * @param <T> the root module type
  * @author heaven7
  * @since 1.4.4
@@ -51,10 +51,16 @@ import java.util.regex.Pattern;
     private final WeakHashMap<Object, List<DataMediatorCallback>> mCallbacks;
     private final DataMediator<T> mRoot;
 
-    public PropertyChainInflater(DataMediator<T> root) {
+    PropertyChainInflater(DataMediator<T> root) {
         this.mRoot = root;
         this.mCallbacks = new WeakHashMap<>();
     }
+
+    /**
+     * get inflate callbacks for target data
+     * @param data the target data
+     * @return the inflate callbacks for target data.
+     */
     public List<DataMediatorCallback> getInflateCallbacks(Object data) {
         List<DataMediatorCallback> callbacks = mCallbacks.get(data);
         return callbacks == null ? Collections.<DataMediatorCallback>emptyList() : callbacks;

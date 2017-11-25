@@ -57,7 +57,8 @@ public abstract class DataBinding<T> {
     private BindMethodSupplier mBindMethodSupplier;
 
     /**
-     * <p><h2>Note: Use {@linkplain SimpleParameterSupplier} instead as this class can't handle complex property.</h2></p>
+     * <p><h2>Note: Use {@linkplain SimpleParameterSupplier} instead as this class
+     * can't handle complex property. and this will be removed in 2.x.</h2></p>
      * interface for supply parameters which is used for data-binding when we need additional parameters.
      *
      * @author heaven7
@@ -376,7 +377,7 @@ public abstract class DataBinding<T> {
          * @return the full property name.
          * @since 1.4.4
          */
-        public final String getFullProperty() {
+        public String getFullProperty() {
             return fullProperty;
         }
 
@@ -385,7 +386,7 @@ public abstract class DataBinding<T> {
          * @return the depth of full property. start from 0.
          * @since 1.4.4
          */
-        public final int getDepth() {
+        public int getDepth() {
             return fullProperty.split("\\.").length - 1;
         }
 

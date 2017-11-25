@@ -3,13 +3,14 @@ package com.heaven7.data.mediator.data_binding_test;
 import com.heaven7.data.mediator.data_binding_test.sample.TestBindArrayPropertyToOneView;
 import com.heaven7.data.mediator.data_binding_test.sample.TestBindArrayPropertyToOneView2;
 import com.heaven7.data.mediator.data_binding_test.sample.TestImageViewBindActivity;
-import com.heaven7.data.mediator.data_binding_test.sample.TestRootViewBindActivity;
-import com.heaven7.data.mediator.data_binding_test.sample.TestRootViewBindActivity2;
 import com.heaven7.data.mediator.data_binding_test.sample.TestSelfBinderActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.TestSelfBinderFactory;
 import com.heaven7.data.mediator.data_binding_test.sample.TestViewBindActivity;
 import com.heaven7.data.mediator.data_binding_test.sample.adapter.DataBindingAdapterWithHeader;
 import com.heaven7.data.mediator.data_binding_test.sample.adapter.TestDatabindingAdapter;
+import com.heaven7.data.mediator.data_binding_test.sample.propertychain.ListPropertyChainBindActivity;
+import com.heaven7.data.mediator.data_binding_test.sample.propertychain.PendingPropertyChainActivity;
+import com.heaven7.data.mediator.data_binding_test.sample.propertychain.SimplePropertyChainActivity;
 
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class EntryActivity extends AbsMainActivity {
         list.add(new ActivityInfo(TestDatabindingAdapter.class));
         list.add(new ActivityInfo(DataBindingAdapterWithHeader.class));
 
-        list.add(new ActivityInfo(TestRootViewBindActivity.class));
-        list.add(new ActivityInfo(TestRootViewBindActivity2.class));
+        list.add(new ActivityInfo(SimplePropertyChainActivity.class));
+        list.add(new ActivityInfo(ListPropertyChainBindActivity.class));
+        list.add(new ActivityInfo(PendingPropertyChainActivity.class));
     }
 }

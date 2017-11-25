@@ -1,4 +1,4 @@
-package com.heaven7.data.mediator.data_binding_test.sample;
+package com.heaven7.data.mediator.data_binding_test.sample.propertychain;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import com.heaven7.data.mediator.data_binding_test.R;
 import com.heaven7.data.mediator.data_binding_test.module.RootModule;
 import com.heaven7.data.mediator.data_binding_test.module.ViewBind;
+import com.heaven7.data.mediator.data_binding_test.sample.BaseActivity;
 import com.heaven7.data.mediator.data_binding_test.util.ResHelper;
 import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediator;
@@ -17,8 +18,6 @@ import com.heaven7.java.data.mediator.bind.BindBackgroundRes;
 import com.heaven7.java.data.mediator.bind.BindEnable;
 import com.heaven7.java.data.mediator.bind.BindVisibility;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -26,22 +25,22 @@ import butterknife.OnClick;
  * test data-binding of view: setBackground, setBackgroundColor,setBackgroundResource.setEnable . etc.
  * Created by heaven7 on 2017/9/24.
  */
-public class TestRootViewBindActivity2 extends BaseActivity {
+public class SimplePropertyChainActivity extends BaseActivity {
 
-    //'viewBindList' is a property name of RootModule.
-    @BindView(R.id.v_enable)@BindEnable("viewBindList[0].enable")
+    //'viewBind' is a property name of RootModule.
+    @BindView(R.id.v_enable)@BindEnable("viewBind.enable")
     View mV_enable;
 
-    @BindView(R.id.v_bg) @BindBackground("viewBindList[0].background")
+    @BindView(R.id.v_bg) @BindBackground("viewBind.background")
     View mV_bg;
 
-    @BindView(R.id.v_bg_color)@BindBackgroundColor("viewBindList[0].backgroundColor")
+    @BindView(R.id.v_bg_color)@BindBackgroundColor("viewBind.backgroundColor")
     View mV_bg_color;
 
-    @BindView(R.id.v_bg_res)@BindBackgroundRes("viewBindList[0].backgroundRes")
+    @BindView(R.id.v_bg_res)@BindBackgroundRes("viewBind.backgroundRes")
     View mV_bg_res;
 
-    @BindView(R.id.v_visibility)@BindVisibility("viewBindList[0].visible")
+    @BindView(R.id.v_visibility)@BindVisibility("viewBind.visible")
     View mV_visibility;
 
     private ResHelper mHelper = new ResHelper();
@@ -57,13 +56,12 @@ public class TestRootViewBindActivity2 extends BaseActivity {
         mHelper.init(context);
 
         RootModule rootModule = DataMediatorFactory.createData(RootModule.class);
-        rootModule.setViewBindList(new ArrayList<ViewBind>());
-        rootModule.getViewBindList().add(DataMediatorFactory.createData(ViewBind.class));
+        rootModule.setViewBind(DataMediatorFactory.createData(ViewBind.class));
 
         //bind data.
         rootBinder = DataMediatorFactory.bind(this, rootModule);
         dm_viewBind = DataMediatorFactory.createDataMediator(
-                rootBinder.getDataMediator(), rootModule.getViewBindList().get(0));
+                rootBinder.getDataMediator(), rootModule.getViewBind());
     }
 
     @OnClick(R.id.bt_change_bg)

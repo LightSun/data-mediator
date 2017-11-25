@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.collector;
 
+import com.heaven7.java.base.anno.Hide;
 import com.heaven7.java.data.mediator.Property;
 
 /**
@@ -7,6 +8,7 @@ import com.heaven7.java.data.mediator.Property;
  * @author heaven7
  * @since 1.4.4
  */
+@Hide
 public final class PropertyEvent {
 
     /** the property event type: change event */
@@ -56,12 +58,12 @@ public final class PropertyEvent {
      */
     public static final byte TYPE_SPARSE_PROPERTY_CLEAR    = 10;
 
-    final byte type;
-    final Object original;
-    final Object current;
-    final Property prop;
-    final Object oldValue;
-    final Object newValue;
+    private final byte type;
+    private final Object original;
+    private final Object current;
+    private final Property prop;
+    private final Object oldValue;
+    private final Object newValue;
 
     private int index;
     private Object key;
