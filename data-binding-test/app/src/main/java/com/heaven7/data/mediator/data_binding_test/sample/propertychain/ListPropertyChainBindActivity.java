@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
+ * 测试含有list属性的 属性链的绑定
  * test data-binding of view: setBackground, setBackgroundColor,setBackgroundResource.setEnable . etc.
  * Created by heaven7 on 2017/9/24.
  */

@@ -23,6 +23,7 @@ import butterknife.OnClick;
 
 /**
  * test data-binding of view: setBackground, setBackgroundColor,setBackgroundResource.setEnable . etc.
+ * 测试属性链的绑定。
  * Created by heaven7 on 2017/9/24.
  */
 public class SimplePropertyChainActivity extends BaseActivity {
