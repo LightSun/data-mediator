@@ -17,6 +17,7 @@
  */
 package com.heaven7.java.data.mediator.internal;
 
+import com.heaven7.java.base.anno.Hide;
 import com.heaven7.java.base.util.SparseArray;
 
 /**
@@ -24,6 +25,7 @@ import com.heaven7.java.base.util.SparseArray;
  * Created by heaven7 on 2017/10/4.
  * @since 1.1.3
  */
+@Hide
 public interface ParcelDelegate {
 
     /**

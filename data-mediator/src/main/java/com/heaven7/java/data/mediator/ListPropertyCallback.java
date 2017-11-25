@@ -21,6 +21,7 @@ package com.heaven7.java.data.mediator;
  * the list property callback.
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
+ * @see BaseListPropertyCallback
  */
 public interface ListPropertyCallback<T> extends PropertyCallback<T>{
 

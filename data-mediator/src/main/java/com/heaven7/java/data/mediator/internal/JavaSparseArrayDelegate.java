@@ -17,15 +17,15 @@
  */
 package com.heaven7.java.data.mediator.internal;
 
+import com.heaven7.java.base.anno.Hide;
 import com.heaven7.java.base.util.SparseArray;
-
-import java.util.List;
 
 /**
  * the sparse array on java .
  * @param <V> the value type.
  * @author heaven7
  */
+@Hide
 /*public*/ class JavaSparseArrayDelegate<V> implements SparseArrayDelegate<V> {
 
     private final SparseArray<V> mMap;

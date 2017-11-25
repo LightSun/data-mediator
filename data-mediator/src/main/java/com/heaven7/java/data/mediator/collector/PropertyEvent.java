@@ -7,7 +7,7 @@ import com.heaven7.java.data.mediator.Property;
  * @author heaven7
  * @since 1.4.4
  */
-/*public*/ class PropertyEvent {
+public final class PropertyEvent {
 
     /** the property event type: change event */
     public static final byte TYPE_PROPERTY_CHANGE = 1;

@@ -20,6 +20,7 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.collector.*;
+import com.heaven7.java.data.mediator.internal.CollectorManagerImpl;
 import com.heaven7.java.data.mediator.util.DefaultEqualsComparator;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
 

@@ -5,12 +5,12 @@ package com.heaven7.java.data.mediator.util;
  * @author heaven7
  * @since 1.4.4
  */
-public class PropertyChainException extends RuntimeException {
+public class PropertyChainInflateException extends RuntimeException {
 
-    public PropertyChainException(String message, Throwable cause) {
+    public PropertyChainInflateException(String message, Throwable cause) {
         super(message, cause);
     }
-    public PropertyChainException(String message) {
+    public PropertyChainInflateException(String message) {
         super(message);
     }
 }

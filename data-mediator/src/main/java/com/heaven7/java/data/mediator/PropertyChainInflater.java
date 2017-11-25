@@ -20,7 +20,7 @@ package com.heaven7.java.data.mediator;
 import com.heaven7.java.base.util.SparseArray;
 import com.heaven7.java.data.mediator.collector.MapPropertyDispatcher;
 import com.heaven7.java.data.mediator.collector.PropertyEventReceiver;
-import com.heaven7.java.data.mediator.util.PropertyChainException;
+import com.heaven7.java.data.mediator.util.PropertyChainInflateException;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
@@ -32,13 +32,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * the data mediator tree . which help we handle property chain.
+ * the property chain inflater . which help we handle property chain.
  * @param <T> the root module type
  * @author heaven7
  * @since 1.4.4
  */
 //Property-chain, depth, key(for list and SparseArray)
-/*public*/ class DataMediatorTree<T> {
+/*public*/ class PropertyChainInflater<T> {
     private static final String PREFIX_PROP = "PROP_";
     private static final Pattern REG_BIND = Pattern.compile("^[A-Za-z_$]+[A-Za-z_$\\d]+([\\[]\\d+[]])??" +
             "([\\.][A-Za-z_$]+[A-Za-z_$\\d]+([\\[]\\d+[]])??$)");
@@ -51,7 +51,7 @@ import java.util.regex.Pattern;
     private final WeakHashMap<Object, List<DataMediatorCallback>> mCallbacks;
     private final DataMediator<T> mRoot;
 
-    public DataMediatorTree(DataMediator<T> root) {
+    public PropertyChainInflater(DataMediator<T> root) {
         this.mRoot = root;
         this.mCallbacks = new WeakHashMap<>();
     }
@@ -59,8 +59,15 @@ import java.util.regex.Pattern;
         List<DataMediatorCallback> callbacks = mCallbacks.get(data);
         return callbacks == null ? Collections.<DataMediatorCallback>emptyList() : callbacks;
     }
+
+    /**
+     * inflate the property chain
+     * @param propertyChain the target property chain
+     * @return true if inflate success. false means inflate failed.
+     * @throws PropertyChainInflateException if some problems occurs.
+     */
     @SuppressWarnings("unchecked")
-    public void inflatePropertyChain(String propertyChain) throws PropertyChainException{
+    public boolean inflatePropertyChain(String propertyChain) throws PropertyChainInflateException {
         TreeInfo treeInfo = sCache.get(propertyChain);
         if(treeInfo == null){
             treeInfo = parse(propertyChain);
@@ -68,7 +75,7 @@ import java.util.regex.Pattern;
         }
         Object data = treeInfo.resolveData(mRoot.getData());
         if(data == null){
-            throw new PropertyChainException("can't inflate data. full expre = " + treeInfo.expression);
+            return false;
         }
         List<DataMediatorCallback> list = mCallbacks.get(data);
         if(list == null){
@@ -77,6 +84,7 @@ import java.util.regex.Pattern;
         }
         list.add(new InternalCallback(treeInfo.lastNode.prop,
                 mRoot, treeInfo.depth));
+        return true;
     }
 
     //@BindXXX("stus[0].name")  @BindXXX("stu.name") // no ?
@@ -155,6 +163,13 @@ import java.util.regex.Pattern;
             this.prop = prop;
             this.key = key;
         }
+
+        /**
+         * resolve the data. if resolve failed . return null. or throws exception.
+         * @param expression the full expression
+         * @param parent the parent data which to find property value.
+         * @return the data . if resolve success. null means resolve failed.
+         */
         Object resolveData(String expression, Object parent) {
             //no next
             if(next == null){
@@ -170,32 +185,50 @@ import java.util.regex.Pattern;
                 String getPrefix = "get";
                 switch (realProp.getComplexType()){
                     case FieldFlags.COMPLEX_ARRAY: {
-                        Object fieldValue = getFieldValue(expression, parent, getPrefix, true);
-                        Object target = Array.get(fieldValue, getKeyAsInt(expression));
+                        final Object array = getPropertyValue(expression, parent, getPrefix, true);
+                        final int index = getKeyAsInt(expression);
+                        if(array == null || index >= Array.getLength(array)){
+                            return null; //failed.
+                        }
+                        Object target = Array.get(array, index);
                         return next.resolveData(expression, target);
                     }
 
                     case FieldFlags.COMPLEX_LIST: {
-                        List list = (List) getFieldValue(expression, parent, getPrefix, true);
-                        return next.resolveData(expression, list.get(getKeyAsInt(expression)));
+                        final List list = (List) getPropertyValue(expression, parent, getPrefix, true);
+                        final int index = getKeyAsInt(expression);
+                        if(list == null || index >= list.size()){
+                            return null; //failed.
+                        }
+                        return next.resolveData(expression, list.get(index));
                     }
 
                     case FieldFlags.COMPLEX_SPARSE_ARRAY:
-                        SparseArray sa = (SparseArray) getFieldValue(expression, parent, getPrefix, true);
-                        return next.resolveData(expression, sa.get(getKeyAsInt(expression)));
+                        final SparseArray sa = (SparseArray) getPropertyValue(expression, parent,
+                                getPrefix, true);
+                        final int key = getKeyAsInt(expression);
+                        Object value;
+                        if(sa == null || ( value = sa.get(key)) == null){
+                            return null; // failed.
+                        }
+                        return next.resolveData(expression, value);
 
-                    default:
-                        getPrefix = realProp.getType()== boolean.class ? "is" : "get";
-                        Object fieldValue = getFieldValue(expression, parent, getPrefix, false);
-                        return next.resolveData(expression, fieldValue);
+                    default: {
+                        getPrefix = realProp.getType() == boolean.class ? "is" : "get";
+                        Object propVal = getPropertyValue(expression, parent, getPrefix, false);
+                        if(propVal == null){
+                            return null;//failed
+                        }
+                        return next.resolveData(expression, propVal);
+                    }
                 }
             } catch (Exception e) {
-                throw new PropertyChainException("can't resolve property chain. "
+                throw new PropertyChainInflateException("can't resolve property chain. "
                         + "root = " + parent + "full expression = " + expression + " ,prop = " + prop, e);
             }
         }
 
-        Object getFieldValue(String expression, Object parent, String getPrefix, boolean checkNullKey)
+        Object getPropertyValue(String expression, Object parent, String getPrefix, boolean checkNullKey)
                 throws NoSuchMethodException, IllegalAccessException, InvocationTargetException{
             if(checkNullKey){
                 throwIfNullKey(expression);
@@ -208,7 +241,7 @@ import java.util.regex.Pattern;
 
         void throwIfNullKey(String expression){
             if(key == null){
-                throw new PropertyChainException("type is array but not assign index. like 'name[0}'. " +
+                throw new PropertyChainInflateException("type is array but not assign index. like 'name[0}'. " +
                         "full expression = " + expression + " ,prop = " + prop);
             }
         }
@@ -216,7 +249,7 @@ import java.util.regex.Pattern;
             try {
                 return (Integer) key;
             }catch (Exception e){
-                throw new PropertyChainException("key must be int(value is " + key+ ")."
+                throw new PropertyChainInflateException("key must be int(value is " + key+ ")."
                         + "full expression = " + expression + " ,prop = " + prop , e);
             }
         }

@@ -17,6 +17,7 @@
  */
 package com.heaven7.java.data.mediator.internal;
 
+import com.heaven7.java.base.anno.Hide;
 import com.heaven7.java.data.mediator.Property;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import java.util.HashMap;
  * @author heaven7
  * @since 1.2.1
  */
+@Hide
 public final class SharedProperties {
     private static final HashMap<String, Property> sCache;
 

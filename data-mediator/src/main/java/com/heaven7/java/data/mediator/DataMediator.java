@@ -18,12 +18,12 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.Nullable;
-import com.heaven7.java.data.mediator.collector.CollectorManagerImpl;
+import com.heaven7.java.base.util.Throwables;
 import com.heaven7.java.data.mediator.collector.PropertyEventReceiver;
 import com.heaven7.java.data.mediator.util.EqualsComparator;
+import com.heaven7.java.data.mediator.collector.CollectorManager;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * the data mediator .wrap a base mediator and module data.
@@ -34,7 +34,8 @@ public final class DataMediator<T> {
 
     private final BaseMediator<T> mediator;
 
-    private DataMediatorTree<T> mTree;
+    private PropertyChainInflater<T> mInflater;
+    private List<String> mFailedPropChains;
 
     /**
      * create data mediator
@@ -87,8 +88,8 @@ public final class DataMediator<T> {
      *      dm.endBatchedDispatches(receiver);
      * </pre>
      * </p>
-     * @param collectorFlags  the flags of collector. see {@linkplain CollectorManagerImpl#FLAG_SIMPLE},
-     * {@linkplain CollectorManagerImpl#FLAG_LIST}, {@linkplain CollectorManagerImpl#FLAG_SPARSE_ARRAY}
+     * @param collectorFlags  the flags of collector. see {@linkplain CollectorManager#FLAG_SIMPLE},
+     * {@linkplain CollectorManager#FLAG_LIST}, {@linkplain CollectorManager#FLAG_SPARSE_ARRAY}
      * @since 1.4.4
      */
     public void beginBatchedDispatches(int collectorFlags){
@@ -135,12 +136,44 @@ public final class DataMediator<T> {
      * @since 1.4.4
      */
     public void inflatePropertyChain(String propertyChain){
-         if(mTree == null){
-             mTree = new DataMediatorTree<T>(this);
+        Throwables.checkNull(propertyChain);
+         if(!propertyChain.contains(".")){
+             throw new IllegalArgumentException("only support property chain. like 'viewBind.background'.");
          }
-        mTree.inflatePropertyChain(propertyChain);
+         if(!inflatePropertyChain0(propertyChain)){
+             if(mFailedPropChains == null){
+                 mFailedPropChains = new ArrayList<>();
+             }
+             mFailedPropChains.add(propertyChain);
+         }
     }
 
+    /**
+     * indicate should reinflate property chain or not, which was inflate failed previous.
+     * @return true if should reinflate. false otherwise.
+     * @since 1.4.4
+     */
+    public boolean shouldReinflatePropertyChains(){
+        return mFailedPropChains != null && !mFailedPropChains.isEmpty();
+    }
+
+    /**
+     * reinflate the property chains if previous inflate failed.
+     * @return true if no need inflate or reinflate all left property chains success.
+     * @since 1.4.4
+     */
+    public boolean reinflatePropertyChains(){
+        if(mFailedPropChains != null && !mFailedPropChains.isEmpty()){
+            final Iterator<String> it = mFailedPropChains.iterator();
+            do {
+                if(inflatePropertyChain0(it.next())){
+                    it.remove();
+                }
+            }while (it.hasNext());
+            return mFailedPropChains.isEmpty();
+        }
+        return true;
+    }
     /**
      * get the inflate callbacks of target child data.
      * @param data the child data.
@@ -148,10 +181,11 @@ public final class DataMediator<T> {
      * @since 1.4.4
      */
     public List<DataMediatorCallback> getInflateCallbacks(Object data){
-        if(mTree == null){
+        Throwables.checkNull(data);
+        if(mInflater == null){
             return Collections.emptyList();
         }
-        return mTree.getInflateCallbacks(data);
+        return mInflater.getInflateCallbacks(data);
     }
 
     /**
@@ -252,6 +286,7 @@ public final class DataMediator<T> {
         callback.onPrepareActionMode(mode);
         return mode;
     }
+
     //=======================================================
     /**
      * add a data mediator callback
@@ -260,7 +295,6 @@ public final class DataMediator<T> {
     public void addDataMediatorCallback(DataMediatorCallback<? super T> callback){
         mediator.addCallback(callback);
     }
-
     /**
      * remove data mediator callback
      * @param callback the data mediator callback
@@ -276,5 +310,13 @@ public final class DataMediator<T> {
         mediator.removeCallbacks();
     }
 
+
+    //============================ private methods ============================
+    private boolean inflatePropertyChain0(String propertyChain){
+        if(mInflater == null){
+            mInflater = new PropertyChainInflater<T>(this);
+        }
+        return mInflater.inflatePropertyChain(propertyChain);
+    }
 
 }
