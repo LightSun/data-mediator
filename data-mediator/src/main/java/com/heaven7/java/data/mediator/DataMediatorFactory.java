@@ -164,6 +164,7 @@ public final class DataMediatorFactory {
      * @param t the target data-impl
      * @param <T> the module data type.
      * @return the {@linkplain DataMediator} of target object.
+     * @since 1.4.4
      */
     @SuppressWarnings("unchecked")
     public static <T> DataMediator<T> createDataMediator(DataMediator<?> root, T t){
