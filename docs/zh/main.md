@@ -248,6 +248,46 @@ public interface FlowItem extends Parcelable{
         }
     }
  ```
+ * 支持属性链的绑定. 类似这样 '@BindBackground("viewBind.background")'. 一个真实的demo 如下:
+```java
+public class SimplePropertyChainActivity extends BaseActivity {
+
+    //'viewBind' is a property name of RootModule.
+    @BindView(R.id.v_bg) @BindBackground("viewBind.background")
+    View mV_bg;
+
+//.............more views
+
+    private ResHelper mHelper = new ResHelper();
+    private Binder<RootModule> rootBinder;
+    private DataMediator<ViewBind> dm_viewBind;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.ac_test_view_bind;
+    }
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        mHelper.init(context);
+
+        RootModule rootModule = DataMediatorFactory.createData(RootModule.class);
+        rootModule.setViewBind(DataMediatorFactory.createData(ViewBind.class));
+
+        //bind data.
+        rootBinder = DataMediatorFactory.bind(this, rootModule);
+        dm_viewBind = DataMediatorFactory.createDataMediator(
+                rootBinder.getDataMediator(), rootModule.getViewBind());
+    }
+
+    @OnClick(R.id.bt_change_bg)
+    public void onClickChangeBg(View v){
+        //change bg（drawable）
+        dm_viewBind.getDataProxy().setBackground(mHelper.toggleDrawable());
+    }
+    //.............
+    
+}
+```
 
 # 安装
  * 安装idea插件(data-mediator-intellij-plugin.jar). see [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2)
