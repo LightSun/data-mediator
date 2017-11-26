@@ -29,3 +29,5 @@
 * Plugin
   * [data-mediator-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-intellij-plugin)  the idea plugin of data-mediator
   * [data-mediator-convertor-intellij-plugin](https://github.com/LightSun/data-mediator/tree/master/data-mediator-convertor-intellij-plugin)  the idea plugin of data-mediator,  used to convert java bean to data module of this framework. 
+  
+* this doc may not update in time. you should clone the demo and see the all demos instead !
