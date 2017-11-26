@@ -65,10 +65,51 @@ a data-mediator framework which uses annotation processing to generate boilerpla
         }
     }
 ```
- * Plugin support: <br>
-   * the plugin of 'data-mediator-intellij-plugin' used to generate module.<br>
+* support bind property chain. like '@BindBackground("viewBind.background")'. actual demo like this:
+```java
+public class SimplePropertyChainActivity extends BaseActivity {
+
+    //'viewBind' is a property name of RootModule.
+    @BindView(R.id.v_bg) @BindBackground("viewBind.background")
+    View mV_bg;
+
+//.............more views
+
+    private ResHelper mHelper = new ResHelper();
+    private Binder<RootModule> rootBinder;
+    private DataMediator<ViewBind> dm_viewBind;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.ac_test_view_bind;
+    }
+    @Override
+    protected void onInit(Context context, Bundle savedInstanceState) {
+        mHelper.init(context);
+
+        RootModule rootModule = DataMediatorFactory.createData(RootModule.class);
+        rootModule.setViewBind(DataMediatorFactory.createData(ViewBind.class));
+
+        //bind data.
+        rootBinder = DataMediatorFactory.bind(this, rootModule);
+        dm_viewBind = DataMediatorFactory.createDataMediator(
+                rootBinder.getDataMediator(), rootModule.getViewBind());
+    }
+
+    @OnClick(R.id.bt_change_bg)
+    public void onClickChangeBg(View v){
+        //change bg（drawable）
+        dm_viewBind.getDataProxy().setBackground(mHelper.toggleDrawable());
+    }
+    //.............
+    
+}
+
+```
+* Plugin support: <br>
+  * the plugin of 'data-mediator-intellij-plugin' used to generate module.<br>
      <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
-   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.<br>
+  * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.<br>
      <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
 
 # Install 
