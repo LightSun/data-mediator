@@ -65,7 +65,7 @@ a data-mediator framework which uses annotation processing to generate boilerpla
         }
     }
 ```
-* support bind property chain. like '@BindBackground("viewBind.background")'. actual demo like this:
+* 12, support bind property chain. like '@BindBackground("viewBind.background")'. actual demo like this:
 ```java
 public class SimplePropertyChainActivity extends BaseActivity {
 
@@ -106,7 +106,7 @@ public class SimplePropertyChainActivity extends BaseActivity {
 }
 
 ```
-* Plugin support: <br>
+* 13, Plugin support: <br>
   * the plugin of 'data-mediator-intellij-plugin' used to generate module.<br>
      <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.<br>
