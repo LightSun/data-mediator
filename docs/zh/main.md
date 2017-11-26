@@ -18,6 +18,7 @@ data-mediator
  * [进阶指南](#进阶指南)
  * [混淆配置](#混淆配置)
  * [Gson注解详细说明](https://juejin.im/post/59e5663f51882546b15b92f0)
+ * 博客： [掘金](https://juejin.im/user/58b77b3a128fe1006429394a)
 
 # 基本魅力
  - 假设我想定义的数据实体是下面这个。
