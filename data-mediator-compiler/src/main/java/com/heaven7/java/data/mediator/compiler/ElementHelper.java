@@ -60,7 +60,7 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                     }
                     Object obj = list.get(0);
                     if (!(obj instanceof AnnotationMirror)) {
-                        pp.error(TAG, methodName, "@Fields's value() must have list of @Field.");
+                        pp.error(TAG, methodName, "@Fields's value() must have list of @Field. can't be empty");
                         return false;
                     }
                     if (!iterateField(mElements, mTypes,
