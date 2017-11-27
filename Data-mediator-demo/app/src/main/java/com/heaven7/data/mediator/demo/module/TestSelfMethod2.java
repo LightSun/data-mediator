@@ -14,7 +14,7 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 })
 public interface TestSelfMethod2 extends TestSelfMethodWithImplInterface.TestSelfMethod{
 
-    Property PROP_text2 = SharedProperties.get("java.lang.String", "text2", 0);
+    Property PROP_text2 = SharedProperties.get(String.class.getName(), "text2", 0);
 
     TestSelfMethod2 setText2(String text21);
 

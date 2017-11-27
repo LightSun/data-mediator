@@ -20,9 +20,9 @@ import static com.heaven7.java.data.mediator.FieldFlags.*;
 @Fields(value = {
         @Field(propName = "name", seriaName = "xxx1", type = Integer.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "name2", seriaName = "xxx2", type = Integer.class,
-                complexType = COMPLEXT_ARRAY, flags = FLAGS_ALL_SCOPES),
+                complexType = COMPLEX_ARRAY, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "name3", seriaName = "xxx3", type = Integer.class,
-                complexType = COMPLEXT_LIST, flags = FLAGS_ALL_SCOPES),
+                complexType = COMPLEX_LIST, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "data", seriaName = "result", type = ResultData.class, flags = FLAGS_ALL_SCOPES),
 })
 public interface TestBind2 extends Parcelable , IDataMediator, DataPools.Poolable {

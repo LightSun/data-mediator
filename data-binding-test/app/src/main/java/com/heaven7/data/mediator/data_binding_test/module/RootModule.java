@@ -31,7 +31,5 @@ public interface RootModule extends DataPools.Poolable {
 
     List<ViewBind> getViewBindList();
 
-    ListPropertyEditor<? extends RootModule, ViewBind> beginViewBindListEditor();/*
-================== start methods from super properties ===============
-======================================================================= */
+    ListPropertyEditor<? extends RootModule, ViewBind> beginViewBindListEditor();
 }

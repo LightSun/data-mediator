@@ -16,8 +16,8 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 import java.io.Serializable;
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_LIST;
 import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_SPARSE_ARRAY;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
@@ -45,113 +45,113 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
         @Field(propName = "test_Boolean", type = Boolean.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "test_Character", type = Character.class, flags = FLAGS_ALL_SCOPES),
 //list
-        @Field(propName = "test_int_list", type = int.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_LIST),
-        @Field(propName = "test_long_list",  type = long.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_LIST),
-        @Field(propName = "test_byte_list",  type = byte.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_LIST),
-        @Field(propName = "test_short_list",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_LIST),
-        @Field(propName = "test_float_list", type = float.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_LIST),
-        @Field(propName = "test_double_list", type = double.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_boolean_list", type = boolean.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_char_list", type = char.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
+        @Field(propName = "test_int_list", type = int.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_LIST),
+        @Field(propName = "test_long_list",  type = long.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_LIST),
+        @Field(propName = "test_byte_list",  type = byte.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_LIST),
+        @Field(propName = "test_short_list",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_LIST),
+        @Field(propName = "test_float_list", type = float.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_LIST),
+        @Field(propName = "test_double_list", type = double.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_boolean_list", type = boolean.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_char_list", type = char.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
 
-        @Field(propName = "test_Integer_list", type = Integer.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Long_list", type = Long.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Short_list", type = Short.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Byte_list", type = Byte.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Float_list", type = Float.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Double_list", type = Double.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Boolean_list", type = Boolean.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_LIST),
-        @Field(propName = "test_Character_list", type = Character.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_LIST),
+        @Field(propName = "test_Integer_list", type = Integer.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_Long_list", type = Long.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_Short_list", type = Short.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_Byte_list", type = Byte.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_LIST),
+        @Field(propName = "test_Float_list", type = Float.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_LIST),
+        @Field(propName = "test_Double_list", type = Double.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_LIST),
+        @Field(propName = "test_Boolean_list", type = Boolean.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_LIST),
+        @Field(propName = "test_Character_list", type = Character.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_LIST),
 //array
-        @Field(propName = "test_int_array", type = int.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_long_array",  type = long.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_byte_array",  type = byte.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_short_array",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_short_array2",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_float_array", type = float.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_double_array", type = double.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_boolean_array", type = boolean.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_char_array", type = char.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
+        @Field(propName = "test_int_array", type = int.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_long_array",  type = long.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_byte_array",  type = byte.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_short_array",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_short_array2",  type = short.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_float_array", type = float.class, flags = FLAGS_ALL_SCOPES , complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_double_array", type = double.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_boolean_array", type = boolean.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_char_array", type = char.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
 
-        @Field(propName = "test_Integer_array", type = Integer.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Long_array", type = Long.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Short_array", type = Short.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Byte_array", type = Byte.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Float_array", type = Float.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Double_array", type = Double.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Boolean_array", type = Boolean.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_Character_array", type = Character.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEXT_ARRAY),
+        @Field(propName = "test_Integer_array", type = Integer.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Long_array", type = Long.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Short_array", type = Short.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Byte_array", type = Byte.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Float_array", type = Float.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Double_array", type = Double.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Boolean_array", type = Boolean.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_Character_array", type = Character.class, flags = FLAGS_ALL_SCOPES,complexType = COMPLEX_ARRAY),
 
 //String, list , array
         @Field(propName = "test_String", type = String.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "test_String_array", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_ARRAY),
-        @Field(propName = "test_String_list", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
+        @Field(propName = "test_String_array", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_ARRAY),
+        @Field(propName = "test_String_list", type = String.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
 //any object
         @Field(propName = "test_ResultData", type = Outter.TestSelfMethod3.class, flags = FLAGS_ALL_SCOPES),
-        @Field(propName = "test_ResultData_list", type = Outter.TestSelfMethod3.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEXT_LIST),
-        @Field(propName = "test_ResultData_array", type = Outter.TestSelfMethod3.class, flags = FLAGS_MAIN_SCOPES, complexType = COMPLEXT_ARRAY),
+        @Field(propName = "test_ResultData_list", type = Outter.TestSelfMethod3.class, flags = FLAGS_ALL_SCOPES, complexType = COMPLEX_LIST),
+        @Field(propName = "test_ResultData_array", type = Outter.TestSelfMethod3.class, flags = FLAGS_MAIN_SCOPES, complexType = COMPLEX_ARRAY),
 // sparseArray
         @Field(propName = "test_SparseArray", type = Outter.TestSelfMethod3.class,
                 complexType = COMPLEX_SPARSE_ARRAY, flags = FLAGS_ALL_SCOPES),
 }, maxPoolCount = 100, generateJsonAdapter = false)
 public interface TestParcelableData extends Parcelable, Serializable, IResetable, DataPools.Poolable {
 
-    Property PROP_test_int = SharedProperties.get("int", "test_int", 0);
-    Property PROP_test_long = SharedProperties.get("long", "test_long", 0);
-    Property PROP_test_byte = SharedProperties.get("byte", "test_byte", 0);
-    Property PROP_test_short = SharedProperties.get("short", "test_short", 0);
-    Property PROP_test_float = SharedProperties.get("float", "test_float", 0);
-    Property PROP_test_double = SharedProperties.get("double", "test_double", 0);
-    Property PROP_test_boolean = SharedProperties.get("boolean", "test_boolean", 0);
-    Property PROP_test_char = SharedProperties.get("char", "test_char", 0);
-    Property PROP_test_Integer = SharedProperties.get("java.lang.Integer", "test_Integer", 0);
-    Property PROP_test_Long = SharedProperties.get("java.lang.Long", "test_Long", 0);
-    Property PROP_test_Short = SharedProperties.get("java.lang.Short", "test_Short", 0);
-    Property PROP_test_Byte = SharedProperties.get("java.lang.Byte", "test_Byte", 0);
-    Property PROP_test_Float = SharedProperties.get("java.lang.Float", "test_Float", 0);
-    Property PROP_test_Double = SharedProperties.get("java.lang.Double", "test_Double", 0);
-    Property PROP_test_Boolean = SharedProperties.get("java.lang.Boolean", "test_Boolean", 0);
-    Property PROP_test_Character = SharedProperties.get("java.lang.Character", "test_Character", 0);
-    Property PROP_test_int_list = SharedProperties.get("int", "test_int_list", 2);
-    Property PROP_test_long_list = SharedProperties.get("long", "test_long_list", 2);
-    Property PROP_test_byte_list = SharedProperties.get("byte", "test_byte_list", 2);
-    Property PROP_test_short_list = SharedProperties.get("short", "test_short_list", 2);
-    Property PROP_test_float_list = SharedProperties.get("float", "test_float_list", 2);
-    Property PROP_test_double_list = SharedProperties.get("double", "test_double_list", 2);
-    Property PROP_test_boolean_list = SharedProperties.get("boolean", "test_boolean_list", 2);
-    Property PROP_test_char_list = SharedProperties.get("char", "test_char_list", 2);
-    Property PROP_test_Integer_list = SharedProperties.get("java.lang.Integer", "test_Integer_list", 2);
-    Property PROP_test_Long_list = SharedProperties.get("java.lang.Long", "test_Long_list", 2);
-    Property PROP_test_Short_list = SharedProperties.get("java.lang.Short", "test_Short_list", 2);
-    Property PROP_test_Byte_list = SharedProperties.get("java.lang.Byte", "test_Byte_list", 2);
-    Property PROP_test_Float_list = SharedProperties.get("java.lang.Float", "test_Float_list", 2);
-    Property PROP_test_Double_list = SharedProperties.get("java.lang.Double", "test_Double_list", 2);
-    Property PROP_test_Boolean_list = SharedProperties.get("java.lang.Boolean", "test_Boolean_list", 2);
-    Property PROP_test_Character_list = SharedProperties.get("java.lang.Character", "test_Character_list", 2);
-    Property PROP_test_int_array = SharedProperties.get("int", "test_int_array", 1);
-    Property PROP_test_long_array = SharedProperties.get("long", "test_long_array", 1);
-    Property PROP_test_byte_array = SharedProperties.get("byte", "test_byte_array", 1);
-    Property PROP_test_short_array = SharedProperties.get("short", "test_short_array", 1);
-    Property PROP_test_short_array2 = SharedProperties.get("short", "test_short_array2", 1);
-    Property PROP_test_float_array = SharedProperties.get("float", "test_float_array", 1);
-    Property PROP_test_double_array = SharedProperties.get("double", "test_double_array", 1);
-    Property PROP_test_boolean_array = SharedProperties.get("boolean", "test_boolean_array", 1);
-    Property PROP_test_char_array = SharedProperties.get("char", "test_char_array", 1);
-    Property PROP_test_Integer_array = SharedProperties.get("java.lang.Integer", "test_Integer_array", 1);
-    Property PROP_test_Long_array = SharedProperties.get("java.lang.Long", "test_Long_array", 1);
-    Property PROP_test_Short_array = SharedProperties.get("java.lang.Short", "test_Short_array", 1);
-    Property PROP_test_Byte_array = SharedProperties.get("java.lang.Byte", "test_Byte_array", 1);
-    Property PROP_test_Float_array = SharedProperties.get("java.lang.Float", "test_Float_array", 1);
-    Property PROP_test_Double_array = SharedProperties.get("java.lang.Double", "test_Double_array", 1);
-    Property PROP_test_Boolean_array = SharedProperties.get("java.lang.Boolean", "test_Boolean_array", 1);
-    Property PROP_test_Character_array = SharedProperties.get("java.lang.Character", "test_Character_array", 1);
-    Property PROP_test_String = SharedProperties.get("java.lang.String", "test_String", 0);
-    Property PROP_test_String_array = SharedProperties.get("java.lang.String", "test_String_array", 1);
-    Property PROP_test_String_list = SharedProperties.get("java.lang.String", "test_String_list", 2);
-    Property PROP_test_ResultData = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData", 0);
-    Property PROP_test_ResultData_list = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData_list", 2);
-    Property PROP_test_ResultData_array = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_ResultData_array", 1);
-    Property PROP_test_SparseArray = SharedProperties.get("com.heaven7.data.mediator.demo.module.Outter.TestSelfMethod3", "test_SparseArray", 3);
+    Property PROP_test_int = SharedProperties.get(int.class.getName(), "test_int", 0);
+    Property PROP_test_long = SharedProperties.get(long.class.getName(), "test_long", 0);
+    Property PROP_test_byte = SharedProperties.get(byte.class.getName(), "test_byte", 0);
+    Property PROP_test_short = SharedProperties.get(short.class.getName(), "test_short", 0);
+    Property PROP_test_float = SharedProperties.get(float.class.getName(), "test_float", 0);
+    Property PROP_test_double = SharedProperties.get(double.class.getName(), "test_double", 0);
+    Property PROP_test_boolean = SharedProperties.get(boolean.class.getName(), "test_boolean", 0);
+    Property PROP_test_char = SharedProperties.get(char.class.getName(), "test_char", 0);
+    Property PROP_test_Integer = SharedProperties.get(Integer.class.getName(), "test_Integer", 0);
+    Property PROP_test_Long = SharedProperties.get(Long.class.getName(), "test_Long", 0);
+    Property PROP_test_Short = SharedProperties.get(Short.class.getName(), "test_Short", 0);
+    Property PROP_test_Byte = SharedProperties.get(Byte.class.getName(), "test_Byte", 0);
+    Property PROP_test_Float = SharedProperties.get(Float.class.getName(), "test_Float", 0);
+    Property PROP_test_Double = SharedProperties.get(Double.class.getName(), "test_Double", 0);
+    Property PROP_test_Boolean = SharedProperties.get(Boolean.class.getName(), "test_Boolean", 0);
+    Property PROP_test_Character = SharedProperties.get(Character.class.getName(), "test_Character", 0);
+    Property PROP_test_int_list = SharedProperties.get(int.class.getName(), "test_int_list", 2);
+    Property PROP_test_long_list = SharedProperties.get(long.class.getName(), "test_long_list", 2);
+    Property PROP_test_byte_list = SharedProperties.get(byte.class.getName(), "test_byte_list", 2);
+    Property PROP_test_short_list = SharedProperties.get(short.class.getName(), "test_short_list", 2);
+    Property PROP_test_float_list = SharedProperties.get(float.class.getName(), "test_float_list", 2);
+    Property PROP_test_double_list = SharedProperties.get(double.class.getName(), "test_double_list", 2);
+    Property PROP_test_boolean_list = SharedProperties.get(boolean.class.getName(), "test_boolean_list", 2);
+    Property PROP_test_char_list = SharedProperties.get(char.class.getName(), "test_char_list", 2);
+    Property PROP_test_Integer_list = SharedProperties.get(Integer.class.getName(), "test_Integer_list", 2);
+    Property PROP_test_Long_list = SharedProperties.get(Long.class.getName(), "test_Long_list", 2);
+    Property PROP_test_Short_list = SharedProperties.get(Short.class.getName(), "test_Short_list", 2);
+    Property PROP_test_Byte_list = SharedProperties.get(Byte.class.getName(), "test_Byte_list", 2);
+    Property PROP_test_Float_list = SharedProperties.get(Float.class.getName(), "test_Float_list", 2);
+    Property PROP_test_Double_list = SharedProperties.get(Double.class.getName(), "test_Double_list", 2);
+    Property PROP_test_Boolean_list = SharedProperties.get(Boolean.class.getName(), "test_Boolean_list", 2);
+    Property PROP_test_Character_list = SharedProperties.get(Character.class.getName(), "test_Character_list", 2);
+    Property PROP_test_int_array = SharedProperties.get(int.class.getName(), "test_int_array", 1);
+    Property PROP_test_long_array = SharedProperties.get(long.class.getName(), "test_long_array", 1);
+    Property PROP_test_byte_array = SharedProperties.get(byte.class.getName(), "test_byte_array", 1);
+    Property PROP_test_short_array = SharedProperties.get(short.class.getName(), "test_short_array", 1);
+    Property PROP_test_short_array2 = SharedProperties.get(short.class.getName(), "test_short_array2", 1);
+    Property PROP_test_float_array = SharedProperties.get(float.class.getName(), "test_float_array", 1);
+    Property PROP_test_double_array = SharedProperties.get(double.class.getName(), "test_double_array", 1);
+    Property PROP_test_boolean_array = SharedProperties.get(boolean.class.getName(), "test_boolean_array", 1);
+    Property PROP_test_char_array = SharedProperties.get(char.class.getName(), "test_char_array", 1);
+    Property PROP_test_Integer_array = SharedProperties.get(Integer.class.getName(), "test_Integer_array", 1);
+    Property PROP_test_Long_array = SharedProperties.get(Long.class.getName(), "test_Long_array", 1);
+    Property PROP_test_Short_array = SharedProperties.get(Short.class.getName(), "test_Short_array", 1);
+    Property PROP_test_Byte_array = SharedProperties.get(Byte.class.getName(), "test_Byte_array", 1);
+    Property PROP_test_Float_array = SharedProperties.get(Float.class.getName(), "test_Float_array", 1);
+    Property PROP_test_Double_array = SharedProperties.get(Double.class.getName(), "test_Double_array", 1);
+    Property PROP_test_Boolean_array = SharedProperties.get(Boolean.class.getName(), "test_Boolean_array", 1);
+    Property PROP_test_Character_array = SharedProperties.get(Character.class.getName(), "test_Character_array", 1);
+    Property PROP_test_String = SharedProperties.get(String.class.getName(), "test_String", 0);
+    Property PROP_test_String_array = SharedProperties.get(String.class.getName(), "test_String_array", 1);
+    Property PROP_test_String_list = SharedProperties.get(String.class.getName(), "test_String_list", 2);
+    Property PROP_test_ResultData = SharedProperties.get(Outter.TestSelfMethod3.class.getName(), "test_ResultData", 0);
+    Property PROP_test_ResultData_list = SharedProperties.get(Outter.TestSelfMethod3.class.getName(), "test_ResultData_list", 2);
+    Property PROP_test_ResultData_array = SharedProperties.get(Outter.TestSelfMethod3.class.getName(), "test_ResultData_array", 1);
+    Property PROP_test_SparseArray = SharedProperties.get(Outter.TestSelfMethod3.class.getName(), "test_SparseArray", 3);
 
     TestParcelableData setTest_int(int test_int1);
 
@@ -413,7 +413,5 @@ public interface TestParcelableData extends Parcelable, Serializable, IResetable
 
     SparseArray<Outter.TestSelfMethod3> getTest_SparseArray();
 
-    SparseArrayPropertyEditor<? extends TestParcelableData, Outter.TestSelfMethod3> beginTest_SparseArrayEditor();/*
-================== start methods from super properties ===============
-======================================================================= */
+    SparseArrayPropertyEditor<? extends TestParcelableData, Outter.TestSelfMethod3> beginTest_SparseArrayEditor();
 }

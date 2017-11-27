@@ -30,10 +30,10 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 })
 public interface ClassBind extends TestBind2 ,IDataMediator, DataPools.Poolable {
 
-    Property PROP_student = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student", 0);
-    Property PROP_student2 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student2", 2);
-    Property PROP_student3 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student3", 1);
-    Property PROP_student4 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.TestBind", "student4", 0);
+    Property PROP_student = SharedProperties.get(TestBind.class.getName(), "student", 0);
+    Property PROP_student2 = SharedProperties.get(TestBind.class.getName(), "student2", 2);
+    Property PROP_student3 = SharedProperties.get(TestBind.class.getName(), "student3", 1);
+    Property PROP_student4 = SharedProperties.get(TestBind.class.getName(), "student4", 0);
 
     ClassBind setStudent(TestBind student1);
 

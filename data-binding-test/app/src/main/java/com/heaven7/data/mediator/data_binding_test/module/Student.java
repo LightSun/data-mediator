@@ -22,10 +22,10 @@ import java.io.Serializable;
 })
 public interface Student extends Serializable, Parcelable, ISelectable, DataPools.Poolable {
 
-    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-    Property PROP_age = SharedProperties.get("int", "age", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_id = SharedProperties.get("long", "id", 0);
+    Property PROP_selected = SharedProperties.get(boolean.class.getName(), "selected", 0);
+    Property PROP_age = SharedProperties.get(int.class.getName(), "age", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_id = SharedProperties.get(long.class.getName(), "id", 0);
 
     Student setAge(int age1);
 
@@ -37,7 +37,5 @@ public interface Student extends Serializable, Parcelable, ISelectable, DataPool
 
     Student setId(long id1);
 
-    long getId();/*
-================== start methods from super properties ===============
-======================================================================= */
+    long getId();
 }

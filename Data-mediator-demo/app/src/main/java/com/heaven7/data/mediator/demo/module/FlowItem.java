@@ -24,10 +24,10 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_NO_EXPOSE;
 })
 public interface FlowItem extends Parcelable, ISelectable, DataPools.Poolable {
 
-    Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-    Property PROP_id = SharedProperties.get("int", "id", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 0);
+    Property PROP_selected = SharedProperties.get(boolean.class.getName(), "selected", 0);
+    Property PROP_id = SharedProperties.get(int.class.getName(), "id", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_desc = SharedProperties.get(String.class.getName(), "desc", 0);
 
     FlowItem setId(int id1);
 
@@ -39,7 +39,5 @@ public interface FlowItem extends Parcelable, ISelectable, DataPools.Poolable {
 
     FlowItem setDesc(String desc1);
 
-    String getDesc();/*
-================== start methods from super properties ===============
-======================================================================= */
+    String getDesc();
 }

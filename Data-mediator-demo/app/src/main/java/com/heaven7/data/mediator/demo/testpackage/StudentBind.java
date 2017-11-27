@@ -11,8 +11,8 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_LIST;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_COPY;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAG_EXPOSE_DEFAULT;
@@ -31,22 +31,22 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_SNAP;
         @Field(propName = "test_Format", seriaName = "test_Format", flags = 1, type = Double.class),
         @Field(propName = "test_int", seriaName = "test_int", type = int.class,
                 flags = FLAG_EXPOSE_DEFAULT | FLAG_COPY | FLAG_RESET),
-        @Field(propName = "test_list", seriaName = "test_list", type = long.class, complexType = COMPLEXT_LIST,
+        @Field(propName = "test_list", seriaName = "test_list", type = long.class, complexType = COMPLEX_LIST,
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP),
         @Field(propName = "test_array", seriaName = "test_array", type = String.class,
-                complexType = COMPLEXT_ARRAY,
+                complexType = COMPLEX_ARRAY,
                 flags = FLAG_RESET | FLAG_SHARE | FLAG_SNAP
         ),
 }, maxPoolCount = 10)
 public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poolable {
 
-        Property PROP_selected = SharedProperties.get("boolean", "selected", 0);
-        Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-        Property PROP_test_object = SharedProperties.get("java.lang.Object", "test_object", 0);
-        Property PROP_test_Format = SharedProperties.get("java.lang.Double", "test_Format", 0);
-        Property PROP_test_int = SharedProperties.get("int", "test_int", 0);
-        Property PROP_test_list = SharedProperties.get("long", "test_list", 2);
-        Property PROP_test_array = SharedProperties.get("java.lang.String", "test_array", 1);
+        Property PROP_selected = SharedProperties.get(boolean.class.getName(), "selected", 0);
+        Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+        Property PROP_test_object = SharedProperties.get(Object.class.getName(), "test_object", 0);
+        Property PROP_test_Format = SharedProperties.get(Double.class.getName(), "test_Format", 0);
+        Property PROP_test_int = SharedProperties.get(int.class.getName(), "test_int", 0);
+        Property PROP_test_list = SharedProperties.get(long.class.getName(), "test_list", 2);
+        Property PROP_test_array = SharedProperties.get(String.class.getName(), "test_array", 1);
 
         StudentBind setName(String name1);
 
@@ -72,7 +72,5 @@ public interface StudentBind extends IDataMediator, ISelectable, DataPools.Poola
 
         StudentBind setTest_array(String[] test_array1);
 
-        String[] getTest_array();/*
-================== start methods from super properties ===============
-======================================================================= */
+        String[] getTest_array();
 }

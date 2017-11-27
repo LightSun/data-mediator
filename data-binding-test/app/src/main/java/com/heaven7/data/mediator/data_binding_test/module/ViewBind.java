@@ -20,11 +20,11 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 }, generateJsonAdapter = false)
 public interface ViewBind extends DataPools.Poolable {
 
-    Property PROP_enable = SharedProperties.get("boolean", "enable", 0);
-    Property PROP_backgroundRes = SharedProperties.get("int", "backgroundRes", 0);
-    Property PROP_backgroundColor = SharedProperties.get("int", "backgroundColor", 0);
-    Property PROP_background = SharedProperties.get("android.graphics.drawable.Drawable", "background", 0);
-    Property PROP_visible = SharedProperties.get("boolean", "visible", 0);
+    Property PROP_enable = SharedProperties.get(boolean.class.getName(), "enable", 0);
+    Property PROP_backgroundRes = SharedProperties.get(int.class.getName(), "backgroundRes", 0);
+    Property PROP_backgroundColor = SharedProperties.get(int.class.getName(), "backgroundColor", 0);
+    Property PROP_background = SharedProperties.get(Drawable.class.getName(), "background", 0);
+    Property PROP_visible = SharedProperties.get(boolean.class.getName(), "visible", 0);
 
     ViewBind setEnable(boolean enable1);
 
@@ -44,7 +44,5 @@ public interface ViewBind extends DataPools.Poolable {
 
     ViewBind setVisible(boolean visible1);
 
-    boolean isVisible();/*
-================== start methods from super properties ===============
-======================================================================= */
+    boolean isVisible();
 }

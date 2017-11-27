@@ -30,15 +30,15 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAG_RESET;
 },maxPoolCount = 5)
 public interface AnalysisData extends ICopyable, IResetable, DataPools.Poolable {
 
-    Property PROP_occurTime = SharedProperties.get("long", "occurTime", 0);
-    Property PROP_enterTime = SharedProperties.get("long", "enterTime", 0);
-    Property PROP_exitTime = SharedProperties.get("long", "exitTime", 0);
-    Property PROP_eventType = SharedProperties.get("java.lang.String", "eventType", 0);
-    Property PROP_tabIndex = SharedProperties.get("int", "tabIndex", 0);
-    Property PROP_itemIndex = SharedProperties.get("int", "itemIndex", 0);
-    Property PROP_item = SharedProperties.get("com.heaven7.data.mediator.demo.module.FlowItem", "item", 0);
-    Property PROP_apiVersion = SharedProperties.get("java.lang.String", "apiVersion", 0);
-    Property PROP_net = SharedProperties.get("java.lang.String", "net", 0);
+    Property PROP_occurTime = SharedProperties.get(long.class.getName(), "occurTime", 0);
+    Property PROP_enterTime = SharedProperties.get(long.class.getName(), "enterTime", 0);
+    Property PROP_exitTime = SharedProperties.get(long.class.getName(), "exitTime", 0);
+    Property PROP_eventType = SharedProperties.get(String.class.getName(), "eventType", 0);
+    Property PROP_tabIndex = SharedProperties.get(int.class.getName(), "tabIndex", 0);
+    Property PROP_itemIndex = SharedProperties.get(int.class.getName(), "itemIndex", 0);
+    Property PROP_item = SharedProperties.get(FlowItem.class.getName(), "item", 0);
+    Property PROP_apiVersion = SharedProperties.get(String.class.getName(), "apiVersion", 0);
+    Property PROP_net = SharedProperties.get(String.class.getName(), "net", 0);
 
     AnalysisData setOccurTime(long occurTime1);
 
@@ -74,6 +74,5 @@ public interface AnalysisData extends ICopyable, IResetable, DataPools.Poolable 
 
     AnalysisData setNet(String net1);
 
-    String getNet();/*
-================== start super methods =============== */
+    String getNet();
 }

@@ -22,10 +22,10 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 }, maxPoolCount = 100)
 public interface TestBind extends Parcelable, DataPools.Poolable {
 
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_data = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "data", 0);
-    Property PROP_cityData = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.ResultData", "cityData", 3);
-    Property PROP_cityData2 = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.Student", "cityData2", 3);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_data = SharedProperties.get(ResultData.class.getName(), "data", 0);
+    Property PROP_cityData = SharedProperties.get(ResultData.class.getName(), "cityData", 3);
+    Property PROP_cityData2 = SharedProperties.get(Student.class.getName(), "cityData2", 3);
 
     TestBind setName(String name1);
 
@@ -45,7 +45,5 @@ public interface TestBind extends Parcelable, DataPools.Poolable {
 
     SparseArray<Student> getCityData2();
 
-    SparseArrayPropertyEditor<? extends TestBind, Student> beginCityData2Editor();/*
-================== start methods from super properties ===============
-======================================================================= */
+    SparseArrayPropertyEditor<? extends TestBind, Student> beginCityData2Editor();
 }

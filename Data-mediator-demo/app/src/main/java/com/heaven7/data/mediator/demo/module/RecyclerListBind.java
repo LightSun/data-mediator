@@ -19,11 +19,12 @@ import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
         @Field(propName = "students", type = Student.class, complexType = COMPLEXT_LIST)
 })
 public interface RecyclerListBind extends DataPools.Poolable {
-    Property PROP_students = SharedProperties.get("com.heaven7.data.mediator.demo.testpackage.Student", "students", 2);
 
-    List<Student> getStudents();
+    Property PROP_students = SharedProperties.get(Student.class.getName(), "students", 2);
 
     RecyclerListBind setStudents(List<Student> students1);
+
+    List<Student> getStudents();
 
     ListPropertyEditor<? extends RecyclerListBind, Student> beginStudentsEditor();
 }

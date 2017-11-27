@@ -21,24 +21,25 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_NO_EXPOSE;
         @Field(propName = "testItem_test" , flags = FLAGS_MAIN_SCOPES_2 | FLAGS_NO_EXPOSE),
 })
 public interface TestItem extends DataPools.Poolable {
-    Property PROP_id = SharedProperties.get("int", "id", 0);
-    Property PROP_name = SharedProperties.get("java.lang.String", "name", 0);
-    Property PROP_desc = SharedProperties.get("java.lang.String", "desc", 0);
-    Property PROP_testItem_test = SharedProperties.get("java.lang.String", "testItem_test", 0);
 
-    int getId();
+    Property PROP_id = SharedProperties.get(int.class.getName(), "id", 0);
+    Property PROP_name = SharedProperties.get(String.class.getName(), "name", 0);
+    Property PROP_desc = SharedProperties.get(String.class.getName(), "desc", 0);
+    Property PROP_testItem_test = SharedProperties.get(String.class.getName(), "testItem_test", 0);
 
     TestItem setId(int id1);
 
-    String getName();
+    int getId();
 
     TestItem setName(String name1);
 
-    String getDesc();
+    String getName();
 
     TestItem setDesc(String desc1);
 
-    String getTestItem_test();
+    String getDesc();
 
     TestItem setTestItem_test(String testItem_test1);
+
+    String getTestItem_test();
 }

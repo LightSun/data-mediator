@@ -26,39 +26,40 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_MAIN_SCOPES;
         @Field(propName = "textSizeDp" , type = float.class, flags = FLAGS_ALL_SCOPES),
 }, generateJsonAdapter = false)
 public interface TextViewBind extends Parcelable, DataPools.Poolable {
-    Property PROP_text = SharedProperties.get("java.lang.String", "text", 0);
-    Property PROP_textRes = SharedProperties.get("int", "textRes", 0);
-    Property PROP_textColor = SharedProperties.get("int", "textColor", 0);
-    Property PROP_textColorRes = SharedProperties.get("int", "textColorRes", 0);
-    Property PROP_textSize = SharedProperties.get("float", "textSize", 0);
-    Property PROP_textSizeRes = SharedProperties.get("int", "textSizeRes", 0);
-    Property PROP_textSizeDp = SharedProperties.get("float", "textSizeDp", 0);
 
-    String getText();
+    Property PROP_text = SharedProperties.get(String.class.getName(), "text", 0);
+    Property PROP_textRes = SharedProperties.get(int.class.getName(), "textRes", 0);
+    Property PROP_textColor = SharedProperties.get(int.class.getName(), "textColor", 0);
+    Property PROP_textColorRes = SharedProperties.get(int.class.getName(), "textColorRes", 0);
+    Property PROP_textSize = SharedProperties.get(float.class.getName(), "textSize", 0);
+    Property PROP_textSizeRes = SharedProperties.get(int.class.getName(), "textSizeRes", 0);
+    Property PROP_textSizeDp = SharedProperties.get(float.class.getName(), "textSizeDp", 0);
 
     TextViewBind setText(String text1);
 
-    int getTextRes();
+    String getText();
 
     TextViewBind setTextRes(int textRes1);
 
-    int getTextColor();
+    int getTextRes();
 
     TextViewBind setTextColor(int textColor1);
 
-    int getTextColorRes();
+    int getTextColor();
 
     TextViewBind setTextColorRes(int textColorRes1);
 
-    float getTextSize();
+    int getTextColorRes();
 
     TextViewBind setTextSize(float textSize1);
 
-    int getTextSizeRes();
+    float getTextSize();
 
     TextViewBind setTextSizeRes(int textSizeRes1);
 
-    float getTextSizeDp();
+    int getTextSizeRes();
 
     TextViewBind setTextSizeDp(float textSizeDp1);
+
+    float getTextSizeDp();
 }

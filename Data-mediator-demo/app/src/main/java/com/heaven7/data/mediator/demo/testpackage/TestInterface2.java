@@ -10,8 +10,8 @@ import com.heaven7.java.data.mediator.internal.SharedProperties;
 
 import java.util.List;
 
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_ARRAY;
-import static com.heaven7.java.data.mediator.FieldFlags.COMPLEXT_LIST;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_ARRAY;
+import static com.heaven7.java.data.mediator.FieldFlags.COMPLEX_LIST;
 import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 
 /**
@@ -20,9 +20,9 @@ import static com.heaven7.java.data.mediator.FieldFlags.FLAGS_ALL_SCOPES;
 @Fields({
         @Field(propName = "student", seriaName = "class_1", type = TestBind.class, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "student2", seriaName = "class_2", type = TestBind.class,
-                complexType = COMPLEXT_LIST, flags = FLAGS_ALL_SCOPES),
+                complexType = COMPLEX_LIST, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "student3", seriaName = "class_3", type = TestBind.class,
-                complexType = COMPLEXT_ARRAY, flags = FLAGS_ALL_SCOPES),
+                complexType = COMPLEX_ARRAY, flags = FLAGS_ALL_SCOPES),
         @Field(propName = "student4", seriaName = "class_4", type = TestBind.class, flags = FLAGS_ALL_SCOPES)
 })
 public interface TestInterface2 extends StudentBind, Parcelable {
