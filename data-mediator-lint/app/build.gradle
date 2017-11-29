@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "heaven7.data_mediator_lint"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.2'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
+    annotationProcessor 'com.squareup:javapoet:1.9.0'
+    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.4'
+    compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
+    compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4' // if you want to support data-bind of android
+
+    lintChecks project(path: ':checks', configuration: "lintChecks")
+    //compile project(':aarwrap')
+}
+

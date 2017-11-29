@@ -33,7 +33,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile 'com.heaven7.core.adapter:adapter:1.8.8'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.3'
+    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
 }
 
 ext {
