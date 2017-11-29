@@ -1,0 +1,74 @@
+apply plugin: 'java-library'
+//apply from: rootProject.file('gradle/maven-publish.gradle')
+
+//group=publishedGroupId
+//version=libraryVersion
+
+dependencies {
+    compileOnly "com.android.tools.lint:lint-api:$lintVersion"
+    compileOnly "com.android.tools.lint:lint-checks:$lintVersion"
+
+    testCompile 'junit:junit:4.12'
+    testCompile "com.android.tools.lint:lint:$lintVersion"
+    testCompile "com.android.tools.lint:lint-tests:$lintVersion"
+    testCompile "com.android.tools:testutils:$lintVersion"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+sourceSets {
+    test {
+        // seem to need this to make sure the resources end up in the right place for tests
+        output.resourcesDir = "build/classes/test"
+    }
+}
+
+jar {
+    manifest {
+        // Only use the "-v2" key here if your checks have been updated to the
+        // new 3.0 APIs (including UAST)
+        attributes("Lint-Registry-v2": "com.heaven7.java.data.mediator.lint.PropertyIssueRegistry")
+    }
+}
+
+configurations {
+    lintChecks
+}
+
+dependencies {
+    lintChecks files(jar)
+}
+
+defaultTasks 'assemble'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'dmchecks'   // Has to be same as your library module name
+
+    publishedGroupId = 'com.heaven7.java.data.mediator.lint'
+    libraryName = bintrayName
+    artifact = bintrayName     // Has to be same as your library module name
+
+    libraryDescription = 'support data-mediator lint on android.'
+
+    // Your github repo link
+    siteUrl = 'https://github.com/LightSun/data-mediator'
+    gitUrl = siteUrl + '.git'
+    githubRepository= 'LightSun/data-mediator'
+
+    libraryVersion = "1.0"
+
+    developerId = 'heaven7'
+    developerName = 'heaven7'
+    developerEmail = 'donshine723@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: 'installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+//gradlew clean build install bintrayUpload
+

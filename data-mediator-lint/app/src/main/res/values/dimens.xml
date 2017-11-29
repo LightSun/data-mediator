@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="size_15">15sp</dimen>
+    <dimen name="size_20">20sp</dimen>
+    <dimen name="size_25">25sp</dimen>
+    <dimen name="size_30">30sp</dimen>
+    <dimen name="size_35">35sp</dimen>
+
+    <dimen name="dip_20">20dp</dimen>
+    <dimen name="dip_30">30dp</dimen>
+
+
+</resources>

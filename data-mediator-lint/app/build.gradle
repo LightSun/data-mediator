@@ -36,7 +36,7 @@ dependencies {
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
     compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4' // if you want to support data-bind of android
 
-    lintChecks project(path: ':checks', configuration: "lintChecks")
-    //compile project(':aarwrap')
+    lintChecks project(path: ':dmchecks', configuration: "lintChecks")
+   // compile project(':dmlint')
 }
 

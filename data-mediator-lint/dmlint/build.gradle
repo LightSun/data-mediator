@@ -3,7 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 26
 
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
@@ -15,15 +14,15 @@ android {
 
 /** Package the given lint checks library into this AAR  */
 dependencies {
-    lintChecks project(':checks')
+    lintChecks project(':dmchecks')
     //lintChecks project(path: ':detector', configuration: "lintChecks")
 }
 
-ext {
+/*ext {
     bintrayRepo = 'maven'
     bintrayName = 'dmlints'   // Has to be same as your library module name
 
-    publishedGroupId = 'com.heaven7.java.data.mediator.lint'
+    publishedGroupId = 'com.heaven7.android.data.mediator.lint'
     libraryName = bintrayName
     artifact = bintrayName     // Has to be same as your library module name
 
@@ -46,6 +45,6 @@ ext {
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'*/
 //gradlew clean build install bintrayUpload
 
