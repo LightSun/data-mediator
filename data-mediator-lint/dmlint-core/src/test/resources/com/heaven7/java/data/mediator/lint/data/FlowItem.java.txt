@@ -1,0 +1,30 @@
+package dm.lint.test;
+
+import com.heaven7.java.data.mediator.DataPools;
+import com.heaven7.java.data.mediator.Field;
+import com.heaven7.java.data.mediator.FieldFlags;
+import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.ListPropertyEditor;
+import com.heaven7.java.data.mediator.Property;
+import com.heaven7.java.data.mediator.internal.SharedProperties;
+
+import java.util.List;
+
+@Fields(value = {
+        @Field(propName = "desc" , complexType = FieldFlags.COMPLEX_LIST),
+})
+public interface FlowItem extends DataPools.Poolable {
+
+    Property PROP_desc = SharedProperties.get(String.class.getName(), "desc", 2);
+
+    FlowItem setDesc(List<String> desc1);
+
+    List<String> getDesc();
+
+    ListPropertyEditor<? extends FlowItem, String> beginDescEditor();
+
+    void getxxx();
+
+}
+
+

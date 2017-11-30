@@ -1,1 +1,1 @@
-include ':app', ':dmchecks', ':dmlint'
+include ':app', ':dmchecks'/*, ':dmlint'*/

@@ -47,8 +47,8 @@ ext {
     bintrayName = 'dmchecks'   // Has to be same as your library module name
 
     publishedGroupId = 'com.heaven7.java.data.mediator.lint'
-    libraryName = bintrayName
-    artifact = bintrayName     // Has to be same as your library module name
+    libraryName = 'dmchecks'
+    artifact = 'dmchecks'      // Has to be same as your library module name
 
     libraryDescription = 'support data-mediator lint on android.'
 

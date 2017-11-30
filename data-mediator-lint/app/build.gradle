@@ -31,12 +31,10 @@ dependencies {
 
     compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.2'
     compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
-    annotationProcessor 'com.squareup:javapoet:1.9.0'
     annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.4'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
     compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4' // if you want to support data-bind of android
 
-    lintChecks project(path: ':dmchecks', configuration: "lintChecks")
-   // compile project(':dmlint')
+    //lintChecks project(path: ':dmchecks', configuration: "lintChecks")
 }
 
