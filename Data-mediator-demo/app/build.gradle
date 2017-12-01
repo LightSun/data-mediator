@@ -55,6 +55,7 @@ dependencies {
     apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.4'
     compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
    // compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4'
+    compile 'com.heaven7.android.data.mediator.lint:dmlint:1.2'
 
     compile project(':data-mediator-android')
     //helper util
