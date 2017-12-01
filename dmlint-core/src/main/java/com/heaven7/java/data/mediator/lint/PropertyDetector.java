@@ -15,10 +15,7 @@ import org.jetbrains.uast.UClass;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UMethod;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.heaven7.java.data.mediator.lint.PropertyUtils.getProp;
 import static com.heaven7.java.data.mediator.lint.PropertyUtils.getPropInfoWithSupers;
@@ -39,7 +36,7 @@ public class PropertyDetector extends Detector implements Detector.UastScanner {
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
-        return Collections.singletonList(UClass.class);
+        return Collections.<Class<? extends UElement>>singletonList(UClass.class);
     }
 
     @Override
