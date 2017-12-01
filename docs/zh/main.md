@@ -288,6 +288,10 @@ public class SimplePropertyChainActivity extends BaseActivity {
     
 }
 ```
+  * android lint 库的支持。辅助开发
+  ```java
+    compile 'com.heaven7.android.data.mediator.lint:dmlint:1.2'
+  ```
 
 # 安装
  * 安装idea插件(data-mediator-intellij-plugin.jar). see [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2)
