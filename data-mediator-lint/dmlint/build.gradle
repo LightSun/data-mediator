@@ -14,13 +14,13 @@ android {
 
 /** Package the given lint checks library into this AAR  */
 dependencies {
-    lintChecks project(':dmchecks')
+    lintChecks project(':dmlint-core')
     //lintChecks project(path: ':detector', configuration: "lintChecks")
 }
 
-/*ext {
+ext {
     bintrayRepo = 'maven'
-    bintrayName = 'dmlints'   // Has to be same as your library module name
+    bintrayName = 'dmlint'   // Has to be same as your library module name
 
     publishedGroupId = 'com.heaven7.android.data.mediator.lint'
     libraryName = bintrayName
@@ -45,6 +45,6 @@ dependencies {
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'*/
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
 //gradlew clean build install bintrayUpload
 

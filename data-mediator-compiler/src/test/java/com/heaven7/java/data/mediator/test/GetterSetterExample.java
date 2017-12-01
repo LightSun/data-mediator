@@ -23,8 +23,4 @@ public class GetterSetterExample {
    * @param name The new value.
    */
   @Setter(AccessLevel.PROTECTED) private String name;
-  
-  @Override public String toString() {
-    return String.format("%s (age: %d)", name, this.age);
-  }
 }
