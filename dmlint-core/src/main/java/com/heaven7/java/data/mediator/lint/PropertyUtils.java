@@ -1,15 +1,7 @@
 package com.heaven7.java.data.mediator.lint;
 
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiAnnotationMemberValue;
-import com.intellij.psi.PsiConstantEvaluationHelper;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiType;
+import com.intellij.psi.*;
 import com.intellij.util.containers.ArrayListSet;
-
-import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UClass;
 
 import java.util.Set;
@@ -25,17 +17,26 @@ import java.util.Set;
 
     static Set<PropertyDetector.PropInfo> getPropInfoWithSupers(UClass uClass){
         Set<PropertyDetector.PropInfo> mSet = new ArrayListSet<>();
-        do{
-            getPropInfosForClass(uClass, mSet);
-            uClass = uClass.getSuperClass();
-        }while (uClass != null &&
-                !uClass.getQualifiedName().startsWith("java.")
-                && !uClass.getQualifiedName().startsWith("android."));
+        getPropInfoWithSupers(uClass.getPsi(), mSet);
         return mSet;
     }
+    private static void getPropInfoWithSupers(PsiClass uClass, Set<PropertyDetector.PropInfo> out){
+        if(uClass == null || uClass.getQualifiedName().startsWith("java.")
+                || uClass.getQualifiedName().startsWith("android.")){
+            return;
+        }
+        getPropInfosForTarget(uClass, out);
+        for(PsiClass clazz : uClass.getInterfaces()){
+           getPropInfoWithSupers(clazz, out);
+        }
+    }
 
-    private static void getPropInfosForClass(UClass uClass, Set<PropertyDetector.PropInfo> mSet) {
-        for(UAnnotation ua : uClass.getAnnotations()){
+    private static void getPropInfosForTarget(PsiClass psiClass, Set<PropertyDetector.PropInfo> mSet) {
+        final PsiModifierList list = psiClass.getModifierList();
+        if(list == null){
+            return;
+        }
+        for(PsiAnnotation ua : list.getAnnotations()){
             if(!getPropInfosOfFields(ua, mSet)){
                 return;
             }
@@ -43,16 +44,15 @@ import java.util.Set;
     }
 
     //true means success
-    private static boolean getPropInfosOfFields(UAnnotation ua, Set<PropertyDetector.PropInfo> mSet) {
-        String qualifiedName = ua.getQualifiedName();
+    private static boolean getPropInfosOfFields(PsiAnnotation psa_fields, Set<PropertyDetector.PropInfo> mSet) {
+        String qualifiedName = psa_fields.getQualifiedName();
         if(qualifiedName == null || !qualifiedName.equals(FOCUS_FIELDS)){
             return false;
         }
        // Set<PropertyDetector.PropInfo> mSet = new ArrayListSet<>();
-        PsiConstantEvaluationHelper evaluation = JavaPsiFacade.getInstance(ua.getPsi().getProject())
+        PsiConstantEvaluationHelper evaluation = JavaPsiFacade.getInstance(psa_fields.getProject())
                 .getConstantEvaluationHelper();
 
-        PsiAnnotation psa_fields = (PsiAnnotation) ua.getPsi();
         PsiAnnotationMemberValue tempValues = psa_fields.findAttributeValue("value");
         if(tempValues == null){
             return false;

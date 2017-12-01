@@ -38,6 +38,9 @@ dependencies {
     testCompile "com.android.tools.lint:lint:$lintVersion"
     testCompile "com.android.tools.lint:lint-tests:$lintVersion"
     testCompile "com.android.tools:testutils:$lintVersion"
+
+    testCompile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.2'
+    testCompile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
 }
 
 jar {
@@ -52,7 +55,7 @@ publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.lint'
     artifactId = 'dmlint-core'
-    publishVersion = '1.0'
+    publishVersion = '1.2'
     desc = 'this is a lint lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }

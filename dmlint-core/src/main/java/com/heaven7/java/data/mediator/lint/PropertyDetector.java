@@ -68,11 +68,15 @@ public class PropertyDetector extends Detector implements Detector.UastScanner {
 
         @Override
         public void visitClass(UClass uClass) {
+            //only check interface
+            if(!uClass.isInterface()){
+                return;
+            }
             Set<PropInfo> infos = getPropInfoWithSupers(uClass);
             if(infos.isEmpty()){
                 return;
             }
-
+           //check method is relative of any field
             for(UMethod method: uClass.getMethods()){
                 PsiModifierList list = method.getModifierList();
                 PsiAnnotation pa_keep = list.findAnnotation(NAME_KEEP);
