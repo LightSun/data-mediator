@@ -10,6 +10,9 @@
 *.tar.gz
 *.rar
 hs_err_pid*
+.build/
+.out/
+.idea/
 .idea/*/*
 .idea/*
 .idea/.name
