@@ -111,6 +111,10 @@ public class SimplePropertyChainActivity extends BaseActivity {
      <img src="res/data-mediator-generator.gif" alt="generattor demo"/>
   * the plugin of 'data-mediator-convertor-intellij-plugin' used to convert java bean to the base module of this framework.<br>
      <img src="res/data-mediator-convertor.gif" alt="convertor demo"/>
+* 14, support android lint.    
+```java
+  compile 'com.heaven7.android.data.mediator.lint:dmlint:1.2'
+```
 
 # Install 
  * first , install the plugin of 'data-mediator-intellij-plugin', see it in [release](https://github.com/LightSun/data-mediator/releases/tag/1.4.2).
