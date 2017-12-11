@@ -334,12 +334,6 @@ public class TestPropertyChangeActivity extends BaseActivity {
 
 # Reading The Source
 * see [here](https://github.com/LightSun/data-mediator/blob/master/docs/en/reading_source.md).
-  
-# Using apps
-* Data-Mediator is collecting the product list which are using this framework.
-Your registration will allow more people to participate and use Data-Mediator.
-Data-Mediator will therefore be able to cover more business scenarios. 
-if you want please send email(with application logo) to me.
 
 # Thanks
  - [javapoet](https://github.com/square/javapoet)
