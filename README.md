@@ -331,7 +331,8 @@ public class TestPropertyChangeActivity extends BaseActivity {
 -keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
 
 ```
-
+# Todo
+* process opposite state in 'DataBindingViewHolder'.
 # Reading The Source
 * see [here](https://github.com/LightSun/data-mediator/blob/master/docs/en/reading_source.md).
 
