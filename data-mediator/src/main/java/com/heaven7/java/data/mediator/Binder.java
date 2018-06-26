@@ -32,7 +32,7 @@ import java.util.WeakHashMap;
  * Created by heaven7 on 2017/9/23.
  * @since 1.0.8
  */
-public abstract class Binder<T> {
+public abstract class Binder<T> implements GroupDataManager.MediatorDelegate<T>{
 
     private final Map<Object, DataMediatorCallback<T>> mMap;
     private final DataMediator<T> mMediator;
@@ -72,6 +72,7 @@ public abstract class Binder<T> {
      * get the target data mediator.
      * @return  the data mediator.
      */
+    @Override
     public DataMediator<T> getDataMediator(){
         return mMediator;
     }

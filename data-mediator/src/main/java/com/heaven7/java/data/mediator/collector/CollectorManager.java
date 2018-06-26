@@ -58,7 +58,7 @@ public interface CollectorManager {
 
     /**
      * close the collector manager and make target receiver receive the {@linkplain PropertyEvent}.
-     * @param receiver the property event receiver.
+     * @param receiver the property event receiver. can be null.
      */
     void close(PropertyEventReceiver receiver);
 
