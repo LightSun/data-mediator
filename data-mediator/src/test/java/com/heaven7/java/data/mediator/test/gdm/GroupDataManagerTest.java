@@ -1,6 +1,5 @@
 package com.heaven7.java.data.mediator.test.gdm;
 
-import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.GroupDataManager;
@@ -37,7 +36,7 @@ public class GroupDataManagerTest extends TestCase {
         gp.setProperty(TestState.PROP_state);
         gp.setValue(FOCUS_VALUE);
         gp.setOppositeValue(OPPISITE_VALUE);
-        GroupDataManager.of(list, Arrays.asList(gp));
+        GroupDataManager.of(list, Arrays.asList(gp)).attach();
     }
 
     private List<TestState> createDatas() {
@@ -53,7 +52,6 @@ public class GroupDataManagerTest extends TestCase {
     }
 
     public void test1() {
-        //TODO....
         TestState state = mList.get(1).getDataMediator().getDataProxy();
         state.setState(FOCUS_VALUE);
         System.out.println(mList.get(0).getDataMediator().getData().getState());

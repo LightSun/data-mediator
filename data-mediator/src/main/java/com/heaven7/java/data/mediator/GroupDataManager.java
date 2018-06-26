@@ -22,8 +22,7 @@ public final class GroupDataManager<T>{
 
     // (key, value) = (type, GroupProperty)
     private final SparseArray<List<GroupProperty>> mPropMap = new SparseArray<>();
-    private SparseArray<? extends MediatorDelegate<T>> mSparseArr;
-    private List<? extends MediatorDelegate<T>> mList;
+    private final State mState;
 
     private final DataMediatorCallback<T> mCallback = new DataMediatorCallback<T>() {
         @Override
@@ -31,8 +30,17 @@ public final class GroupDataManager<T>{
             GroupDataManager.this.onPropertyValueChanged(data, prop, oldValue, newValue);
         }
     };
-
-    private GroupDataManager() {
+    @SuppressWarnings("unchecked")
+    private GroupDataManager(Object group) {
+        if(group instanceof List) {
+            mState = new ListState((List<? extends MediatorDelegate<T>>) group);
+        }else if(group instanceof SparseArray){
+            mState = new SparseArrayState((SparseArray<? extends MediatorDelegate<T>>) group);
+        }else if(group.getClass().isArray()){
+            mState = new ArrayState((MediatorDelegate<T>[]) group);
+        }else{
+            throw new UnsupportedOperationException("unknown group type");
+        }
     }
     /**
      * attach a group of 'mediator-delegate' to GroupDataManager.
@@ -43,7 +51,9 @@ public final class GroupDataManager<T>{
      * @return the GroupDataManager.
      */
     public static <T, D extends MediatorDelegate<T>> GroupDataManager<T> of(D[] array, List<GroupProperty> gps) {
-        return of(Arrays.asList(array), gps);
+        GroupDataManager<T> gdm = new GroupDataManager<>(array);
+        gdm.prepare(gps);
+        return gdm;
     }
     /**
      * attach a group of 'mediator-delegate' to GroupDataManager.
@@ -54,11 +64,7 @@ public final class GroupDataManager<T>{
      * @return the GroupDataManager.
      */
     public static  <T, D extends MediatorDelegate<T>> GroupDataManager<T> of(List<D> delegateList, List<GroupProperty> gps) {
-        GroupDataManager<T> gdm = new GroupDataManager<>();
-        gdm.mList = delegateList;
-        for(MediatorDelegate<T> md : delegateList){
-             md.getDataMediator().addDataMediatorCallback(gdm.mCallback);
-        }
+        GroupDataManager<T> gdm = new GroupDataManager<>(delegateList);
         gdm.prepare(gps);
         return gdm;
     }
@@ -72,17 +78,17 @@ public final class GroupDataManager<T>{
      * @return the GroupDataManager.
      */
     public static  <T, D extends MediatorDelegate<T>> GroupDataManager<T> of(SparseArray<D> sa, List<GroupProperty> gps) {
-        GroupDataManager<T> gdm = new GroupDataManager<>();
-        gdm.mSparseArr = sa;
-        int size = sa.size();
-        for (int i = size - 1; i >=0 ; i --){
-            MediatorDelegate<T> delegate = sa.get(sa.keyAt(i));
-            if(delegate != null){
-                delegate.getDataMediator().addDataMediatorCallback(gdm.mCallback);
-            }
-        }
+        GroupDataManager<T> gdm = new GroupDataManager<>(sa);
         gdm.prepare(gps);
         return gdm;
+    }
+
+    public void attach(){
+        mState.attach();
+    }
+
+    public void detach(){
+        mState.detach();
     }
 
     private void prepare(List<GroupProperty> gps) {
@@ -118,36 +124,16 @@ public final class GroupDataManager<T>{
         if(target.asFlags){
             if((value & target.value) == target.value){
                 //contains
-                doMutex(target, data);
+                mState.doMutex(target, data);
                 return true;
             }
         }else{
             if(value == target.value){
-                doMutex(target, data);
+                mState.doMutex(target, data);
                 return true;
             }
         }
         return false;
-    }
-
-    private void doMutex(GroupProperty target, T data) {
-         if(!Predicates.isEmpty(mList)){
-             for(MediatorDelegate<T> md : mList){
-                 if(md.getDataMediator().getData() == data){
-                     continue;
-                 }
-                 setMutexValue(target, md);
-             }
-         }else if(mSparseArr != null){
-             int size = mSparseArr.size();
-             for (int i = size - 1; i >=0 ; i --){
-                 MediatorDelegate<T> delegate = mSparseArr.get(mSparseArr.keyAt(i));
-                 if(delegate.getDataMediator().getData() == data){
-                     continue;
-                 }
-                 setMutexValue(target, delegate);
-             }
-         }
     }
 
     private void setMutexValue(GroupProperty target, MediatorDelegate<T> md) {
@@ -227,5 +213,110 @@ public final class GroupDataManager<T>{
 
     public interface MediatorDelegate<T> {
         DataMediator<T> getDataMediator();
+    }
+    private interface State{
+        void attach();
+        void detach();
+        void doMutex(GroupProperty target, Object data);
+    }
+    private class ArrayState implements State{
+
+        private final MediatorDelegate<T>[] array;
+
+        ArrayState(MediatorDelegate<T>[] array) {
+            this.array = array;
+        }
+
+        @Override
+        public void attach() {
+            for (MediatorDelegate<T> delegate : array){
+                delegate.getDataMediator().addDataMediatorCallback(mCallback);
+            }
+        }
+        @Override
+        public void detach() {
+            for (MediatorDelegate<T> delegate : array){
+                delegate.getDataMediator().removeDataMediatorCallback(mCallback);
+            }
+        }
+        @Override
+        public void doMutex(GroupProperty target, Object data) {
+            for(MediatorDelegate<T> md : array){
+                if(md.getDataMediator().getData() == data){
+                    continue;
+                }
+                setMutexValue(target, md);
+            }
+        }
+    }
+
+    private class ListState implements State{
+        private final List<? extends MediatorDelegate<T>> mList;
+        ListState(List<? extends MediatorDelegate<T>> mList) {
+            this.mList = mList;
+        }
+        @Override
+        public void attach() {
+            for (MediatorDelegate<T> delegate : mList){
+                delegate.getDataMediator().addDataMediatorCallback(mCallback);
+            }
+        }
+        @Override
+        public void detach() {
+            for (MediatorDelegate<T> delegate : mList){
+                delegate.getDataMediator().removeDataMediatorCallback(mCallback);
+            }
+        }
+        @Override
+        public void doMutex(GroupProperty target, Object data) {
+            for(MediatorDelegate<T> md : mList){
+                if(md.getDataMediator().getData() == data){
+                    continue;
+                }
+                setMutexValue(target, md);
+            }
+        }
+    }
+
+    private class SparseArrayState implements State{
+
+        private final SparseArray<? extends MediatorDelegate<T>> mSa;
+
+        SparseArrayState(SparseArray<? extends MediatorDelegate<T>> mSa) {
+            this.mSa = mSa;
+        }
+        @Override
+        public void attach() {
+            int size = mSa.size();
+            for (int i = size - 1; i >=0 ; i --){
+                MediatorDelegate<T> delegate = mSa.get(mSa.keyAt(i));
+                if(delegate != null){
+                    delegate.getDataMediator().addDataMediatorCallback(mCallback);
+                }
+            }
+        }
+        @Override
+        public void detach() {
+            int size = mSa.size();
+            for (int i = size - 1; i >=0 ; i --){
+                MediatorDelegate<T> delegate = mSa.get(mSa.keyAt(i));
+                if(delegate != null){
+                    delegate.getDataMediator().removeDataMediatorCallback(mCallback);
+                }
+            }
+        }
+        @Override
+        public void doMutex(GroupProperty target, Object data) {
+            int size = mSa.size();
+            for (int i = size - 1; i >=0 ; i --){
+                MediatorDelegate<T> delegate = mSa.get(mSa.keyAt(i));
+                if(delegate != null) {
+                    if (delegate.getDataMediator().getData() == data) {
+                        continue;
+                    }
+                    setMutexValue(target, delegate);
+                }
+            }
+        }
     }
 }
