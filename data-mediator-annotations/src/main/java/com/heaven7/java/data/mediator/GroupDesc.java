@@ -25,7 +25,7 @@ public @interface GroupDesc {
      * define the type of how to use group property which is define by {@linkplain #prop()}
      * @return the type
      */
-    int type() default GroupDataManager.TYPE_MUTEX;
+    byte type() default GroupDataManager.TYPE_MUTEX;
 
     /**
      * define focus value which will be listen.
