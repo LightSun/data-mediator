@@ -54,7 +54,7 @@ public final class DataMediatorConstants {
     public static final String SN_GLOBAL_SETTING             = "GlobalSetting";
     public static final String SN_DATA_BINDING               = "DataBinding";
     public static final String SN_INTERNAL_UTILS             = "InternalUtils";
-    public static final String SIMPLE_NAME_GPS               = "$Gps";
+    public static final String SIMPLE_NAME_GPS               = "Gps";
 
     public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
     public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";

@@ -7,7 +7,7 @@ public class TestLombok {
     @Test
     public void test(){
         GetterSetterExample example = new GetterSetterExample();
-        example.setAge(20);
+        //example.setAge(20);
     }
 
 

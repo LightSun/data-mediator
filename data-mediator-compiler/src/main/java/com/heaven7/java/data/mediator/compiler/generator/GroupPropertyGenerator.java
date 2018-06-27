@@ -1,7 +1,6 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
 import com.heaven7.java.data.mediator.Fields;
-import com.heaven7.java.data.mediator.GroupDesc;
 import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.GroupProperty;
 import com.heaven7.java.data.mediator.compiler.ProcessorContext;
@@ -36,16 +35,19 @@ public class GroupPropertyGenerator extends BaseGenerator {
         //super class
         TypeElement superClass = getSuperClass(te, delegate);
         if(superClass != null){
-            builder.superclass(ClassName.get(superClass));
+            final String pkg = getElements().getPackageOf(superClass).getQualifiedName().toString();
+            final ClassName cn = ClassName.get(pkg,
+                    getContext().getTargetClassName(superClass) + GROUP_PROPERTY_SUFFIX);
+            builder.superclass(cn);
         }else{
-            builder.superclass(ClassName.get(PKG_DM_INTERNAL, SIMPLE_NAME_GPS));
+            builder.superclass(ClassName.get(PKG_PROP, SIMPLE_NAME_GPS));
         }
         //constructor
         MethodSpec.Builder constructor = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("super()");
         for(GroupProperty gp : gps){
-            constructor.addStatement("this.addGroupProperty(createGroupProperty($L, $T.$N, $L, $L, $L))",
+            constructor.addStatement("this.addGroupProperty(createGroupProperty((byte)$L, $T.$N, $L, $L, $L))",
                     gp.getType(), ClassName.get(te), PREFIX_PROP + gp.getProp(),
                     gp.getFocusVal(), gp.getOppositeVal(), gp.isAsFlags());
         }
