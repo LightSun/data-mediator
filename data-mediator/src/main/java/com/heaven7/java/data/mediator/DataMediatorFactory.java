@@ -36,10 +36,10 @@ public final class DataMediatorFactory {
      * @return the 'Gps'
      * @since 1.4.5
      */
-    public static $Gps createGps(Class<?> clazz){
+    public static Gps createGps(Class<?> clazz){
         try {
             Class<?> class_gps =  Class.forName(clazz.getName() + "_$GPS");
-            return ($Gps) class_gps.newInstance();
+            return (Gps) class_gps.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
         }

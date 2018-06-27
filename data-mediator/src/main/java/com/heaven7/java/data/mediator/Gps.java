@@ -9,11 +9,11 @@ import java.util.List;
  * @author heaven7
  * @since 1.4.5
  */
-public abstract class $Gps {
+public abstract class Gps {
 
     private final List<GroupDataManager.GroupProperty> mGps;
 
-    public $Gps() {
+    public Gps() {
         this.mGps = new ArrayList<>(3);
     }
 
