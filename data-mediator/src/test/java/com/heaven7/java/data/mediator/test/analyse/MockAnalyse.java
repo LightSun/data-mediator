@@ -9,7 +9,7 @@ public class MockAnalyse {
     TestTarget target;
 
     // A, B, C,  D   D,  C , B, A
-    @Test
+    //@Test
     public void test1(){
         //target.register
         tm.register(TestTarget.class, new SimpleTraceAnalyzer());

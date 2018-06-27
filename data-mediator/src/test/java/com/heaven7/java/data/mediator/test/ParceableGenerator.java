@@ -24,7 +24,7 @@ import javax.lang.model.element.Modifier;
  }
  * Created by heaven7 on 2017/9/7.
  */
-public class ParceableGenerator extends TestCase{
+public class ParceableGenerator{
 
     private String  mClassname = "TestBean";
     private String  mTargetPackage = "com.heaven7";

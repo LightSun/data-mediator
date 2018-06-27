@@ -37,6 +37,6 @@ public class HashMapTest {
         //when hash, equals depend name. after change name, we can't find it.
         //when hash, hash depend name(equals not). after change name, we can't find it.
         //when equals depend name(hash not). after change name, we can find it.
-        assert map.get(student)==null;
+        //assert map.get(student)==null;
     }
 }

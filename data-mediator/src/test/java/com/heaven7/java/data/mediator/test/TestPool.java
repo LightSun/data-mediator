@@ -13,7 +13,7 @@ public class TestPool extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        DataPools.preparePool(StudentModule_Impl.class.getName(), 10);
+        //DataPools.preparePool(StudentModule_Impl.class.getName(), 10);
         super.setUp();
     }
 
@@ -23,7 +23,11 @@ public class TestPool extends TestCase {
         //DataPools.sMap.clear();
     }
 
-   /* public void testObtain(){
+    public void test1(){
+        System.out.println();
+    }
+
+    /*public void testObtain(){
         try {
             DataPools.obtain(StudentModule_Impl.class);
         }catch (Exception e){
