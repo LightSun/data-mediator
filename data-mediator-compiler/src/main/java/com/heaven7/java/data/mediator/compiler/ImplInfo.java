@@ -40,7 +40,7 @@ public class ImplInfo {
                       .returns(info.getReturnType());
 
               final List<ParamInfo> paramInfos = info.getParamInfos();
-              final Object[] params = new Object[ 3 + paramInfos.size()]; //implClass + implName + module + other params.
+              final Object[] params = new Object[ 3 + paramInfos.size()]; //implClass + implName + module + dependProp + other params.
               params[0] = info.getImplClass().getTypeName();
               params[1] = info.getImplMethodName();
               params[2] = "this";
@@ -75,6 +75,17 @@ public class ImplInfo {
         private FieldData.TypeCompat implClass;
         private boolean returnVoid;
         private String implMethodName;
+        private List<FieldData> dependProps;//currently not used.
+
+        public List<FieldData> getDependProps() {
+            return dependProps;
+        }
+        public boolean hasDependProp(){
+            return dependProps != null && dependProps.size() >0;
+        }
+        public void setDependProps(List<FieldData> dependProps) {
+            this.dependProps = dependProps;
+        }
 
         public TypeName getReturnType() {
             return returnType;

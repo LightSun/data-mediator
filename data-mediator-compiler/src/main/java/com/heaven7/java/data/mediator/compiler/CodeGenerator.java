@@ -1,5 +1,6 @@
 package com.heaven7.java.data.mediator.compiler;
 
+import com.heaven7.java.data.mediator.compiler.generator.GroupPropertyGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.ProxyGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.TypeAdapterGenerator;
@@ -27,8 +28,8 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 /*public*/ class CodeGenerator {
 
     private static final String TAG = CodeGenerator.class.getSimpleName();
-   // replaced by idea-plugin
-   // private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
+    // replaced by idea-plugin
+    // private static final BaseMemberBuilder sInterfaceBuilder = new BaseMemberBuilder();
     private static final BaseMemberBuilder sClassBuilder = new ClassMemberBuilder();
 
     private final TypeElement mElement;
@@ -39,16 +40,24 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
     private final TargetClassInfo mClassInfo = new TargetClassInfo();
     private int mMaxPoolCount; //max pool size
-    /** current impl info
+    /**
+     * current impl info
+     *
      * @since 1.3.0
-     * */
+     */
     private ImplInfo mImplInfo; //@ImplClass .@ImplMethod
     /**
      * super impl infos
+     *
      * @since 1.3.0
      */
     private List<ImplInfo> mSuperImplInfos;
     private boolean mGenerateJsonAdapter = true;
+
+    /**
+     * group property for @GroupDesc
+     */
+    private List<GroupProperty> mGroupProps;
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
@@ -56,44 +65,64 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         this.mElements = mElementUtils;
     }
 
+    public TypeElement getTypeElement() {
+        return mElement;
+    }
     public void setGenerateJsonAdapter(boolean generate) {
-          this.mGenerateJsonAdapter = generate;
+        this.mGenerateJsonAdapter = generate;
     }
 
     public void setEnableChain(boolean mEnableChain) {
         this.mEnableChain = mEnableChain;
     }
-    public  List<FieldData> getFieldDatas(){
+
+    public List<FieldData> getFieldDatas() {
         return mFields;
     }
 
     public void setMaxPoolCount(int maxPoolCount) {
         this.mMaxPoolCount = maxPoolCount;
     }
-    /** @since 1.3.0 */
+
+    /**
+     * @since 1.3.0
+     */
     public void setCurrentImplInfo(ImplInfo cur_info) {
         this.mImplInfo = cur_info;
     }
 
-    /** @since 1.3.0 */
+    public void addGroupProperty(GroupProperty gp) {
+        if (mGroupProps == null) {
+            mGroupProps = new ArrayList<>();
+        }
+        mGroupProps.add(gp);
+    }
+
+    /**
+     * @since 1.3.0
+     */
     public void setSuperImplInfos(List<ImplInfo> superImplInfos) {
         this.mSuperImplInfos = superImplInfos;
     }
+
     /**
      * generate interface, impl and proxy .java files.
-     * @param filer the filer,
+     *
+     * @param filer    the filer,
      * @param mPrinter the log printer
+     * @param delegate the delegate
      * @return true if generate success.
      */
-    public boolean generateJavaFile(Filer filer, ProcessorPrinter mPrinter) {
+    public boolean generateJavaFile(Filer filer, ProcessorPrinter mPrinter, GroupPropertyGenerator.TypeElementDelegate delegate) {
 
         final boolean normalJavaBean = !mEnableChain;
         final String log_method = "generateJavaFile";
+
         //package name
         final String fullName = mElement.getQualifiedName().toString();
         final String packageName = mElements.getPackageOf(mElement).getQualifiedName().toString();
-        final  List<? extends TypeMirror> interfaces = mElement.getInterfaces();
-        mPrinter.note(TAG, log_method,  "super interfaces: " + interfaces);
+        final List<? extends TypeMirror> interfaces = mElement.getInterfaces();
+        mPrinter.note(TAG, log_method, "super interfaces: " + interfaces);
 
         OutInterfaceManager.setLogPrinter(mPrinter);
         final Map<String, List<FieldData>> groupMap = OutInterfaceManager.groupFieldByInterface(mFields);
@@ -102,7 +131,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         final Set<FieldData> superFields = new HashSet<>();
         final String interfaceName = Util.getRawTargetClassName(packageName, fullName);
         final TypeName selfParamType = ClassName.get(packageName, interfaceName);
-        mPrinter.note(TAG, log_method,  "start element = " +
+        mPrinter.note(TAG, log_method, "start element = " +
                 packageName + "." + interfaceName, " , superFields = " + superFields);
 
         //set target class info
@@ -126,12 +155,12 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         final int superFlagsForParent = OutInterfaceManager.getSuperInterfaceFlagForParent(
                 mElement, mElements, mTypes, mPrinter);
         // implBuilder.superclass()
-        boolean usedSuperClass = false ;
+        boolean usedSuperClass = false;
         boolean hasSelectable = hasFlag(superFlagsForParent, FieldData.FLAG_SELECTABLE);
         implBuilder.addSuperinterface(selfParamType);
 
-        if(interfaces != null){
-            for(TypeMirror tm : interfaces){
+        if (interfaces != null) {
+            for (TypeMirror tm : interfaces) {
                 //replace interface if need
                 FieldData.TypeCompat tc = new FieldData.TypeCompat(mTypes, tm);
                 implBuilder.addSuperinterface(tc.getTypeName());
@@ -139,46 +168,51 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
                 //handle super class.
                 TypeName superclassType = tc.getSuperClassTypeName();
 
-                if(superclassType != null){
-                    if(usedSuperClass){
+                if (superclassType != null) {
+                    if (usedSuperClass) {
                         mPrinter.error(TAG, log_method, "implBuilder >> can only have one super class.");
                         return false;
-                    }else{
+                    } else {
                         implBuilder.superclass(superclassType);
                         mClassInfo.setSuperClass(superclassType);
                         usedSuperClass = true;
                     }
                 }
                 //handle selectable
-                if(!hasSelectable){
-                   if(tc.toString().equals(NAME_SELECTABLE)){
-                       hasSelectable = true;
-                   }
+                if (!hasSelectable) {
+                    if (tc.toString().equals(NAME_SELECTABLE)) {
+                        hasSelectable = true;
+                    }
                 }
             }
             //handle super fields when in multi module.
-            if(usedSuperClass && superFields.isEmpty()){
+            if (usedSuperClass && superFields.isEmpty()) {
                 MultiModuleSuperFieldDelegate multiDelegate = new
                         MultiModuleSuperFieldDelegate(mElements, mTypes, mPrinter);
-                for(TypeMirror tm : interfaces){
+                for (TypeMirror tm : interfaces) {
                     superFields.addAll(multiDelegate.getDependFields(
                             (TypeElement) mTypes.asElement(tm)));
                 }
             }
         }
         //=====================================================================
+
         //type adapter
         Set<FieldData> allFields = new HashSet<>(mFields);
         allFields.addAll(superFields);
+        //prepare
+        if (!prepareGroupProperty(mPrinter, allFields, delegate)) {
+            return false;
+        }
         //type adapter.
-        if(!TypeAdapterGenerator.generate(mClassInfo, allFields, filer)){
+        if (!TypeAdapterGenerator.generate(mClassInfo, allFields, filer)) {
             return false;
         }
         //annotation and static code
         setClassInfo(mClassInfo);
         addClassAnnotation(implBuilder);
         CodeBlock.Builder staticCodeBuilder = CodeBlock.builder();
-        if(addStaticCode(staticCodeBuilder,  mMaxPoolCount)){
+        if (addStaticCode(staticCodeBuilder, mMaxPoolCount)) {
             implBuilder.addStaticBlock(staticCodeBuilder.build());
         }
         //======================================================================
@@ -186,15 +220,15 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         //do something for super class/interface
         final List<? extends TypeMirror> mirrors = OutInterfaceManager.getAttentionInterfaces(
                 mElement, mTypes, mPrinter);
-        for(TypeMirror temp_tm : mirrors){
+        for (TypeMirror temp_tm : mirrors) {
             FieldData.TypeCompat temp_tc = new FieldData.TypeCompat(mTypes, temp_tm);
             //normal methods
-           MethodSpec.Builder[] builders =  OutInterfaceManager.getImplClassMethodBuilders(mClassInfo,
+            MethodSpec.Builder[] builders = OutInterfaceManager.getImplClassMethodBuilders(mClassInfo,
                     selfParamType, temp_tc, mPrinter,
-                   groupMap, usedSuperClass, superFlagsForParent);
-            if(builders != null){
-                for (MethodSpec.Builder builder : builders){
-                    if(builder != null) {
+                    groupMap, usedSuperClass, superFlagsForParent);
+            if (builders != null) {
+                for (MethodSpec.Builder builder : builders) {
+                    if (builder != null) {
                         implBuilder.addMethod(builder.build());
                     }
                 }
@@ -203,9 +237,9 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             // note : super class may not impl Parcelable.
             MethodSpec.Builder[] constructors = OutInterfaceManager.getImplClassConstructBuilders(packageName,
                     className, temp_tc, groupMap, usedSuperClass, superFlagsForParent);
-            if(constructors != null ){
-                for (MethodSpec.Builder builder : constructors){
-                    if(builder != null){
+            if (constructors != null) {
+                for (MethodSpec.Builder builder : constructors) {
+                    if (builder != null) {
                         implBuilder.addMethod(builder.build());
                     }
                 }
@@ -214,9 +248,9 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             //[fields]
             final FieldSpec.Builder[] fieldBuilders = OutInterfaceManager.getImplClassFieldBuilders(
                     packageName, className, temp_tc, groupMap, superFlagsForParent);
-            if(fieldBuilders != null) {
+            if (fieldBuilders != null) {
                 for (FieldSpec.Builder builder : fieldBuilders) {
-                    if(builder != null){
+                    if (builder != null) {
                         implBuilder.addField(builder.build());
                     }
                 }
@@ -234,7 +268,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
                 normalJavaBean ? TypeName.VOID : selfParamType, selfParamType);
 
         //implements all methods of  @ImplMethods
-        if(mImplInfo != null && mImplInfo.isValid()){
+        if (mImplInfo != null && mImplInfo.isValid()) {
             mImplInfo.addImplMethods(implBuilder);
             mSuperImplInfos.add(mImplInfo);
         }
@@ -258,20 +292,43 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             //to generate proxy class. with base method for fields.
             superFields.addAll(mFields);
             //add selectable field if need
-            if(hasSelectable){
+            if (hasSelectable) {
                 superFields.add(FD_SELECTABLE);
             }
 
             //do generate proxy
-            if(!ProxyGenerator.generateProxy(mClassInfo, superFields, mSuperImplInfos,
-                    normalJavaBean ,builders, filer, mPrinter)){
+            if (!ProxyGenerator.generateProxy(mClassInfo, superFields, mSuperImplInfos,
+                    normalJavaBean, builders, filer, mPrinter)) {
                 return false;
             }
         } catch (IOException e) {
             mPrinter.error(TAG, log_method, Util.toString(e));
             return false;
-        }finally {
+        } finally {
             OutInterfaceManager.reset();
+        }
+        return true;
+    }
+
+    private boolean prepareGroupProperty(ProcessorPrinter printer, Set<FieldData> allFields,
+                                         GroupPropertyGenerator.TypeElementDelegate delegate) {
+        if (mGroupProps != null) {
+            out:
+            for (GroupProperty gp : mGroupProps) {
+                for (FieldData fd : allFields) {
+                     if(fd.getPropertyName().equals(gp.getProp())){
+                         gp.setFieldData(fd);
+                         continue out;
+                     }
+                }
+                printer.error(TAG, "prepareGroupProperty", "can't find field for property = " + gp.getProp());
+                return false;
+            }
+            //generate gps.
+            if(!new GroupPropertyGenerator(delegate.getContext())
+                    .generate(getTypeElement(), mGroupProps, delegate)){
+                return false;
+            }
         }
         return true;
     }
@@ -279,7 +336,7 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
     private void insertOverrideMethods(TypeSpec.Builder implBuilder, boolean usedSuperClass, boolean hasSelectable) {
         Set<FieldData> list = new HashSet<>(mFields);
         //super will handle it. sub class should not handle it.
-        if(!usedSuperClass && hasSelectable){
+        if (!usedSuperClass && hasSelectable) {
             list.add(FD_SELECTABLE);
         }
         overrideMethodsForImpl(implBuilder, list);

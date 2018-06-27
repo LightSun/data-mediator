@@ -54,10 +54,13 @@ public final class DataMediatorConstants {
     public static final String SN_GLOBAL_SETTING             = "GlobalSetting";
     public static final String SN_DATA_BINDING               = "DataBinding";
     public static final String SN_INTERNAL_UTILS             = "InternalUtils";
+    public static final String SIMPLE_NAME_GPS               = "$Gps";
 
     public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
     public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";
     public static final String SIMPLE_NAME_SPARSE_ARRAY_EDITOR = "SparseArrayPropertyEditor";
+
+    public static final String PREFIX_PROP                   = "PROP_";
 
     //field name of anno
     public static final String STR_PROP_NAME = "propName";
@@ -81,6 +84,7 @@ public final class DataMediatorConstants {
     public static final String PROXY_SUFFIX     = "_$Proxy";
     public static final String TYPE_ADAPTER_PREFIX  = "$";
     public static final String DATA_BINDING_SUFFIX  = "_$DataBinding";
+    public static final String GROUP_PROPERTY_SUFFIX  = "_$GPS";
 
     public static final String SET_PREFIX   = "set";
     public static final String GET_PREFIX   = "get";

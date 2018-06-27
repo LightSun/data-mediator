@@ -37,7 +37,7 @@ public class ImplInfoDelegate {
 
     boolean parseImplInfo(TypeElement te, CodeGenerator cg) {
         ImplInfo[] cur_infos = new ImplInfo[1];
-        if(!parseImplInfo(te, cur_infos)){
+        if(!parseImplInfo(te, cur_infos, cg)){
             return false;
         }
         if(cur_infos[0] != null && cur_infos[0].isValid()){
@@ -48,7 +48,7 @@ public class ImplInfoDelegate {
         List<ImplInfo> superImplInfos = new ArrayList<>();
         for (TypeMirror tm : te.getInterfaces()) {
             TypeElement te_temp = new FieldData.TypeCompat(types, tm).getElementAsType();
-            if(!parseImplInfosRecursively(te_temp, superImplInfos)){
+            if(!parseImplInfosRecursively(te_temp, superImplInfos, cg)){
                 return false;
             }
         }
@@ -62,7 +62,7 @@ public class ImplInfoDelegate {
      * @param out the out infos
      * @return true if parse without error.
      */
-    private boolean parseImplInfo(TypeElement te, ImplInfo[] out) {
+    private boolean parseImplInfo(TypeElement te, ImplInfo[] out, CodeGenerator cg) {
         //handle @ImplClass
         AnnotationMirror am_impl = null;
         for (AnnotationMirror am : te.getAnnotationMirrors()) {
@@ -80,7 +80,7 @@ public class ImplInfoDelegate {
         }
         //handle @ImplMethod. note: may only have @ImplMethod.
         List<? extends Element> elements = ElementFilter.methodsIn(te.getEnclosedElements());
-        parseImplMethods(types, pp, elements, info);
+        parseImplMethods(types, pp, elements, info, cg);
         if(info.isValid()) {
             out[0] = info;
         }
@@ -92,11 +92,11 @@ public class ImplInfoDelegate {
      * @param list the list to add to.
      * @return true if parse success.
      */
-    private boolean parseImplInfosRecursively(TypeElement te, List<ImplInfo> list) {
+    private boolean parseImplInfosRecursively(TypeElement te, List<ImplInfo> list, CodeGenerator cg) {
 
         //current
         ImplInfo[] cur_infos = new ImplInfo[1];
-        if(!parseImplInfo(te, cur_infos)){
+        if(!parseImplInfo(te, cur_infos, cg)){
             return true;
         }
         if(cur_infos[0] != null && cur_infos[0].isValid()){
@@ -105,7 +105,7 @@ public class ImplInfoDelegate {
         //handle super interface with @ImplClass and @ImplMethods
         for (TypeMirror tm : te.getInterfaces()) {
             TypeElement te_temp = new FieldData.TypeCompat(types, tm).getElementAsType();
-            if(!parseImplInfosRecursively(te_temp, list)){
+            if(!parseImplInfosRecursively(te_temp, list, cg)){
                 return false;
             }
         }
@@ -129,9 +129,9 @@ public class ImplInfoDelegate {
     }
 
     private static boolean parseImplMethods(Types mTypeUtils,
-                                           ProcessorPrinter pp,
-                                           Collection<? extends Element> list,
-                                           ImplInfo info) {
+                                            ProcessorPrinter pp,
+                                            Collection<? extends Element> list,
+                                            ImplInfo info, CodeGenerator cg) {
         //parse all @ImplMethod
         for (Element e : list) {
             //only parse method.
@@ -155,7 +155,7 @@ public class ImplInfoDelegate {
                 }
                 final ImplInfo.MethodInfo methodInfo = new ImplInfo.MethodInfo();
                 methodInfo.setMethodName(method.getSimpleName().toString());
-                if(!parseImplMethodName(mTypeUtils, pp, anno_implMethod, methodInfo)){
+                if(!parseImplMethodName(mTypeUtils, pp, anno_implMethod, methodInfo, cg)){
                     return false;
                 }
                 if(methodInfo.getImplClass() == null){

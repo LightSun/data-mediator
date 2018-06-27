@@ -4,6 +4,7 @@ import com.heaven7.java.data.mediator.Fields;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.ImplClass;
 import com.heaven7.java.data.mediator.ImplMethod;
+import com.heaven7.java.data.mediator.compiler.generator.GroupPropertyGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
 
 import javax.annotation.processing.*;
@@ -33,7 +34,8 @@ import static javax.lang.model.element.Modifier.STATIC;
         "com.heaven7.java.data.mediator.GlobalConfig"
 })                       //use "*" indicate support all Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider{
+public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider,
+        GroupPropertyGenerator.TypeElementDelegate{
 
     private static final String TAG = "MediatorAnnotationProcessor";
     private Filer mFiler;
@@ -140,7 +142,7 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
         }
        //generate module interface / impl /proxy (interface removed)
        for (CodeGenerator generator : mProxyClassMap.values()) {
-           if(!generator.generateJavaFile(mFiler, mPrinter)){
+           if(!generator.generateJavaFile(mFiler, mPrinter, this)){
                return true;
            }
         }
@@ -218,5 +220,18 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
     @Override
     public CodeGenerator getCodeGenerator(Element element) {
         return getProxyClass(element);
+    }
+
+    @Override
+    public TypeElement get(String qualifyName) {
+        CodeGenerator cg = mProxyClassMap.get(qualifyName);
+        if(cg == null){
+            return null;
+        }
+        return cg.getTypeElement();
+    }
+    @Override
+    public ProcessorContext getContext() {
+        return new ProcessorContext(mFiler, mElementUtils, mTypeUtils, mPrinter);
     }
 }
