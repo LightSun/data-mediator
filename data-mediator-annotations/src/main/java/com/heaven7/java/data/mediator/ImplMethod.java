@@ -48,4 +48,12 @@ public @interface ImplMethod {
      * if you want force use the method from value of this 'from'.
      */
     Class<?> from() default void.class;
+
+
+    /**
+     * depend property names
+     * @return the property names
+     * @since 1.2.3
+     */
+    String[] dependProps() default {};
 }

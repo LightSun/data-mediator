@@ -34,6 +34,13 @@ public @interface Fields {
 	Field[] value();
 
 	/**
+	 * define the group properties.
+	 * @return the group fields
+	 * @since 1.2.3
+	 */
+	GroupDesc[] groups() default {};
+
+	/**
 	 * enable generate code of the chain call style or not(normal java bean). here is a chain call demo :
 	 * <code><pre>
 	 *     Person p = new Person().setName(xxx).setAge(xxx).setId(xxx);

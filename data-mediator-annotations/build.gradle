@@ -32,13 +32,13 @@ allprojects {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compileOnly 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
+    compileOnly 'com.heaven7.java.data.mediator:data-mediator:1.4.5-beta'
 }
 publish {
     userOrg = 'lightsun' //bintray user name
     groupId = 'com.heaven7.java.data.mediator.annotation'
     artifactId = 'data-mediator-annotations'
-    publishVersion = '1.2.2'
+    publishVersion = '1.2.3'
     desc = 'this is a annotation lib of data mediator. '
     website = 'https://github.com/LightSun/data-mediator'
 }
