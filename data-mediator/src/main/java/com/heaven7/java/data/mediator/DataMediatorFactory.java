@@ -31,18 +31,28 @@ public final class DataMediatorFactory {
     private static final String  SUFFIX_PROXY  = "_$Proxy";
 
     /**
-     * create group properties as 'Gps'.
+     * create group properties recursively as 'Gps'.
      * @param clazz the data/interface class.
-     * @return the 'Gps'
+     * @return the 'Gps' or null if the target GPS not exist.
      * @since 1.4.5
      */
     public static Gps createGps(Class<?> clazz){
-        try {
-            Class<?> class_gps =  Class.forName(clazz.getName() + "_$GPS");
-            return (Gps) class_gps.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
-        }
+        Class<?> target = clazz;
+        do {
+            try {
+                Class<?> class_gps = Class.forName(target.getName() + "_$GPS");
+                return (Gps) class_gps.newInstance();
+            }catch (ClassNotFoundException e){
+                target = target.getSuperclass();
+                if(target == null || target.getName().startsWith("java.")
+                        || target.getName().startsWith("android.")){
+                    //throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
+                    return null;
+                }
+            }catch (InstantiationException | IllegalAccessException e){
+                throw new RuntimeException(e);
+            }
+        }while (true);
     }
 
     /**

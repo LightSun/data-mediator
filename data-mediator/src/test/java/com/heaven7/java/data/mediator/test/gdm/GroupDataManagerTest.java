@@ -36,7 +36,7 @@ public class GroupDataManagerTest extends TestCase {
         gp.setProperty(TestState.PROP_state);
         gp.setValue(FOCUS_VALUE);
         gp.setOppositeValue(OPPISITE_VALUE);
-        GroupDataManager.of(list, Arrays.asList(gp)).attach();
+        GroupDataManager.of(list, Arrays.asList(gp)).attachAll();
     }
 
     private List<TestState> createDatas() {

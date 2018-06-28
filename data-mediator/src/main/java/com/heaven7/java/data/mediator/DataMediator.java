@@ -310,13 +310,21 @@ public final class DataMediator<T> {
         mediator.removeCallbacks();
     }
 
-
+    /**
+     * contains callback or not.
+     * @param callback the target callback
+     * @return true if contains
+     * @since 1.4.5
+     */
+    public boolean containsCallback(DataMediatorCallback<T> callback) {
+        return mediator.containsCallback(callback);
+    }
     //============================ private methods ============================
+
     private boolean inflatePropertyChain0(String propertyChain){
         if(mInflater == null){
             mInflater = new PropertyChainInflater<T>(this);
         }
         return mInflater.inflatePropertyChain(propertyChain);
     }
-
 }

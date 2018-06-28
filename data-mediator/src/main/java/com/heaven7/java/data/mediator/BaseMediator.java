@@ -147,6 +147,16 @@ public class BaseMediator<T>{
     }
 
     /**
+     * contains target callback or not.
+     * @param o the data mediator callback
+     * @return true if contains.
+     * @since
+     */
+    public synchronized boolean containsCallback(DataMediatorCallback<? super T> o){
+        return _mCallbacks.contains(o);
+    }
+
+    /**
      * remove the data mediator callback
      *
      * @param o the data mediator callback

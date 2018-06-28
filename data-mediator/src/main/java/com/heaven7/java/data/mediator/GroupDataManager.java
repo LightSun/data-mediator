@@ -23,7 +23,8 @@ public final class GroupDataManager<T> {
 
     // (key, value) = (type, GroupProperty)
     private final SparseArray<List<GroupProperty>> mPropMap = new SparseArray<>();
-    private final State mState;
+    private final State<T> mState;
+    private boolean mAttached;
 
     private final DataMediatorCallback<T> mCallback = new DataMediatorCallback<T>() {
         @Override
@@ -90,32 +91,98 @@ public final class GroupDataManager<T> {
         return gdm;
     }
 
-    public void attach() {
-        mState.attach();
+    /**
+     * attach internal data-mediator-callback to all data-proxy,
+     */
+    public void attachAll() {
+        if(!mAttached) {
+            mAttached = true;
+            mState.attach();
+        }
+    }
+    /**
+     * detach internal data-mediator-callback from all data-proxy,
+     */
+    public void detachAll() {
+        if(mAttached) {
+            mState.detach();
+            mAttached = false;
+        }
     }
 
-    public void detach() {
-        mState.detach();
+    /**
+     * attach internal data-mediator-callback to target delegate
+     * @param delegate mediator delegate
+     * @param strict true if attach strictly
+     * @return true if attach success. always return true if strict is false.
+     */
+    public boolean attach(MediatorDelegate<T> delegate, boolean strict){
+        if(!strict){
+            delegate.getDataMediator().addDataMediatorCallback(mCallback);
+            return true;
+        }else {
+            if (mState.containsMediatorDelegate(delegate)) {
+                delegate.getDataMediator().addDataMediatorCallback(mCallback);
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * detach internal data-mediator-callback to target delegate
+     * @param delegate mediator delegate
+     * @param strict true if detach strictly
+     * @return true if detach success. always return true if strict is false.
+     */
+    public boolean detach(MediatorDelegate<T> delegate, boolean strict){
+        if(!strict){
+            delegate.getDataMediator().removeDataMediatorCallback(mCallback);
+            return true;
+        }else {
+            if (mState.containsMediatorDelegate(delegate)) {
+                delegate.getDataMediator().removeDataMediatorCallback(mCallback);
+                return true;
+            }
+        }
+        return false;
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * get datas by target property and value.
+     * @param prop the property
+     * @param val the value
+     * @return the datas
+     */
     public List<T> getDatas(Property prop, Object val) {
-        return (List<T>) mState.getItems(prop, val, false);
+        return  mState.getItems(prop, val, false);
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * get all data-proxy by target property and value.
+     * @param prop the property
+     * @param val the value
+     * @return all data-proxy as list
+     */
     public List<T> getDataProxies(Property prop, Object val) {
-        return (List<T>) mState.getItems(prop, val, true);
+        return mState.getItems(prop, val, true);
     }
-
-    @SuppressWarnings("unchecked")
+    /**
+     * get data by target property and value.
+     * @param prop the property
+     * @param val the value
+     * @return the data
+     */
     public T getData(Property prop, Object val) {
-        return (T) mState.getItem(prop, val, false);
+        return mState.getItem(prop, val, false);
     }
-
-    @SuppressWarnings("unchecked")
+    /**
+     * get data-proxy by target property and value.
+     * @param prop the property
+     * @param val the value
+     * @return the  data-proxy
+     */
     public T getDataProxy(Property prop, Object val) {
-        return (T) mState.getItem(prop, val, true);
+        return mState.getItem(prop, val, true);
     }
 
     private void prepare(List<GroupProperty> gps) {
@@ -283,19 +350,21 @@ public final class GroupDataManager<T> {
         DataMediator<T> getDataMediator();
     }
 
-    private interface State {
+    private interface State<T>{
         void attach();
 
         void detach();
 
-        void doMutex(GroupProperty target, Object data);
+        void doMutex(GroupProperty target, T data);
 
-        List<?> getItems(Property prop, Object val, boolean asProxy);
+        List<T> getItems(Property prop, Object val, boolean asProxy);
 
-        Object getItem(Property prop, Object val, boolean asProxy);
+        T getItem(Property prop, Object val, boolean asProxy);
+
+        boolean containsMediatorDelegate(MediatorDelegate<T> delegate);
     }
 
-    private class ArrayState implements State {
+    private class ArrayState implements State<T> {
 
         private final MediatorDelegate<T>[] array;
 
@@ -318,7 +387,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public void doMutex(GroupProperty target, Object data) {
+        public void doMutex(GroupProperty target, T data) {
             for (MediatorDelegate<T> md : array) {
                 if (md.getDataMediator().getData() == data) {
                     continue;
@@ -328,7 +397,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public List<?> getItems(Property prop, Object val, boolean asProxy) {
+        public List<T> getItems(Property prop, Object val, boolean asProxy) {
             List<T> results = new ArrayList<>();
             for (MediatorDelegate<T> md : array) {
                 T item = getItem0(prop, val, asProxy, md);
@@ -340,7 +409,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public Object getItem(Property prop, Object val, boolean asProxy) {
+        public T getItem(Property prop, Object val, boolean asProxy) {
             for (MediatorDelegate<T> md : array) {
                 T item = getItem0(prop, val, asProxy, md);
                 if(item != null){
@@ -349,9 +418,13 @@ public final class GroupDataManager<T> {
             }
             return null;
         }
+        @Override
+        public boolean containsMediatorDelegate(MediatorDelegate<T> delegate) {
+            return Arrays.asList(array).contains(delegate);
+        }
     }
 
-    private class ListState implements State {
+    private class ListState implements State<T> {
         private final List<? extends MediatorDelegate<T>> mList;
 
         ListState(List<? extends MediatorDelegate<T>> mList) {
@@ -383,7 +456,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public List<?> getItems(Property prop, Object val, boolean asProxy) {
+        public List<T> getItems(Property prop, Object val, boolean asProxy) {
             List<T> items = new ArrayList<>();
             for (MediatorDelegate<T> md : mList) {
                 T item = getItem0(prop, val, asProxy, md);
@@ -395,7 +468,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public Object getItem(Property prop, Object val, boolean asProxy) {
+        public T getItem(Property prop, Object val, boolean asProxy) {
             for (MediatorDelegate<T> md : mList) {
                 T item = getItem0(prop, val, asProxy, md);
                 if(item != null){
@@ -404,9 +477,13 @@ public final class GroupDataManager<T> {
             }
             return null;
         }
+        @Override
+        public boolean containsMediatorDelegate(MediatorDelegate<T> delegate) {
+            return mList.contains(delegate);
+        }
     }
 
-    private class SparseArrayState implements State {
+    private class SparseArrayState implements State<T> {
 
         private final SparseArray<? extends MediatorDelegate<T>> mSa;
 
@@ -451,7 +528,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public List<?> getItems(Property prop, Object val, boolean asProxy) {
+        public List<T> getItems(Property prop, Object val, boolean asProxy) {
             List<T> results = new ArrayList<>();
             int size = mSa.size();
             for (int i = size - 1; i >= 0; i--) {
@@ -467,7 +544,7 @@ public final class GroupDataManager<T> {
         }
 
         @Override
-        public Object getItem(Property prop, Object val, boolean asProxy) {
+        public T getItem(Property prop, Object val, boolean asProxy) {
             int size = mSa.size();
             for (int i = size - 1; i >= 0; i--) {
                 MediatorDelegate<T> delegate = mSa.get(mSa.keyAt(i));
@@ -479,6 +556,12 @@ public final class GroupDataManager<T> {
                 }
             }
             return null;
+        }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean containsMediatorDelegate(MediatorDelegate<T> delegate) {
+            SparseArray<MediatorDelegate<T>> mSa = (SparseArray<MediatorDelegate<T>>) this.mSa;
+            return mSa.indexOfValue(delegate) >= 0;
         }
     }
 }
