@@ -7,10 +7,10 @@ import com.heaven7.java.data.mediator.Fields;
  * Created by heaven7 on 2017/10/8.
  */
 
-@Fields({
+/*@Fields({
         @Field(propName = "id", type = int.class,  since = 1.2, until = 2.0),
         @Field(propName = "name" ),
         @Field(propName = "desc" ),
-})
+})*/
 public interface FlowItem{
 }

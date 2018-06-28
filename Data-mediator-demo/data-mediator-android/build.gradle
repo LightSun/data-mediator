@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    //buildToolsVersion '26.0.3'
 
     defaultConfig {
         minSdkVersion 14
@@ -19,24 +19,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
+   /* lintOptions {
         abortOnError false
-    }
+    }*/
 }
+/*configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.1.1'
+            }
+        }
+    }
+}*/
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    testCompile 'junit:junit:4.12'
+   // compile fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
 
-    compile 'com.heaven7.core.adapter:adapter:1.8.8'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
+    implementation 'com.heaven7.core.adapter:adapter:1.8.8'
+    implementation 'com.heaven7.java.data.mediator:data-mediator:1.4.5-beta5'
 }
 
-ext {
+/*ext {
     bintrayRepo = 'maven'
     bintrayName = 'data-mediator-android'   // Has to be same as your library module name
 
@@ -63,6 +71,6 @@ ext {
 }
 
 apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/bintrayv1.gradle'*/
 //gradlew clean build install bintrayUpload
 

@@ -16,9 +16,13 @@ import com.heaven7.java.data.mediator.Binder;
 import com.heaven7.java.data.mediator.DataBinding;
 import com.heaven7.java.data.mediator.DataMediator;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
+import com.heaven7.java.data.mediator.Gps;
+import com.heaven7.java.data.mediator.GroupDataManager;
 import com.heaven7.java.data.mediator.PropertyInterceptor;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -37,6 +41,7 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
     private static final String TAG = "DB_Adapter";
     private final SparseArray<Binder<T>> mBinderMap = new SparseArray<>();
     private final AdapterItemManager<T> mItemManager;
+    private final GroupDataManager<T> mGDM;
 
     private DataBinding.SimpleParameterSupplier mSupplier;
     private HeaderFooterHelper mHeaderFooterHelper;
@@ -63,6 +68,16 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         if (mayRemoveOrAddItem) {
             mItemManager.setAdapterDataObserver2(new InternalDataObserver());
         }
+        Gps gps = DataMediatorFactory.createGps(getActuallyParameterClass());
+        this.mGDM = gps == null ? null : GroupDataManager.of(mBinderMap, gps.getGroupProperties());
+    }
+    @SuppressWarnings("unchecked")
+    private Class<T> getActuallyParameterClass() {
+        // get from super class.
+        Type supperType = getClass().getGenericSuperclass();
+        // must called by sub class
+        Type type = ((ParameterizedType) supperType).getActualTypeArguments()[0];
+        return (Class<T>) type;
     }
 
     @Override
@@ -163,6 +178,21 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
         if (holder instanceof DataBindingViewHolder) {
             ((DataBindingViewHolder) holder).onAttachItem(
                     holder.getAdapterPosition() - getHeaderSize());
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        if(mGDM != null){
+            mGDM.attachAll();
+        }
+    }
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        if(mGDM != null){
+            mGDM.detachAll();
         }
     }
 
@@ -279,6 +309,9 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
             Binder<T> binder = mBinderMap.get(index);
             if (binder != null) {
                 binder.unbindAll();
+                if(mGDM != null){
+                    mGDM.detach(binder, true);
+                }
             }
             /*
              * decrease position/index of binder. iterate from lower.
@@ -312,6 +345,9 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
 
         @Override
         public void onResetItems(List<T> items) {
+            if(mGDM != null){
+                mGDM.detachAll();
+            }
             for (int size = mBinderMap.size(), i = size - 1; i >= 0; i--) {
                 final Binder<T> binder = mBinderMap.getAndRemove(mBinderMap.keyAt(i));
                 if (binder != null) {
@@ -455,9 +491,16 @@ public abstract class DataBindingRecyclerAdapter<T> extends RecyclerView.Adapter
                     Logger.i(TAG, "onBindData", "unbindAll() >>> pos = " + position);
                 }
                 binder.unbindAll();
+                if(adapter.mGDM != null){
+                    adapter.mGDM.detach(binder, false);
+                }
             }
-            adapter.mBinderMap.put(position, mDataBinding.bindAndApply(
-                    adapter.getItem(position), 0, supplier, getPropertyInterceptor()));
+            Binder<T> targetBinder = mDataBinding.bindAndApply(
+                    adapter.getItem(position), 0, supplier, getPropertyInterceptor());
+            adapter.mBinderMap.put(position, targetBinder);
+            if(adapter.mGDM != null){
+                adapter.mGDM.attach(targetBinder, false);
+            }
         }
 
         /**

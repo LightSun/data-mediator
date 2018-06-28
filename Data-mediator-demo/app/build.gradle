@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    //buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "com.heaven7.data.mediator.demo"
         minSdkVersion 15
@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     lintOptions {
         abortOnError false
@@ -33,40 +37,38 @@ configurations.all {
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             if (!requested.name.startsWith("multidex")) {
-                details.useVersion '26.1.0'
+                details.useVersion '26.1.0' //27.1.1
             }
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    compile 'com.google.code.gson:gson:2.8.2'
+    //compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.code.gson:gson:2.8.2'
 
-    compile 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.2'
-    compile 'com.heaven7.java.data.mediator:data-mediator:1.4.4'
-    apt 'com.squareup:javapoet:1.9.0'
-    apt 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.4'
-    compile 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
+    implementation 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.3'
+    implementation 'com.heaven7.java.data.mediator:data-mediator:1.4.5-beta5'
+    annotationProcessor 'com.squareup:javapoet:1.9.0'
+    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.5-beta5'
+    implementation 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
    // compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4'
-    compile 'com.heaven7.android.data.mediator.lint:dmlint:1.2'
+    implementation 'com.heaven7.android.data.mediator.lint:dmlint:1.2'
 
-    compile project(':data-mediator-android')
+    implementation project(':data-mediator-android')
     //helper util
-    compile 'com.heaven7.core.util:util-v1:1.1.2'
-    compile 'com.heaven7.android.util2:android-util2:1.1.9'
+    implementation 'com.heaven7.core.util:util-v1:1.1.2'
+    implementation 'com.heaven7.android.util2:android-util2:1.2.0'
+    implementation 'com.heaven7.android.component:android-app-components:1.1.0'
     //butterknife
-    apt "com.jakewharton:butterknife-compiler:8.2.0"
-    compile 'com.jakewharton:butterknife:8.2.0'
+    annotationProcessor "com.jakewharton:butterknife-compiler:8.2.0"
+    implementation 'com.jakewharton:butterknife:8.2.0'
     //other depend
-    compile 'org.heaven7.core.view:common-view:1.2.3'
+    implementation 'org.heaven7.core.view:common-view:1.2.3'
 
     //test multi module
-    compile project(':test_compiler')
+    implementation project(':test_compiler')
 }

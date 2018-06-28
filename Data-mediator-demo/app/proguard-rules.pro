@@ -139,6 +139,7 @@
 -keepclasseswithmembers public class com.heaven7.java.data.mediator.Binder { *; }
 -keepclasseswithmembers public class * extends com.heaven7.java.data.mediator.Binder { *; }
 -keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
+-keep public class * extends com.heaven7.java.data.mediator.Gps { *; }
 
 -keep public class com.heaven7.android.data.mediator.BinderSupplierImpl
 -keep public class com.heaven7.android.data.mediator.DataMediatorDelegateImpl

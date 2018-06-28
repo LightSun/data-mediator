@@ -1,9 +1,15 @@
 package com.heaven7.java.data.mediator.compiler;
 
+/**
+ * group property for @GroupDesc.
+ * @author heaven7
+ */
 public class GroupProperty {
 
+    public static final byte TYPE_MUTEX = 1;
+
     private String prop;
-    private byte type;
+    private byte type = TYPE_MUTEX;
     private long focusVal;
     private long oppositeVal;
     private boolean asFlags;

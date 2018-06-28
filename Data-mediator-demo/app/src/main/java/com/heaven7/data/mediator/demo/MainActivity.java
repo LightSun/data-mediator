@@ -4,6 +4,7 @@ package com.heaven7.data.mediator.demo;
 import com.heaven7.data.mediator.demo.activity.TestAnalyseActivity;
 import com.heaven7.data.mediator.demo.activity.TestChainCallActivity;
 import com.heaven7.data.mediator.demo.activity.TestDoubleBindActivity;
+import com.heaven7.data.mediator.demo.activity.TestGroupPropertyActivity;
 import com.heaven7.data.mediator.demo.activity.TestParcelableDataActivity;
 import com.heaven7.data.mediator.demo.activity.TestPropertyChangeActivity;
 import com.heaven7.data.mediator.demo.activity.TestRecyclerListBind2Activity;
@@ -14,6 +15,7 @@ import com.heaven7.data.mediator.demo.activity.TestTextViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.TestViewBindActivity;
 import com.heaven7.data.mediator.demo.activity.data_binding.DataBindingAdapterWithHeader;
 import com.heaven7.data.mediator.demo.activity.data_binding.TestDatabindingAdapter;
+import com.heaven7.data.mediator.demo.module.TestGroupProperty;
 import com.heaven7.java.data.mediator.DataMediatorFactory;
 import com.heaven7.java.data.mediator.GlobalConfig;
 import com.heaven7.java.data.mediator.GsonConfig;
@@ -59,5 +61,6 @@ public class MainActivity extends AbsMainActivity {
 
         list.add(new ActivityInfo(TestDatabindingAdapter.class, "Test Data-binding adapter"));
         list.add(new ActivityInfo(DataBindingAdapterWithHeader.class, " Data-binding adapter with header"));
+        list.add(new ActivityInfo(TestGroupPropertyActivity.class, " Test Group Property(@GroupDesc)"));
     }
 }
