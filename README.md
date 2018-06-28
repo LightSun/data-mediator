@@ -329,7 +329,7 @@ public class TestPropertyChangeActivity extends BaseActivity {
 -keepclasseswithmembers class com.heaven7.java.data.mediator.Binder{*;}
 -keepclasseswithmembers class * extends com.heaven7.java.data.mediator.Binder{*;}
 -keep public class * extends com.heaven7.java.data.mediator.DataBinding { *; }
-
+-keep public class * extends com.heaven7.java.data.mediator.Gps { *; }
 ```
 # Todo
 * process opposite state in 'DataBindingViewHolder'.
