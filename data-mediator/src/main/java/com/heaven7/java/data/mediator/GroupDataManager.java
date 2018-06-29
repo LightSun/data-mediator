@@ -22,7 +22,7 @@ public final class GroupDataManager<T> {
     public static final byte TYPE_MUTEX = 1;
 
     // (key, value) = (type, GroupProperty)
-    private final SparseArray<List<GroupProperty>> mPropMap = new SparseArray<>();
+    private final SparseArray<List<GroupProperty>> mPropMap = new SparseArray<>(3);
     private final State<T> mState;
     private boolean mAttached;
 
@@ -189,7 +189,7 @@ public final class GroupDataManager<T> {
         for (GroupProperty gp : gps) {
             List<GroupProperty> list = mPropMap.get(gp.type);
             if (list == null) {
-                list = new ArrayList<>();
+                list = new ArrayList<>(3);
                 mPropMap.put(gp.type, list);
             }
             list.add(gp);
