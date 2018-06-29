@@ -1,0 +1,35 @@
+/*
+def supportVersion = "26.1.0"
+
+ext {
+    versions = [
+            "buildToolsVersion": "25.0.0",
+            "compileSdkVersion": 25,
+            "minSdkVersion"    : 21,
+            "targetSdkVersion" : 25,
+            "versionCode"      : 1,
+            "versionName"      : "1.0"
+    ]
+    dependencies = [
+            "support-v4"   : "com.android.support:support-v4:${supportVersion}",
+            "appcompat-v7" : "com.android.support:appcompat-v7:${supportVersion}"
+
+    ]
+}
+
+android {
+    compileSdkVersion rootProject.ext.versions['compileSdkVersion']
+    buildToolsVersion rootProject.ext.versions['buildToolsVersion']
+    defaultConfig {
+        applicationId "com.sz.jjj"
+        minSdkVersion rootProject.ext.versions.minSdkVersion
+        targetSdkVersion rootProject.ext.versions.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    compile rootProject.ext.dependencies["support-v4"]
+}*/
