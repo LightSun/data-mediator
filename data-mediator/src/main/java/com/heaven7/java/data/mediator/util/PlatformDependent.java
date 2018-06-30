@@ -75,7 +75,7 @@ public final class PlatformDependent {
     /**
      * Return the system {@link ClassLoader}.
      */
-    static ClassLoader getSystemClassLoader() {
+    private static ClassLoader getSystemClassLoader() {
         if (System.getSecurityManager() == null) {
             return ClassLoader.getSystemClassLoader();
         } else {

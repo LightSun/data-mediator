@@ -1,6 +1,7 @@
 package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.compiler.module.FamilyDescData;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
@@ -24,7 +25,8 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String KEY_FIELDS_ANNO = "value";
     private static final String KEY_ENABLE_CHAIN = "enableChain";
     private static final String KEY_MAX_POOL_COUNT = "maxPoolCount";
-    private static final String KEY_GROUPS = "groups"; //@Fileds
+    private static final String KEY_GROUPS = "groups"; //@GroupDesc[]
+    private static final String KEY_FIMILIES = "families"; //@FamilyDesc[]
 
     private static final String KEY_GSON_CONFIG = "gsonConfig";
     private static final String KEY_GSON_GENERATE_JSON_ADAPTER = "generateJsonAdapter";
@@ -35,11 +37,15 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
     private static final String KEY_FROM = "from";                 //@ImplMethod
     private static final String KEY_DEPEND_PROPS = "dependProps";  //@ImplMethod
     //GroupDesc
-    private static final String KEY_PROP            = "prop";
-    private static final String KEY_TYPE            = "type";
-    private static final String KEY_FOCUS_VALUE     = "focusVal";
-    private static final String KEY_OPPOSITE_VALUE  = "oppositeVal";
-    private static final String KEY_AS_FLAG         = "asFlag";
+    private static final String KEY_PROP = "prop";
+    private static final String KEY_TYPE = "type";
+    private static final String KEY_FOCUS_VALUE = "focusVal";
+    private static final String KEY_OPPOSITE_VALUE = "oppositeVal";
+    private static final String KEY_AS_FLAG = "asFlag";
+    //FamilyDesc
+    private static final String KEY_MASTER = "master";
+    private static final String KEY_SLAVE = "slave";
+    private static final String KEY_CONNECT = "connect";
 
     /**
      * only parse fields for handle super fields
@@ -205,9 +211,9 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
     private static boolean iterateStrs(List<AnnotationValue> list, ImplInfo.MethodInfo info, CodeGenerator cg) {
         List<FieldData> results = new ArrayList<>();
-        for (AnnotationValue av : list){
-            for(FieldData fd : cg.getFieldDatas()){
-                if(fd.getPropertyName().equals(av.getValue().toString())){
+        for (AnnotationValue av : list) {
+            for (FieldData fd : cg.getFieldDatas()) {
+                if (fd.getPropertyName().equals(av.getValue().toString())) {
                     results.add(fd);
                     break;
                 }
@@ -215,6 +221,75 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
         }
         info.setDependProps(results);
         return true;
+    }
+
+    private static boolean iterateFamilyProperty(List<? extends AnnotationMirror> list, Types mTypes,
+                                                 ProcessorPrinter pp, CodeGenerator cg) {
+        final String methodName = "iterateFamilyProperty";
+        pp.note(TAG, methodName, "=================== start iterate @FamilyDesc() ====================");
+        for (AnnotationMirror am1 : list) {
+            if (!isValidAnnotation(am1, pp)) {
+                return false;
+            }
+            Map<? extends ExecutableElement, ? extends AnnotationValue> map = am1.getElementValues();
+
+            FamilyDescData fdd = new FamilyDescData();
+            for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> en : map.entrySet()) {
+
+                ExecutableElement key = en.getKey();
+                AnnotationValue av = en.getValue();
+                pp.note(TAG, methodName, "test --->  " + av.getValue());
+
+                switch (key.getSimpleName().toString()) {
+                    case KEY_TYPE:
+                        fdd.setType(Byte.valueOf(av.getValue().toString()));
+                        break;
+
+                    case KEY_MASTER: {
+                        List<? extends AnnotationValue> masters = (List<? extends AnnotationValue>) av.getValue();
+                        fdd.setMaster(toStringArray(masters));
+                    }
+                    break;
+
+                    case KEY_SLAVE: {
+                        Object value = av.getValue();
+                        if(value != null && value instanceof List){
+                            if(((List) value).size() > 0) {
+                                List<? extends AnnotationValue> slaves = (List<? extends AnnotationValue>) value;
+                                fdd.setSlave(toStringArray(slaves));
+                            }
+                        }
+                    }
+                    break;
+
+                    case KEY_CONNECT:
+                        TypeMirror tm = (TypeMirror) en.getValue().getValue();
+                        if (!verifyClassName(tm, pp)) {
+                            return false;
+                        }
+                        //must be
+                        if (tm.getKind() != TypeKind.DECLARED) {
+                            return false;
+                        }
+                        fdd.setConnectClass(new FieldData.TypeCompat(mTypes, tm));
+                        break;
+
+                    default:
+                        pp.note(TAG, methodName, "unsupport name = " + key.getSimpleName().toString());
+                }
+            }
+            cg.addFamilyDesc(fdd);
+        }
+        return true;
+    }
+
+    private static String[] toStringArray(List<? extends AnnotationValue> masters) {
+        final int size = masters.size();
+        String[] strs = new String[size];
+        for(int i = 0; i < size; i ++ ){
+            strs[i] = masters.get(i).getValue().toString();
+        }
+        return strs;
     }
 
     private static boolean iterateGroupProperty(List<? extends AnnotationMirror> list, ProcessorPrinter pp, CodeGenerator cg) {
@@ -366,6 +441,21 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
                     List list = (List) target;
                     if (!list.isEmpty()) {
                         if (!iterateGroupProperty((List<? extends AnnotationMirror>) list, pp, cg)) {
+                            return false;
+                        }
+                    }
+                }
+                break;
+
+                case KEY_FIMILIES: {
+                    Object target = en.getValue().getValue();
+                    if (target == null || !(target instanceof List)) {
+                        pp.error(TAG, methodName, "@Fields's families() must be a list.");
+                        return false;
+                    }
+                    List list = (List) target;
+                    if (!list.isEmpty()) {
+                        if (!iterateFamilyProperty((List<? extends AnnotationMirror>) list, mTypes, pp, cg)) {
                             return false;
                         }
                     }

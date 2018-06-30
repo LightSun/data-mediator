@@ -2,6 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.base.anno.Nullable;
 import com.heaven7.java.data.mediator.bind.*;
+import com.heaven7.java.data.mediator.compiler.util.TypeUtils;
 import com.heaven7.java.data.mediator.internal.BindMethod;
 
 import javax.lang.model.element.*;
@@ -278,7 +279,7 @@ public class DataBindingParser {
                     bmi.name = String.valueOf(enVal.getValue().toString());
                 } else if (fullName.equals("paramTypes")) {
                     List mirrorList = (List) enVal.getValue();
-                    convertToClassname(mirrorList, bmi.types);
+                    TypeUtils.convertToClassname(mirrorList, bmi.types);
                 }
             }
         }
@@ -310,30 +311,12 @@ public class DataBindingParser {
                 methods[i].paramTypes();
             }catch (MirroredTypesException mte){
                 List<? extends TypeMirror> mirrors = mte.getTypeMirrors();
-                types = convertToClassname(mirrors, null);
+                types = TypeUtils.convertToClassname(mirrors, null);
             }
             info.addBindInfo(new DataBindingInfo.BindInfo(varName, prop, index, methods[i].value(), types));
         }
         return true;
     }
-    //often is TypeMirror , but primitive may cause ClassCastException
-
-    private List<String> convertToClassname(List<?> mirrors,@Nullable List<String> out) {
-        if(out == null){
-            out = new ArrayList<>();
-        }else{
-            out.clear();
-        }
-        for(int i = 0 , size = mirrors.size() ; i < size ; i++){
-            String type = mirrors.get(i).toString();
-            if(type.endsWith(".class")){
-                type = type.substring(0, type.lastIndexOf("."));
-            }
-            out.add(type);
-        }
-        return out;
-    }
-
     private BindMethod[] truncate(BindMethod[] methods, int length) {
         BindMethod[] arr = new BindMethod[length];
         for(int i = 0 ; i < length ; i++){

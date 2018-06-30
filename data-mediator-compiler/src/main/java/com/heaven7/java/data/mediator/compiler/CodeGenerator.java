@@ -1,9 +1,8 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.heaven7.java.data.mediator.compiler.generator.GroupPropertyGenerator;
-import com.heaven7.java.data.mediator.compiler.generator.HashEqualsGenerator;
-import com.heaven7.java.data.mediator.compiler.generator.ProxyGenerator;
-import com.heaven7.java.data.mediator.compiler.generator.TypeAdapterGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.*;
+import com.heaven7.java.data.mediator.compiler.module.FamilyDescData;
+import com.heaven7.java.data.mediator.compiler.module.ImportDescData;
 import com.heaven7.java.data.mediator.compiler.replacer.TargetClassInfo;
 import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
@@ -58,6 +57,10 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
      * group property for @GroupDesc
      */
     private List<GroupProperty> mGroupProps;
+    /** the family description data */
+    private List<FamilyDescData> mFamilyData;
+    /** the import class names. used to generate ExpreContext by evaluate expression */
+    private ImportDescData mImportData;
 
     public CodeGenerator(Types mTypes, Elements mElementUtils, TypeElement classElement) {
         this.mTypes = mTypes;
@@ -93,9 +96,16 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
 
     public void addGroupProperty(GroupProperty gp) {
         if (mGroupProps == null) {
-            mGroupProps = new ArrayList<>();
+            mGroupProps = new ArrayList<>(3);
         }
         mGroupProps.add(gp);
+    }
+
+    public void addFamilyDesc(FamilyDescData fdd) {
+        if(mFamilyData == null){
+            mFamilyData = new ArrayList<>(4);
+        }
+        mFamilyData.add(fdd);
     }
 
     /**
@@ -103,6 +113,10 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
      */
     public void setSuperImplInfos(List<ImplInfo> superImplInfos) {
         this.mSuperImplInfos = superImplInfos;
+    }
+
+    public void setImportData(ImportDescData data) {
+        mImportData = data;
     }
 
     /**
@@ -301,6 +315,21 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
                     normalJavaBean, builders, filer, mPrinter)) {
                 return false;
             }
+            //generate expression context
+            if(mImportData != null){
+                String proxy = Util.getClassName(interfaceName) + PROXY_SUFFIX;
+                if(!new ExpreContextGenerator(delegate.getContext()).generate(mElement,
+                        proxy, mImportData, delegate)){
+                    return false;
+                }
+            }
+            if(mFamilyData != null && !mFamilyData.isEmpty()){
+                String proxy = Util.getClassName(interfaceName) + PROXY_SUFFIX;
+                if(!new FamilyGroupGenerator(delegate.getContext()).generate(mElement,
+                        proxy, mFamilyData, delegate)){
+                    return false;
+                }
+            }
         } catch (IOException e) {
             mPrinter.error(TAG, log_method, Util.toString(e));
             return false;
@@ -341,5 +370,4 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
         }
         overrideMethodsForImpl(implBuilder, list);
     }
-
 }

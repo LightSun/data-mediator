@@ -18,6 +18,7 @@
 package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.data.mediator.internal.DataMediatorDelegate;
+import com.heaven7.java.data.mediator.util.ExpreEvaluator;
 
 import java.lang.reflect.Constructor;
 
@@ -30,6 +31,30 @@ public final class DataMediatorFactory {
     /*private*/ static final String  SUFFIX_IMPL   = "_$Impl";
     private static final String  SUFFIX_PROXY  = "_$Proxy";
 
+    /**
+     * create expression context by target module class.
+     * @param clazz the module class
+     * @return the expression context.
+     * @since 1.4.5
+     */
+    public static ExpreEvaluator.ExpreContext createExpreContext(Class<?> clazz){
+        Class<?> target = clazz;
+        do {
+            try {
+                Class<?> class_context = Class.forName(target.getName() + "$ExpreContext");
+                return (ExpreEvaluator.ExpreContext) class_context.newInstance();
+            }catch (ClassNotFoundException e){
+                target = target.getSuperclass();
+                if(target == null || target.getName().startsWith("java.")
+                        || target.getName().startsWith("android.")){
+                    //throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
+                    return null;
+                }
+            }catch (InstantiationException | IllegalAccessException e){
+                throw new RuntimeException(e);
+            }
+        }while (true);
+    }
     /**
      * create group properties recursively as 'Gps'.
      * @param clazz the data/interface class.

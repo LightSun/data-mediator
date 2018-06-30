@@ -1,11 +1,11 @@
 package com.heaven7.java.data.mediator.compiler;
 
-import com.heaven7.java.data.mediator.Fields;
+import com.heaven7.java.data.mediator.*;
 import com.heaven7.java.data.mediator.GlobalConfig;
-import com.heaven7.java.data.mediator.ImplClass;
-import com.heaven7.java.data.mediator.ImplMethod;
 import com.heaven7.java.data.mediator.compiler.generator.GroupPropertyGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
+import com.heaven7.java.data.mediator.compiler.module.ImportDescData;
+import com.heaven7.java.data.mediator.compiler.util.TypeUtils;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
@@ -16,10 +16,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
@@ -130,6 +127,16 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
                 return true;
             }
             CodeGenerator generator = getProxyClass(element);
+
+            ImportDesc impotDesc = element.getAnnotation(ImportDesc.class);
+            if(impotDesc != null){
+                if(impotDesc.classes().length != impotDesc.names().length) {
+                    error(":process", "alias names with classes must be pairs.");
+                    return true;
+                }
+                generator.setImportData(ImportDescData.of(Arrays.asList(impotDesc.names()), TypeUtils.classesToClassNames(impotDesc)));
+            }
+
             //@Fields
             if(!ElementHelper.processAnnotation(mElementUtils, mTypeUtils, mPrinter,
                     (TypeElement) element, generator)){

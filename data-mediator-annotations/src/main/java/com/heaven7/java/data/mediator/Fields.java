@@ -40,10 +40,12 @@ public @interface Fields {
 	 */
 	GroupDesc[] groups() default {};
 
+	/**
+	 * the family description.
+	 * @return the all family description
+	 * @since 1.2.4
+	 */
 	FamilyDesc[] families() default {};
-
-	ImportDesc importDesc() default @ImportDesc(names = {""}, classes = {Void.class});
-
 	/**
 	 * enable generate code of the chain call style or not(normal java bean). here is a chain call demo :
 	 * <code><pre>

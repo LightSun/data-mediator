@@ -8,16 +8,17 @@ import java.lang.annotation.Target;
 /**
  * the family desc of data internal.
  * @author heaven7
+ * @since 1.2.4
  */
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
 public @interface FamilyDesc {
 
     /**
-     * the relationship type. like...
+     * the relationship type. default is {@linkplain FamilyManager#TYPE_MASTER_SLAVE}.
      * @return the relationship type
      */
-    byte type();
+    byte type() default FamilyManager.TYPE_MASTER_SLAVE;
 
     /**
      * the master properties
@@ -42,6 +43,4 @@ public @interface FamilyDesc {
      * @return the connect class. which use expression to connect.
      */
     Class<?> connect();
-
-   // Class<?>[] imports();
 }

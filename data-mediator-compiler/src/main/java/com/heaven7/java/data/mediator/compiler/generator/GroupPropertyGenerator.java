@@ -7,12 +7,12 @@ import com.heaven7.java.data.mediator.compiler.ProcessorContext;
 import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
@@ -24,16 +24,19 @@ import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
  */
 public class GroupPropertyGenerator extends BaseGenerator {
 
+    public static final String GROUP = "groups";
+
     public GroupPropertyGenerator(ProcessorContext context) {
         super(context);
     }
 
+    //te is interface
     public boolean generate(TypeElement te, List<GroupProperty> gps, TypeElementDelegate delegate) {
         TypeSpec.Builder builder = TypeSpec.classBuilder(getContext().getTargetClassName(te) + GROUP_PROPERTY_SUFFIX)
                 .addModifiers(Modifier.PUBLIC)
                 .addJavadoc(CodeBlock.of(DOC));
         //super class
-        TypeElement superClass = getSuperClass(te, delegate);
+        TypeElement superClass = getSuperInterface(te, delegate);
         if(superClass != null){
             final String pkg = getElements().getPackageOf(superClass).getQualifiedName().toString();
             final ClassName cn = ClassName.get(pkg,
@@ -63,36 +66,6 @@ public class GroupPropertyGenerator extends BaseGenerator {
             return false;
         }
         return true;
-    }
-
-    private TypeElement getSuperClass(TypeElement te, TypeElementDelegate delegate) {
-        TypeMirror superclass = te.getSuperclass();
-        String superName = superclass.toString();
-        if(superclass instanceof NoType){
-            //no super.
-        }else if(superName.startsWith("java.") || superName.startsWith("android.")){
-            // no super too.
-        }else {
-            TypeElement newTe = new FieldData.TypeCompat(getTypes(), superclass).getElementAsType();
-            TypeElement ele = delegate.get(superName);
-            if(ele == null){
-                if(hasGroupPropertyAnnotation(newTe)){
-                    return newTe;
-                }
-                return getSuperClass(newTe, delegate);
-            }else {
-                return newTe;
-            }
-        }
-        return null;
-    }
-
-    private boolean hasGroupPropertyAnnotation(TypeElement te) {
-        Fields fields = te.getAnnotation(Fields.class);
-        if(fields == null){
-            return false;
-        }
-        return fields.groups().length > 0;
     }
 
     public interface TypeElementDelegate{
