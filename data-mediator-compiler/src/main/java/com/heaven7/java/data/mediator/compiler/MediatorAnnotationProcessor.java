@@ -130,11 +130,16 @@ public class MediatorAnnotationProcessor extends AbstractProcessor implements Co
 
             ImportDesc impotDesc = element.getAnnotation(ImportDesc.class);
             if(impotDesc != null){
-                if(impotDesc.classes().length != impotDesc.names().length) {
+                List<String> cns = TypeUtils.classesToClassNames(impotDesc);
+                if(cns == null || cns.size() == 0){
+                    error(":process", "for @ImportDesc classes can;t be empty!");
+                    return true;
+                }
+                if(cns.size() != impotDesc.names().length) {
                     error(":process", "alias names with classes must be pairs.");
                     return true;
                 }
-                generator.setImportData(ImportDescData.of(Arrays.asList(impotDesc.names()), TypeUtils.classesToClassNames(impotDesc)));
+                generator.setImportData(ImportDescData.of(Arrays.asList(impotDesc.names()), cns));
             }
 
             //@Fields

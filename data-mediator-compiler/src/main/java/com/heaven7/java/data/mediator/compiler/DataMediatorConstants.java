@@ -60,6 +60,7 @@ public final class DataMediatorConstants {
     public static final String SN_EXPRESSION_EVALUATOR       = "ExpreEvaluator";
     public static final String SN_FGS                        = "Fgs";
     public static final String SN_FAMILY_MANAGER             = "FamilyManager";
+    public static final String SN_DATA_MEDIATOR_FACTORY      = "DataMediatorFactory";
 
     public static final String SIMPLE_NAME_DM_DELEGATE       = "DataMediatorDelegate";
     public static final String SIMPLE_NAME_PARCEL_DELEGATE   = "ParcelDelegate";
@@ -92,6 +93,8 @@ public final class DataMediatorConstants {
     public static final String GROUP_PROPERTY_SUFFIX   = "_$GPS";
     public static final String FAMILY_PROPERTY_SUFFIX  = "_$FGS";
     public static final String EXPRE_CONTEXT_SUFFIX    = "_$ExpreContext";
+
+    public static final String FIELD_NAME_FAMILY_MANAGER = "_mFamilyM";
 
     public static final String SET_PREFIX   = "set";
     public static final String GET_PREFIX   = "get";

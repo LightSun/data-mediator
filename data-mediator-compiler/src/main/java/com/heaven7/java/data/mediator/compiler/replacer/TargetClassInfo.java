@@ -17,6 +17,14 @@ public class TargetClassInfo {
     private  List<? extends TypeMirror> superInterfaces;
     private TypeName superClass;
     private boolean generateJsonAdapter = true;
+    private boolean useFamilyManager = false;
+
+    public boolean isUseFamilyManager() {
+        return useFamilyManager;
+    }
+    public void setUseFamilyManager(boolean useFamilyManager) {
+        this.useFamilyManager = useFamilyManager;
+    }
 
     public boolean isGenerateJsonAdapter() {
         return generateJsonAdapter;

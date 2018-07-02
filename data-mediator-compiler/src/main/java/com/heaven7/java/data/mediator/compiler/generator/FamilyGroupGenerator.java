@@ -57,15 +57,17 @@ public class FamilyGroupGenerator extends BaseGenerator {
             args.add(fdd.getType());
 
             String template_master = buildMasterArrayTemplate(inter, fdd, args);
-            String template = "$T.createFamilyGroup((byte)$L, " + template_master + ", ";
+            String template = "addFamilyGroup($T.createFamilyGroup((byte)$L, " + template_master + ", ";
             if(fdd.hasSlave()){
                 String template_slave = buildSlaveArrayTemplate(inter, fdd, args);
                 template += template_slave + ", ";
+            }else{
+                template += "null, ";
             }
             args.add(fdd.getConnectClass().getTypeName());
             Object[] params = args.toArray(new Object[args.size()]);
 
-            constructor.addStatement(template + "new $T())", params);
+            constructor.addStatement(template + "new $T()))", params);
         }
         builder.addMethod(constructor.build());
 

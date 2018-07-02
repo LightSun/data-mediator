@@ -32,28 +32,22 @@ public final class DataMediatorFactory {
     private static final String  SUFFIX_PROXY  = "_$Proxy";
 
     /**
+     * create 'Fgs' represent the family group property description by target module class.
+     * @param clazz the module class
+     * @return the Fgs
+     * @since 1.4.5
+     */
+    public static FamilyManager.Fgs createFgs(Class<?> clazz){
+        return createModuleRelativeObject(clazz, "_$FGS");
+    }
+    /**
      * create expression context by target module class.
      * @param clazz the module class
      * @return the expression context.
      * @since 1.4.5
      */
     public static ExpreEvaluator.ExpreContext createExpreContext(Class<?> clazz){
-        Class<?> target = clazz;
-        do {
-            try {
-                Class<?> class_context = Class.forName(target.getName() + "$ExpreContext");
-                return (ExpreEvaluator.ExpreContext) class_context.newInstance();
-            }catch (ClassNotFoundException e){
-                target = target.getSuperclass();
-                if(target == null || target.getName().startsWith("java.")
-                        || target.getName().startsWith("android.")){
-                    //throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
-                    return null;
-                }
-            }catch (InstantiationException | IllegalAccessException e){
-                throw new RuntimeException(e);
-            }
-        }while (true);
+        return createModuleRelativeObject(clazz, "_$ExpreContext");
     }
     /**
      * create group properties recursively as 'Gps'.
@@ -62,22 +56,7 @@ public final class DataMediatorFactory {
      * @since 1.4.5
      */
     public static Gps createGps(Class<?> clazz){
-        Class<?> target = clazz;
-        do {
-            try {
-                Class<?> class_gps = Class.forName(target.getName() + "_$GPS");
-                return (Gps) class_gps.newInstance();
-            }catch (ClassNotFoundException e){
-                target = target.getSuperclass();
-                if(target == null || target.getName().startsWith("java.")
-                        || target.getName().startsWith("android.")){
-                    //throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
-                    return null;
-                }
-            }catch (InstantiationException | IllegalAccessException e){
-                throw new RuntimeException(e);
-            }
-        }while (true);
+        return createModuleRelativeObject(clazz, "_$GPS");
     }
 
     /**
@@ -301,6 +280,26 @@ public final class DataMediatorFactory {
             throw new IllegalArgumentException();
         }
         return interClazz.getName();
+    }
+    //create module relative object. suffix is the generate suffix.
+    @SuppressWarnings("unchecked")
+    private static <T> T createModuleRelativeObject(Class<?> clazz, String suffix){
+        Class<?> target = clazz;
+        do {
+            try {
+                Class<?> class_context = Class.forName(target.getName() + suffix);
+                return (T) class_context.newInstance();
+            }catch (ClassNotFoundException e){
+                target = target.getSuperclass();
+                if(target == null || target.getName().startsWith("java.")
+                        || target.getName().startsWith("android.")){
+                    //throw new RuntimeException("create $Gps failed, caused by "+ clazz.getName() + "_$Gps doesn't exists !");
+                    return null;
+                }
+            }catch (InstantiationException | IllegalAccessException e){
+                throw new RuntimeException(e);
+            }
+        }while (true);
     }
 
 }

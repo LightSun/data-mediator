@@ -47,10 +47,20 @@ public class ProxyGenerator {
         typeBuilder.addJavadoc(CodeBlock.of(DataMediatorConstants.DOC));
 
         //constructor
-        typeBuilder.addMethod(MethodSpec.constructorBuilder().addParameter(cn_inter, "base")
+        MethodSpec.Builder builder_constructor = MethodSpec.constructorBuilder()
+                .addParameter(cn_inter, "base")
                 .addModifiers(Modifier.PUBLIC)
-                .addStatement("super(base)")
-                .build());
+                .addStatement("super(base)");
+        if(info.isUseFamilyManager()){
+            ClassName cn_dm_factory = ClassName.get(PKG_PROP, SN_DATA_MEDIATOR_FACTORY);
+            ClassName cn_fm = ClassName.get(PKG_PROP, SN_FAMILY_MANAGER);
+            builder_constructor.addStatement(FIELD_NAME_FAMILY_MANAGER + " = new $T(this, $T.createFgs($T.class)",
+                    cn_fm, cn_dm_factory, cn_inter);
+            //TODO set expression evaluator.
+            builder_constructor.addStatement(FIELD_NAME_FAMILY_MANAGER + ".attach()");
+        }
+        typeBuilder.addMethod(builder_constructor.build());
+
         //build field and methods.
         buildFieldsAndMethods(allFields, cn_inter, typeBuilder, normalJavaBean);
 

@@ -10,7 +10,11 @@ import java.util.*;
 
 /**
  * the family manager. help we manage the relationship of family.
- *
+ * in this class , you can
+ * <ul>
+ * <li>set the expression evaluator you want by {@linkplain #setExpressionEvaluator(ExpreEvaluator)}.</li>
+ * <li>attach or detach this manager. by {@linkplain #attach()} and {@linkplain #detach()}</li>
+ * </ul>
  * @author heaven7
  * @since 1.4.5
  */
@@ -37,7 +41,7 @@ public final class FamilyManager<T> extends DataMediatorCallback<T>{
     private final ForbidInspector mForbid = new ForbidInspectorImpl();
     private final SparseArray<List<FamilyGroup>> mGroups = new SparseArray<>(3);
     private final BaseMediator<T> mMediator;
-    private ExpreEvaluator mEvaluator; //TODO assign
+    private ExpreEvaluator mEvaluator;
 
     public FamilyManager(BaseMediator<T> mediator, List<FamilyGroup> groups) {
         Throwables.checkEmpty(groups);
@@ -52,6 +56,10 @@ public final class FamilyManager<T> extends DataMediatorCallback<T>{
             }
             list.add(fg);
         }
+    }
+
+    public void setExpressionEvaluator(ExpreEvaluator mEvaluator) {
+        this.mEvaluator = mEvaluator;
     }
 
     public void attach() {

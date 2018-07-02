@@ -42,6 +42,9 @@ public class BaseMediator<T>{
     private SparseArrayDispatcher _mSparseArrayDispatcher;
     private CollectorManager _mCollector;
 
+    //used by sub class
+    protected FamilyManager _mFamilyM;
+
     /**
      * the event transit station
      */
@@ -64,6 +67,15 @@ public class BaseMediator<T>{
         }
         this._mTarget = target;
         this._mCallbacks = new ArrayList<>();
+    }
+
+    /**
+     * get the family manager which used to manager relationship of module
+     * @return the family manager or null if you not define by @FamilyDesc.
+     * @since 1.4.5
+     */
+    public FamilyManager getFamilyManager(){
+        return _mFamilyM;
     }
 
     /**

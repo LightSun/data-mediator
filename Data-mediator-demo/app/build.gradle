@@ -54,10 +54,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.google.code.gson:gson:2.8.2'
 
-    implementation 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.4'
+    implementation 'com.heaven7.java.data.mediator.annotation:data-mediator-annotations:1.2.5-beta'
     implementation 'com.heaven7.java.data.mediator:data-mediator:1.4.5-beta7'
     annotationProcessor 'com.squareup:javapoet:1.9.0'
-    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.5-beta10'
+    annotationProcessor 'com.heaven7.java.data.mediator.compiler:data-mediator-compiler:1.4.5-beta14'
     implementation 'com.heaven7.java.data.mediator.support.gson:data-mediator-support-gson:1.0.5'
    // compile 'com.heaven7.android.data.mediator:data-mediator-android:1.1.4'
     implementation 'com.heaven7.android.data.mediator.lint:dmlint:1.2'

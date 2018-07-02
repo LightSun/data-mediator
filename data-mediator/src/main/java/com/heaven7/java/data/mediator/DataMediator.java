@@ -112,6 +112,15 @@ public final class DataMediator<T> {
     }
 
     /**
+     * get the family manager which used to manager relationship of module
+     * @return the family manager or null, if you don't define by @FamilyDesc
+     * @since 1.4.5
+     */
+    public FamilyManager getFamilyManager(){
+        return getBaseMediator().getFamilyManager();
+    }
+
+    /**
      * get the exact module data.
      * @return the module data.
      */

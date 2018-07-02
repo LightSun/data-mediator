@@ -309,12 +309,6 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             if (hasSelectable) {
                 superFields.add(FD_SELECTABLE);
             }
-
-            //do generate proxy
-            if (!ProxyGenerator.generateProxy(mClassInfo, superFields, mSuperImplInfos,
-                    normalJavaBean, builders, filer, mPrinter)) {
-                return false;
-            }
             //generate expression context
             if(mImportData != null){
                 String proxy = Util.getClassName(interfaceName) + PROXY_SUFFIX;
@@ -325,10 +319,16 @@ import static com.heaven7.java.data.mediator.compiler.util.Util.hasFlag;
             }
             if(mFamilyData != null && !mFamilyData.isEmpty()){
                 String proxy = Util.getClassName(interfaceName) + PROXY_SUFFIX;
+                mClassInfo.setUseFamilyManager(true);
                 if(!new FamilyGroupGenerator(delegate.getContext()).generate(mElement,
                         proxy, mFamilyData, delegate)){
                     return false;
                 }
+            }
+            //do generate proxy
+            if (!ProxyGenerator.generateProxy(mClassInfo, superFields, mSuperImplInfos,
+                    normalJavaBean, builders, filer, mPrinter)) {
+                return false;
             }
         } catch (IOException e) {
             mPrinter.error(TAG, log_method, Util.toString(e));
