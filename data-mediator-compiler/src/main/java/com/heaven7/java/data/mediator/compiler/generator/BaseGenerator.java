@@ -85,4 +85,9 @@ public class BaseGenerator {
         Fields fields = te.getAnnotation(Fields.class);
         return fields != null && fields.groups().length > 0;
     }
+
+    public interface TypeElementDelegate{
+        TypeElement get(String qualifyName);
+        ProcessorContext getContext();
+    }
 }

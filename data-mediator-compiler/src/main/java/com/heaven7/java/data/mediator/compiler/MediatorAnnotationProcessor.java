@@ -2,7 +2,7 @@ package com.heaven7.java.data.mediator.compiler;
 
 import com.heaven7.java.data.mediator.*;
 import com.heaven7.java.data.mediator.GlobalConfig;
-import com.heaven7.java.data.mediator.compiler.generator.GroupPropertyGenerator;
+import com.heaven7.java.data.mediator.compiler.generator.BaseGenerator;
 import com.heaven7.java.data.mediator.compiler.generator.StaticLoaderGenerator;
 import com.heaven7.java.data.mediator.compiler.module.ImportDescData;
 import com.heaven7.java.data.mediator.compiler.util.TypeUtils;
@@ -21,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
-import static javax.lang.model.element.Modifier.STATIC;
 
 /**
  * Created by heaven7 on 2017/8/28 0028.
@@ -32,7 +31,7 @@ import static javax.lang.model.element.Modifier.STATIC;
 })                       //use "*" indicate support all Annotations
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class MediatorAnnotationProcessor extends AbstractProcessor implements CodeGeneratorProvider,
-        GroupPropertyGenerator.TypeElementDelegate{
+        BaseGenerator.TypeElementDelegate{
 
     private static final String TAG = "MediatorAnnotationProcessor";
     private Filer mFiler;

@@ -1,18 +1,14 @@
 package com.heaven7.java.data.mediator.compiler.generator;
 
-import com.heaven7.java.data.mediator.Fields;
-import com.heaven7.java.data.mediator.compiler.FieldData;
 import com.heaven7.java.data.mediator.compiler.GroupProperty;
 import com.heaven7.java.data.mediator.compiler.ProcessorContext;
 import com.heaven7.java.data.mediator.compiler.util.Util;
 import com.squareup.javapoet.*;
 
-import javax.lang.model.element.*;
-import javax.lang.model.type.NoType;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.element.TypeElement;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static com.heaven7.java.data.mediator.compiler.DataMediatorConstants.*;
 
@@ -66,11 +62,6 @@ public class GroupPropertyGenerator extends BaseGenerator {
             return false;
         }
         return true;
-    }
-
-    public interface TypeElementDelegate{
-        TypeElement get(String qualifyName);
-        ProcessorContext getContext();
     }
 
 }
