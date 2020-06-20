@@ -19,9 +19,12 @@ package com.heaven7.java.data.mediator;
 
 import com.heaven7.java.base.anno.VisibleForTest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.heaven7.java.data.mediator.DataMediatorFactory.SUFFIX_IMPL;
 import static com.heaven7.java.data.mediator.DataMediatorFactory.getImplClassName;
@@ -78,7 +81,7 @@ public final class DataPools {
         }
         Entry entry = sMap.get(interfaceName);
         if(entry == null){
-            sMap.put(interfaceName , new Entry(maxCount));
+            sMap.put(interfaceName , new Entry(interfaceName, maxCount));
         }else{
             throw new UnsupportedOperationException("can't prepare pool more than once.");
         }
@@ -118,24 +121,62 @@ public final class DataPools {
     };
     private static class Entry{
 
-        final ArrayBlockingQueue<Object> mQueue;
+        final ArrayList<Object> mQueue;
+        final int maxSize;
+        final String classname;
+        final ReadWriteLock mLock = new ReentrantReadWriteLock();
 
-        Entry(int mMaxCount) {
-            mQueue = new ArrayBlockingQueue<>(mMaxCount);
+        Entry(String className, int mMaxCount) {
+            this.maxSize = mMaxCount;
+            this.classname = className;
+            this.mQueue = new ArrayList<>();
         }
 
         boolean recycle(Object data){
             if(!(data instanceof Poolable)){
                 throw new RuntimeException("data must impl Poolable");
             }
-            if (!mQueue.contains(data)) {
-                ((Poolable) data).clearProperties();
-                return mQueue.offer(data);
+            final boolean full;
+            mLock.readLock().lock();
+            try {
+                full = mQueue.size() >= maxSize;
+            }finally {
+                mLock.readLock().unlock();
+            }
+            if(!full){
+                mLock.writeLock().lock();
+                try {
+                    if (!mQueue.contains(data)) {
+                        ((Poolable) data).clearProperties();
+                        return mQueue.add(data);
+                    }
+                }finally {
+                    mLock.writeLock().unlock();
+                }
             }
             return false;
         }
         Object obtain(){
-            return mQueue.poll();
+            final boolean empty;
+            mLock.readLock().lock();
+            try {
+                empty = mQueue.size() == 0;
+            }finally {
+                mLock.readLock().unlock();
+            }
+            if(empty){
+                try {
+                    return sFactory.create(Class.forName(classname));
+                } catch (Exception e) {
+                    throw new UnsupportedOperationException("can't find impl class ("+ (classname) +")" ,e);
+                }
+            }
+            mLock.writeLock().lock();
+            try {
+                return mQueue.remove(0);
+            }finally {
+                mLock.writeLock().unlock();
+            }
         }
     }
     private interface Factory{
